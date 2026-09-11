@@ -26,11 +26,13 @@ HEIMEL sits immediately before effect and answers one question:
 Intent → Authority → Decision → Consequence → Evidence
 ```
 
-## Run the live demo
+## Run the live demos
 
-**[Executable Authority — open the live demo](https://reht.valoresearch.org/demos/executable-authority/)**
+**[Executable Authority — run the authority demo](https://reht.valoresearch.org/demos/executable-authority/)**  
+Observe authority being resolved at the moment an action is about to become real — including what happens when authority changes after intent was formed.
 
-The demo lets you observe authority being resolved at the moment an action is about to become real — including what happens when authority has changed after intent was formed.
+**[EROC Replay — run the replay demo](https://reht.valoresearch.org/demos/eroc-replay/)**  
+Inspect the evidence path by replaying a governed execution from its recorded artifacts.
 
 A canonical Authority Drift scenario is:
 
