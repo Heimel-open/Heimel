@@ -26,9 +26,13 @@ HEIMEL sits immediately before effect and answers one question:
 Intent → Authority → Decision → Consequence → Evidence
 ```
 
-## See it in one minute
+## Run the live demo
 
-Authority changes after intent has already been formed:
+**[Executable Authority — open the live demo](https://reht.valoresearch.org/apps/executable-authority/)**
+
+The demo lets you observe authority being resolved at the moment an action is about to become real — including what happens when authority has changed after intent was formed.
+
+A canonical Authority Drift scenario is:
 
 ```text
 08:00   mandate                    $50,000
