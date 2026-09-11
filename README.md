@@ -8,6 +8,14 @@
 Open infrastructure for deciding whether intent has the authority to become consequence — at the moment it matters.
 </p>
 
+<p align="center">
+<a href="https://reht.valoresearch.org/demos/executable-authority/"><strong>Run the demo</strong></a>
+&nbsp; · &nbsp;
+<a href="docs/ARCHITECTURE.md">Architecture</a>
+&nbsp; · &nbsp;
+<a href="docs/DEMOS.md">All demos</a>
+</p>
+
 ---
 
 ## The boundary
@@ -26,15 +34,13 @@ HEIMEL sits immediately before effect and answers one question:
 Intent → Authority → Decision → Consequence → Evidence
 ```
 
-## Run the live demos
+## Run it
 
-**[Executable Authority — run the authority demo](https://reht.valoresearch.org/demos/executable-authority/)**  
+### Executable Authority
+
+**[Run the live authority demo →](https://reht.valoresearch.org/demos/executable-authority/)**
+
 Observe authority being resolved at the moment an action is about to become real — including what happens when authority changes after intent was formed.
-
-**[EROC Replay — run the replay demo](https://reht.valoresearch.org/demos/eroc-replay/)**  
-Inspect the evidence path by replaying a governed execution from its recorded artifacts.
-
-A canonical Authority Drift scenario is:
 
 ```text
 08:00   mandate                    $50,000
@@ -48,7 +54,11 @@ A canonical Authority Drift scenario is:
                       verifiable receipt
 ```
 
-The earlier approval is not enough. Authority is resolved again when the action is about to become real.
+### EROC Replay
+
+**[Run the replay demo →](https://reht.valoresearch.org/demos/eroc-replay/)**
+
+Inspect the evidence path by replaying a governed execution from its recorded artifacts.
 
 ## How HEIMEL works
 
@@ -70,13 +80,21 @@ The decision contract is deliberately small:
 ALLOW | DENY | ESCALATE
 ```
 
-## Open by design
+[Read the architecture →](docs/ARCHITECTURE.md)
+
+## Open standards and infrastructure
 
 The standards and reference contracts are open and vendor-neutral. Models, agents, workflows and applications can change without moving the consequence boundary.
 
-**Core principles:** no direct effect path · fresh authority · deterministic decisions · evidence by construction · model-agnostic execution.
+Current public sources are being consolidated under `Heimel-open`. Until the migration is complete, the canonical public repositories remain available at their existing locations:
 
-## Open ecosystem
+- **[REHT Standard](https://github.com/nsolland/reht-standard)** — fresh authority at consequence time
+- **[RACS](https://github.com/nsolland/Racs)** — deterministic decision/action binding
+- **[VALO Gateway](https://github.com/nsolland/valo-gateway)** — current public reference enforcement infrastructure; moving toward HEIMEL Gateway
+- **[Veritas](https://github.com/nsolland/Veritas)** — verifiable consequence evidence
+- **[Open Agent Contract](https://github.com/nsolland/open-agent-contract)** — portable governed action contracts
+
+Target structure:
 
 ```text
 Heimel-open/
@@ -88,7 +106,9 @@ Heimel-open/
 └── open-agent-contract    portable governed action contracts
 ```
 
-Public repositories are being consolidated into this structure. Links will become active here as each component is migrated and aligned.
+## Design principles
+
+**No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence**
 
 ## What HEIMEL is not
 
