@@ -94,6 +94,11 @@ Current public sources are being consolidated under `Heimel-open`. Until the mig
 - **[Veritas](https://github.com/nsolland/Veritas)** — verifiable consequence evidence
 - **[Open Agent Contract](https://github.com/nsolland/open-agent-contract)** — portable governed action contracts
 
+Adjacent public work remains separate from the HEIMEL runtime chain:
+
+- **[PEACE Protocol](https://github.com/nsolland/peace-protocol)** — keeps authority and authoritative state in the governed domain while models, agents, devices and providers remain replaceable
+- **[ACE economics](https://github.com/nsolland/opensource/blob/main/reports/01-the-ace-economy.md)** — measures scarce human evaluation and authority attention around governed completion; ACE is an economic model, not a protocol or source of authority
+
 Target structure:
 
 ```text
