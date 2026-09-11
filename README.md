@@ -28,7 +28,7 @@ Intent → Authority → Decision → Consequence → Evidence
 
 ## Run the live demo
 
-**[Executable Authority — open the live demo](https://reht.valoresearch.org/apps/executable-authority/)**
+**[Executable Authority — open the live demo](https://reht.valoresearch.org/demos/executable-authority/)**
 
 The demo lets you observe authority being resolved at the moment an action is about to become real — including what happens when authority has changed after intent was formed.
 
