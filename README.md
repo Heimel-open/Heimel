@@ -1,116 +1,97 @@
-# HEIMEL
+<p align="center">
+  <img src="assets/brand/heimel-readme-hero.jpg" alt="HEIMEL — Intent. Realized." width="620">
+</p>
 
-**Intent. Realized.**
+<p align="center"><strong>Intent. Realized.</strong></p>
 
-HEIMEL is open infrastructure for the transition from intent to consequence.
+<p align="center">
+Open infrastructure for deciding whether intent has the authority to become consequence — at the moment it matters.
+</p>
 
-```text
-Intent → HEIMEL → Realized
-```
+---
 
-Not every intent should become reality.
-
-HEIMEL decides whether an action has the authority to become consequence — at the moment it matters.
-
-## The question
-
-> Does this intent have authority to become real — now?
-
-HEIMEL sits immediately before effect:
+## The boundary
 
 ```text
 Anything that forms intent → HEIMEL → Anything that causes effect
 ```
 
-## Core path
+Not every intent should become reality.
+
+HEIMEL sits immediately before effect and answers one question:
+
+> **Does this intent have authority to become real — now?**
 
 ```text
 Intent → Authority → Decision → Consequence → Evidence
 ```
 
-The reference architecture is:
+## See it in one minute
+
+Authority changes after intent has already been formed:
+
+```text
+08:00   mandate                    $50,000
+09:00   authority changes          $25,000
+09:05   attempted consequence      $45,000
+                              ↓
+                     fresh authority check
+                              ↓
+                       DENY / ESCALATE
+                              ↓
+                      verifiable receipt
+```
+
+The earlier approval is not enough. Authority is resolved again when the action is about to become real.
+
+## How HEIMEL works
 
 ```text
 VAIG → REHT → RACS → Gateway → Veritas
 ```
 
-- **VAIG** evaluates governed intent.
-- **REHT** resolves authority fresh at consequence time.
-- **RACS** binds the decision to the exact action and effect boundary.
-- **Gateway** provides one governed path to effect.
-- **Veritas** preserves verifiable evidence of what became real.
+| Component | Role |
+|---|---|
+| **VAIG** | Evaluates governed intent |
+| **REHT** | Resolves authority fresh at consequence time |
+| **RACS** | Binds the decision to the exact action and effect boundary |
+| **Gateway** | Provides one governed path to effect |
+| **Veritas** | Preserves verifiable evidence of what became real |
 
-## Start here
-
-The canonical first demo is **Authority Drift**:
+The decision contract is deliberately small:
 
 ```text
-08:00  mandate: $50,000
-09:00  policy changes: $25,000
-09:05  attempted action: $45,000
-       ↓
-       fresh authority check
-       ↓
-       DENY / ESCALATE
-       ↓
-       verifiable receipt
+ALLOW | DENY | ESCALATE
 ```
 
-The point is simple: authorization must be resolved at the moment consequence is about to occur, not only when intent was formed.
+## Open by design
 
-## Open standards
+The standards and reference contracts are open and vendor-neutral. Models, agents, workflows and applications can change without moving the consequence boundary.
 
-HEIMEL is built around open, vendor-neutral contracts and standards.
+**Core principles:** no direct effect path · fresh authority · deterministic decisions · evidence by construction · model-agnostic execution.
 
-- **REHT** — fresh authority at consequence time
-- **RACS** — deterministic decision and action binding
-- **Open Agent Contract** — portable governed action contracts
-
-## Reference infrastructure
-
-- **HEIMEL Gateway** — governed effect path
-- **Veritas** — verifiable consequence evidence
-- **SDKs and integrations** — connect models, agents, workflows, applications and devices
-
-## Design principles
-
-- **No direct effect path.** Consequence-bearing actions pass through a governed boundary.
-- **Fresh authority.** Authority is resolved again when an action is about to become real.
-- **Deterministic decision contract.** Decisions resolve to `ALLOW`, `DENY` or `ESCALATE`.
-- **Evidence by construction.** Governed effects emit verifiable evidence.
-- **Model-agnostic.** Models, agents and workflow systems may change; the consequence boundary remains governed.
-
-## What HEIMEL is not
-
-HEIMEL is not a model, an agent framework, an IAM replacement or a generic policy engine.
-
-Identity can tell you who an actor is. A model can propose what to do. A workflow can route the work.
-
-HEIMEL answers the question immediately before consequence:
-
-**May this happen now?**
-
-## Repository map
-
-This repository is the public entry point for the HEIMEL open ecosystem.
-
-Planned canonical structure:
+## Open ecosystem
 
 ```text
 Heimel-open/
-├── Heimel
-├── reht-standard
-├── racs
-├── heimel-gateway
-├── veritas
-└── open-agent-contract
+├── Heimel                 public entry point
+├── reht-standard          fresh authority at consequence time
+├── racs                   decision/action binding
+├── heimel-gateway         governed path to effect
+├── veritas                verifiable consequence evidence
+└── open-agent-contract    portable governed action contracts
 ```
 
-## Status
+Public repositories are being consolidated into this structure. Links will become active here as each component is migrated and aligned.
 
-HEIMEL is under active development. Public repositories are being consolidated and aligned around a common open architecture, vocabulary and conformance model.
+## What HEIMEL is not
+
+HEIMEL is not a model, agent framework, IAM replacement or generic policy engine.
+
+Identity can establish who an actor is. A model can propose what to do. A workflow can route the work.
+
+**HEIMEL decides whether it may become real.**
 
 ---
 
-**HEIMEL**  
-**Intent. Realized.**
+<p align="center"><strong>HEIMEL</strong><br>Intent. Realized.</p>
