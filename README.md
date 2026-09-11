@@ -111,6 +111,8 @@ Heimel-open/
 └── open-agent-contract    portable governed action contracts
 ```
 
+Planned public modules include the Kernel, VAIG and MAL reference implementations, Workflow ISA, Function Fabric, SDK and integration surfaces, and selected public domain packs. They are linked here only after their licensing, publication/IP and conformance gates pass. Private production control-plane code is not implied by this roadmap.
+
 ## Design principles
 
 **No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence**
