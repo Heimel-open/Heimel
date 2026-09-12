@@ -1,4 +1,0 @@
-# file: /workspace/scratch/775012d3c147/Heimel/packages/kernel/src/valo_kernel/contracts/common.py
-# hypothesis_version: 6.168.0
-
-[',', ':', 'ADMITTED', 'ALLOCATED', 'ASSERTED', 'AUTHORIZED', 'AUTHORIZED_FOR', 'AVAILABLE', 'Account', 'Agent', 'Asset', 'BELONGS_TO', 'CONFIRMED', 'CONFLICTED', 'CONSUMED', 'CONTRACTED_BY', 'CONTRADICTED', 'Case', 'Contract', 'DEPENDS_ON', 'EFFECT_VERIFIED', 'EMPLOYED_BY', 'EXECUTION_OBSERVED', 'EXECUTION_REQUESTED', 'EnumT', 'FAILED', 'HELD', 'INFERRED', 'INTENDED', 'Job', 'LOCATED_AT', 'LegalEntity', 'Location', 'OWNS', 'Organization', 'Person', 'QUARANTINED', 'RECEIVED', 'REJECTED', 'RELATED_TO', 'REPORTS_TO', 'REPRESENTS', 'RESERVED', 'RESPONSIBLE_FOR', 'REVOKED', 'Resource', 'STALE', 'SUPERSEDED', 'ServiceIdentity', 'UNAVAILABLE', 'UNKNOWN', 'UNVERIFIED', 'VERIFIED', 'vwsf-v1']

@@ -1,4 +1,0 @@
-# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/src/valo_function_fabric/tool_catalog.py
-# hypothesis_version: 6.168.0
-
-['External Effect', 'Gateway', 'Kernel', 'RACS', 'REHT', 'Veritas', 'after', 'agent', 'api_key=', 'authority_effect', 'bearer ', 'binding_contract', 'cli', 'consequence_bearing', 'custom', 'direct_execution', 'dispatch_path', 'endpoint_ref', 'forbid', 'graphql', 'mcp', 'none', 'openapi', 'operation', 'password=', 'programmatic', 'protocol', 'sdk', 'surface', 'token=', 'tool_id']

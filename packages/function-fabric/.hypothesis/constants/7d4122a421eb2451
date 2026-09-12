@@ -1,4 +1,0 @@
-# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/examples/demonstrator_2_public.py
-# hypothesis_version: 6.168.0
-
-['1', '1.0.0', 'ApprovalRequest', 'EligibilityCriteria', 'Evidence', 'EvidenceRequest', 'IdentityCandidate', 'Notification', 'Registration', 'Request', '__main__', 'ack', 'admitted', 'approval', 'approve', 'approved', 'attestation', 'candidate', 'check_eligibility', 'compiled_graph_hash', 'criteria', 'decision', 'done', 'eligible', 'evidence', 'evidence_in', 'graph_id', 'identity', 'issue_decision', 'issued', 'nodes', 'notification', 'notify', 'register', 'registered', 'registration', 'request', 'request_evidence', 'requested', 'result', 'reuses_notify', 'valo.evidence.verify', 'verified', 'verify_evidence', 'verify_identity']

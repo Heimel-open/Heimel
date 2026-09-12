@@ -1,4 +1,0 @@
-# file: /workspace/scratch/775012d3c147/Heimel/packages/workflow-isa/src/valo_workflow_isa/graph/__init__.py
-# hypothesis_version: 6.168.0
-
-['can_reach', 'graph_inputs_satisfy', 'predecessors', 'producer_for_input', 'reachable_from', 'successors']

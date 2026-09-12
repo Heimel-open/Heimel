@@ -1,4 +1,0 @@
-# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/src/valo_function_fabric/substrates/contracts.py
-# hypothesis_version: 6.168.0
-
-[',', ':', '@', 'CLI', 'EXPERIMENTAL', 'FINANCIAL', 'MANIFEST', 'MCP', 'MUTATE', 'OBSERVE', 'PRODUCTION', 'PROGRAMMATIC', 'SKILL', 'STABLE', '[A-Z][A-Z0-9_]*', '[^a-zA-Z0-9_]', '_', 'after', 'capabilities', 'credential', 'discovery', 'forbid', 'json', 'manifest', 'mcp_registration', 'provider', 'schema_version', 'skill_generation']

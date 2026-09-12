@@ -1,4 +1,0 @@
-# file: /workspace/scratch/775012d3c147/Heimel/packages/workflow-isa/src/valo_workflow_isa/__init__.py
-# hypothesis_version: 6.168.0
-
-['AuthorizationDenied', 'CompileError', 'ControlOpcode', 'Deferred', 'Determinism', 'EdgeType', 'EffectType', 'FailurePolicy', 'HandlerContext', 'IRREVERSIBLE_EFFECTS', 'IdempotencyPolicy', 'NodeClass', 'NodeFailure', 'NodePolicies', 'NodeStatus', 'NodeTimeout', 'PostconditionFailed', 'PrimitiveOpcode', 'ReferenceBackend', 'RetryPolicy', 'RuntimeEngine', 'TypedRef', 'WorkflowEdge', 'WorkflowError', 'WorkflowEvent', 'WorkflowEventType', 'WorkflowGraph', 'WorkflowHalted', 'WorkflowInstance', 'WorkflowNode', 'WorkflowStatus', 'can_consume', 'compile_graph', 'compiler', 'contracts', 'effects', 'graph', 'opcodes', 'parse_type', 'ports', 'runtime', 'stdlib', 'types']
