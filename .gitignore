@@ -1,3 +1,5 @@
 /dist/
 /release-receipt.json
 /.release-work/
+__pycache__/
+*.py[cod]
