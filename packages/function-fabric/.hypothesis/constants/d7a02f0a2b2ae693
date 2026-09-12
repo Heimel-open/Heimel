@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/workflow-isa/src/valo_workflow_isa/testing/fakes.py
+# hypothesis_version: 6.168.0
+
+['ALLOW', 'AVAILABLE', 'DENY', 'EXECUTION_OBSERVED', 'RESERVATION_RELEASED', 'RESERVED', 'RESOURCE_RESERVED', 'UNVERIFIED', 'VERIFIED', 'action', 'active', 'actor', 'actors', 'allocated', 'authority', 'authority_id', 'binding', 'capability', 'capacity', 'check_effect', 'clearance-1', 'ctx', 'current_state', 'done', 'entity_id', 'event_id', 'event_type', 'executed', 'exists', 'holder', 'identity', 'identity_id', 'key', 'mismatch', 'no authority', 'params', 'payload', 'permit-1', 'principal', 'process_ref', 'receipt-replay', 'replayed', 'requested_transition', 'reservation', 'reservation_id', 'resource_id', 'resources', 'resources_available', 'revoked_at', 'scope', 'state', 'subject', 'target', 'tenant-a', 'valid_until', 'verification_status', 'who_may_act']

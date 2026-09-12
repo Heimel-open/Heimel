@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/src/valo_function_fabric/incident.py
+# hypothesis_version: 6.168.0
+
+['*', '1', '1.0.0', 'AUTHORIZE_ACTION', 'Authorized<Action>', 'Candidate<Action>', 'Confirmed<Action>', 'EVALUATE_RULE', 'EXECUTE_ACTION', 'INCIDENT_REMEDIATION', 'IncidentObservation', 'PREPARE_ACTION', 'RECEIVED', 'RECONCILE', 'REMEDIATE', 'VALIDATE_SCHEMA', 'VERIFY_EXECUTION', 'action', 'action_type', 'authorized', 'capability', 'classification', 'classify', 'diagnose', 'diagnosis', 'execute_remediation', 'executed', 'incident-classifier', 'incident-subject', 'kernel_event_type', 'model', 'model_version', 'observation', 'observation_id', 'observation_verified', 'prepare_remediation', 'preserve_evidence', 'required', 'result', 'rule', 'schema', 'shadow_has_no_write', 'source_context', 'subject_ref', 'symptoms', 'true', 'verify_poststate']

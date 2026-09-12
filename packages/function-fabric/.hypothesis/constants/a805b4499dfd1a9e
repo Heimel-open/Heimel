@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/examples/demonstrator_1_electrician.py
+# hypothesis_version: 6.168.0
+
+['1', '1.0.0', 'ALLOCATE_RESOURCE', 'ApprovalRequest', 'Candidate<Resource>', 'IdentityCandidate', 'Notification', 'PriceScope', 'Registration', 'Request', 'ResourceRequirement', 'ScheduleRequirement', '__main__', 'ack', 'approval', 'approve', 'approved', 'attestation', 'booked', 'booking', 'candidate', 'candidates', 'classification', 'classified', 'classify', 'compiled_graph_hash', 'done', 'effect', 'graph_id', 'identity', 'match', 'matched', 'nodes', 'notification', 'notify', 'price', 'priced', 'register', 'registered', 'registration', 'request', 'requirement', 'reservation', 'reserve', 'reserved', 'resource', 'risk', 'schedule', 'scope', 'valo.finance.price', 'valo.intake.classify', 'valo.resource.match', 'verified', 'verify_identity', 'writes']

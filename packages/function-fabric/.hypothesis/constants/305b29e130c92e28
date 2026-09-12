@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/src/valo_function_fabric/types/strength.py
+# hypothesis_version: 6.168.0
+
+[',', '<', '>', 'Admitted', 'Asserted', 'Authorized', 'Candidate', 'Confirmed', 'Executed', 'Inferred', 'Reserved', 'Verified', 'VerifiedEffect', 'any', '{', '}']

@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/workflow-isa/src/valo_workflow_isa/ports/valo_kernel.py
+# hypothesis_version: 6.168.0
+
+['EFFECT_VERIFIED', 'EXECUTION_OBSERVED', 'RESOURCE_RESERVED', 'actor', 'actors', 'capability', 'check_effect', 'datetime', 'event_id', 'event_type', 'exists', 'holder', 'json', 'observed', 'params', 'payload', 'phase', 'process_ref', 'requested_transition', 'reservation', 'reservation_id', 'resource_id', 'resources', 'resources_available', 'subject', 'tenant_id', 'veritas', 'wf-transition', 'who_may_act', 'workflow-isa']

@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/kernel/src/valo_kernel/contracts/workspace.py
+# hypothesis_version: 6.168.0
+
+['*', 'ARTIFACT', 'DEFER', 'DENY', 'EVIDENCE', 'EXTERNAL_ACTION', 'HALT', 'PASS', 'REDO', 'STATE_TRANSITION', 'STEP_UP', '^[0-9a-f]{64}$', 'after', 'binding_digest', 'candidate_digest', 'constraints', 'contracts', 'entities', 'evidence', 'facts', 'forbid', 'json', 'object_ids', 'obligations', 'purposes', 'relationships', 'report_digest', 'reservations', 'resources', 'rights', 'truth_status', 'workspace_digest']

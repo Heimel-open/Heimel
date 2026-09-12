@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/examples/demonstrator_4_payment.py
+# hypothesis_version: 6.168.0
+
+['1', '1.0.0', 'FAILED', 'OPEN', 'PAY', 'PaymentRequest', '__main__', 'agent-a', 'compiled_graph_hash', 'id', 'id-agent', 'p-1', 'pay', 'payment', 'payment_result', 'postcondition', 'status', 'tenant-a', 'valo.finance.pay']

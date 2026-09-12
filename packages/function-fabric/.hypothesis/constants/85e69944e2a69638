@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/kernel/src/valo_kernel/world/invariants.py
+# hypothesis_version: 6.168.0
+
+['REVOKED', 'identity_equivalent', 'same_as', 'same_entity_as', 'tenant_id']

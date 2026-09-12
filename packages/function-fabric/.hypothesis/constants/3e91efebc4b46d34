@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/src/valo_function_fabric/workspace.py
+# hypothesis_version: 6.168.0
+
+['*', 'PURE', 'REHT', 'after', 'compiled_graph_hash', 'compiler_ref', 'def', 'forbid', 'function_hash', 'function_identity', 'functions', 'graphs', 'hash', 'json', 'model_dump', 'nodes', 'none', 'plan_digest', 'value', 'workflow_ref']

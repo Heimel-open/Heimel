@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/kernel/src/valo_kernel/kernel/queries.py
+# hypothesis_version: 6.168.0
+
+['action_required', 'attributes', 'authorities', 'authority_id', 'confidence', 'deadline', 'entity_id', 'entity_type', 'evidence_id', 'fact_id', 'model', 'object', 'obligation_id', 'predicate', 'reservation_id', 'reservations', 'right_id', 'right_type', 'rights', 'source', 'state', 'status', 'subject', 'truth_status', 'type', 'valid_from', 'valid_until']

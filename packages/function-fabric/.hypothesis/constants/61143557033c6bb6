@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/workflow-isa/src/valo_workflow_isa/types/__init__.py
+# hypothesis_version: 6.168.0
+
+['REFINEMENTS', 'WRAPPER_LEVELS', 'WorkflowType', 'can_consume', 'parse_type', 'satisfies_input']

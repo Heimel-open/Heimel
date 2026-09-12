@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/examples/demonstrator_3_onboarding.py
+# hypothesis_version: 6.168.0
+
+['1', '1.0.0', 'AllocationDemand', 'ApprovalRequest', 'EligibilityCriteria', 'Evidence', 'IdentityCandidate', 'Notification', 'Registration', '__main__', 'ack', 'admitted', 'allocate', 'allocated', 'allocation', 'approval', 'approve', 'approved', 'attestation', 'candidate', 'check_eligibility', 'criteria', 'demand', 'done', 'eligible', 'evidence', 'evidence_in', 'identity', 'notification', 'notify', 'person_graph_nodes', 'register', 'registered', 'registration', 'result', 'reuses_approve', 'reuses_notify', 'valo.evidence.verify', 'verified', 'verify_evidence', 'verify_identity']

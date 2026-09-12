@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/kernel/src/valo_kernel/contracts/admission.py
+# hypothesis_version: 6.168.0
+
+['*', '0123456789abcdef', 'ADMIT', 'ALLOW', 'DEFER', 'DENY', 'HALT', 'HOLD', 'MODIFY', 'PRECLUDE', 'QUARANTINE', 'REJECT', 'REVIEW', 'STEP_UP', 'SUPPORT', 'VALO_KERNEL', '^[0-9a-f]{64}$', 'after', 'assessment_digest', 'assessment_digests', 'candidate_digest', 'contradiction_refs', 'decision_digest', 'entity_refs', 'forbid', 'json', 'policy_digest', 'provenance_refs', 'reason_codes', 'relationship_refs', 'subject_refs', 'trusted_provider_ids', 'unresolved_refs']

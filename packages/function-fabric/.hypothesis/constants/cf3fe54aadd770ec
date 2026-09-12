@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/workflow-isa/src/valo_workflow_isa/runtime/engine.py
+# hypothesis_version: 6.168.0
+
+[10000, 'ASSERT_STATE', 'Admitted', 'Authorized', 'COMPENSATE', 'Candidate', 'Confirmed', 'DEFER', 'EVALUATE_RULE', 'FETCH', 'HALT', 'INFERRED', 'PREPARE_ACTION', 'READ_STATE', 'RECONCILE', 'REQUEST_APPROVAL', 'REQUEST_INPUT', 'REQUEST_REVIEW', 'VALIDATE_SCHEMA', 'VERIFY_EXECUTION', 'Verified', 'VerifiedEffect', '__compensation__', '__runtime__', '__tenant', 'compensated', 'condition', 'confidence', 'default', 'for_node', 'graph_id', 'halt', 'halt_on_failure', 'inputs', 'json', 'message', 'model', 'model_version', 'outcome_known', 'reason', 'receipt', 'receipt_ref', 'result', 'runtime', 'source_context', 'timeout', 'true', 'truth_status', 'value']

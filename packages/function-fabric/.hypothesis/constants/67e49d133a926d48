@@ -1,0 +1,4 @@
+# file: /workspace/scratch/775012d3c147/Heimel/packages/function-fabric/src/valo_function_fabric/compiler/compiler.py
+# hypothesis_version: 6.168.0
+
+['1.0.0', 'DE', 'DK', 'EU', 'FI', 'GB', 'NO', 'SE', 'US', 'compensation_ref', 'compiled_graph_hash', 'compiler_version', 'function_graph_hash', 'id', 'inputs', 'json', 'outputs']
