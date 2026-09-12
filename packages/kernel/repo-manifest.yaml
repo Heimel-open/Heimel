@@ -1,0 +1,18 @@
+name: heimel-kernel
+version: 0.1.0
+layer: kernel-reference-core
+description: Minimal deterministic admission and operative-state reference core
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-kernel
+  commit: a3005154b0502f6e97041daf160f83558f990f6d
+
+excluded:
+  - product-code
+  - provider-integrations
+  - installers
+  - duplicated-protocols
+  - experimental-capabilities
+
+dependencies: []
