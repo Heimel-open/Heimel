@@ -1,0 +1,15 @@
+name: valo-workflow-isa
+version: 1.0.1
+layer: workflow-isa
+description: Typed, deterministic workflow instruction set for HEIMEL
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-workflow-isa
+  commit: 06413829452d796c05b30d5112e5aa618de0b5cd
+
+dependencies:
+  - name: valo-kernel
+    role: kernel-contracts
+    status: interface-only
+    required_at_install: false

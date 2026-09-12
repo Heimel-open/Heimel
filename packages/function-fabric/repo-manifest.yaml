@@ -1,0 +1,22 @@
+name: valo-function-fabric
+version: 1.1.0
+layer: function-fabric
+description: Provider-neutral governed function composition and lowering
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-function-fabric
+  commit: f26e96b9090199170a3b2e9525674ecc6a29a8eb
+
+excluded:
+  - provider-adapters
+  - provider-substrates
+  - financial-execution-pack
+  - credentials
+  - product-code
+dependencies:
+  - name: heimel-kernel
+    role: operative-state contracts and admission
+  - name: valo-workflow-isa
+    role: typed workflow lowering and validation
+
