@@ -62,23 +62,28 @@ Inspect the evidence path by replaying a governed execution from its recorded ar
 
 ## How HEIMEL works
 
+The minimum consequence path contains only the properties that cannot be removed:
+
 ```text
-VAIG → REHT → RACS → Gateway → Veritas
+Kernel operative state + exact proposed effect
+→ REHT fresh authorization
+→ Gateway mechanical enforcement
+→ external effect
+→ Veritas proof
+→ Kernel state admission
 ```
+
+RACS is the deterministic contract binding the decision, exact effect, permit and receipt across REHT, Gateway and Veritas. It is not an active runtime hop.
 
 | Component | Role |
 |---|---|
-| **VAIG** | Evaluates governed intent |
-| **REHT** | Resolves authority fresh at consequence time |
-| **RACS** | Binds the decision to the exact action and effect boundary |
-| **Gateway** | Provides one governed path to effect |
-| **Veritas** | Preserves verifiable evidence of what became real |
+| **Kernel** | Owns admitted operative state, deterministic replay and state admission; it does not authorize or execute |
+| **REHT** | Authorizes or refuses the exact effect against fresh operative state |
+| **RACS** | Binds decision, effect, permit and receipt as a deterministic contract |
+| **Gateway** | Validates and consumes the one-shot permit on the only governed effect path |
+| **Veritas** | Preserves attributable effect and outcome evidence for later state admission |
 
-The decision contract is deliberately small:
-
-```text
-ALLOW | DENY | ESCALATE
-```
+Workflow ISA and Function Fabric are conditional process/capability layers. VAIG is a conditional evaluator. None creates execution authority.
 
 [Read the architecture →](docs/ARCHITECTURE.md)
 
@@ -86,8 +91,11 @@ ALLOW | DENY | ESCALATE
 
 The standards and reference contracts are open and vendor-neutral. Models, agents, workflows and applications can change without moving the consequence boundary.
 
-Current public sources are being consolidated under `Heimel-open`. Until the migration is complete, the canonical public repositories remain available at their existing locations:
+HEIMEL now publishes three curated Apache-2.0 reference packages while canonical runtime ownership remains in the source repositories:
 
+- **[Kernel reference core](packages/kernel)** — operative state, admission and deterministic replay
+- **[Workflow ISA](packages/workflow-isa)** — typed deterministic process semantics
+- **[Function Fabric](packages/function-fabric)** — provider-neutral governed Function composition
 - **[REHT Standard](https://github.com/nsolland/reht-standard)** — fresh authority at consequence time
 - **[RACS](https://github.com/nsolland/Racs)** — deterministic decision/action binding
 - **[VALO Gateway](https://github.com/nsolland/valo-gateway)** — current public reference enforcement infrastructure; moving toward HEIMEL Gateway
@@ -99,19 +107,17 @@ Adjacent public work remains separate from the HEIMEL runtime chain:
 - **[PEACE Protocol](https://github.com/nsolland/peace-protocol)** — keeps authority and authoritative state in the governed domain while models, agents, devices and providers remain replaceable
 - **[ACE economics](https://github.com/nsolland/opensource/blob/main/reports/01-the-ace-economy.md)** — measures scarce human evaluation and authority attention around governed completion; ACE is an economic model, not a protocol or source of authority
 
-Target structure:
+Current public layout:
 
 ```text
-Heimel-open/
-├── Heimel                 public entry point
-├── reht-standard          fresh authority at consequence time
-├── racs                   decision/action binding
-├── heimel-gateway         governed path to effect
-├── veritas                verifiable consequence evidence
-└── open-agent-contract    portable governed action contracts
+Heimel-open/Heimel
+└── packages/
+    ├── kernel
+    ├── workflow-isa
+    └── function-fabric
 ```
 
-Planned public modules include the Kernel, VAIG and MAL reference implementations, Workflow ISA, Function Fabric, SDK and integration surfaces, and selected public domain packs. They are linked here only after their licensing, publication/IP and conformance gates pass. Private production control-plane code is not implied by this roadmap.
+The remaining public-release track covers VAIG and MAL clean-room reference surfaces, SDK/CLI/verifier tooling, integration surfaces and selected domain packs. Immutable tagged artifacts and a coherent public end-to-end installation path remain open gates. Private production control-plane code is not implied by this roadmap.
 
 ## Design principles
 
@@ -123,7 +129,7 @@ HEIMEL is not a model, agent framework, IAM replacement or generic policy engine
 
 Identity can establish who an actor is. A model can propose what to do. A workflow can route the work.
 
-**HEIMEL decides whether it may become real.**
+**HEIMEL keeps the transition from intent to consequence bound to current authority, exact effect, exclusive enforcement and verifiable outcome.**
 
 ---
 
