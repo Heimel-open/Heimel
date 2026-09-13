@@ -14,7 +14,12 @@ def main() -> None:
     sub.add_parser("demo", help="Run the offline public contract chain")
     args = parser.parse_args()
     if args.command == "list":
-        print(json.dumps({"contracts": sorted(__all__), "network": False, "authority": False}, indent=2))
+        print(
+            json.dumps(
+                {"contracts": sorted(__all__), "network": False, "authority": False},
+                indent=2,
+            )
+        )
     if args.command == "demo":
         print(json.dumps(run_demo(), indent=2, default=str))
 

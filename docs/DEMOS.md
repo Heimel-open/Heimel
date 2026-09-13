@@ -44,6 +44,6 @@ evidence in one local process. It performs no network request and no external
 effect:
 
 ```bash
-python -m pip install "valo-sdk==0.1.1"
+python -m pip install "valo-sdk==0.1.2"
 valo-contracts demo
 ```

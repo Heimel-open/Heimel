@@ -1,5 +1,5 @@
 name: valo-sdk
-version: 0.1.1
+version: 0.1.2
 layer: public-sdk
 description: Local contract SDK and inspection CLI for public VALO references
 license: Apache-2.0
@@ -12,6 +12,7 @@ source:
     - packages/vaig
     - packages/conformance
     - packages/public-procurement
+    - packages/workspace
   status: public-contract-facade
 
 boundary:

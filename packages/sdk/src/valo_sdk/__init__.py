@@ -12,15 +12,70 @@ from valo_conformance import (
     SurfaceConformanceReportV1,
     evaluate_surface_conformance,
 )
-from valo_mal import FederationRequest, FederationResult, SignedPolicyPack, TrustRoot, evaluate_import
-from valo_public_procurement import AwardDecision, AwardRecommendation, ProcurementProcedure, Tender
-from valo_vaig import AuditReceipt, DistrustLevel, GateDecision, PolicyConfig, ValidationResult
+from valo_mal import (
+    FederationRequest,
+    FederationResult,
+    SignedPolicyPack,
+    TrustRoot,
+    evaluate_import,
+)
+from valo_public_procurement import (
+    AwardDecision,
+    AwardRecommendation,
+    ProcurementProcedure,
+    Tender,
+)
+from valo_vaig import (
+    AuditReceipt,
+    DistrustLevel,
+    GateDecision,
+    PolicyConfig,
+    ValidationResult,
+)
+from valo_workspace import (
+    ExposurePolicy,
+    GovernedWorkspaceContract,
+    ResourceLimits,
+    StateAdmissionEvidence,
+    StateAdmissionSet,
+    WorkspaceDeliveryEvidence,
+    WorkspaceStateAdmissionBinding,
+    bind_workspace_state_admission,
+    verify_delivery,
+    verify_workspace_state_admission,
+)
 
 __all__ = [
-    "AuditReceipt", "AwardDecision", "AwardRecommendation", "CMCPContractV1",
-    "CMCPInvocation", "DistrustLevel", "FederationRequest", "FederationResult",
-    "GateDecision", "GovernedPresentationClaimV1", "GovernedPresentationEnvelopeV1",
-    "PolicyConfig", "ProcurementProcedure", "ProtocolStack", "SignedPolicyPack",
-    "SurfaceConformanceObservationV1", "SurfaceConformanceReportV1", "Tender",
-    "TrustRoot", "ValidationResult", "evaluate_import", "evaluate_surface_conformance",
+    "AuditReceipt",
+    "AwardDecision",
+    "AwardRecommendation",
+    "CMCPContractV1",
+    "CMCPInvocation",
+    "DistrustLevel",
+    "ExposurePolicy",
+    "FederationRequest",
+    "FederationResult",
+    "GateDecision",
+    "GovernedPresentationClaimV1",
+    "GovernedPresentationEnvelopeV1",
+    "GovernedWorkspaceContract",
+    "PolicyConfig",
+    "ProcurementProcedure",
+    "ProtocolStack",
+    "ResourceLimits",
+    "SignedPolicyPack",
+    "StateAdmissionEvidence",
+    "StateAdmissionSet",
+    "SurfaceConformanceObservationV1",
+    "SurfaceConformanceReportV1",
+    "Tender",
+    "TrustRoot",
+    "ValidationResult",
+    "WorkspaceDeliveryEvidence",
+    "WorkspaceStateAdmissionBinding",
+    "bind_workspace_state_admission",
+    "evaluate_import",
+    "evaluate_surface_conformance",
+    "verify_delivery",
+    "verify_workspace_state_admission",
 ]

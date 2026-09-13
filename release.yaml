@@ -79,10 +79,10 @@ packages:
 
   - distribution: valo-sdk
     import: valo_sdk
-    version: 0.1.1
+    version: 0.1.2
     path: packages/sdk
-    tag: valo-sdk-v0.1.1
-    publish_order: 10
+    tag: valo-sdk-v0.1.2
+    publish_order: 11
 
 required_local_gates:
   - manifest versions match package metadata
