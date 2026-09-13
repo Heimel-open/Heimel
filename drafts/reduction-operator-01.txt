@@ -1,0 +1,121 @@
+REDUCTION OPERATOR — RESEARCH BRANCH 01
+Date: 2026-09-11
+Status: OPEN / FALSIFIABLE
+Owner: Njål
+
+PRIMARY QUESTION
+Is there a domain-general problem-solving operator in which performance improves by progressively removing solved, irrelevant, redundant or non-material structure until the residual mechanism becomes observable?
+
+WORKING OPERATOR
+DECOMPOSE → SORT → REMOVE → ISOLATE RESIDUAL → IDENTIFY MECHANISM → RECONSTRUCT MINIMUM SUFFICIENT SOLUTION
+
+The claim is not that simplification is always good. The claim under test is narrower: when decomposition preserves material relations, removing what is already resolved or non-causal may expose a smaller residual in which the governing mechanism is easier to identify.
+
+KNOWN INSTANCES / MOTIVATING OBSERVATIONS
+1. Singapore Math / number bonds: decompose into easier chunks, resolve them, recombine.
+2. Saint-Exupéry / design: completion by removal rather than accumulation.
+3. Njål-method: remove argument pressure and excess explanation; expose mechanism and reality contact; let the receiver reconstruct the conclusion.
+4. Cross-domain 'bloodhound' observations: finance, AI/model harnesses, money/economics, identity, engineering, GCU, need→outcome, Suno→TV. Recurrent move: remove domain surface detail, identify available components and missing relation, expose smallest operative product/mechanism.
+
+PROPOSITION ROP-P01
+For a non-trivial problem P with separable or conditionally separable structure, iterative removal of components classified as RESOLVED, IRRELEVANT or REDUNDANT will reduce search complexity without materially reducing solution quality, provided causal/material relations crossing the removed boundary are preserved.
+
+PROPOSITION ROP-P02
+The residual after valid reduction contains a higher concentration of decision-relevant structure than the unreduced representation.
+
+PROPOSITION ROP-P03
+If the operator is domain-general, trained use should transfer across domains better than domain-specific heuristics alone on structurally novel tasks.
+
+NON-CLAIMS
+- Reduction is not compression at any cost.
+- Relationships may not be discarded merely because nodes/components look individually redundant.
+- The shortest representation is not necessarily the best representation.
+- A locally simple answer that destroys the global objective is a failure.
+
+FAILURE / FALSIFICATION CONDITIONS
+P01 narrows or fails if reduction reliably removes material dependencies, increases error, or does not reduce effective search cost relative to controls.
+P02 fails if residuals do not show greater decision-relevant density under blinded evaluation.
+P03 fails if performance gains remain confined to trained domains or familiar task forms.
+The general claim must be narrowed if success depends mainly on highly decomposable arithmetic/design tasks.
+
+METHOD — REDUCTION OPERATOR PROTOCOL v0.1
+
+For each task freeze before execution:
+A. Primary objective and success criterion.
+B. Full initial problem representation.
+C. Material-dependency map: relations that must survive reduction.
+D. Prospective falsification criterion.
+E. Cost measures: time, steps/actions, tokens where applicable, errors, reversals.
+F. Outcome-quality measure independent of elegance/shortness.
+
+Reduction pass:
+1. DECOMPOSE: identify candidate components without solving the whole task.
+2. SORT each component: UNRESOLVED / RESOLVED / IRRELEVANT / REDUNDANT / DEPENDENCY-BEARING / UNKNOWN.
+3. REMOVE only RESOLVED, IRRELEVANT or REDUNDANT components whose removal does not sever a material dependency. UNKNOWN stays.
+4. ISOLATE RESIDUAL: freeze what remains. No new assumptions may be silently introduced.
+5. IDENTIFY MECHANISM: state the smallest causal/operational account sufficient to explain or solve the residual.
+6. RECONSTRUCT: add back only information required for a correct executable/communicable solution.
+7. VERIFY against the original objective and dependency map.
+
+CONTROL CONDITIONS
+C0: normal unconstrained problem solving.
+C1: additive analysis — gather/expand information before solving.
+C2: decomposition only — break into parts but do not explicitly remove resolved/non-material structure.
+C3: reduction operator.
+
+BLINDING
+Where feasible, one agent/person executes and another scores without knowing condition. Evaluation uses frozen success criteria, not persuasiveness or perceived simplicity.
+
+RUN SERIES
+ROP-R01 — Arithmetic / structured reasoning
+Purpose: establish that the protocol reproduces the obvious Singapore-Math-style advantage where expected, and validate instrumentation. Use matched multi-step arithmetic/algebra tasks. This is calibration, not evidence for domain-generality.
+
+ROP-R02 — Logic / constraint problem
+Use unfamiliar constraint-satisfaction tasks with decoy facts and cross-dependencies. Test whether reduction removes decoys without deleting necessary relations.
+
+ROP-R03 — Engineering diagnosis
+Provide system incidents with mixed causal and non-causal telemetry. Measure diagnosis accuracy, time/steps and whether dependency-bearing evidence is preserved.
+
+ROP-R04 — Product discovery
+Give component/ecosystem descriptions without proposed product. Example class: capability A + surface B + control C with a missing connective layer. Compare novelty, feasibility and minimum sufficient product definition under blinded scoring.
+
+ROP-R05 — Communication / sales
+Use cases where sender and receiver models differ. Compare persuasive/additive communication with mechanism/reality-contact reduction. Primary outcome is receiver's independent reconstruction and decision quality, not agreement.
+
+ROP-R06 — Research hypothesis
+Give noisy evidence bundles. Test whether the operator improves identification of the smallest surviving proposition and explicit UNKNOWNs without overstating evidence.
+
+ROP-R07 — Adversarial relational task
+Construct tasks where individually removable-looking elements encode critical relationships. This run is designed to kill naive reduction. Success requires retaining relation-bearing structure even when surface components appear redundant.
+
+ROP-R08 — Cross-domain transfer
+Train/familiarize participants only on one domain, then test on unseen domains. This is the main test of P03.
+
+ROP-R09 — Complexity threshold
+Vary task size and coupling. Identify where reduction helps, becomes neutral, or fails. Estimate boundary conditions rather than forcing universality.
+
+ROP-R10 — Reconstruction ablation
+Compare residual-only solution with residual + minimum reconstruction and full original representation. Tests whether reconstruction is a necessary stage rather than rhetorical cleanup.
+
+PRIMARY METRICS
+Outcome correctness/quality.
+Material dependency preservation.
+Effective search cost: time + actions/steps + reversals; tokens as secondary machine measure.
+Residual decision-relevant density.
+Calibration: confidence versus correctness.
+Transfer performance on unseen domains.
+
+STOP RULES
+Stop and record FAILURE when a run's prospective kill criterion is met. Do not repair the proposition after seeing the result inside the same run.
+Stop reduction immediately when the next removal has UNKNOWN materiality.
+Do not promote an attractive anecdote to evidence of domain-generality.
+Three positive domains do not establish universality; adversarial and transfer runs are mandatory before strengthening the claim.
+
+FIRST ACTIVE RUN — ROP-R01
+Goal: validate protocol mechanics, classifications and scoring on a domain where decomposition is already known to work.
+Expected result: C3 should reduce effective search cost without reducing correctness relative to C0/C2.
+Kill criterion for protocol implementation: if independent scorers cannot consistently distinguish the component classes or reproduce the dependency-preservation decision, protocol v0.1 is not operational enough to proceed to cross-domain claims.
+Evidence to preserve: frozen task set, condition assignment, initial representations, each removal decision, residual snapshots, final answers, metrics, scorer outputs.
+
+NEXT GATE
+Execute ROP-R01. If protocol instrumentation is usable, proceed directly to ROP-R02 and ROP-R07 in parallel: one normal generalization test and one adversarial kill test. Do not wait for a narrative synthesis.

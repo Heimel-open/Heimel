@@ -1,0 +1,66 @@
+{
+  "protocol": "ROP-R01",
+  "version": "0.1",
+  "analyzed_at": "2026-09-12T06:37:07.508538+00:00",
+  "total_tasks": 48,
+  "conditions": {
+    "C0": {
+      "n": 16,
+      "correct_count": 15,
+      "accuracy": 0.9375,
+      "dependency_preservation_rate": 0.875,
+      "esc_mean": -0.2760134417686592,
+      "esc_stdev": 0.8099494381564402,
+      "time_mean": 25.6645375,
+      "steps_mean": 3,
+      "reversals_mean": 0,
+      "errors_mean": 0
+    },
+    "C2": {
+      "n": 16,
+      "correct_count": 15,
+      "accuracy": 0.9375,
+      "dependency_preservation_rate": 0.75,
+      "esc_mean": -0.2561728449127769,
+      "esc_stdev": 0.7507703205218953,
+      "time_mean": 31.23555625,
+      "steps_mean": 2.9375,
+      "reversals_mean": 0,
+      "errors_mean": 0
+    },
+    "C3": {
+      "n": 16,
+      "correct_count": 13,
+      "accuracy": 0.8125,
+      "dependency_preservation_rate": 0.375,
+      "esc_mean": 0.5321862866814363,
+      "esc_stdev": 2.1543336027673434,
+      "time_mean": 105.171775,
+      "steps_mean": 2.6875,
+      "reversals_mean": 0,
+      "errors_mean": 0
+    }
+  },
+  "hypotheses": {
+    "H1": {
+      "description": "C3 reduces effective search cost vs C0 and C2 while preserving correctness",
+      "delta_esc_vs_C0": 0.8081997284500955,
+      "delta_esc_vs_C2": 0.7883591315942132,
+      "status": "NOT_SUPPORTED"
+    },
+    "H2": {
+      "description": "C3 does not reduce correctness by >5 percentage points vs best control",
+      "best_control_accuracy": 0.9375,
+      "c3_accuracy": 0.8125,
+      "difference": -0.125,
+      "status": "FAIL"
+    }
+  },
+  "kill_rules": {
+    "violations": [
+      "C3 correctness is 12.5pp below best control (exceeds 5pp tolerance)",
+      "C3 dependency preservation rate (37.5%) is below 95%"
+    ],
+    "decision": "NO_GO / STOP"
+  }
+}

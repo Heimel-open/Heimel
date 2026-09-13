@@ -1,0 +1,61 @@
+{
+  "protocol": "ROP-R01",
+  "version": "0.1",
+  "validated_at": "2026-09-12",
+  "registration_status": "PREREGISTERED",
+  "execution_status": "NOT_STARTED",
+  "evidence_status": "NO_OUTCOME_EVIDENCE",
+  "status": "PASS_AFTER_CORRECTION",
+  "execution_started": false,
+  "execution_gate": {
+    "requirement": "executor must be separate from blind scorer(s)",
+    "same_agent_execute_and_score": false,
+    "status": "RESOLVED_TWO_PROCESS_PIPELINE",
+    "blocking": false,
+    "architecture": "automated two-process pipeline (tools/rop_r01_pipeline.py) with isolated subprocess contexts, executor without answer key, scorer without condition labels, immutable raw event logs, and separate role/session IDs"
+  },
+  "checks": [
+    {
+      "check": "task_count",
+      "expected": 48,
+      "observed": 48,
+      "status": "PASS"
+    },
+    {
+      "check": "condition_balance",
+      "expected": "16 per C0/C2/C3",
+      "observed": "16 per C0/C2/C3",
+      "status": "PASS"
+    },
+    {
+      "check": "answer_key_arithmetic",
+      "status": "CORRECTED_BEFORE_EXECUTION",
+      "affected_tasks": [
+        "M04-A",
+        "M04-B",
+        "H02-A",
+        "H02-B",
+        "H05-A",
+        "H05-B",
+        "H06-A",
+        "H06-B",
+        "H08-A",
+        "H08-B"
+      ],
+      "notes": "M04 wording was ambiguous; prompt now states planned return leg is cancelled. H02/H05/H06/H08 answer values corrected."
+    },
+    {
+      "check": "blinding_manifest",
+      "expected": "condition and executor hidden from scorers",
+      "status": "PASS"
+    },
+    {
+      "check": "dependency_map",
+      "expected": "24 task pairs mapped to required intermediate values and material edges",
+      "observed": "24 task pairs mapped in dependency-map-v0.1.json",
+      "status": "PASS"
+    }
+  ],
+  "go": "READY_FOR_INDEPENDENT_EXECUTION",
+  "only_active_blocker": "none (two-process pipeline operationalized)"
+}

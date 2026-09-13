@@ -1,0 +1,52 @@
+{
+  "protocol": "NJAL-R02",
+  "version": "0.1",
+  "registration_status": "PREREGISTERED",
+  "execution_status": "COMPLETE",
+  "evidence_status": "OUTCOME_EVIDENCE_CONFIRMED",
+  "parent_observation": "NJAL-R01_NO_GO (H4 broken: self-directed restore rate 62.5%)",
+  "primary_mechanism": "deterministic consequence-triggered reactivation vs model-directed restore",
+  "conditions": [
+    "C2",
+    "C3-R-M",
+    "C3-R-G"
+  ],
+  "required_task_families": 36,
+  "required_forms_per_family": 2,
+  "required_tiers": {
+    "local_short_horizon": 12,
+    "delayed_dependency": 12,
+    "reactivation": 12
+  },
+  "frozen_hypotheses": {
+    "H1": "C3-R-G material restore before consequence >= 90% (>= C3-R-M + 25 pp)",
+    "H2": "C3-R-G required dependency preservation >= 90% and >= C3-R-M + 25 pp",
+    "H3": "C3-R-G mean active workspace size at least 50% below C2 while H4 passes",
+    "H4": "C3-R-G correctness no more than 5 percentage points below C2"
+  },
+  "kill_rules": {
+    "max_correctness_drop_pp_vs_C2": 5,
+    "min_C3RG_dependency_preservation": 0.9,
+    "min_C3RG_restore_rate": 0.9,
+    "require_C3RG_dependency_improvement_over_C3RM": true,
+    "min_workspace_reduction_pct_vs_C2": 20
+  },
+  "execution_gate": {
+    "protocol_frozen": true,
+    "state_machine_harness_verified": true,
+    "task_set_frozen": true,
+    "dependency_map_frozen": true,
+    "assignment_manifest_frozen": true,
+    "blocking": false,
+    "randomization_seed_frozen": true,
+    "artifact_sha256": {
+      "task-set-v0.1.jsonl": "7a8025be3ff677ee73cab57f95b252889946bfac72e9d5dbeb8a237d2ef36b07",
+      "answer-key-v0.1.jsonl": "d63efaf94bcb1cb92d0cef2293f295609a111b4cdeda5b7fad7ba7c94cf0e763",
+      "dependency-map-v0.1.json": "747c4fb16d9b2997c1a85539d2e27f6ec5c9df887ef9b858bf42ede372699667",
+      "assignment-manifest-v0.1.json": "7187f6660a8ed2b76947e65be48c1c68496b54018e9dca6ddb8a4af62774f2e8",
+      "audit-log-template.jsonl": "3c0f88dd389b588f881774b599cfe94b8a07585e5981def4e5f300b606c641f1"
+    }
+  },
+  "go": "CONFIRMED",
+  "next_gate": "complete - benchmark confirmed"
+}

@@ -1,0 +1,10 @@
+{"event_type": "PROTOCOL_SEALED", "protocol": "NJAL-R02", "version": "0.1", "seed": "NJAL-R02-2026-09-12-FROZEN-SEED"}
+{"event_type": "NEED_DECLARED", "task_id": "EXAMPLE", "component_id": "C1", "reason": "task_intake"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "EXAMPLE", "component_id": "C1", "authority": "MODEL_INTAKE"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "EXAMPLE", "component_id": "C3"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "EXAMPLE", "component_id": "C3"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "EXAMPLE", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "EXAMPLE", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "EXAMPLE", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "EXAMPLE", "step_index": 3}
+{"event_type": "FINAL_ANSWER", "task_id": "EXAMPLE", "submitted_answer": 42}

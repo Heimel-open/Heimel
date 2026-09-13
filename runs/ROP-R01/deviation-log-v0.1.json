@@ -1,0 +1,34 @@
+{
+  "protocol": "ROP-R01",
+  "version": "0.1",
+  "deviations": [
+    {
+      "id": "DEV-001",
+      "stage": "PRE_EXECUTION",
+      "category": "INFRASTRUCTURE_FAILURE",
+      "type": "MODEL_ENDPOINT_UNAVAILABLE",
+      "requested_model": "meta/llama-3.3-70b-instruct",
+      "provider": "NVIDIA hosted NIM",
+      "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+      "failure": "HTTP 410 (Gone)",
+      "upstream_eol": "2026-08-26T09:00:00Z",
+      "consequence": "NO TASK EXECUTED / NO OUTCOME EVIDENCE",
+      "preregistration_impact": "PREREGISTRATION UNCHANGED",
+      "recorded_at": "2026-09-12T05:33:48Z",
+      "notes": "Catalog/documentation indicated model availability, but hosted endpoint returned HTTP 410 with EOL notification. Execution aborted prior to task 1 execution. No partial outcome evidence generated."
+    },
+    {
+      "id": "DEV-002",
+      "stage": "PRE_RUN_SUBSTITUTION",
+      "category": "MODEL_SELECTION_FREEZE",
+      "action": "REPLACEMENT_MODEL_FROZEN",
+      "model_id": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "provider": "NVIDIA hosted NIM",
+      "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+      "frozen_at": "2026-09-12T05:35:00Z",
+      "selection_rationale": "Active hosted NIM endpoint, MoE architecture, pre-tested and verified compliant with strict analytical formatting requirements. Frozen prior to first successful task call.",
+      "execution_rule": "Run full ROP-R01 calibration protocol (all 48 tasks) from task 1 with frozen replacement model. Zero partial carryover from failed attempt.",
+      "preregistration_impact": "PREREGISTRATION UNCHANGED"
+    }
+  ]
+}
