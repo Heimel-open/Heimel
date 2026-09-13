@@ -1,0 +1,33 @@
+apiVersion: valo.dev/v1
+kind: Skill
+metadata:
+  id: communications.draft.reply
+  version: 1.0.0
+  publisher: valo
+  license: proprietary
+spec:
+  description: Draft a bounded reply to a message thread under a mandate-scoped voice policy.
+  inputs:
+    schema: schemas/communications.draft.reply.input.json
+  outputs:
+    schema: schemas/communications.draft.reply.output.json
+  capabilities:
+    requires:
+      - communications.write.draft
+  adapters:
+    - type: mcp
+      ref: valo-tool-adapters/gmail
+    - type: sdk
+      ref: valo-runtime-adapters/claude
+  governance:
+    risk_class: medium
+    reht_action: comms.draft
+    human_approval: conditional
+    network_access:
+      allow:
+        - mail.google.com
+    data_retention: ephemeral
+    delegation: forbidden
+  integrity:
+    package_digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    signature: ""

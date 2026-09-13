@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sales.prospect.enrich input",
+  "type": "object",
+  "required": ["prospect_id", "company_domain"],
+  "properties": {
+    "prospect_id": {"type": "string"},
+    "company_domain": {"type": "string", "format": "hostname"},
+    "scope": {"type": "string", "enum": ["business_contact_only", "full"]}
+  },
+  "additionalProperties": false
+}

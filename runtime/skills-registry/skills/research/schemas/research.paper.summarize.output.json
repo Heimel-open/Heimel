@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "research.paper.summarize output",
+  "type": "object",
+  "required": ["paper_id", "brief"],
+  "properties": {
+    "paper_id": {"type": "string"},
+    "brief": {"type": "string"},
+    "claims": {"type": "array", "items": {"type": "object"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

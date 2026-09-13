@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sales.prospect.enrich output",
+  "type": "object",
+  "required": ["prospect_id", "enriched"],
+  "properties": {
+    "prospect_id": {"type": "string"},
+    "enriched": {
+      "type": "object",
+      "properties": {
+        "company": {"type": "object"},
+        "business_contacts": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
