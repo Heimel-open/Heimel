@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nsolland.github.io/valo-distribution/schemas/deployment-receipt.schema.json",
+  "title": "VALO Deployment Receipt",
+  "description": "Signed, append-only record of a deployment. Proves exactly what was deployed from which pins.",
+  "type": "object",
+  "required": ["schema", "receipt_id", "profile", "components", "bundle", "signer", "signature", "timestamp"],
+  "properties": {
+    "schema": {"type": "string", "enum": ["valo.distribution/receipt/v1"]},
+    "receipt_id": {"type": "string", "format": "uuid"},
+    "profile": {"type": "string", "enum": ["edge", "research", "enterprise", "demo"]},
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "tag", "sha", "digest"],
+        "properties": {
+          "name": {"type": "string"},
+          "tag": {"type": "string"},
+          "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "required": ["hash", "name"],
+      "properties": {
+        "name": {"type": "string"},
+        "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "signer": {"type": "string"},
+    "signature": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": false
+}

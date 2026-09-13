@@ -1,0 +1,42 @@
+# Research profile — full component set for investigation/experimentation.
+profile: research
+description: "Full VALO component set for research, audit and experimentation. Higher resource bounds."
+resource_bounds:
+  cpu: "8"
+  memory: "32Gi"
+  storage: "200Gi"
+components:
+  - name: reht
+    required: true
+  - name: vaig
+    required: true
+  - name: veritas
+    required: true
+  - name: gateway
+    required: true
+  - name: racs
+    required: true
+  - name: speider
+    required: false
+  - name: baro
+    required: false
+config_contracts:
+  - reht: config/reht-research.yaml
+  - vaig: config/vaig-research.yaml
+  - gateway: config/gateway-research.yaml
+adapters:
+  model_provider: stepfun
+  vector_store: qdrant
+secrets_contract:
+  - name: GATEWAY_TOKEN
+    required: true
+    source: env
+  - name: REHT_SIGNING_KEY
+    required: true
+    source: vault
+  - name: VAIG_API_KEY
+    required: true
+    source: vault
+packaging:
+  - compose
+  - helm

@@ -1,0 +1,33 @@
+# Edge profile — minimal footprint, offline-tolerant, single-node.
+# Consumes only pinned artifacts from components.lock.yaml.
+profile: edge
+description: "Single-node VALO appliance for edge/remote deployment. Minimal components, low resource bounds."
+resource_bounds:
+  cpu: "2"
+  memory: "4Gi"
+  storage: "20Gi"
+components:
+  - name: reht
+    required: true
+  - name: vaig
+    required: true
+  - name: veritas
+    required: true
+  - name: gateway
+    required: true
+config_contracts:
+  - reht: config/reht-edge.yaml
+  - gateway: config/gateway-edge.yaml
+adapters:
+  model_provider: stepfun
+  vector_store: local
+secrets_contract:
+  - name: GATEWAY_TOKEN
+    required: true
+    source: env
+  - name: REHT_SIGNING_KEY
+    required: true
+    source: sealed-secret
+packaging:
+  - systemd
+  - compose
