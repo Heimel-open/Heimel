@@ -114,9 +114,9 @@ packages:
 
   - distribution: valo-sdk
     import: valo_sdk
-    version: 0.1.3
+    version: 0.1.4
     path: packages/sdk
-    tag: valo-sdk-v0.1.3
+    tag: valo-sdk-v0.1.4
     publish_order: 15
 
 required_local_gates:
