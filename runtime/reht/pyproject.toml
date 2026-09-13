@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "valo-reht"
-version = "1.1.0"
+version = "1.1.1"
 description = "Real REHT: the sole authorization boundary of VALO, as a separate v1.1 candidate component."
 requires-python = ">=3.11"
 dependencies = [

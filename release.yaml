@@ -23,9 +23,9 @@ packages:
 
   - distribution: valo-reht
     import: valo_reht
-    version: 1.1.0
+    version: 1.1.1
     path: runtime/reht
-    tag: valo-reht-v1.1.0
+    tag: valo-reht-v1.1.1
     publish_order: 2
 
   - distribution: valo-gateway
