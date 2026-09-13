@@ -42,54 +42,61 @@ packages:
     tag: heimel-boundary-v0.1.0
     publish_order: 4
 
+  - distribution: heimel-runtime
+    import: heimel_runtime
+    version: 0.1.0
+    path: packages/runtime
+    tag: heimel-runtime-v0.1.0
+    publish_order: 5
+
   - distribution: valo-mal
     import: valo_mal
     version: 0.1.1
     path: packages/mal
     tag: valo-mal-v0.1.1
-    publish_order: 5
+    publish_order: 6
 
   - distribution: valo-c-mcp
     import: valo_c_mcp
     version: 0.1.1
     path: packages/c-mcp
     tag: valo-c-mcp-v0.1.1
-    publish_order: 6
+    publish_order: 7
 
   - distribution: valo-vaig
     import: valo_vaig
     version: 0.1.1
     path: packages/vaig
     tag: valo-vaig-v0.1.1
-    publish_order: 7
+    publish_order: 8
 
   - distribution: valo-conformance
     import: valo_conformance
     version: 0.1.1
     path: packages/conformance
     tag: valo-conformance-v0.1.1
-    publish_order: 8
+    publish_order: 9
 
   - distribution: valo-workspace
     import: valo_workspace
     version: 0.1.0
     path: packages/workspace
     tag: valo-workspace-v0.1.0
-    publish_order: 9
+    publish_order: 10
 
   - distribution: valo-public-procurement
     import: valo_public_procurement
     version: 0.1.1
     path: packages/public-procurement
     tag: valo-public-procurement-v0.1.1
-    publish_order: 10
+    publish_order: 11
 
   - distribution: valo-sdk
     import: valo_sdk
     version: 0.1.3
     path: packages/sdk
     tag: valo-sdk-v0.1.3
-    publish_order: 11
+    publish_order: 12
 
 required_local_gates:
   - manifest versions match package metadata
@@ -111,6 +118,7 @@ publication:
     - valo-workflow-isa
     - valo-function-fabric
     - heimel-boundary
+    - heimel-runtime
     - valo-mal
     - valo-c-mcp
     - valo-vaig
