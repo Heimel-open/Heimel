@@ -1,5 +1,5 @@
 name: valo-c-mcp
-version: 0.1.0
+version: 0.1.1
 layer: protocol-contract
 description: Deterministic c-MCP v1 contract and canonicalization reference
 license: Apache-2.0

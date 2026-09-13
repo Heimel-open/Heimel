@@ -1,5 +1,5 @@
 name: valo-conformance
-version: 0.1.0
+version: 0.1.1
 layer: conformance-reference
 description: Authority-neutral cross-stack presentation and boundary conformance
 license: Apache-2.0
