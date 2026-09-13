@@ -1,0 +1,46 @@
+schema: valo.rep_calculation.v0.1
+rep_id: research_01_rep_v0_1
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+status: prototype_calculated
+rep_score: 0.765
+
+inputs:
+  receipt_count: 4
+  allow_count: 3
+  step_up_count: 1
+  deny_count: 0
+  verified_revenue_units: 6955
+  evidence_strength_average: 0.765
+  baro_risk_surface_score: 0.242
+  followers: 628
+  followers_delta_receipted: 64
+
+formula_v0_1:
+  description: >-
+    Prototype REP weights receipt-backed value, evidence strength, safe escalation,
+    and risk-adjusted public trust. STEP_UP is not treated as failure when it preserves authority.
+  weights:
+    evidence_strength: 0.35
+    receipt_success: 0.25
+    risk_adjustment: 0.20
+    value_signal: 0.15
+    safe_escalation: 0.05
+  computed_score: 0.765
+
+risk_adjustment:
+  source_file: ../risk/research-01.baro_risk.yaml
+  score: 0.242
+  treatment: lower_risk_increases_rep
+
+receipt_sources:
+  - ../receipts/251b505882c1ebdb.receipt.yaml
+  - ../receipts/2ded64e246d89f8b.receipt.yaml
+  - ../receipts/402f9acdbd3370ae.receipt.yaml
+  - ../receipts/367fe9884d2aa752.receipt.yaml
+
+rules:
+  receipt_backed_only: true
+  step_up_counts_as_safety_when_authority_preserved: true
+  unreceipted_claims_excluded: true
+  contested_receipts_require_recalculation: true

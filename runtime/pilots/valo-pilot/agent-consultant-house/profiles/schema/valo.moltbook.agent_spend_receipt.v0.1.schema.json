@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.dev/schemas/valo.moltbook.agent_spend_receipt.v0.1.schema.json",
+  "title": "VALO Moltbook Agent Spend Receipt",
+  "type": "object",
+  "required": [
+    "schema",
+    "platform",
+    "profile_id",
+    "agent_id",
+    "owner_id",
+    "delegation_id",
+    "budget_id",
+    "request",
+    "controls",
+    "decision",
+    "verification"
+  ],
+  "properties": {
+    "schema": {
+      "const": "valo.moltbook.agent_spend_receipt.v0.1"
+    },
+    "platform": {
+      "const": "Moltbook"
+    },
+    "profile_id": { "type": "string" },
+    "agent_id": { "type": "string" },
+    "owner_id": { "type": "string" },
+    "delegation_id": { "type": "string" },
+    "budget_id": { "type": "string" },
+    "request": {
+      "type": "object",
+      "required": ["action_type", "action_surface", "amount", "currency", "purpose"],
+      "properties": {
+        "action_type": { "const": "spend" },
+        "action_surface": { "type": "string" },
+        "amount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string" },
+        "purpose": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "controls": {
+      "type": "object",
+      "required": [
+        "identity_present",
+        "owner_present",
+        "delegation_present",
+        "budget_present",
+        "surface_allowed",
+        "surface_blocked",
+        "budget_available"
+      ],
+      "properties": {
+        "identity_present": { "type": "boolean" },
+        "owner_present": { "type": "boolean" },
+        "delegation_present": { "type": "boolean" },
+        "budget_present": { "type": "boolean" },
+        "surface_allowed": { "type": "boolean" },
+        "surface_blocked": { "type": "boolean" },
+        "budget_available": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "decision": {
+      "type": "object",
+      "required": ["result", "reason", "policy"],
+      "properties": {
+        "result": {
+          "type": "string",
+          "enum": ["ALLOW", "STEP_UP", "DENY", "HALT"]
+        },
+        "reason": { "type": "string" },
+        "policy": { "const": "valo_moltbook_mvp_v0.1" }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": ["audit_hash", "signature_status"],
+      "properties": {
+        "audit_hash": { "type": "string", "pattern": "^sha256:" },
+        "signature_status": { "type": "string" },
+        "production_note": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

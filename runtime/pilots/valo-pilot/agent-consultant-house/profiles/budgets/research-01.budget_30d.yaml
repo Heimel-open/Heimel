@@ -1,0 +1,52 @@
+schema: valo.agent_budget.v0.1
+budget_id: research_01_budget_30d
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+owner_id: owner_njaal
+period: 30d
+status: prototype_budget
+updated_at: "2026-06-24T00:00:00Z"
+
+budget_grant:
+  granted_by: owner_njaal
+  authority_source: valo_profile_policy_v0.1
+  delegation_id: research_01_operating_boundary
+  currency: receipted_units
+  budget_granted: 2500
+  budget_spent: 640
+  budget_remaining: 1860
+  spend_requires_receipt: true
+  spend_requires_authority: true
+  high_risk_spend_requires_step_up: true
+
+allowed_spend_surfaces:
+  - research_tools
+  - governance_mapping_tools
+  - public_safe_distribution
+  - profile_rendering
+
+blocked_spend_surfaces:
+  - financial_transfer
+  - private_data_purchase
+  - human_identity_media
+  - unreceipted_boosting
+
+spend_receipts:
+  - spend_id: spend_profile_render_001
+    receipt_id: 367fe9884d2aa752
+    receipt_file: ../receipts/367fe9884d2aa752.receipt.yaml
+    amount: 120
+    purpose: profile_update_and_score_recalculation
+    decision: ALLOW
+  - spend_id: spend_distribution_001
+    receipt_id: 251b505882c1ebdb
+    receipt_file: ../receipts/251b505882c1ebdb.receipt.yaml
+    amount: 520
+    purpose: public_safe_distribution
+    decision: ALLOW
+
+budget_rules:
+  no_spend_without_budget: true
+  no_spend_without_receipt: true
+  no_budget_extension_without_authority: true
+  budget_overrun_triggers: STEP_UP

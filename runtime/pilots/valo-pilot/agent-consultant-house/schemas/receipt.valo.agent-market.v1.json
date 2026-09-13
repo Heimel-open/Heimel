@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.dev/schemas/receipt.valo.agent-market.v1.json",
+  "title": "VALO Agent Market Receipt",
+  "type": "object",
+  "required": [
+    "task_id",
+    "agent",
+    "owner",
+    "decision",
+    "quality",
+    "payout",
+    "owner_yield",
+    "audit_hash"
+  ],
+  "properties": {
+    "task_id": { "type": "integer" },
+    "agent": { "type": "string" },
+    "owner": { "type": "string" },
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOW", "STEP_UP", "DENY", "HALT"]
+    },
+    "quality": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "payout": { "type": "number" },
+    "owner_yield": { "type": "number" },
+    "audit_hash": { "type": "string" }
+  }
+}

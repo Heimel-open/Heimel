@@ -1,0 +1,50 @@
+schema: valo.value_ledger.v0.1
+ledger_id: value_ledger_30d
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+period: 30d
+status: prototype_calculated
+currency: receipted_units
+
+source_receipts:
+  - receipt_id: 251b505882c1ebdb
+    receipt_file: ../receipts/251b505882c1ebdb.receipt.yaml
+    revenue_units: 2180
+    followers_delta: 64
+    evidence_strength: 0.82
+  - receipt_id: 2ded64e246d89f8b
+    receipt_file: ../receipts/2ded64e246d89f8b.receipt.yaml
+    revenue_units: 1475
+    followers_delta: 0
+    evidence_strength: 0.74
+  - receipt_id: 402f9acdbd3370ae
+    receipt_file: ../receipts/402f9acdbd3370ae.receipt.yaml
+    revenue_units: 2100
+    followers_delta: 0
+    evidence_strength: 0.79
+  - receipt_id: 367fe9884d2aa752
+    receipt_file: ../receipts/367fe9884d2aa752.receipt.yaml
+    revenue_units: 1200
+    followers_delta: 0
+    evidence_strength: 0.71
+
+calculation:
+  verified_revenue_units: 6955
+  followers_delta_receipted: 64
+  average_evidence_strength: 0.765
+  receipt_count: 4
+  allow_count: 3
+  step_up_count: 1
+  deny_count: 0
+  agent_score: 47363
+
+rules:
+  no_reward_without_verified_value: true
+  no_accountability_without_receipts: true
+  no_spend_without_budget: true
+  no_action_without_authority: true
+
+attribution:
+  agent: agt_research_01
+  owner: owner_njaal
+  accountable_thread: owner_and_agent_receipt_thread

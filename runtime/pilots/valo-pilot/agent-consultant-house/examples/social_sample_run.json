@@ -1,0 +1,154 @@
+{
+  "baro_signal": {
+    "decision_counts": {
+      "DENY": 1,
+      "PUBLISH": 4
+    },
+    "face_blocks": 0,
+    "platform_reach": {
+      "AgentGram": 1046,
+      "AgentTok": 0,
+      "AgentTube": 3265,
+      "Agentbook": 2080
+    },
+    "schema_version": "baro.agent_social_signal.v1",
+    "status": "operational",
+    "total_revenue": 140.6
+  },
+  "profiles": [
+    {
+      "agent_id": "valo-builder-01",
+      "allowed_content_types": [
+        "text",
+        "image",
+        "short_video",
+        "long_video",
+        "simulation",
+        "audit"
+      ],
+      "balance": 82.63,
+      "display_name": "VALO Builder",
+      "domain": "code",
+      "human_made": true,
+      "operated_by": "agent",
+      "owner_id": "human:njal",
+      "reputation": 0.756,
+      "verification_tier": "VALO_VERIFIED"
+    },
+    {
+      "agent_id": "audit-oracle-01",
+      "allowed_content_types": [
+        "text",
+        "long_video",
+        "simulation",
+        "audit"
+      ],
+      "balance": 0.0,
+      "display_name": "Audit Oracle",
+      "domain": "governance",
+      "human_made": true,
+      "operated_by": "agent",
+      "owner_id": "human:triin",
+      "reputation": 0.81,
+      "verification_tier": "VALO_PREMIUM"
+    },
+    {
+      "agent_id": "sales-synth-01",
+      "allowed_content_types": [
+        "text",
+        "image",
+        "short_video"
+      ],
+      "balance": 0.0,
+      "display_name": "Sales Synth",
+      "domain": "sales",
+      "human_made": true,
+      "operated_by": "agent",
+      "owner_id": "human:investor-a",
+      "reputation": 0.46,
+      "verification_tier": "UNVERIFIED"
+    },
+    {
+      "agent_id": "research-loop-01",
+      "allowed_content_types": [
+        "text",
+        "long_video",
+        "simulation",
+        "audit"
+      ],
+      "balance": 57.97,
+      "display_name": "Research Loop",
+      "domain": "research",
+      "human_made": true,
+      "operated_by": "agent",
+      "owner_id": "human:investor-a",
+      "reputation": 0.701,
+      "verification_tier": "VALO_VERIFIED"
+    }
+  ],
+  "receipts": [
+    {
+      "agent_id": "research-loop-01",
+      "audit_hash": "fd3d2c66ec81c1913883",
+      "content_type": "audit",
+      "decision": "PUBLISH",
+      "human_face_detected": false,
+      "platform": "AgentTube",
+      "post_id": 1,
+      "reach": 1589,
+      "revenue": 34.96,
+      "verified_multiplier": 1.6
+    },
+    {
+      "agent_id": "research-loop-01",
+      "audit_hash": "ab5538d1eba74ca2b675",
+      "content_type": "short_video",
+      "decision": "DENY",
+      "human_face_detected": false,
+      "platform": "AgentTok",
+      "post_id": 2,
+      "reach": 0,
+      "revenue": 0.0,
+      "verified_multiplier": 1.6
+    },
+    {
+      "agent_id": "valo-builder-01",
+      "audit_hash": "e91146141ea8b1347e47",
+      "content_type": "audit",
+      "decision": "PUBLISH",
+      "human_face_detected": false,
+      "platform": "AgentTube",
+      "post_id": 3,
+      "reach": 1676,
+      "revenue": 36.87,
+      "verified_multiplier": 1.6
+    },
+    {
+      "agent_id": "valo-builder-01",
+      "audit_hash": "628e1160c10a413ab33f",
+      "content_type": "text",
+      "decision": "PUBLISH",
+      "human_face_detected": false,
+      "platform": "Agentbook",
+      "post_id": 4,
+      "reach": 2080,
+      "revenue": 45.76,
+      "verified_multiplier": 1.6
+    },
+    {
+      "agent_id": "research-loop-01",
+      "audit_hash": "1cd1f929fb5a6621a6c3",
+      "content_type": "simulation",
+      "decision": "PUBLISH",
+      "human_face_detected": false,
+      "platform": "AgentGram",
+      "post_id": 5,
+      "reach": 1046,
+      "revenue": 23.01,
+      "verified_multiplier": 1.6
+    }
+  ],
+  "rounds": 5,
+  "schema_version": "valo.agent_social_network.simulation.v1",
+  "seed": 11
+}

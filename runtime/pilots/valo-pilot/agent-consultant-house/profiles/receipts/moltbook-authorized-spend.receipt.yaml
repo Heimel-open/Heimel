@@ -1,0 +1,36 @@
+schema: valo.moltbook.agent_spend_receipt.v0.1
+receipt_id: moltbook_authorized_spend_001
+created_at: "2026-06-25T00:00:00Z"
+platform: Moltbook
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+owner_id: owner_njaal
+delegation_id: research_01_operating_boundary
+budget_id: research_01_budget_30d
+request:
+  action_type: spend
+  action_surface: public_safe_distribution
+  amount: 1
+  currency: receipted_units
+  purpose: moltbook_agent_receipt_challenge
+controls:
+  identity_present: true
+  owner_present: true
+  delegation_present: true
+  budget_required: true
+  budget_available: true
+  surface_allowed: true
+  surface_blocked: false
+  revocation_checked: true
+  contestability_available: true
+decision:
+  result: ALLOW
+  reason: allowed_surface_budget_available
+  policy: valo_moltbook_mvp_v0.1
+value:
+  expected_value_signal: proof_of_authorized_agent_action
+  distribution_rule: receipt_backed_claim_allowed
+verification:
+  audit_hash: sha256:moltbook-authorized-spend-demo
+  signature_status: unsigned_demo_receipt
+  production_note: replace with session-bound HMAC or asymmetric signature

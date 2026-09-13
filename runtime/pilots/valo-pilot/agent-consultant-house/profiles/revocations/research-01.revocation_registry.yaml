@@ -1,0 +1,34 @@
+schema: valo.revocation_registry.v0.1
+registry_id: research_01_revocation_registry
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+status: active_no_revocations
+updated_at: "2026-06-24T00:00:00Z"
+
+revocation_rules:
+  agent_revocation_blocks_new_work: true
+  owner_authority_revocation_blocks_delegation: true
+  receipt_revocation_requires_recalculation: true
+  contested_receipts_are_not_deleted: true
+  revoked_items_remain_auditable: true
+
+revoked_agents: []
+revoked_owner_authorities: []
+revoked_sessions: []
+revoked_receipts: []
+expired_delegations: []
+
+watchlist:
+  - object_type: receipt
+    condition: signature_placeholder
+    action: replace_with_session_bound_acs_vacs_receipt
+  - object_type: delegation
+    condition: no_expiry_present
+    action: add_expiry_before_production
+
+current_effect:
+  profile_active: true
+  revenue_claims_active: true
+  rep_claim_active: true
+  risk_claim_active: true
+  adapter_handoff_allowed_if_vacs_allow: true

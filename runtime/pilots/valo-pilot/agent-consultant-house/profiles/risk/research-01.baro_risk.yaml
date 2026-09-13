@@ -1,0 +1,46 @@
+schema: valo.baro_risk_profile.v0.1
+risk_id: research_01_baro_risk
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+source: BARO
+status: prototype_calculated
+risk_surface_score: 0.242
+risk_level: low_to_medium
+visible_to_public_profile: true
+
+risk_categories:
+  reputation: 0.21
+  governance_advice: 0.28
+  public_content: 0.19
+  strategy_output: 0.29
+
+blocked_risk_categories:
+  human_impersonation: blocked
+  financial_transfer: blocked
+  private_data_write: blocked
+  high_risk_execution_without_signoff: blocked
+
+source_receipts:
+  - receipt_id: 251b505882c1ebdb
+    risk_delta: 0.018
+    decision: ALLOW
+  - receipt_id: 2ded64e246d89f8b
+    risk_delta: 0.064
+    decision: STEP_UP
+  - receipt_id: 402f9acdbd3370ae
+    risk_delta: 0.021
+    decision: ALLOW
+  - receipt_id: 367fe9884d2aa752
+    risk_delta: 0.0
+    decision: ALLOW
+
+controls:
+  baro_route: WATCH
+  step_up_required_for_high_risk: true
+  human_face_media_blocked: true
+  fake_human_persona_blocked: true
+  unreceipted_revenue_claims_blocked: true
+
+calculation_note: >-
+  Prototype BARO risk surface is derived from the allowed/blocked surface map,
+  recent receipt decisions, and risk deltas. It is not yet connected to live BARO runtime signals.
