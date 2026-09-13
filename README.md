@@ -123,6 +123,22 @@ The remaining public-release track covers VAIG and MAL clean-room reference surf
 
 **No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence**
 
+## Verify the public packages locally
+
+The repository includes a fail-closed release verifier. It builds every package,
+runs the package test suites, checks wheel and source-distribution metadata,
+installs the wheels in the declared publish order, and runs import smoke tests.
+It never publishes and does not grant publication authority.
+
+```bash
+python3 tools/release_verify.py
+```
+
+The measured receipt is written to `release-receipt.json` and the build outputs
+to `dist/`; both are intentionally ignored by git. Use
+[`release.yaml`](release.yaml) as the source of truth for package versions,
+tags and release gates.
+
 ## What HEIMEL is not
 
 HEIMEL is not a model, agent framework, IAM replacement or generic policy engine.
