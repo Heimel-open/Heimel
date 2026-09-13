@@ -92,16 +92,16 @@ def verify_policy(manifest: dict[str, object]) -> None:
         "registry": "pypi",
         "registry_organization": "heimel",
         "publication_mode": "manual-local",
-        "github_actions": "required-for-gates",
+        "github_actions": "forbidden",
         "tags_are_immutable": True,
     }
     for key, expected in required.items():
         if release.get(key) != expected:
             raise verification_error(f"release policy mismatch for {key}: expected {expected!r}")
 
-    workflow = root / ".github" / "workflows" / "open-core.yml"
-    if not workflow.is_file() or not workflow.read_text(encoding="utf-8").strip():
-        raise verification_error("required public GitHub Actions workflow is missing")
+    workflows = root / ".github" / "workflows"
+    if workflows.exists() and any(workflows.iterdir()):
+        raise verification_error("github actions workflows are forbidden")
 
 
 def normalized_distribution(name: str) -> str:
