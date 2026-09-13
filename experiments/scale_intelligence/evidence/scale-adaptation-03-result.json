@@ -1,0 +1,80 @@
+{
+  "protocol": "SCALE-ADAPTATION-03",
+  "canonical_base": "e8279cb046ddcac4d39949e3401b9940279f3103",
+  "preregistration_sha": "627b6b45bb168b7d16208e5adc272ff996f51b1d",
+  "enabler": "temporal_state_carryover_with_exact_input_delta",
+  "replicate_seeds": [1001, 2002, 3003],
+  "scales": [1, 2, 4, 8, 16],
+  "episodes_per_scale_replicate": 256,
+  "invariants": {
+    "compute_budget": "sha256:64f92577fc6de3232ea4f8df4f892df997ba71e6a449f138523442aa6d99bbed",
+    "initial_state": "sha256:516be5ac4916b990e1bcc5aebf3a696549f1e23e1608154d1eebccd8329abe08",
+    "node_set": "sha256:30b2d76cec04a9b08fa7968b8014fa45507433f261ad7d964d912b3873b93612",
+    "taskset": "sha256:d52d37f920fe1c49ee8808fae0cd6a44ca9b4253dd28a2d2f7b8b15e73dfbdce",
+    "topology": "sha256:606606709fdc70a7bc08ed48af435a5af59184e5fd0f009606e7524e2753f683",
+    "update_rule": "sha256:649f4fc59abe1c2655acd6ba41b4626b42ed913720470b1b6cd44deea6f0d269"
+  },
+  "replicate_results": {
+    "1": {
+      "baseline": [0.039496527777777776, 0.03639632936507936, 0.03856646825396825],
+      "temporal_carryover": [0.07601686507936507, 0.07068452380952381, 0.07688492063492063]
+    },
+    "2": {
+      "baseline": [0.04234871031746031, 0.04365079365079365, 0.039868551587301584],
+      "temporal_carryover": [0.07924107142857142, 0.07800099206349206, 0.07378472222222222]
+    },
+    "4": {
+      "baseline": [0.04482886904761905, 0.045262896825396824, 0.04055059523809523],
+      "temporal_carryover": [0.08017113095238095, 0.0833953373015873, 0.07645089285714285]
+    },
+    "8": {
+      "baseline": [0.03968253968253968, 0.03856646825396825, 0.03875248015873016],
+      "temporal_carryover": [0.07570684523809523, 0.07545882936507936, 0.07688492063492063]
+    },
+    "16": {
+      "baseline": [0.04117063492063492, 0.03931051587301587, 0.03825644841269841],
+      "temporal_carryover": [0.08159722222222222, 0.0744047619047619, 0.07552083333333333]
+    }
+  },
+  "verdict": {
+    "status": "NOT_FALSIFIED_BY_DATA",
+    "baseline_mean": 0.04044725529100529,
+    "enabled_mean": 0.07694692460317461,
+    "mean_gain": 0.03649966931216931,
+    "positive_scales": 5,
+    "baseline_by_scale": {
+      "1": 0.03815310846560846,
+      "2": 0.04195601851851852,
+      "4": 0.0435474537037037,
+      "8": 0.03900049603174603,
+      "16": 0.03957919973544973
+    },
+    "enabled_by_scale": {
+      "1": 0.07452876984126984,
+      "2": 0.07700892857142858,
+      "4": 0.08000578703703703,
+      "8": 0.07601686507936507,
+      "16": 0.07717427248677249
+    },
+    "gain_by_scale": {
+      "1": 0.03637566137566138,
+      "2": 0.03505291005291006,
+      "4": 0.036458333333333336,
+      "8": 0.03701636904761904,
+      "16": 0.037595072751322754
+    },
+    "gain_spread": 0.0025421626984126963,
+    "enabled_scale_spread": 0.005477017195767195,
+    "gates": {
+      "baseline_ceiling": 0.1,
+      "min_mean_gain": 0.02,
+      "min_positive_scales": 4,
+      "min_replicates": 3
+    }
+  },
+  "normalization": "Canonical evidence copy of the local runner result with repeated per-trial invariant blocks removed; scores and verdict are unchanged.",
+  "validation": {
+    "falsifier_tests": "7 passed in 0.08s",
+    "execution": "CPU-only local Python; 5 scales x 3 paired replicates x 256 counterfactual episodes"
+  }
+}

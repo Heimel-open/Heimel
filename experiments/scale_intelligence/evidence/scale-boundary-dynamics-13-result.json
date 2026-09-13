@@ -1,0 +1,90 @@
+{
+  "canonical_base": "99a75b22f3de4239fef380ca2e82bc441f504654",
+  "canonical_full_result_digest": "sha256:0fefc0ceb8405820faa7742d7504a4de26eb1c4754ae1b03b2d76a90130ff64e",
+  "canonical_trial_digest": "sha256:2f2eef9c49a6afe18b675c91d349b90c6898b5d11ca3ec0e05fb33639285ac97",
+  "episodes_per_probe_stream": 256,
+  "preregistration_sha": "3253fdaca235ba049ecdbead31b99a0b55c69b24",
+  "protocol": "SCALE-BOUNDARY-DYNAMICS-13",
+  "replicate_seeds": [47047,48048,49049,50050,51051],
+  "scales": [4,5,6,7,8,9,10,11,12,13,14,15],
+  "scoring_region": [16,46,31],
+  "task_blocks": [5,9,13],
+  "trial_count": 360,
+  "verdict": {
+    "status": "INSUFFICIENT_EVIDENCE",
+    "reason": "condition_geometry_relation_failed",
+    "conditions": {
+      "reflected": {
+        "status": "NOT_FALSIFIED_BY_DATA",
+        "median_peaks": {
+          "information_efficiency": {"5":5,"9":9,"13":13},
+          "capability": {"5":5,"9":9,"13":13}
+        },
+        "replicate_peaks": {
+          "information_efficiency": {
+            "5":[5,5,5,6,5],
+            "9":[9,9,10,9,9],
+            "13":[13,13,13,13,13]
+          },
+          "capability": {
+            "5":[5,5,5,5,5],
+            "9":[9,9,9,9,9],
+            "13":[13,13,13,13,13]
+          }
+        },
+        "paired_outward_counts": {
+          "information_efficiency": 5,
+          "capability": 5
+        },
+        "gates": {
+          "median_peaks_interior": true,
+          "efficiency_strict_order": true,
+          "capability_strict_order": true,
+          "minimum_small_large_shift": true,
+          "within_geometry_alignment": true,
+          "paired_efficiency_outward": true,
+          "paired_capability_outward": true
+        }
+      },
+      "self_padded": {
+        "status": "FALSIFIED_BY_DATA",
+        "median_peaks": {
+          "information_efficiency": {"5":5,"9":5,"13":6},
+          "capability": {"5":5,"9":9,"13":13}
+        },
+        "replicate_peaks": {
+          "information_efficiency": {
+            "5":[5,5,5,5,5],
+            "9":[5,9,5,6,5],
+            "13":[6,6,6,7,6]
+          },
+          "capability": {
+            "5":[5,5,5,5,5],
+            "9":[9,9,9,9,9],
+            "13":[12,13,13,13,13]
+          }
+        },
+        "paired_outward_counts": {
+          "information_efficiency": 5,
+          "capability": 5
+        },
+        "gates": {
+          "median_peaks_interior": true,
+          "efficiency_strict_order": false,
+          "capability_strict_order": true,
+          "minimum_small_large_shift": false,
+          "within_geometry_alignment": false,
+          "paired_efficiency_outward": true,
+          "paired_capability_outward": true
+        }
+      }
+    }
+  },
+  "descriptive_primary_nonconfirmatory": {
+    "metric": "block-5 capability peak",
+    "reflected_peaks": [5,5,5,5,5],
+    "self_padded_peaks": [5,5,5,5,5],
+    "paired_deltas_self_minus_reflected": [0,0,0,0,0],
+    "median_shift": 0
+  }
+}

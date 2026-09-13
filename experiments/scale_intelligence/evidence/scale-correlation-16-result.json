@@ -1,0 +1,78 @@
+{
+  "canonical_base": "00ef323fe1e712ea3e139cc9c39b0224f2e9c8e2",
+  "preregistration_sha": "7e14740f36429f48f8f93054f50febb7c27ef9db",
+  "protocol": "SCALE-CORRELATION-16",
+  "nominal_blocks": [3, 6],
+  "correlation_lengths": [8, 11, 14],
+  "scales": [4,5,6,7,8,9,10,11,12,13,14,15],
+  "replicate_seeds": [62062,63063,64064,65065,66066],
+  "episodes_per_probe_stream": 256,
+  "trial_count": 720,
+  "generator_mean_L_hat": {
+    "3": {"8": 8.1581727419, "11": 11.0720120861, "14": 14.2227655205},
+    "6": {"8": 7.7708845244, "11": 10.5933412185, "14": 14.0960282648}
+  },
+  "execution": "vectorized semantic mirror; scalar/vector evolution parity exact (max abs diff 0.0) on canonical B=3,L=11,scale=11,seed=64064 sample under both boundary conditions",
+  "trial_digest": "sha256:45bf9fe585298837eddf76ebc01186e404b9dd1429ea1f9df2cf49ec467ec67b",
+  "full_result_digest": "sha256:83a8da9639f423f201e1dbec6a8764a5b4aa0fcf50c82fcdab8f703a646ab15b",
+  "verdict": {
+    "status": "FALSIFIED_BY_DATA",
+    "median_peaks": {
+      "reflected": {
+        "3": {"8": 13, "11": 14, "14": 12},
+        "6": {"8": 12, "11": 13, "14": 12}
+      },
+      "self_padded": {
+        "3": {"8": 7, "11": 8, "14": 12},
+        "6": {"8": 9, "11": 9, "14": 6}
+      }
+    },
+    "replicate_peaks": {
+      "reflected": {
+        "3": {
+          "8": [11,13,15,11,13],
+          "11": [13,14,11,14,15],
+          "14": [12,12,13,11,15]
+        },
+        "6": {
+          "8": [12,13,12,11,12],
+          "11": [13,13,12,15,11],
+          "14": [15,12,12,13,12]
+        }
+      },
+      "self_padded": {
+        "3": {
+          "8": [6,7,9,7,6],
+          "11": [7,7,8,9,9],
+          "14": [12,12,12,6,6]
+        },
+        "6": {
+          "8": [12,7,9,9,6],
+          "11": [12,6,9,6,9],
+          "14": [6,12,6,6,12]
+        }
+      }
+    },
+    "closer_to_correlation_cells": 10,
+    "boundary_robust_cells": 1,
+    "nominal_block_peak_deltas": {
+      "reflected": {"8": 1, "11": 1, "14": 0},
+      "self_padded": {"8": 2, "11": 1, "14": 6}
+    },
+    "boundary_peak_deltas": {
+      "3": {"8": 6, "11": 6, "14": 0},
+      "6": {"8": 3, "11": 4, "14": 6}
+    },
+    "gates": {
+      "reflected_block_3_strict_corr_order": false,
+      "reflected_block_6_strict_corr_order": false,
+      "self_padded_block_3_strict_corr_order": true,
+      "self_padded_block_6_strict_corr_order": false,
+      "all_medians_within_two_of_correlation_length": false,
+      "all_cells_replicate_support": false,
+      "closer_to_correlation_than_nominal_block": true,
+      "nominal_block_invariance": false,
+      "boundary_robustness": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "version": "P12-task-pack-v1.0.1",
+  "base_sha256": "e5eec7868ba9e8737c3f6a9200036819b97b9659df0a4e7c628c8d95ccffc05a",
+  "effective_sha256": "0fa9a53a144cdc89875cc864c88d90d6c2cb535cff01dd86bad21be85311a6d9",
+  "corrections": [
+    {
+      "task_id": "T4-08",
+      "field": "expected_elements",
+      "old_value": [
+        "Første: 19",
+        "Andre: 13",
+        "Ikke assosiativ",
+        "Riktig parentesbruk"
+      ],
+      "new_value": [
+        "Første: 19",
+        "Andre: 15",
+        "Ikke assosiativ",
+        "Riktig parentesbruk"
+      ],
+      "reason": "2 ⊙ (5 ⊙ 1) = 2 ⊙ 11 = 15, ikke 13."
+    }
+  ]
+}

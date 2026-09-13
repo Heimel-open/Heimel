@@ -1,0 +1,468 @@
+Beyond Outputs: Toward a Science of Internal Representations
+Njål Gaute Solland
+Working Draft v0.1 - July 2026
+
+Abstract
+Artificial intelligence has traditionally been evaluated through externally observable
+behaviour, including benchmark performance, prediction accuracy, reasoning success, and
+human preference. While these measures quantify the outcomes of computation, they provide
+only indirect evidence about the internal representations that produce those outcomes.
+Recent advances in mechanistic interpretability, particularly the identification of privileged
+internal workspaces in large language models, suggest that internal representations are
+becoming experimentally accessible. This development motivates a shift in scientific focus from
+evaluating outputs toward characterizing the representations from which those outputs
+emerge.
+This paper argues that internal representations should be treated as a primary scientific object
+of AI research. Rather than proposing a single metric or explanatory theory, we introduce a
+representational framework in which representations are characterized through
+complementary classes of observable properties, including structural, geometric, dynamic,
+functional, semantic, and operational observables. Within this framework, the previously
+proposed tau metric is reinterpreted as a structural observable rather than a complete
+description of representation.
+Building on this perspective, we propose the concept of a representational state space in which
+reasoning is understood as trajectories through evolving internal representations, while
+language is interpreted as a projection of those representations rather than the representation
+itself. This formulation generates testable predictions concerning representational equivalence,
+workspace formation, model alignment, and robustness across architectures.
+The primary contribution of this paper is therefore not a new model of intelligence, but a
+reframing of the scientific object itself. As internal representations become increasingly
+measurable, we argue that future progress in artificial intelligence will depend not only on
+evaluating what models produce, but on understanding how they internally organize,
+transform, and preserve information during reasoning.
+
+Research Questions
+  •    RQ1: What is a representation?
+  •    RQ2: Which properties of representations can be measured objectively?
+  •    RQ3: Can representations be described independently of model architecture?
+  •    RQ4: Can representational observables predict behaviour better than outputs alone?
+Contributions
+The primary contributions of this paper are: (1) a proposal to treat internal representations as a
+primary scientific object of AI research; (2) an architecture-independent definition of
+representations as computational states that preserve information relevant for future
+computation; (3) a taxonomy of six complementary classes of representational observables; (4)
+the introduction of a conceptual representational state space; (5) the hypothesis that language
+should be understood as a projection of internal representations rather than the
+representations themselves; and (6) a falsifiable experimental research program for
+representational science.
+Scope. This paper does not propose a new neural architecture, a new training algorithm, a new
+optimization method, or a complete mathematical theory of intelligence. It proposes a
+framework for studying internal representations directly.
+
+1. Introduction
+Artificial intelligence has advanced at an unprecedented pace. Foundation models now solve
+complex reasoning tasks, generate software, assist scientific discovery, and increasingly act as
+autonomous agents. Despite this progress, the scientific evaluation of these systems remains
+overwhelmingly focused on observable behaviour.
+Models are compared through benchmark scores, prediction accuracy, reasoning performance,
+human preference, calibration, safety evaluations, and downstream task success. These metrics
+have driven remarkable progress because they are measurable, reproducible, and directly
+relevant to applications. Yet they all share a common limitation: they evaluate the
+consequences of internal computation rather than the computation itself.
+This distinction is becoming increasingly important. Two models may produce nearly identical
+outputs while relying on fundamentally different internal organizations. Likewise, models with
+similar benchmark performance often exhibit different failure modes, robustness,
+interpretability, and generalization behaviour. Observable behaviour therefore
+underdetermines the internal computational processes that produced it.
+Historically, this limitation has been unavoidable. Internal representations were largely
+inaccessible, making outputs the only practical object of scientific investigation. Recent
+advances in mechanistic interpretability are beginning to change this situation. Instead of
+treating neural networks as opaque systems that can only be evaluated externally, researchers
+can now directly examine portions of their internal computational structure. The identification
+of privileged representational workspaces, causal circuits, sparse conceptual features, and
+interpretable activation patterns suggests that internal representations are becoming
+measurable scientific objects rather than purely theoretical constructs.
+This transition resembles earlier developments in the natural sciences. Scientific progress often
+accelerates when previously hidden state variables become observable. Classical
+thermodynamics expanded into statistical mechanics once microscopic particle states became
+mathematically accessible. Astronomy evolved from describing planetary motion to explaining
+it through gravitational dynamics. In each case, science shifted from describing observable
+outcomes to understanding the internal structures responsible for them.
+Artificial intelligence may now be approaching a similar transition. Rather than asking only
+whether a model produces the correct answer, we can increasingly ask how that answer
+emerges from the organization and transformation of internal representations. This shift does
+not replace behavioural evaluation; it complements it by introducing a deeper level of scientific
+description.
+The central argument of this paper is intentionally modest. We do not propose a new theory of
+intelligence, a new learning algorithm, or a new architecture. Instead, we propose that the
+primary scientific object of AI research should gradually shift from observable outputs toward
+internal representations.
+Within this perspective, outputs become observable consequences of representational dynamics
+rather than the primary object of study. Language becomes one projection of internal
+computation rather than cognition itself. Metrics such as tau become individual observables
+that characterize specific aspects of representational organization rather than complete
+descriptions of intelligence.
+This perspective motivates three fundamental questions: What is a representation, independent
+of any particular model architecture? Which properties of representations can be measured
+objectively? Can a general scientific framework be developed for studying representations
+across artificial and biological systems?
+
+
+
+
+Figure 1. From output evaluation to representational evaluation. Traditional AI evaluation
+observes inputs, outputs, and scores; representational evaluation additionally measures the
+internal states that produce behaviour.
+
+2. What Is a Representation?
+Before proposing a science of representations, we must first define its primary object. Although
+the term representation is widely used across artificial intelligence, neuroscience, cognitive
+science, and machine learning, it often carries different meanings depending on context. In
+deep learning, representations are commonly associated with embeddings or latent vectors. In
+neuroscience, they are linked to neural population activity. In cognitive science, they frequently
+denote internal models of the external world. These definitions overlap but are not equivalent.
+Definition 1 (Representation). A representation is an internal state that preserves information
+relevant for future computation.
+Several aspects of this definition deserve emphasis. First, a representation is internal. It exists
+within the computational system rather than in its observable outputs. It is therefore distinct
+from language, actions, or predictions, although these may all be generated from it.
+Second, a representation preserves information. Internal activity that has no influence on
+future computation is not considered representational in this framework. Representations are
+defined by their computational relevance rather than by their physical implementation.
+Third, the definition is intentionally independent of any specific architecture. A representation
+may correspond to an activation vector in a transformer, a recurrent neural state, a biological
+neural population, or another computational substrate entirely. The framework concerns its
+functional role rather than its implementation.
+This definition separates representations from related concepts. A token is not a
+representation; it is an observable symbol generated from one. An embedding is not necessarily
+a representation; it is one possible implementation of an internal state. A neuron is not a
+representation; it contributes to representations but rarely constitutes one in isolation.
+Likewise, a representation should not be identified with a particular layer of a neural network.
+Representations may span multiple layers, evolve continuously during computation, or emerge
+dynamically through interactions among distributed components.
+Principle 1 (Representational Primacy). Observable behaviour is a consequence of internal
+representations; it is not the representation itself.
+This principle has several consequences. Two systems may generate identical outputs while
+relying on fundamentally different internal representations. Conversely, similar internal
+representations may generate different outputs depending on language, modality, context, or
+task constraints. Behaviour alone therefore provides an incomplete description of cognition.
+
+3. A Taxonomy of Representational Observables
+If representations are to become scientific objects, they must be measurable. A representation
+cannot be fully characterized by a single scalar, just as a physical system cannot be
+characterized by mass alone. Different observables reveal different aspects of the same
+underlying object.
+We propose six classes of representational observables: R = (S, G, D, F, M, O), where S denotes
+structural observables, G geometric observables, D dynamic observables, F functional
+observables, M semantic observables, and O operational observables. These are not six separate
+representations. They are six projections of one representational state.
+Figure 2. Taxonomy of representational observables. A representation is characterized by
+complementary structural, geometric, dynamic, functional, semantic, and operational
+observables rather than by a single scalar.
+Structural observables describe how information is distributed. Examples include effective
+rank, spectral entropy, singular-value spectra, participation ratios, and tau. The tau metric
+belongs here. It measures structural coherence by examining how representational energy is
+distributed across dimensions. A low tau indicates collapse into few dominant directions. A
+high tau indicates diffuse distribution. Intermediate values may indicate structured flexibility.
+But tau does not measure meaning. It does not identify what is represented. It tells us how
+information is organized, not what the information refers to.
+Geometric observables describe the shape and position of representations in state space.
+Examples include subspace alignment, principal angles, manifold curvature, topology, and local
+dimensionality. These observables help distinguish models that may have similar structural
+coherence but different internal organizations.
+Dynamic observables describe how representations evolve through computation. Examples
+include trajectory stability, attractors, contraction, Lyapunov exponents, fixed points, and
+transition dynamics. These observables are essential for studying reasoning, because reasoning
+is not a static state. It is a trajectory.
+Functional observables describe what a representation does. Examples include Jacobian
+influence, causal effect on output, workspace participation, information broadcast, and
+attention flow. A representation may be structurally present without being functionally
+influential. Functional observables distinguish passive internal structure from computation
+that actually affects behaviour.
+Semantic observables describe what a representation is about. Examples include concept
+identity, referential grounding, abstraction hierarchy, cross-modal invariance, and symbolic
+correspondence. This is the hardest class of observables and also one of the most important. A
+complete science of representations must eventually explain not only how representations are
+organized, but how they acquire reference and meaning.
+Operational observables describe how representations lead to action. Examples include policy
+stability, decision invariance, confidence, execution consistency, and action selection. This class
+is especially important for agentic AI systems. A representation matters operationally when it
+changes what the system does.
+The central claim of this taxonomy is simple: a representation is not captured by one
+observable. It is characterized by a family of observables. Tau is therefore not the theory. It is
+one instrument in a broader representational science.
+
+4. A Representational State Space
+The taxonomy introduced in the previous section identifies measurable properties of
+representations. The next question is whether these properties can be understood within a
+common mathematical framework.
+We propose the concept of a representational state space as a general abstraction for describing
+internal computation. The purpose of this construct is not to specify a particular neural
+architecture, but to provide a common language for reasoning about representations across
+different computational systems. This proposal is conceptual rather than established theory.
+Whether such a state space can be rigorously constructed, and whether it is unique, remain
+open empirical and mathematical questions.
+Figure 3. Representational state space. Reasoning can be interpreted as a trajectory through
+evolving internal representational states, with operational fixed points corresponding to stable
+decision regions.
+Let R_t in R-space denote the internal representational state of a system at time t. Unlike
+observable outputs, R_t is generally inaccessible directly. Instead, we observe projections of this
+state through measurable quantities. Formally, O_i = Pi_i(R_t), where each projection operator
+Pi_i produces one class of representational observables.
+This distinction is fundamental. Observables are not the representation. They are
+measurements of the representation. Just as temperature is not molecular motion itself but one
+observable describing it, tau is not the representation itself but one observable describing its
+structural organization.
+Reasoning is naturally interpreted as the evolution of representations. Rather than viewing
+inference as a sequence of tokens, we model it as a trajectory through representational state
+space. In its most general form, R_{t+1} = F(R_t, E_t), where R_t is the current representation,
+E_t denotes new evidence, context, memory, or external interaction, and F is the transformation
+induced by the computational system.
+Within this framework, language occupies a different role than in conventional evaluation.
+Observable language is a projection of an internal representational state: L = P(R), where R is
+the internal representation, P is a projection operator, and L is observable language.
+Figure 4. Language as projection. Observable language is treated as a projection of an internal
+representational state, not as the representation itself.
+The projection hypothesis naturally introduces representational degeneracy. Two
+computational systems exhibit representational degeneracy if they produce indistinguishable
+observable behaviour while occupying different regions of representational state space.
+Symbolically, P(R_1) = P(R_2) while R_1 != R_2.
+Figure 5. Representational degeneracy. Distinct internal representations may project to the same
+observable language or output, implying that behavioural equivalence need not imply
+representational equivalence.
+If representational degeneracy is common, behavioural evaluation alone cannot uniquely
+identify the computational mechanisms underlying intelligence. This provides one explanation
+for why models with similar benchmark performance often differ substantially in robustness,
+interpretability, transfer learning, or failure modes.
+
+5. Representations Before Language
+Current language models are typically evaluated through generated text. Consequently,
+language often becomes the implicit proxy for internal cognition. This identification is
+understandable from an engineering perspective, since language is directly observable while
+internal representations are not.
+However, recent developments in mechanistic interpretability motivate an alternative
+perspective. Evidence increasingly suggests that intermediate computational states exist before
+they are verbalized. Internal workspaces, distributed circuits, latent manifolds, and causal
+activation patterns all indicate that substantial computation occurs prior to language
+generation. Observable text therefore appears to reflect only part of the underlying
+computational process.
+Hypothesis 1 (Representations Before Language). Internal representations are the primary
+computational substrate of reasoning. Language is generated from those representations rather
+than constituting the representations themselves.
+This hypothesis does not imply that language is unimportant. Language provides an
+exceptionally efficient interface for communicating internal representations between
+individuals and artificial systems. The claim is simply that communication should not be
+confused with computation.
+One possible interpretation is that language functions as a compressed projection of a richer
+internal representational state. The internal state may contain information that is never
+verbalized because it is unnecessary, redundant, or impossible to express within the constraints
+of natural language. Observable language therefore cannot uniquely reconstruct the internal
+representational state.
+This observation introduces a distinction between behavioural equivalence and
+representational equivalence. Behavioural equivalence means that two systems produce
+indistinguishable outputs. Representational equivalence means that two systems occupy
+similar regions of representational state space. Behavioural equivalence does not necessarily
+imply representational equivalence.
+If representations are primary, output benchmarks become indirect measurements. They
+remain valuable, but they cannot uniquely characterize the computational organization
+responsible for successful reasoning. Future evaluation may therefore combine traditional
+behavioural benchmarks with direct measurements of representational observables.
+Rather than asking only whether the model solved the problem, we may increasingly ask what
+internal representation enabled that solution.
+
+6. An Experimental Program for Representational Science
+A scientific framework is valuable only if it generates empirical predictions that can be tested,
+reproduced, and potentially falsified. The purpose of this section is not to validate the
+representational framework proposed in this paper, but to demonstrate that it produces
+concrete experimental questions.
+Figure 6. Experimental program. Representational science complements behavioural evaluation
+by measuring internal states, extracting observables, and testing whether these predict
+robustness, alignment, and behaviour.
+Experiment I: Behavioral vs. Representational Equivalence. Can two models produce nearly
+identical outputs while relying on different internal representations? Evaluate several frontier
+and open-weight models on identical reasoning tasks. For each model, measure tau, effective
+rank, principal subspace alignment, Jacobian influence, workspace participation, and
+representational trajectories. Prediction: behavioural similarity will systematically
+overestimate representational similarity.
+Experiment II: Structural vs. Semantic Independence. Can structural organization remain
+stable while semantic organization changes? Construct multiple tasks with similar structural
+complexity but different conceptual content. Measure tau, geometry, and semantic observables.
+Prediction: tau should remain relatively stable while semantic observables diverge,
+demonstrating that structural coherence and semantic identity are distinct properties.
+Experiment III: Representational Trajectories. Instead of measuring only final hidden states,
+observe representational evolution throughout reasoning. Estimate sequences R_1, R_2, …,
+R_n. Ask whether trajectories converge, whether different models follow similar paths, where
+they diverge, and whether trajectory shape predicts reasoning quality.
+Experiment IV: Language as Projection. Present identical reasoning problems using different
+modalities: English, Norwegian, mathematics, source code, diagrams, and possibly images. If
+representations are primary, representational observables should remain comparatively stable
+even when linguistic realization differs substantially. Prediction: representational similarity
+should exceed linguistic similarity.
+Experiment V: Workspace Formation During Training. Monitor a model throughout training
+and repeatedly estimate structural, geometric, functional, and workspace observables. Ask
+whether structural coherence appears before functional workspaces, whether geometric
+changes precede semantic organization, and whether there is a critical transition during
+training.
+Experiment VI: Cross-Architecture Comparison. Compare transformers, state-space models,
+recurrent architectures, diffusion-based reasoning systems, and hybrid symbolic-neural
+systems. Prediction: some representational observables will remain architecture-independent,
+while others will prove architecture-specific.
+The framework can be falsified if representational observables fail to predict robustness
+beyond behavioural metrics, if models with identical outputs consistently exhibit
+indistinguishable representational organization, if language uniquely determines internal
+representations, or if no stable reproducible representational observables can be identified
+across architectures.
+
+7. Relationship to Existing Research
+The framework proposed in this paper does not seek to replace existing theories of intelligence
+or representation. Instead, it provides a common perspective from which several active
+research directions can be understood as observing different aspects of the same underlying
+phenomenon.
+Mechanistic interpretability has transformed the study of neural networks by moving beyond
+behavioural evaluation toward direct examination of internal computation. Research on sparse
+features, activation steering, causal interventions, circuit analysis, and privileged internal
+workspaces demonstrates that internal representations can increasingly be observed rather
+than merely inferred. Within our framework, these approaches primarily measure functional
+observables.
+Information geometry studies probability distributions as geometric objects. It provides
+mathematical tools for describing curvature, distance, and local structure. Representational
+science naturally incorporates these methods, but treats geometry as one observable among
+several rather than the complete description.
+Global Workspace Theory proposes that conscious cognition emerges through the global
+broadcasting of selected information. Recent observations of privileged internal workspaces in
+language models suggest functional parallels. This paper deliberately avoids claims regarding
+consciousness. Instead, we interpret workspaces operationally as regions of representational
+state space with unusually high functional influence.
+Modern neuroscience increasingly describes population activity through low-dimensional
+neural manifolds. Similarly, large language models appear to organize information within
+structured latent spaces. Manifolds become geometric descriptions of representational
+organization rather than complete descriptions of representation.
+Active Inference and world-model approaches emphasize internal models for adaptive
+behaviour. These perspectives align naturally with representational science, but differ in
+emphasis. Active Inference focuses on minimizing prediction error under uncertainty; world-
+model approaches emphasize internal simulation and planning. Representational science
+remains agnostic regarding optimization principles and focuses on describing representations
+themselves.
+The principal novelty of this paper is not a new mathematical observable or interpretability
+technique. Instead, we propose three conceptual shifts: internal representations become the
+primary scientific object rather than observable outputs; representations are characterized
+through complementary observables rather than a single metric; and behavioural evaluation is
+treated as one projection of representational organization rather than its complete description.
+
+8. Limitations and Open Questions
+The framework presented in this paper is ambitious in scope while preliminary in formulation.
+It introduces a research program rather than a completed theory of internal representations.
+First, this paper does not claim to provide a complete mathematical description of intelligence.
+The representational state space and taxonomy of observables should be understood as
+working hypotheses rather than established theoretical entities.
+Second, there is no reason to assume that the proposed taxonomy is complete. Future research
+may discover additional observables or demonstrate that some categories overlap or should be
+subdivided.
+Third, semantic measurement remains an open problem. Structural organization can often be
+quantified mathematically. Geometry can be measured through manifold analysis. Functional
+influence can be estimated through causal interventions. Semantic identity, however, remains
+considerably more difficult to define objectively.
+Fourth, architecture independence is not guaranteed. Different computational substrates may
+require partially different representational descriptions. Determining which observables are
+universal and which are architecture-specific is a major empirical objective.
+Fifth, representations themselves are never observed directly. Only measurements derived from
+them are accessible. This is common throughout science, but it means that all representational
+claims remain model-dependent and subject to experimental revision.
+Sixth, this framework intentionally avoids claims concerning consciousness. Internal
+representations may prove important for understanding cognition without implying subjective
+experience. Privileged internal workspaces should not automatically be interpreted as evidence
+for consciousness.
+Finally, the greatest scientific risk is that representations do not admit a unified description. It
+is possible that different architectures organize internal computation in fundamentally
+incompatible ways, or that behaviour remains a more reliable scientific object than
+representations themselves. If future evidence supports either conclusion, the framework
+should be revised or abandoned accordingly.
+
+9. Discussion and Conclusion
+The central contribution of this paper is not a new theory of intelligence. It is a proposal to
+reconsider what artificial intelligence should study.
+For much of its history, AI has necessarily focused on externally observable behaviour.
+Benchmark performance, prediction accuracy, language generation, and downstream task
+success have served as practical proxies for intelligence because internal computation was
+largely inaccessible. Recent advances in mechanistic interpretability suggest that this historical
+constraint is beginning to change.
+As internal representations become increasingly measurable, they become legitimate scientific
+objects in their own right. The central question therefore evolves from whether a model can
+solve a task toward what internal representation made the solution possible.
+Representational science should not be understood as competing with existing approaches.
+Benchmark evaluation remains essential. Interpretability remains essential. Alignment
+remains essential. Rather than replacing these fields, representational science provides a
+common language through which they may become more closely connected.
+Within this framework, the role of tau changes substantially. Originally introduced as a
+measure of structural coherence, tau becomes one member of a broader family of
+representational observables. This reinterpretation strengthens rather than weakens the
+metric. Instead of asking tau to describe every aspect of representation, it is recognized as
+measuring one specific property: structural organization.
+If internal representations become routinely observable, several research directions naturally
+emerge: standardized representational benchmarks, cross-model comparison based on
+representational similarity rather than behavioural similarity, representation-aware training
+objectives, representation-aware model evaluation, and cross-disciplinary comparisons
+between biological and artificial representational systems.
+Artificial intelligence has achieved remarkable progress through increasingly capable models
+and increasingly sophisticated behavioural evaluation. This progress has transformed
+engineering. It may also be preparing the next transformation in scientific understanding.
+Throughout the history of science, major advances have often occurred when previously hidden
+internal variables became measurable. Mechanistic interpretability suggests that artificial
+intelligence may now be approaching a similar transition.
+This paper argues that internal representations should become a primary scientific object of
+study. Rather than proposing a single metric or a universal theory of intelligence, we have
+outlined a conceptual framework in which representations are characterized through
+complementary structural, geometric, dynamic, functional, semantic, and operational
+observables.
+The contribution is intentionally modest but potentially foundational. It does not claim to
+explain intelligence. It proposes that understanding intelligence begins by studying the
+representations from which intelligent behaviour emerges.
+The twentieth century became the science of information. The twenty-first may become the
+science of representations.
+
+Testable Predictions
+Prediction 1: Behavioural equivalence does not imply representational equivalence.
+Prediction 2: Structural coherence alone cannot uniquely identify representations.
+Prediction 3: Representational observables may stabilize before language generation.
+Prediction 4: Representational observables may predict robustness better than benchmark
+accuracy alone.
+Prediction 5: Future AI scaling may increasingly optimize representational quality rather than
+parameter count.
+Prediction 6: Some representational observables may prove architecture-independent, while
+others remain architecture-specific.
+
+References
+  •    Shannon, C. E. (1948). A mathematical theory of communication. Bell System Technical
+       Journal.
+  •    Marr, D. (1982). Vision: A Computational Investigation into the Human Representation
+       and Processing of Visual Information. W. H. Freeman.
+  •    Rumelhart, D. E., McClelland, J. L., and the PDP Research Group. (1986). Parallel
+       Distributed Processing. MIT Press.
+  •    Hinton, G. E. (1986). Learning distributed representations of concepts. Proceedings of the
+       Eighth Annual Conference of the Cognitive Science Society.
+  •    Baars, B. J. (1988). A Cognitive Theory of Consciousness. Cambridge University Press.
+  •    Dehaene, S., Kerszberg, M., and Changeux, J.-P. (1998). A neuronal model of a global
+       workspace in effortful cognitive tasks. PNAS.
+  •    Dehaene, S., and Naccache, L. (2001). Towards a cognitive neuroscience of
+       consciousness: basic evidence and a workspace framework. Cognition.
+  •    Amari, S. (2016). Information Geometry and Its Applications. Springer.
+  •    Roy, O., and Vetterli, M. (2007). The effective rank: a measure of effective
+       dimensionality. European Signal Processing Conference.
+  •    Friston, K. (2010). The free-energy principle: a unified brain theory? Nature Reviews
+       Neuroscience.
+  •    Bengio, Y., Courville, A., and Vincent, P. (2013). Representation learning: a review and
+       new perspectives. IEEE TPAMI.
+•   Yoshua Bengio et al. (2021). Deep learning for AI. Communications of the ACM.
+•   Olah, C., et al. (2020). Zoom In: An Introduction to Circuits. Distill.
+•   Elhage, N., et al. (2021). A Mathematical Framework for Transformer Circuits.
+    Transformer Circuits Thread.
+•   Meng, K., et al. (2022). Locating and editing factual associations in GPT. NeurIPS.
+•   Nanda, N., et al. (2023). Progress measures for grokking via mechanistic interpretability.
+    ICLR.
+•   Cunningham, H., et al. (2023). Sparse autoencoders find highly interpretable features in
+    language models. arXiv.
+•   Zou, A., et al. (2023). Representation engineering: a top-down approach to AI
+    transparency. arXiv.
+•   Sucholutsky, I., et al. (2023). Getting aligned on representational alignment. arXiv.
+•   Anthropic. (2024). Mapping the Mind of a Large Language Model.
+•   Anthropic. (2025). Circuit Tracing: Revealing Computational Graphs in Language
+    Models.
+•   Anthropic. (2026). J-space / J-lens results on internal workspaces in Claude. Research
+    communication.
+•   Schölkopf, B., et al. (2021). Toward causal representation learning. Proceedings of the
+    IEEE.
+•   Ha, D., and Schmidhuber, J. (2018). World Models. arXiv.
+•   Gallego, J. A., et al. (2017). Neural manifolds for the control of movement. Neuron.
+•   Chung, S., and Abbott, L. F. (2021). Neural population geometry: an approach for
+    understanding biological and artificial neural networks. Current Opinion in
+    Neurobiology.
+

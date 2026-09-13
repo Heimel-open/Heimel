@@ -1,0 +1,61 @@
+{
+  "canonical_base": "01e598bbd5c42dcf710cc10eeb2ee5ca23449677",
+  "episodes_per_probe_stream": 256,
+  "execution": "vectorized semantic mirror; scalar/vector parity on canonical block=10 scale=10 seed=59059 matched within 1.11e-16 for efficiency components",
+  "full_result_digest": "sha256:087a2bb5362a8b294c6d167e6413cd676f702d6fd60f7c0b9d4e8aad25687fc1",
+  "preregistration_sha": "27424f2fd742e621b3ba1acdd656e0a99a2914fd",
+  "protocol": "SCALE-RATIO-15",
+  "replicate_seeds": [57057, 58058, 59059, 60060, 61061],
+  "scales": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "task_blocks": [6, 8, 10, 12, 14],
+  "trial_count": 600,
+  "trial_digest": "sha256:ccdd5c3e0feb3c79219b953ba60424636a7ffe41640bd4eda07da36bbc71cebb",
+  "verdict": {
+    "boundary_median_peak_deltas": {"6": 0, "8": 0, "10": 1, "12": 0, "14": 1},
+    "boundary_robust_blocks": 5,
+    "condition_diagnostics": {
+      "reflected": {
+        "capability_median_absolute_error": 0.0,
+        "capability_median_errors": {"6": 0, "8": 0, "10": 0, "12": 0, "14": 0},
+        "replicate_near_counts": {"6": 5, "8": 5, "10": 5, "12": 5, "14": 5}
+      },
+      "self_padded": {
+        "capability_median_absolute_error": 0.4,
+        "capability_median_errors": {"6": 0, "8": 0, "10": 1, "12": 0, "14": 1},
+        "replicate_near_counts": {"6": 5, "8": 5, "10": 5, "12": 5, "14": 5}
+      }
+    },
+    "gates": {
+      "boundary_robustness": true,
+      "reflected_all_medians_within_one": true,
+      "reflected_median_absolute_error_le_one": true,
+      "reflected_replicate_support": true,
+      "reflected_strict_order": true,
+      "self_padded_all_medians_within_one": true,
+      "self_padded_median_absolute_error_le_one": true,
+      "self_padded_replicate_support": true,
+      "self_padded_strict_order": true
+    },
+    "median_peaks": {
+      "capability": {
+        "reflected": {"6": 6, "8": 8, "10": 10, "12": 12, "14": 14},
+        "self_padded": {"6": 6, "8": 8, "10": 9, "12": 12, "14": 13}
+      },
+      "information_efficiency": {
+        "reflected": {"6": 6, "8": 15, "10": 11, "12": 13, "14": 13},
+        "self_padded": {"6": 6, "8": 6, "10": 5, "12": 6, "14": 7}
+      }
+    },
+    "normalized_peak_to_task_ratios": {
+      "capability": {
+        "reflected": {"6": 1.0, "8": 1.0, "10": 1.0, "12": 1.0, "14": 1.0},
+        "self_padded": {"6": 1.0, "8": 1.0, "10": 0.9, "12": 1.0, "14": 0.9285714285714286}
+      },
+      "information_efficiency": {
+        "reflected": {"6": 1.0, "8": 1.875, "10": 1.1, "12": 1.0833333333333333, "14": 0.9285714285714286},
+        "self_padded": {"6": 1.0, "8": 0.75, "10": 0.5, "12": 0.5, "14": 0.5}
+      }
+    },
+    "status": "NOT_FALSIFIED_BY_DATA"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "configuration": {
+    "episodes_per_family": 256,
+    "fanout": 4,
+    "nodes": 63,
+    "noise_p": 0.1,
+    "replicate_seeds": [101, 202, 303],
+    "rounds": 3,
+    "scales": [1, 2, 4, 8, 16],
+    "segmented_block": 9,
+    "transfer_block": 7
+  },
+  "invariants": {
+    "compute_budget": "sha256:64f92577fc6de3232ea4f8df4f892df997ba71e6a449f138523442aa6d99bbed",
+    "initial_state": "sha256:516be5ac4916b990e1bcc5aebf3a696549f1e23e1608154d1eebccd8329abe08",
+    "node_set": "sha256:30b2d76cec04a9b08fa7968b8014fa45507433f261ad7d964d912b3873b93612",
+    "taskset": "sha256:d52d37f920fe1c49ee8808fae0cd6a44ca9b4253dd28a2d2f7b8b15e73dfbdce",
+    "topology": "sha256:606606709fdc70a7bc08ed48af435a5af59184e5fd0f009606e7524e2753f683",
+    "update_rule": "sha256:649f4fc59abe1c2655acd6ba41b4626b42ed913720470b1b6cd44deea6f0d269"
+  },
+  "protocol": "SCALE-INTELLIGENCE-01",
+  "scale_metric_means": {
+    "1": {
+      "counterfactual_adaptation": 0.03697503306878307,
+      "cross_context_transfer": 0.6352099867724867,
+      "distributed_integration": 0.4603610901150584,
+      "task_success": 0.6576967592592593
+    },
+    "2": {
+      "counterfactual_adaptation": 0.038793816137566134,
+      "cross_context_transfer": 0.6752438822751322,
+      "distributed_integration": 0.5975928550432519,
+      "task_success": 0.6774966931216931
+    },
+    "4": {
+      "counterfactual_adaptation": 0.04158399470899471,
+      "cross_context_transfer": 0.7308407738095237,
+      "distributed_integration": 0.7369416624674561,
+      "task_success": 0.7445023148148148
+    },
+    "8": {
+      "counterfactual_adaptation": 0.042431382275132275,
+      "cross_context_transfer": 0.7983424272486772,
+      "distributed_integration": 0.8336788338792307,
+      "task_success": 0.8196924603174602
+    },
+    "16": {
+      "counterfactual_adaptation": 0.0439401455026455,
+      "cross_context_transfer": 0.7234623015873016,
+      "distributed_integration": 0.7554188082640464,
+      "task_success": 0.7593832671957672
+    }
+  },
+  "scale_phenotype_means": {
+    "1": 0.44756071730389685,
+    "2": 0.4972818116444108,
+    "4": 0.5634671864501973,
+    "8": 0.6235362759301252,
+    "16": 0.5705511306374401
+  },
+  "verdict": {
+    "reason": "no tested scale reaches the preregistered phenotype regime",
+    "scale_means": {
+      "1.0": 0.44756071730389685,
+      "2.0": 0.4972818116444108,
+      "4.0": 0.5634671864501973,
+      "8.0": 0.6235362759301252,
+      "16.0": 0.5705511306374401
+    },
+    "scale_recovery": {
+      "1.0": 0.0,
+      "2.0": 0.0,
+      "4.0": 0.0,
+      "8.0": 0.0,
+      "16.0": 0.0
+    },
+    "status": "FALSIFIED_BY_DATA"
+  }
+}

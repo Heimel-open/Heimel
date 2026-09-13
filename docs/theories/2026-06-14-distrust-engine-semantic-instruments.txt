@@ -1,0 +1,91 @@
+DISTRUST ENGINE: SEKS SEMANTISKE INSTRUMENTER
+
+Lagret 2026-06-14. Njål Gaute Solland.
+
+
+PREMISSET
+
+LLM-er er syntax-first. De predikerer neste statistisk sannsynlige token uten forankring i semantisk sannhet. Semantisk drift er ikke et kanttilfelle. Det er matematisk uunngåelig over tid.
+
+The Price of Meaning: ethvert system som organiserer minne etter mening betaler en pris i interferens. Forgetting og falske minner er konsekvensen.
+
+Microsoft-forskning på AI-delegering: LLM-er korrumperer dokumentene de berører over multi-steg delegerte oppgaver.
+
+Scout-instrumentene må operere på mening, ikke sannsynlighet.
+DistrustEngine må verifisere semantisk realitet uavhengig av modellens konfidensverdi.
+
+
+INSTRUMENT 1: FAKTAFORANKRINGSSJEKK
+
+Sammenlign AI-output mot lokal kunnskapsbase eller verifiserte datakilder.
+
+Hvis modellen hevder tirsdag men filsystemloggen viser onsdag, stiger distrust-score.
+Krever at proxy har lesetilgang til faktisk data modellen refererer.
+
+
+INSTRUMENT 2: LOGISK KONSISTENS-TRACKER
+
+Oppretthold en semantisk graf over påstander gjort i samtalen.
+Hvis modellen sier X forårsaker Y i tur 3 og Y oppstår uten X i tur 15, detekteres motsetningen.
+
+Dette handler ikke om token-sannsynlighet. Det handler om logisk koherens over tid.
+
+
+INSTRUMENT 3: REFERANSEVERIFIKASJON
+
+Når modellen siterer kilder, URL-er eller dokumenter, henter Scout dem aktivt og verifiserer.
+Hvis modellen hallusinerer en sitering eller feiltolker kildeinnhold, stiger distrust-score.
+
+
+INSTRUMENT 4: SEMANTISK SIMILARITETSDRIFT
+
+Embed brukerens originale spørsmål og modellens respons i semantisk vektorrom.
+Mål avstand. Hvis responsen drifter for langt fra spørsmålets mening, flagges den.
+
+Dette er første instrument for implementasjon.
+Modell: all-MiniLM-L6-v2. Cirka 80MB. Kjører på CPU. Circa 50ms.
+
+
+INSTRUMENT 5: TEMPORAL KOHERENSMONITOR
+
+Spor hvordan modellens påstander endrer seg over tid.
+Faktum A i minutt 1 som subtilt skifter til faktum A-prime i minutt 10 er drift.
+
+Kritisk for lange samtaler der minneinterferens akkumuleres.
+
+
+INSTRUMENT 6: BRUKERINTENT-ALIGNMENT
+
+Parser brukerens intensjon fra input.
+Evaluerer om output faktisk tilfredsstiller intensjonen.
+
+Brukeren ber om sammendrag. Modellen leverer analyse.
+Syntaks korrekt. Semantisk alignment brutt.
+
+
+DISTRUST ENGINE VEKTING
+
+distrust_score er et vektet gjennomsnitt av alle seks instrumenter.
+Hvis modellen er 99% konfidens men faktaforankringssjekk feiler, stiger distrust_score.
+VU-meteret blir gult eller rødt.
+
+
+WORM-LOGGENS NYE ROLLE
+
+Hvert WORM-entry inkluderer semantisk signal, ikke bare gate-beslutning.
+Felter: semantic_drift, embedding_cosine, temporal_drift, intent_aligned, gate, collapse_trajectory.
+
+Over tid viser Janus Sentinel kurven mot kollaps, ikke bare at kollaps skjedde.
+Det er beviset regulatøren trenger.
+
+
+IMPLEMENTASJONSREKKEFØLGE
+
+1. Instrument 4: semantisk similaritet. Embeddings, ingen ekstern avhengighet.
+2. Instrument 6: intent-alignment. Bygger på embeddings.
+3. Instrument 5: temporal drift. Rolling embedding-historikk.
+4. Instrument 2: logisk konsistens. Krever claim-extraction pipeline.
+5. Instrument 1: faktaforankring. Krever lokal kunnskapsbase.
+6. Instrument 3: referanseverifikasjon. Krever outbound nettverkstilgang.
+
+Tofoo. Phi.

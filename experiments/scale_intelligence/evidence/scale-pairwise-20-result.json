@@ -1,0 +1,36 @@
+{
+  "protocol":"SCALE-PAIRWISE-20",
+  "canonical_base":"f82df8d651f8b486deaaeb776b80caad6aaa17b3",
+  "discovery_protocol_sha":"45c82af95d7bff0b7e3ec247b687396eed9edf92",
+  "discovery_result_sha":"911186588454b1293d29eba3ae1e634a5f74d4c6",
+  "preregistration_sha":"9e08a6e4dc0c0b32e57b18593a3e19c0f3bd4b14",
+  "fresh_seeds":[82082,83083,84084,85085,86086],
+  "pair_count":465,
+  "trial_digest":"sha256:c60889e53c8ddf4d993ca44c93898bfbcd98d8aab220d66b18cdf16f2cc29ebb",
+  "verdict":{
+    "status":"NOT_FALSIFIED_BY_DATA",
+    "native_advantages":[0.042842741935483875,0.032762096774193505,0.03408518145161299,0.0326990927419355,0.03238407258064513],
+    "native_advantage_mean":0.034954637096774197,
+    "native_positive_replicates":5,
+    "top5_pair_means":{
+      "(6, 7)":0.0029737903225806384,
+      "(4, 6)":0.002000378024193539,
+      "(3, 4)":0.0014837449596774078,
+      "(3, 5)":0.0006174395161290203,
+      "(7, 8)":0.0016601562499999833
+    },
+    "top5_differential_sum":0.00873550907258059,
+    "replicate_top5_sums":[0.009025327620967752,0.008474042338709709,0.00803301411290325,0.008647303427419358,0.009497857862903006],
+    "positive_top_pairs":5,
+    "top5_mean_differential":0.001747101814516118,
+    "all_pair_mean_differential_p90":0.000805821572580653,
+    "top5_fresh_ranks":{"(6, 7)":1,"(4, 6)":12,"(3, 4)":25,"(3, 5)":61,"(7, 8)":20},
+    "descriptive_pairwise_attribution_ratio":0.2499098774333077,
+    "gates":{
+      "top5_sum_ge_0_006":true,
+      "replicate_top5_support_4_of_5":true,
+      "positive_top_pairs_4_of_5":true,
+      "top5_mean_ge_empirical_p90":true
+    }
+  }
+}

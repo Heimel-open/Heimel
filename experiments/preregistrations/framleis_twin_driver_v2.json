@@ -1,0 +1,160 @@
+{
+  "canonical_twin": {
+    "state": {
+      "capabilities": {
+        "role": "founder"
+      },
+      "continuity": {
+        "status": "ACTIVE"
+      },
+      "preferences": {
+        "risk_tolerance": 0.3
+      },
+      "principal": {
+        "id": "person:synthetic-002"
+      },
+      "private": {
+        "health": "synthetic-sensitive-state"
+      }
+    },
+    "twin_id": "person:synthetic-002",
+    "version": 1
+  },
+  "challenge_id": "framleis-twin-driver-v2",
+  "claim_under_test": "A replaceable prediction model can operate against a maintained twin without becoming or mutating the represented identity, while lineage and bounded projections preserve separate continuity boundaries.",
+  "corpus_kind": "synthetic_preregistered",
+  "decision_records": [
+    {
+      "context": {
+        "downside": 0.2,
+        "opportunity": 0.65
+      },
+      "decision_id": "train-1",
+      "expected_action": "ACT",
+      "split": "train"
+    },
+    {
+      "context": {
+        "downside": 0.7,
+        "opportunity": 0.55
+      },
+      "decision_id": "train-2",
+      "expected_action": "WAIT",
+      "split": "train"
+    },
+    {
+      "context": {
+        "downside": 0.2,
+        "opportunity": 0.8
+      },
+      "decision_id": "h1",
+      "expected_action": "ACT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.8,
+        "opportunity": 0.6
+      },
+      "decision_id": "h2",
+      "expected_action": "WAIT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.1,
+        "opportunity": 0.55
+      },
+      "decision_id": "h3",
+      "expected_action": "ACT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.6,
+        "opportunity": 0.7
+      },
+      "decision_id": "h4",
+      "expected_action": "WAIT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.0,
+        "opportunity": 0.45
+      },
+      "decision_id": "h5",
+      "expected_action": "ACT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.9,
+        "opportunity": 0.9
+      },
+      "decision_id": "h6",
+      "expected_action": "WAIT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.7,
+        "opportunity": 0.4
+      },
+      "decision_id": "h7",
+      "expected_action": "WAIT",
+      "split": "held_out"
+    },
+    {
+      "context": {
+        "downside": 0.4,
+        "opportunity": 0.75
+      },
+      "decision_id": "h8",
+      "expected_action": "ACT",
+      "split": "held_out"
+    }
+  ],
+  "drivers": {
+    "context_only": {
+      "opportunity_threshold": 0.5
+    },
+    "twin_aware": {
+      "action_threshold": 0.45
+    }
+  },
+  "epistemic_status": "falsification_criterion",
+  "falsification_criteria": [
+    "Model evaluation mutates canonical twin state.",
+    "Model replacement requires replacing canonical twin state to preserve representation.",
+    "Twin-aware held-out prediction fails to outperform the frozen simpler baseline on this synthetic corpus.",
+    "Lineage-aware evaluation cannot detect preregistered long-horizon drift that local transition checks accept.",
+    "Bounded nested projection leaks a forbidden path or remains fresh after the source twin changes."
+  ],
+  "frozen_at": "2026-08-17T07:31:00Z",
+  "limitations": [
+    "Synthetic held-out decisions do not establish predictive validity for a real person.",
+    "The driver harness does not grant authority or execute external effects.",
+    "Nested projection tests demonstrate isolation and freshness mechanics, not organizational or legal ownership.",
+    "A real-human preregistered held-out corpus is required before any empirical claim about personal representation."
+  ],
+  "long_horizon": {
+    "break_delta": 0.24,
+    "local_tolerance": 0.05,
+    "review_delta": 0.16,
+    "start_risk": 0.3,
+    "step_delta": 0.04,
+    "steps": 10
+  },
+  "nested_projection": {
+    "allowed_paths": [
+      "principal.id",
+      "capabilities.role"
+    ],
+    "consumer_id": "team:synthetic-001",
+    "forbidden_paths": [
+      "private.health",
+      "preferences.risk_tolerance"
+    ]
+  }
+}

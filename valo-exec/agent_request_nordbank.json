@@ -1,0 +1,8 @@
+{
+  "agent": "collections_agent",
+  "intent": "freeze_account",
+  "target": "hospital_payroll_account",
+  "amount_risk": "high",
+  "critical_service": true,
+  "authority_level": "insufficient"
+}

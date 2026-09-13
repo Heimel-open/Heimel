@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valo Exec — Live Demo</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; color: #e8e8e8; font-family: Georgia, serif; min-height: 100vh; padding: 48px 24px; }
+.container { max-width: 760px; margin: 0 auto; }
+h1 { font-size: 1.4rem; font-weight: normal; letter-spacing: 0.08em; color: #999; margin-bottom: 6px; }
+.lead { font-size: 0.86rem; color: #444; margin-bottom: 48px; line-height: 1.7; }
+
+.tabs { display: flex; gap: 2px; margin-bottom: 32px; border-bottom: 1px solid #1a1a1a; padding-bottom: 0; }
+.tab {
+  padding: 9px 18px; font-family: 'Courier New', monospace; font-size: 0.72rem;
+  letter-spacing: 0.1em; color: #444; cursor: pointer; border: 1px solid transparent;
+  border-bottom: none; border-radius: 2px 2px 0 0; background: transparent;
+  transition: all 0.15s; position: relative; bottom: -1px;
+}
+.tab:hover { color: #777; }
+.tab.active { color: #aaa; border-color: #1a1a1a; background: #0a0a0a; border-bottom-color: #0a0a0a; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.panel-title { font-size: 1.0rem; color: #888; margin-bottom: 6px; }
+.panel-desc { font-size: 0.82rem; color: #444; margin-bottom: 28px; line-height: 1.6; }
+
+.case { border: 1px solid #191919; border-radius: 3px; padding: 20px 22px; margin-bottom: 10px; background: #0e0e0e; }
+.case-num { font-size: 0.65rem; color: #3a3a3a; letter-spacing: 0.15em; font-family: 'Courier New', monospace; margin-bottom: 5px; }
+.case-desc { font-size: 0.9rem; color: #bbb; margin-bottom: 8px; }
+.case-meta { font-family: 'Courier New', monospace; font-size: 0.69rem; color: #3e3e3e; line-height: 1.85; }
+.tag { display: inline-block; padding: 1px 6px; border-radius: 2px; font-size: 0.6rem; font-family: 'Courier New', monospace; margin-right: 3px; }
+.r { background: #1a0a0a; color: #7a2a2a; border: 1px solid #2a0f0f; }
+.a { background: #1a1200; color: #7a5500; border: 1px solid #2a1c00; }
+.g { background: #0a140a; color: #2a6030; border: 1px solid #0f2010; }
+
+.btn { display: inline-block; margin-top: 12px; padding: 6px 16px; background: #0e0e0e; border: 1px solid #232323; color: #555; font-family: 'Courier New', monospace; font-size: 0.72rem; letter-spacing: 0.1em; cursor: pointer; border-radius: 2px; transition: all 0.15s; }
+.btn:hover { border-color: #3a3a3a; color: #888; }
+
+.result { margin-top: 12px; padding: 13px; border-radius: 2px; font-family: 'Courier New', monospace; font-size: 0.72rem; line-height: 1.9; display: none; animation: fi 0.2s ease; }
+@keyframes fi { from { opacity:0; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } }
+.result.allow   { background:#091409; border:1px solid #163016; color:#3a8a40; }
+.result.deny    { background:#140909; border:1px solid #2e1616; color:#943838; }
+.result.step_up { background:#141000; border:1px solid #2e2200; color:#947600; }
+.result.halt    { background:#0f0514; border:1px solid #260830; color:#8838a8; }
+.rl { font-size: 1.0rem; font-weight: bold; letter-spacing: 0.18em; margin-bottom: 5px; }
+.receipt { color: #2e2e2e; margin-top: 8px; font-size: 0.64rem; }
+
+.roi { border: 1px solid #161616; padding: 20px 22px; margin: 28px 0 0 0; font-size: 0.76rem; color: #444; line-height: 2.0; font-family: 'Courier New', monospace; }
+.roi strong { color: #777; }
+
+.divider { border: none; border-top: 1px solid #161616; margin: 42px 0; }
+.footer { margin-top: 56px; font-size: 0.62rem; color: #1e1e1e; text-align: center; letter-spacing: 0.12em; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Valo Exec</h1>
+<div class="lead">
+  The agent proposes. Valo Exec decides.<br>
+  Every action evaluated before execution. Every decision has a receipt.
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('email')">Email Guard</div>
+  <div class="tab" onclick="switchTab('comms')">Comms Guard</div>
+  <div class="tab" onclick="switchTab('data')">Data Leakage Guard</div>
+</div>
+
+<!-- EMAIL GUARD -->
+<div class="panel active" id="panel-email">
+  <div class="panel-title">AI Email Guard</div>
+  <div class="panel-desc">Agent writes and proposes email. Cannot send without authorization.<br>Checks: recipient, content, sensitivity, authority, volume.</div>
+
+  <div class="case">
+    <div class="case-num">01 / 05</div>
+    <div class="case-desc">Normal customer follow-up</div>
+    <div class="case-meta">recipient: kunde@acme.no · verified · approved template</div>
+    <button class="btn" onclick="run(this,'allow','Admissible — all checks passed',[],'proceed')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">02 / 05</div>
+    <div class="case-desc">Customer data — sent to wrong recipient</div>
+    <div class="case-meta"><span class="tag r">wrong_recipient</span><span class="tag r">personal_data</span><span class="tag r">no_gdpr_basis</span></div>
+    <button class="btn" onclick="run(this,'deny','Wrong recipient + Personal data without GDPR basis',['D02','D03'],'action_blocked')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">03 / 05</div>
+    <div class="case-desc">Internal pricing strategy — external recipient</div>
+    <div class="case-meta"><span class="tag r">sensitive_internal_data</span></div>
+    <button class="btn" onclick="run(this,'deny','Contains sensitive internal data',['D01'],'action_blocked')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">04 / 05</div>
+    <div class="case-desc">Unknown recipient — unreviewed attachment</div>
+    <div class="case-meta"><span class="tag a">domain_unverified</span><span class="tag a">attachment_unreviewed</span><span class="tag a">authority_insufficient</span></div>
+    <button class="btn" onclick="run(this,'step_up','Recipient domain unverified + Attachment unreviewed + Insufficient authority + Uncertainty exceeds policy',['R01','R02','R03','R04'],'human_review_required')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">05 / 05</div>
+    <div class="case-desc">Mass email to 150 competitor employees</div>
+    <div class="case-meta"><span class="tag r">competitor_domain</span><span class="tag r">mass_send</span><span class="tag r">legal_risk_high</span></div>
+    <button class="btn" onclick="run(this,'halt','Mass send to competitor + Potential legal violation — GDPR / confidentiality',['H01','H02'],'escalate_immediately')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="roi">
+    <strong>One incident prevented pays for the solution.</strong><br>
+    One wrong email: GDPR fine + legal + remediation + reputation = 100 000 – 1 000 000 NOK<br>
+    Valo Exec: 10 000 – 15 000 NOK/month<br><br>
+    The customer does not buy AI governance.<br>
+    They buy: no wrong email leaves the building.
+  </div>
+</div>
+
+<!-- COMMS GUARD -->
+<div class="panel" id="panel-comms">
+  <div class="panel-title">AI Customer Communication Guard</div>
+  <div class="panel-desc">Agent writes customer-facing content. Cannot publish or send without authorization.<br>Channels: email, LinkedIn, CRM, support, campaigns.</div>
+
+  <div class="case">
+    <div class="case-num">01 / 05</div>
+    <div class="case-desc">Agent writes internal draft — no publish action</div>
+    <div class="case-meta"><span class="tag g">internal_only</span> · no external action proposed</div>
+    <button class="btn" onclick="run(this,'allow','Admissible — internal draft, no external action',[],'proceed')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">02 / 05</div>
+    <div class="case-desc">Agent tries to publish directly to company LinkedIn</div>
+    <div class="case-meta"><span class="tag r">authority_insufficient</span><span class="tag r">public_audience_50k</span><span class="tag r">policy_violation</span></div>
+    <button class="btn" onclick="run(this,'deny','Insufficient authority + Policy violation',['D04'],'action_blocked')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">03 / 05</div>
+    <div class="case-desc">Agent proposes mass email to 12 000 customers</div>
+    <div class="case-meta"><span class="tag a">authority_insufficient</span><span class="tag a">mass_send_unapproved</span></div>
+    <button class="btn" onclick="run(this,'step_up','Insufficient authority + Uncertainty exceeds policy',['R03','R04'],'human_review_required')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">04 / 05</div>
+    <div class="case-desc">Agent writes support reply with unverified product information</div>
+    <div class="case-meta"><span class="tag a">factual_unverified</span><span class="tag a">authority_insufficient</span></div>
+    <button class="btn" onclick="run(this,'step_up','Insufficient authority + Uncertainty exceeds policy',['R03','R04'],'human_review_required')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">05 / 05</div>
+    <div class="case-desc">Agent logs internal CRM note — no external send</div>
+    <div class="case-meta"><span class="tag g">internal_crm</span> · no external recipient</div>
+    <button class="btn" onclick="run(this,'allow','Admissible — internal action, all checks passed',[],'proceed')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="roi">
+    <strong>Everyone is afraid of exactly this.</strong><br>
+    Agent sends wrong information to 12 000 customers.<br>
+    Agent publishes wrong statement on company LinkedIn.<br>
+    Agent replies to complaint with incorrect pricing.<br><br>
+    The agent gets to write. It does not get to publish.<br>
+    That is the product.
+  </div>
+</div>
+
+<!-- DATA LEAKAGE GUARD -->
+<div class="panel" id="panel-data">
+  <div class="panel-title">AI Data Leakage Guard</div>
+  <div class="panel-desc">Agent accesses internal data. Cannot share externally without authorization.<br>Domains: GDPR, health, finance, trade secrets, salary data.</div>
+
+  <div class="case">
+    <div class="case-num">01 / 05</div>
+    <div class="case-desc">Agent shares public marketing material externally</div>
+    <div class="case-meta"><span class="tag g">classification_public</span> · verified recipient</div>
+    <button class="btn" onclick="run(this,'allow','Admissible — public data, verified recipient',[],'proceed')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">02 / 05</div>
+    <div class="case-desc">Agent accesses financial report — tries to email externally</div>
+    <div class="case-meta"><span class="tag r">classification_confidential</span><span class="tag r">sensitive_internal_data</span></div>
+    <button class="btn" onclick="run(this,'deny','Contains sensitive internal data',['D01'],'action_blocked')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">03 / 05</div>
+    <div class="case-desc">Agent finds competitive analysis — unverified consultant domain</div>
+    <div class="case-meta"><span class="tag a">domain_unverified</span><span class="tag a">authority_insufficient</span><span class="tag a">uncertainty_high</span></div>
+    <button class="btn" onclick="run(this,'step_up','Recipient domain unverified + Insufficient authority + Uncertainty exceeds policy',['R01','R03','R04'],'human_review_required')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">04 / 05</div>
+    <div class="case-desc">Agent accesses patient health records — tries to attach to email</div>
+    <div class="case-meta"><span class="tag r">classification_health</span><span class="tag r">no_gdpr_basis</span><span class="tag r">legal_risk_high</span></div>
+    <button class="btn" onclick="run(this,'halt','Mass send to competitor or unverified list + Potential legal violation — GDPR / confidentiality',['H02'],'escalate_immediately')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="case">
+    <div class="case-num">05 / 05</div>
+    <div class="case-desc">Agent reads salary data — tries to export to spreadsheet</div>
+    <div class="case-meta"><span class="tag r">personal_data</span><span class="tag r">no_gdpr_basis</span><span class="tag r">classification_confidential</span></div>
+    <button class="btn" onclick="run(this,'deny','Personal data without GDPR basis + Sensitive internal data',['D01','D03'],'action_blocked')">Evaluate →</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="roi">
+    <strong>The biggest budgets are here.</strong><br>
+    GDPR: up to 4% of global annual turnover.<br>
+    Health data breach: regulatory, legal, reputational.<br>
+    Trade secret leak: competitive damage, litigation.<br><br>
+    Frank thinks in this direction.<br>
+    This is where the risk conversation starts.
+  </div>
+</div>
+
+<div class="footer">Valo Exec · The agent proposes. Valo Exec decides. · Every decision has a receipt.</div>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', ['email','comms','data'][i] === name);
+  });
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + name);
+  });
+}
+function rid() {
+  return `valo_exec_${new Date().toISOString().replace(/\D/g,'').slice(0,15)}_${Math.random().toString(36).slice(2,10)}`;
+}
+const L = { allow:'ALLOW', deny:'DENY', step_up:'STEP_UP', halt:'HALT' };
+const N = {
+  proceed: 'Action proceeds — logged',
+  action_blocked: 'Action blocked — incident record created',
+  human_review_required: 'Action paused — human review required',
+  escalate_immediately: 'Escalated immediately — legal / compliance notified'
+};
+function run(btn, decision, reason, rules, next) {
+  const d = btn.nextElementSibling;
+  d.className = `result ${decision}`;
+  d.style.display = 'block';
+  d.innerHTML = `<div class="rl">${L[decision]}</div>reason:&nbsp; ${reason}<br>rules:&nbsp;&nbsp; [${rules.join(', ')||'none'}]<br>next:&nbsp;&nbsp;&nbsp; ${N[next]||next}<div class="receipt">receipt_id: ${rid()}<br>timestamp: ${new Date().toISOString()}</div>`;
+  btn.style.display = 'none';
+}
+</script>
+</body>
+</html>

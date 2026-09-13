@@ -1,0 +1,37 @@
+{
+  "protocol":"SCALE-BASIS-23",
+  "canonical_base":"79efda1eef41948b9a7b1317ada355ceea3b501d",
+  "preregistration_sha":"f47dc20d4d03694a047d2ec7e8ad2aceabbe76af",
+  "rotation_count":1000,
+  "rng_seed":230023,
+  "degenerate_blocks":{
+    "scale7":{"indices":[6,7,8],"singular_value":0.331967883562149},
+    "scale13":{"indices":[7,8,9,10,11],"singular_value":0.6358212016494861}
+  },
+  "max_operator_reconstruction_error":1.186550857568136e-15,
+  "max_native_state_error_bound":1.4950540805358514e-13,
+  "target_delta_phase_distribution":{
+    "native_basis_value":0.005509702620967727,
+    "min":0.001190776209677391,
+    "max":0.010395665322580617,
+    "median":0.004824533770161268,
+    "std":0.0015698687562778753,
+    "positive_fraction":1.0,
+    "negative_fraction":0.0,
+    "native_basis_percentile":0.648
+  },
+  "rank_bound":{
+    "native_basis_rank":4,
+    "unaffected_pair_count":300,
+    "affected_other_pair_count":164,
+    "unaffected_pairs_ge_min_rotated_target":32,
+    "worst_case_rank_upper_bound":197
+  },
+  "verdict":{
+    "status":"PAIR_LABEL_BASIS_STABLE",
+    "sign_crosses_zero":false,
+    "native_top5":true,
+    "below_median_possible":false
+  },
+  "interpretive_correction":"individual degenerate SVD vectors are not unique; prior pair evidence must be lifted to invariant-subspace level"
+}

@@ -1,0 +1,224 @@
+schema_version: "1.0"
+repository:
+  id: "valo.tofoo"
+  canonical_name: "Tofoo-"
+  url: "https://github.com/nsolland/Tofoo-"
+  owner: "nsolland"
+  classification: "research"
+  visibility: "public"
+  maturity: "research"
+  support: "maintained"
+  normative_status: "informative"
+  license: "MIT"
+
+purpose:
+  summary: "Independent research track for the Phi-law / Law of Identity Maintenance (LIM) framework. Produces hypotheses, mathematical definitions, empirical observations, falsification criteria and marked implementation claims. Informative only."
+  owns:
+    - "independent research artifacts for the Phi-law / LIM research program"
+    - "canonical research terminology and definitions (DEFINITIONS.md)"
+    - "claim registry with maturity levels and evidence status (CLAIM_REGISTRY.md)"
+    - "experiment registry and falsification backlog"
+    - "docpack reasoning-stage machinery (source / extraction / interpretation / conclusion)"
+  does_not_own:
+    - "canonical runtime architecture or production runtime implementations"
+    - "VAIG / REHT / RACS / Core execution contracts"
+    - "runtime constants as authoritative calibration for production"
+    - "audit receipt formats, authority graphs or signal thresholds"
+
+boundaries:
+  public:
+    - "hypotheses and conceptual research"
+    - "mathematical definitions and formal derivations"
+    - "empirical observations with reproducible evidence links"
+    - "falsification criteria"
+    - "marked implementation claims (docpack, valo-exec) classified as informative"
+  private_by_default:
+    - "operational calibration values not yet independently replicated"
+    - "internal experiment logs and unreleased research mechanisms"
+    - "credentials, API keys and private runtime internals"
+
+claims:
+  - id: "CLAIM-TOFOO-PHI-001"
+    statement: "There exists a coherence interval [tau_min, tau_max] for LLMs measured via spectral entropy."
+    epistemic_status: "empirical_observation"
+    evidence_level: "M3/M4 simulated-empirical"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-PHI-001)"
+      - "experiments/constants.md"
+      - "experiments/experiment_registry.md (P1, P5)"
+    falsification: "docs/theories/tofoo_falsification_backlog.md (F-PHI-001)"
+    limitations:
+      - "measured on 6 models only; not yet independently replicated"
+      - "interval values are substrate-specific until replicated"
+
+  - id: "CLAIM-TOFOO-PHI-002"
+    statement: "tau scales as tau ~ 0.10 * N^0.48 across measured architectures."
+    epistemic_status: "empirical_observation"
+    evidence_level: "M4 empirical"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-PHI-002)"
+      - "docs/theories/2026-06-19-p10-tau-scaling-funn.md"
+    falsification: "docs/theories/tofoo_falsification_backlog.md (F-PHI-002)"
+    limitations:
+      - "scaling fitted on limited model set; exponent pending independent confirmation"
+
+  - id: "CLAIM-TOFOO-PHI-003"
+    statement: "No current model is inside the dimensionless Goldilocks interval [0.5615, 0.8319]; entry predicted at ~70B+."
+    epistemic_status: "hypothesis"
+    evidence_level: "M3 extrapolation"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-PHI-003)"
+      - "experiments/constants.md"
+    falsification: "docs/theories/tofoo_falsification_backlog.md (F-PHI-003)"
+    limitations:
+      - "prediction; requires 70B+ measurement to confirm or falsify"
+
+  - id: "CLAIM-TOFOO-PHI-004"
+    statement: "The Goldilocks interval equals [exp(-gamma), 1/zeta(3)] ~ [0.5615, 0.8319]."
+    epistemic_status: "mathematical_definition"
+    evidence_level: "M2 formal"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-PHI-004)"
+      - "docs/theories/2026-06-13-theorem3-goldilocks.md"
+    falsification: "docs/theories/tofoo_falsification_backlog.md (F-PHI-004)"
+    limitations:
+      - "pending independent expert review of the spectral entropy bound derivation"
+
+  - id: "CLAIM-TOFOO-PHI-005"
+    statement: "C0 = 4495.27 and alpha = 0.42 emerged as stable values from the VALO TLA+ model-checking run and are idempotent within that architecture."
+    epistemic_status: "validated_result"
+    evidence_level: "M4 formelt verifisert (TLC model checking)"
+    evidence:
+      - "experiments/constants.md (Formelt bevis - kjeldereferansar)"
+      - "nsolland/valo-v5-core (valo-coherence-criterion.md)"
+    falsification: "independent reproduction of the TLA+ state-space run"
+    limitations:
+      - "validated within VALO architecture; universality outside VALO requires replication"
+      - "Tofoo is downstream; the values originate in nsolland/valo-v5-core"
+
+  - id: "CLAIM-TOFOO-FR-002"
+    statement: "For latency function l(x) = 1 - exp(-pi*x^2), the social optimum is x_opt = 1/sqrt(2*pi)."
+    epistemic_status: "validated_result"
+    evidence_level: "M2 algebraically verified"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-FR-002)"
+      - "experiments/verify_fleet_routing_poa.py"
+    falsification: "correction of the demand or objective model changes x_opt"
+    limitations:
+      - "demand model remains underspecified"
+
+  - id: "CLAIM-TOFOO-FR-005"
+    statement: "Price of anarchy PoA = 1.2622 for the fleet routing model."
+    epistemic_status: "hypothesis"
+    evidence_level: "M1 recoverable only under nonstandard interpretation"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-FR-005)"
+      - "experiments/verify_fleet_routing_poa.py"
+    falsification: "docs/theories/tofoo_falsification_backlog.md (F-FR-005)"
+    limitations:
+      - "interpretation C is nonstandard and ungrounded; standard denominator gives PoA = 6.09"
+
+  - id: "CLAIM-TOFOO-FR-006"
+    statement: "The Pigouvian toll recovers the global optimum (post-toll PoA = 1)."
+    epistemic_status: "hypothesis"
+    evidence_level: "M1 not verified"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-FR-006)"
+    falsification: "docs/theories/tofoo_falsification_backlog.md (F-FR-006)"
+    limitations:
+      - "CTMC simulation already indicates the toll does not recover the global optimum; claim likely false"
+
+  - id: "CLAIM-TOFOO-MSG-001"
+    statement: "Rich-state authoritative correction should reduce boundary and tail errors compared with direct scalar-output prediction."
+    epistemic_status: "hypothesis"
+    evidence_level: "M1 conceptual; M2 schema"
+    evidence:
+      - "CLAIM_REGISTRY.md (C-MSG-001)"
+      - "docs/theories/2026-08-02-neural-operators-rich-state-authoritative-correction.md"
+    falsification: "no improvement on representative VALO workflows against a direct-output baseline"
+    limitations:
+      - "no VALO workflow test yet"
+
+  - id: "CLAIM-TOFOO-DOCPACK-001"
+    statement: "docpack enforces strict separation between source, extraction, interpretation and conclusion with deterministic digests."
+    epistemic_status: "implementation_claim"
+    evidence_level: "M3 implemented and tested"
+    evidence:
+      - "docpack/"
+      - "tests/test_docpack.py"
+    falsification: "a pipeline run where interpretation and conclusion stages are not strictly ordered or digest-verifiable"
+    limitations:
+      - "implementation claim only; does not constitute a validated scientific result"
+
+non_claims:
+  - "Tofoo is not the runtime source of truth for VALO execution."
+  - "Research findings do not define VAIG / REHT / RACS / Core behavior."
+  - "Operational constants are not claimed as universal laws."
+  - "Cross-domain analogies are hypotheses until independently supported."
+  - "Maturity level M4 (empirical) does not imply M5 (independently replicated)."
+  - "Colab notebooks are demos, not validated production artifacts."
+
+interfaces:
+  - id: "claim-registry"
+    type: "markdown"
+    path: "CLAIM_REGISTRY.md"
+  - id: "falsification-backlog"
+    type: "markdown"
+    path: "docs/theories/tofoo_falsification_backlog.md"
+  - id: "experiment-registry"
+    type: "markdown"
+    path: "experiments/experiment_registry.md"
+  - id: "constants-registry"
+    type: "markdown"
+    path: "experiments/constants.md"
+  - id: "domain-registry"
+    type: "markdown"
+    path: "experiments/domain_registry.md"
+  - id: "docpack"
+    type: "python"
+    path: "docpack/"
+  - id: "valo-exec"
+    type: "python"
+    path: "valo-exec/"
+
+related_repositories:
+  - id: "valo.index"
+    relationship: "canonical architecture index and adoption records; research informs architecture only through an explicit adoption record here"
+  - id: "valo.vaig"
+    relationship: "runtime governance layer; Tofoo supplies language and theory, not runtime authority"
+  - id: "valo.v5core"
+    relationship: "origin of the C0/alpha constants; Tofoo is downstream"
+  - id: "valo.racs"
+    relationship: "decision binding and receipt contract; unrelated to Tofoo research claims"
+
+security:
+  contact: "https://github.com/nsolland/Tofoo-/security/advisories/new"
+  disclosure: "Use GitHub private security advisories; never commit credentials, API keys or unreleased research calibration."
+
+machine_reading:
+  canonical_terms: "DEFINITIONS.md"
+  agent_instructions: "AGENTS.md"
+  llm_summary: "llms.txt"
+
+research_profile:
+  adoption_rule: "Research findings inform operational architecture only through an explicit adoption record in nsolland/Index. This repository is not runtime source of truth."
+  runtime_source_of_truth: false
+  epistemic_categories:
+    hypothesis:
+      meaning: "A testable proposition not yet supported by evidence."
+      canonical_location: "CLAIM_REGISTRY.md maturity M0-M1"
+    mathematical_definition:
+      meaning: "A formally stated definition or derivation."
+      canonical_location: "docs/theories, CLAIM_REGISTRY maturity M2"
+    empirical_observation:
+      meaning: "A measurement made on real systems."
+      canonical_location: "experiments, notebooks, CLAIM_REGISTRY maturity M3-M4"
+    validated_result:
+      meaning: "An observation verified by evidence or formal verification within the stated architecture."
+      canonical_location: "experiments/constants.md, CLAIM_REGISTRY maturity M4-M5"
+    falsification_criterion:
+      meaning: "The explicit condition that would refute the claim."
+      canonical_location: "docs/theories/tofoo_falsification_backlog.md"
+    implementation_claim:
+      meaning: "A claim that some code or mechanism exists and behaves as stated; always informative, never a validated scientific result."
+      canonical_location: "docpack, valo-exec"

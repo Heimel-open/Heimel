@@ -1,0 +1,51 @@
+{
+  "invariants": {
+    "compute_budget": "sha256:64f92577fc6de3232ea4f8df4f892df997ba71e6a449f138523442aa6d99bbed",
+    "initial_state": "sha256:516be5ac4916b990e1bcc5aebf3a696549f1e23e1608154d1eebccd8329abe08",
+    "node_set": "sha256:30b2d76cec04a9b08fa7968b8014fa45507433f261ad7d964d912b3873b93612",
+    "taskset": "sha256:d52d37f920fe1c49ee8808fae0cd6a44ca9b4253dd28a2d2f7b8b15e73dfbdce",
+    "topology": "sha256:606606709fdc70a7bc08ed48af435a5af59184e5fd0f009606e7524e2753f683",
+    "update_rule": "sha256:649f4fc59abe1c2655acd6ba41b4626b42ed913720470b1b6cd44deea6f0d269"
+  },
+  "preregistered_protocol_commit": "2c9d9460dacd4c29f6a1f827b3fec69d7b8d8e6d",
+  "protocol": "SCALE-SEPARATION-02",
+  "replicate_seeds": [404, 505, 606],
+  "trials": [
+    {"interaction_scale":1,"replicate":0,"seed":404,"phenotype":{"counterfactual_adaptation":0.03639632936507936,"cross_context_transfer":0.6362847222222222,"distributed_integration":0.4578123897707231,"task_success":0.648499503968254}},
+    {"interaction_scale":1,"replicate":1,"seed":505,"phenotype":{"counterfactual_adaptation":0.033792162698412696,"cross_context_transfer":0.6378968253968254,"distributed_integration":0.4587428508440413,"task_success":0.6536458333333334}},
+    {"interaction_scale":1,"replicate":2,"seed":606,"phenotype":{"counterfactual_adaptation":0.03751240079365079,"cross_context_transfer":0.6403149801587301,"distributed_integration":0.4509074703955656,"task_success":0.6497395833333334}},
+    {"interaction_scale":2,"replicate":0,"seed":404,"phenotype":{"counterfactual_adaptation":0.03720238095238095,"cross_context_transfer":0.6756572420634921,"distributed_integration":0.5988692050894432,"task_success":0.6687748015873016}},
+    {"interaction_scale":2,"replicate":1,"seed":505,"phenotype":{"counterfactual_adaptation":0.04011656746031746,"cross_context_transfer":0.6743551587301587,"distributed_integration":0.597954648526077,"task_success":0.671812996031746}},
+    {"interaction_scale":2,"replicate":2,"seed":606,"phenotype":{"counterfactual_adaptation":0.043774801587301584,"cross_context_transfer":0.6825396825396826,"distributed_integration":0.5902551965230537,"task_success":0.6653645833333334}},
+    {"interaction_scale":4,"replicate":0,"seed":404,"phenotype":{"counterfactual_adaptation":0.04036458333333333,"cross_context_transfer":0.7305927579365079,"distributed_integration":0.737739417989418,"task_success":0.7411334325396826}},
+    {"interaction_scale":4,"replicate":1,"seed":505,"phenotype":{"counterfactual_adaptation":0.04216269841269841,"cross_context_transfer":0.722718253968254,"distributed_integration":0.7364090136054422,"task_success":0.7390252976190476}},
+    {"interaction_scale":4,"replicate":2,"seed":606,"phenotype":{"counterfactual_adaptation":0.039806547619047616,"cross_context_transfer":0.7407614087301587,"distributed_integration":0.7322049949609474,"task_success":0.7434275793650793}},
+    {"interaction_scale":8,"replicate":0,"seed":404,"phenotype":{"counterfactual_adaptation":0.03962053571428571,"cross_context_transfer":0.7914186507936508,"distributed_integration":0.8325905769715294,"task_success":0.8126860119047619}},
+    {"interaction_scale":8,"replicate":1,"seed":505,"phenotype":{"counterfactual_adaptation":0.04123263888888889,"cross_context_transfer":0.7868303571428571,"distributed_integration":0.8342474804736709,"task_success":0.810515873015873}},
+    {"interaction_scale":8,"replicate":2,"seed":606,"phenotype":{"counterfactual_adaptation":0.040488591269841265,"cross_context_transfer":0.7982390873015873,"distributed_integration":0.8351375031494079,"task_success":0.8139880952380952}},
+    {"interaction_scale":16,"replicate":0,"seed":404,"phenotype":{"counterfactual_adaptation":0.041356646825396824,"cross_context_transfer":0.7271205357142857,"distributed_integration":0.756498614260519,"task_success":0.753720238095238}},
+    {"interaction_scale":16,"replicate":1,"seed":505,"phenotype":{"counterfactual_adaptation":0.041356646825396824,"cross_context_transfer":0.7230902777777778,"distributed_integration":0.7609709309649786,"task_success":0.7560763888888888}},
+    {"interaction_scale":16,"replicate":2,"seed":606,"phenotype":{"counterfactual_adaptation":0.038938492063492064,"cross_context_transfer":0.7317088293650793,"distributed_integration":0.7503533320735701,"task_success":0.7591765873015873}}
+  ],
+  "verdict": {
+    "adaptation_mean": 0.03960813492063492,
+    "adaptation_spread": 0.0048776455026455015,
+    "common_peak_count": 3,
+    "common_peak_scale": 8,
+    "integration_spreads": {
+      "cross_context_transfer": 0.15399718915343918,
+      "distributed_integration": 0.378170949861426,
+      "task_success": 0.16176835317460314
+    },
+    "metric_means": {
+      "counterfactual_adaptation": {"1":0.035900297619047616,"2":0.04036458333333333,"4":0.04077794312169312,"8":0.04044725529100529,"16":0.04055059523809524},
+      "cross_context_transfer": {"1":0.6381655092592592,"2":0.6775173611111112,"4":0.7313574735449735,"8":0.7921626984126984,"16":0.7273065476190476},
+      "distributed_integration": {"1":0.45582090367011,"2":0.595693016712858,"4":0.7354511421852692,"8":0.833991853531536,"16":0.7559409590996893},
+      "task_success": {"1":0.6506283068783069,"2":0.6686507936507937,"4":0.7411954365079365,"8":0.81239666005291,"16":0.7563244047619048}
+    },
+    "peak_scales": {"cross_context_transfer":8,"distributed_integration":8,"task_success":8},
+    "reason": "integration/transfer are materially scale-sensitive while adaptation remains flat and low",
+    "scale_sensitive": {"cross_context_transfer":true,"distributed_integration":true,"task_success":true},
+    "status": "NOT_FALSIFIED_BY_DATA"
+  }
+}

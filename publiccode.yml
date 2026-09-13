@@ -1,0 +1,21 @@
+publiccodeYmlVersion: "0.2"
+name: "Tofoo-"
+url: "https://github.com/nsolland/Tofoo-"
+landingURL: "https://github.com/nsolland/Tofoo-"
+softwareVersion: "0.1.0"
+releaseDate: "2026-08-08"
+platforms:
+  - "linux"
+categories:
+  - "research"
+  - "science-and-research"
+developmentStatus: "beta"
+softwareType: "other"
+description:
+  en:
+    shortDescription: "Independent research track for the Phi-law / Law of Identity Maintenance (LIM) framework."
+    longDescription: "Tofoo- is the independent research track for the Phi-law / Law of Identity Maintenance (LIM) framework. It owns hypotheses, mathematical definitions, empirical observations, falsification criteria and explicitly marked implementation claims (docpack, valo-exec). It is informative research only and is not the runtime source of truth for VALO execution. Claims carry epistemic status and falsification criteria in CLAIM_REGISTRY.md and docs/theories/tofoo_falsification_backlog.md."
+legal:
+  license: "MIT"
+localisation:
+  localisationReady: false
