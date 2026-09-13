@@ -1,0 +1,15 @@
+# PAIOS default configuration
+
+memory:
+  path: "~/.paios/memory.jsonl"
+
+maturity:
+  start_level: "L1_ASSIST"
+
+proposal:
+  default_namespace: "paios"
+  reht_endpoint: ""     # Set via env or config in production
+  vaig_endpoint: ""     # Set via env or config in production
+
+boundaries:
+  execution_guard: true

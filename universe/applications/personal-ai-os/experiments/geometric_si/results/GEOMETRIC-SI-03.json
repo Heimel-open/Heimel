@@ -1,0 +1,2732 @@
+{
+  "elapsed_seconds": 338.9646644592285,
+  "execution_requirement": "LOCAL EXECUTION REQUIRED",
+  "experiment": "GEOMETRIC-SI-03",
+  "git_head": "671f894170558fd811e3ec85c2adc9b7600967cf",
+  "interpretation_constraints": [
+    "Cost comparison is admissible only at scales with performance equivalence.",
+    "Both representations receive identical semantic normalization and adjacency indexing.",
+    "Serialized-byte differences include representation layout and are not alone evidence of geometry.",
+    "Wall-clock timing is local-runtime evidence and requires replication before hardware-general claims.",
+    "No result establishes that SI is fundamentally geometric."
+  ],
+  "parameters": {
+    "load_repetitions_per_seed_scale": 500,
+    "performance_tolerance": 0.0,
+    "query_repetitions_per_seed_scale": 5000,
+    "scales": [
+      32,
+      128,
+      512,
+      2048
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "runs": [
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 130213.852,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7139.5902,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 0,
+      "symbolic": {
+        "load_and_index_ns": 216303.044,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7258.5772,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 130876.166,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7006.2898,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 1,
+      "symbolic": {
+        "load_and_index_ns": 185549.512,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7344.9808,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 127273.928,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7136.5904,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 2,
+      "symbolic": {
+        "load_and_index_ns": 183773.63,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7738.69,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 131727.538,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6901.828,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 3,
+      "symbolic": {
+        "load_and_index_ns": 197060.842,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7317.8874,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 128311.452,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7191.1216,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 4,
+      "symbolic": {
+        "load_and_index_ns": 184756.572,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7243.7932,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 127845.87,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6885.0642,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 5,
+      "symbolic": {
+        "load_and_index_ns": 181878.084,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6935.195,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 124189.048,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6948.2138,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 6,
+      "symbolic": {
+        "load_and_index_ns": 182643.674,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7037.14,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 125327.482,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6895.2474,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 7,
+      "symbolic": {
+        "load_and_index_ns": 185841.466,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7117.9752,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 132191.656,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7176.1652,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 8,
+      "symbolic": {
+        "load_and_index_ns": 188196.122,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7214.2974,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 136157.462,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7144.0204,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1126
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 9,
+      "symbolic": {
+        "load_and_index_ns": 187215.346,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7257.7316,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2822
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 131709.662,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7090.1344,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 10,
+      "symbolic": {
+        "load_and_index_ns": 192926.696,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8048.9032,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 141706.446,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8011.4682,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 11,
+      "symbolic": {
+        "load_and_index_ns": 190399.914,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7232.9446,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 140831.79,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7207.238,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 12,
+      "symbolic": {
+        "load_and_index_ns": 180983.59,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7048.778,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 132720.496,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7168.693,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 13,
+      "symbolic": {
+        "load_and_index_ns": 199948.988,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7314.5552,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 136411.684,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7180.9382,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 14,
+      "symbolic": {
+        "load_and_index_ns": 239735.196,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7309.4194,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 190310.002,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 9678.3072,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 15,
+      "symbolic": {
+        "load_and_index_ns": 205961.266,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8871.907,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 174492.864,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7874.992,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 16,
+      "symbolic": {
+        "load_and_index_ns": 189114.66,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8080.6932,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 201152.346,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7252.8864,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 17,
+      "symbolic": {
+        "load_and_index_ns": 191304.404,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8988.167,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 132371.076,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7196.167,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 18,
+      "symbolic": {
+        "load_and_index_ns": 183020.446,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7692.5888,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 34,
+      "geo": {
+        "load_and_index_ns": 129147.754,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7024.999,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 1172
+      },
+      "normalized_relation_count": 32,
+      "scale": 32,
+      "seed": 19,
+      "symbolic": {
+        "load_and_index_ns": 201220.956,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7096.5966,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 2868
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 552356.352,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8748.1306,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 0,
+      "symbolic": {
+        "load_and_index_ns": 798433.108,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 10147.5714,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 596121.028,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7820.5208,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 1,
+      "symbolic": {
+        "load_and_index_ns": 723705.622,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7361.574,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 492006.538,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7769.4002,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 2,
+      "symbolic": {
+        "load_and_index_ns": 729340.368,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7109.4448,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 494884.946,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7167.116,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 3,
+      "symbolic": {
+        "load_and_index_ns": 731487.85,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7316.7392,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 495897.24,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7003.7308,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 4,
+      "symbolic": {
+        "load_and_index_ns": 728900.732,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7056.723,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 498907.878,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7409.615,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 5,
+      "symbolic": {
+        "load_and_index_ns": 740589.876,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7480.2308,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 574886.112,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6939.8878,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 6,
+      "symbolic": {
+        "load_and_index_ns": 868099.248,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 10130.96,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 539558.722,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7275.5192,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 7,
+      "symbolic": {
+        "load_and_index_ns": 767024.69,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7331.1004,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 536908.564,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8503.9082,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 8,
+      "symbolic": {
+        "load_and_index_ns": 887782.342,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7458.8922,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 537765.606,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7156.7484,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4486
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 9,
+      "symbolic": {
+        "load_and_index_ns": 696011.996,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7386.3268,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11270
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 477879.052,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7377.3358,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 10,
+      "symbolic": {
+        "load_and_index_ns": 724908.01,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6797.5424,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 493879.838,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7301.7048,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 11,
+      "symbolic": {
+        "load_and_index_ns": 706175.012,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7098.3798,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 480895.402,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7094.5826,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 12,
+      "symbolic": {
+        "load_and_index_ns": 775471.956,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7019.5466,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 502204.914,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7220.6974,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 13,
+      "symbolic": {
+        "load_and_index_ns": 890997.962,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7108.4408,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 542721.664,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8537.2352,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 14,
+      "symbolic": {
+        "load_and_index_ns": 792845.718,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7060.1174,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 603641.152,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7848.4696,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 15,
+      "symbolic": {
+        "load_and_index_ns": 1071998.638,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 9713.5298,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 661714.092,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8122.0956,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 16,
+      "symbolic": {
+        "load_and_index_ns": 818887.468,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7174.7484,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 518714.76,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7287.4176,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 17,
+      "symbolic": {
+        "load_and_index_ns": 811356.712,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7442.8318,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 576905.744,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7618.3802,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 18,
+      "symbolic": {
+        "load_and_index_ns": 880234.824,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8930.2732,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 130,
+      "geo": {
+        "load_and_index_ns": 576776.14,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7519.619,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 4724
+      },
+      "normalized_relation_count": 128,
+      "scale": 128,
+      "seed": 19,
+      "symbolic": {
+        "load_and_index_ns": 737823.404,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7628.5132,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 11508
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2456260.768,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7368.0562,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 0,
+      "symbolic": {
+        "load_and_index_ns": 3765552.754,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7272.8962,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2895815.958,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7635.9212,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 1,
+      "symbolic": {
+        "load_and_index_ns": 3744213.98,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8001.982,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2384618.838,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7284.8226,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 2,
+      "symbolic": {
+        "load_and_index_ns": 3354856.294,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7505.6304,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2901615.964,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7105.1284,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 3,
+      "symbolic": {
+        "load_and_index_ns": 3829547.256,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7143.7254,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2388633.23,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7214.5774,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 4,
+      "symbolic": {
+        "load_and_index_ns": 3426046.342,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7306.696,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2798022.192,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 10016.2384,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 5,
+      "symbolic": {
+        "load_and_index_ns": 3637440.644,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7445.6288,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2364712.708,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7370.184,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 6,
+      "symbolic": {
+        "load_and_index_ns": 3493466.356,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6932.5358,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2804898.318,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7154.4154,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 7,
+      "symbolic": {
+        "load_and_index_ns": 3703805.656,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7968.3942,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2470090.956,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7104.5372,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 8,
+      "symbolic": {
+        "load_and_index_ns": 3668987.794,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6984.9206,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2648219.474,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7457.0642,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 17926
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 9,
+      "symbolic": {
+        "load_and_index_ns": 3185839.04,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7591.4928,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 45062
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2296963.226,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7164.0656,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 10,
+      "symbolic": {
+        "load_and_index_ns": 3548902.508,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7207.0472,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2701307.568,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7696.822,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 11,
+      "symbolic": {
+        "load_and_index_ns": 3392807.924,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7423.0098,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2248019.106,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7078.5338,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 12,
+      "symbolic": {
+        "load_and_index_ns": 3232350.006,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7284.5678,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2411386.102,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7234.1504,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 13,
+      "symbolic": {
+        "load_and_index_ns": 3581583.49,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7225.4338,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2484681.538,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7664.8954,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 14,
+      "symbolic": {
+        "load_and_index_ns": 3192092.278,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7289.7556,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2275914.188,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6977.1878,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 15,
+      "symbolic": {
+        "load_and_index_ns": 3500356.64,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7078.2192,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2506353.212,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7156.5874,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 16,
+      "symbolic": {
+        "load_and_index_ns": 3264146.686,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7841.9646,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2260062.926,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7077.3634,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 17,
+      "symbolic": {
+        "load_and_index_ns": 3258020.996,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7496.675,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2624015.628,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7338.7942,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 18,
+      "symbolic": {
+        "load_and_index_ns": 3517691.198,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7486.2212,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 514,
+      "geo": {
+        "load_and_index_ns": 2344688.054,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7205.588,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 18932
+      },
+      "normalized_relation_count": 512,
+      "scale": 512,
+      "seed": 19,
+      "symbolic": {
+        "load_and_index_ns": 3125473.514,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7139.3186,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 46068
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11145254.012,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7464.6264,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 0,
+      "symbolic": {
+        "load_and_index_ns": 13614601.556,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7229.505,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11112791.28,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7191.1204,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 1,
+      "symbolic": {
+        "load_and_index_ns": 13824800.59,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6965.1146,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11250097.214,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7343.2742,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 2,
+      "symbolic": {
+        "load_and_index_ns": 14184087.226,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7292.017,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10947469.662,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 6917.8028,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 3,
+      "symbolic": {
+        "load_and_index_ns": 14089604.424,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8166.8348,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11418996.738,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7123.6864,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 4,
+      "symbolic": {
+        "load_and_index_ns": 14027105.602,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7302.0578,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10991939.128,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7558.8518,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 5,
+      "symbolic": {
+        "load_and_index_ns": 14242655.2,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7132.9236,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11085041.34,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7395.653,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 6,
+      "symbolic": {
+        "load_and_index_ns": 14447649.038,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7303.0576,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10769213.948,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8149.1728,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 7,
+      "symbolic": {
+        "load_and_index_ns": 13992506.778,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7313.0704,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11152387.502,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7427.6752,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 8,
+      "symbolic": {
+        "load_and_index_ns": 14308200.028,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7281.4204,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10521109.916,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7474.4596,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 71686
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 9,
+      "symbolic": {
+        "load_and_index_ns": 14406752.196,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 10310.1482,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 180230
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11401544.156,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7287.9724,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 10,
+      "symbolic": {
+        "load_and_index_ns": 14954708.13,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7404.7434,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11291128.694,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7446.3382,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 11,
+      "symbolic": {
+        "load_and_index_ns": 14317615.006,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7210.9206,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10890149.54,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8020.0116,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 12,
+      "symbolic": {
+        "load_and_index_ns": 14954852.886,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7429.8648,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11732126.524,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7543.4698,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 13,
+      "symbolic": {
+        "load_and_index_ns": 14804225.464,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7738.5308,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10909361.552,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7504.7766,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 14,
+      "symbolic": {
+        "load_and_index_ns": 14573791.908,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7265.249,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11161650.898,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7704.5002,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 15,
+      "symbolic": {
+        "load_and_index_ns": 14596755.864,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7776.2882,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 10797739.994,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 8338.3598,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 16,
+      "symbolic": {
+        "load_and_index_ns": 14035150.4,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7420.9856,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11368763.5,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7464.7222,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 17,
+      "symbolic": {
+        "load_and_index_ns": 14314099.098,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7772.8714,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11521711.328,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7284.8658,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 18,
+      "symbolic": {
+        "load_and_index_ns": 15117594.694,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 10202.463,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    },
+    {
+      "event_count": 2050,
+      "geo": {
+        "load_and_index_ns": 11472514.14,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7489.8616,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 75764
+      },
+      "normalized_relation_count": 2048,
+      "scale": 2048,
+      "seed": 19,
+      "symbolic": {
+        "load_and_index_ns": 14524918.834,
+        "logical_query_operations": 7,
+        "query_ns_per_four_task_bundle": 7620.9176,
+        "score": {
+          "acquired_score": 1.0,
+          "association": 1.0,
+          "choice_consistency": 1.0,
+          "composition": 1.0,
+          "partner_recognition": 1.0
+        },
+        "serialized_state_bytes": 184308
+      }
+    }
+  ],
+  "runtime": {
+    "machine": "x86_64",
+    "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.12.3"
+  },
+  "summary": {
+    "128": {
+      "cost_means": {
+        "geo": {
+          "load_and_index_ns": 537731.2872,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7586.10574,
+          "serialized_state_bytes": 4605
+        },
+        "geo_over_symbolic": {
+          "load_and_index_ns": 0.677154929758546,
+          "logical_query_operations": 1.0,
+          "query_ns_per_four_task_bundle": 0.980411612827901,
+          "serialized_state_bytes": 0.40433751865835454
+        },
+        "symbolic": {
+          "load_and_index_ns": 794103.7768,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7737.6743,
+          "serialized_state_bytes": 11389
+        }
+      },
+      "performance": {
+        "absolute_delta": 0.0,
+        "equivalent": true,
+        "geo_mean": 1.0,
+        "symbolic_mean": 1.0,
+        "tolerance": 0.0
+      }
+    },
+    "2048": {
+      "cost_means": {
+        "geo": {
+          "load_and_index_ns": 11147049.5533,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7506.56004,
+          "serialized_state_bytes": 73725
+        },
+        "geo_over_symbolic": {
+          "load_and_index_ns": 0.775901198942025,
+          "logical_query_operations": 1.0,
+          "query_ns_per_four_task_bundle": 0.9739989008543081,
+          "serialized_state_bytes": 0.40448458048269315
+        },
+        "symbolic": {
+          "load_and_index_ns": 14366583.746100001,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7706.94919,
+          "serialized_state_bytes": 182269
+        }
+      },
+      "performance": {
+        "absolute_delta": 0.0,
+        "equivalent": true,
+        "geo_mean": 1.0,
+        "symbolic_mean": 1.0,
+        "tolerance": 0.0
+      }
+    },
+    "32": {
+      "cost_means": {
+        "geo": {
+          "load_and_index_ns": 140248.4287,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7305.49772,
+          "serialized_state_bytes": 1149
+        },
+        "geo_over_symbolic": {
+          "load_and_index_ns": 0.7252038939925579,
+          "logical_query_operations": 1.0,
+          "query_ns_per_four_task_bundle": 0.9730879499794249,
+          "serialized_state_bytes": 0.4038664323374341
+        },
+        "symbolic": {
+          "load_and_index_ns": 193391.7204,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7507.54104,
+          "serialized_state_bytes": 2845
+        }
+      },
+      "performance": {
+        "absolute_delta": 0.0,
+        "equivalent": true,
+        "geo_mean": 1.0,
+        "symbolic_mean": 1.0,
+        "tolerance": 0.0
+      }
+    },
+    "512": {
+      "cost_means": {
+        "geo": {
+          "load_and_index_ns": 2513313.9977,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7415.24665,
+          "serialized_state_bytes": 18429
+        },
+        "geo_over_symbolic": {
+          "load_and_index_ns": 0.7240561289785328,
+          "logical_query_operations": 1.0,
+          "query_ns_per_four_task_bundle": 1.004598224372429,
+          "serialized_state_bytes": 0.4044551739273565
+        },
+        "symbolic": {
+          "load_and_index_ns": 3471159.0678,
+          "logical_query_operations": 7,
+          "query_ns_per_four_task_bundle": 7381.3057499999995,
+          "serialized_state_bytes": 45565
+        }
+      },
+      "performance": {
+        "absolute_delta": 0.0,
+        "equivalent": true,
+        "geo_mean": 1.0,
+        "symbolic_mean": 1.0,
+        "tolerance": 0.0
+      }
+    }
+  }
+}
