@@ -18,5 +18,12 @@ dependencies = [
 packages = ["src/heimel_runtime"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = [
+    "src",
+    "../../runtime/kernel/src",
+    "../../runtime/reht/src",
+    "../../runtime/veritas/src",
+    "../../runtime/racs/reference/python-implementation",
+    "../../runtime/reht/tests",
+]
 testpaths = ["tests"]
