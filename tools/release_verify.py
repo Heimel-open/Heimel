@@ -229,6 +229,16 @@ def verify_git_state() -> tuple[str, int]:
     return sha, timestamp
 
 
+def verify_tag_targets(packages: list[dict[str, str]], commit: str) -> None:
+    for package in packages:
+        tag = package["tag"]
+        target = run(["git", "rev-list", "-1", f"{tag}^{{commit}}"] ).strip()
+        if target != commit:
+            raise verification_error(
+                f"tag {tag} must point to reviewed commit {commit}, got {target or 'missing'}"
+            )
+
+
 def build_and_test(packages: list[dict[str, str]], timestamp: int) -> list[dict[str, object]]:
     if dist_dir.exists():
         raise verification_error("dist already exists; move it aside before verification")
@@ -348,6 +358,7 @@ def verify(*, metadata_only: bool = False) -> dict[str, object]:
         raise verification_error("publish_order must be contiguous and match manifest order")
 
     sha = run(["git", "rev-parse", "HEAD"]).strip()
+    verify_tag_targets(packages, sha)
     artifacts: list[dict[str, object]] = []
     if not metadata_only:
         sha, timestamp = verify_git_state()
@@ -362,6 +373,7 @@ def verify(*, metadata_only: bool = False) -> dict[str, object]:
         "generated_at": int(time.time()),
         "github_actions": "absent",
         "publication_authority": False,
+        "tag_targets": {item["tag"]: sha for item in packages},
         "packages": packages,
         "artifacts": artifacts,
     }
