@@ -82,7 +82,7 @@ packages:
     version: 0.1.2
     path: packages/sdk
     tag: valo-sdk-v0.1.2
-    publish_order: 11
+    publish_order: 10
 
 required_local_gates:
   - manifest versions match package metadata
