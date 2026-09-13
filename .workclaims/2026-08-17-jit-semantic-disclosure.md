@@ -1,0 +1,21 @@
+# Work anchor — JIT semantic disclosure
+
+- Active delivery: add `LEAST_SEMANTIC_PRIVILEGE` and `JUST_IN_TIME_SEMANTIC_DISCLOSURE` as a provider-neutral execution-boundary primitive. Consequence-bearing action semantics must cross the Kernel boundary only as a sealed envelope and may be disclosed only inside an explicit REHT execution-boundary context; disclosure itself never executes.
+- Repository: `nsolland/valo-kernel`
+- Canonical base: `d75f681096307db4957a5ffb0e66aa679e584f3b`
+- Branch: `feat/jit-semantic-disclosure`
+- Draft PR: `#49`
+- Owner/claim: ChatGPT on behalf of Njål.
+- Owned files:
+  - `.workclaims/2026-08-17-jit-semantic-disclosure.md`
+  - `src/valo_kernel/contracts/semantic_disclosure.py`
+  - `src/valo_kernel/kernel/semantic_disclosure.py`
+  - `src/valo_kernel/contracts/__init__.py`
+  - `src/valo_kernel/kernel/__init__.py`
+  - `src/valo_kernel/__init__.py`
+  - `docs/jit_semantic_disclosure_v1.md`
+  - `tests/test_semantic_disclosure.py`
+  - `AGENTS.md`
+- Dependencies: existing governed workspace conformance and `WorkspaceExecutionBinding` validation; REHT remains fresh exact-action authorization; RACS remains deterministic decision semantics; Gateway remains the only effect path; Veritas remains outcome evidence.
+- External dependencies: none. Cryptographic sealing uses the existing `cryptography` dependency. Production confidentiality depends on boundary-private-key custody (KMS/HSM/TEE or equivalent), not on schema assertions alone.
+- Verification evidence: PR CI run `32049138604` on head `1b8be57062d35eb2d80a04891fa3025330f4eef5` passed Python compileall, Ruff across `src tests examples`, and the full pytest suite.

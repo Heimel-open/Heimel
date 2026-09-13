@@ -1,0 +1,39 @@
+# Work anchor — PEACE Protocol / Sovereign Domain Continuity v1
+
+- Canonical umbrella name: **PEACE Protocol** — **Personal Execution, Authority & Compute Environment**.
+- Canonical tagline: **Your Sovereign State.**
+- Manifesto line: **My mind. My house. My state.**
+- Deprecated alias: `PACL` / `Personal AI Compute Layer`; do not introduce it in new normative material.
+- Method: PEACE is constraint-first. The normative starting point is the world that must remain possible; implementations are free to derive the simplest architecture that satisfies the invariants and conformance vectors.
+- Active delivery: make personal digital sovereignty testable without making the current Python/VALO composition normative.
+- Repository: `nsolland/valo-kernel`
+- Canonical base: `1d9947520c8df9edeb22e62244fa252a576f8f9b`
+- Branch: `feat/sovereign-domain-continuity-v1`
+- Draft PR: `#51` — `Add PEACE Protocol sovereign personal compute continuity`
+- Owner/claim: ChatGPT on behalf of Njål.
+- Canonical protocol artifacts:
+  - `protocol/peace-v0/PEACE_WORLD_V0.md` — sendable world/constraint statement for independent derivation.
+  - `protocol/peace-v0/PEACE_PROTOCOL_V0.md` — normative invariants and semantic lifecycle.
+  - `protocol/peace-v0/peace-envelope-v0.schema.json` — language-neutral envelope schema.
+  - `protocol/peace-v0/conformance-v0.json` — cross-language observable semantic vectors.
+  - `docs/peace_protocol_v0.md` — canonical naming and human-readable framing.
+- Reference-profile artifacts include:
+  - `docs/sovereign_domain_continuity_v1.md`
+  - `formal/PersonalDomain.tla`
+  - `formal/PersonalDomain.cfg`
+  - `src/valo_kernel/contracts/sovereignty.py`
+  - `src/valo_kernel/kernel/sovereignty.py`
+  - `src/valo_kernel/contracts/model_portability.py`
+  - `src/valo_kernel/kernel/model_portability.py`
+  - `src/valo_kernel/kernel/personal_runtime.py`
+  - `src/valo_kernel/kernel/compute_routing.py`
+  - `src/valo_kernel/storage/sqlite.py`
+  - `src/valo_kernel/credentials.py`
+  - `examples/demonstrator_7_personal_compute_v0.py`
+  - associated tests and public exports.
+- Dependencies of the reference profile: existing governed projection/workspace contracts, Kernel state root, append-only evidence history and fresh downstream reht authorization. PEACE itself does not require those component names.
+- External dependencies: none at the authority layer. Provider, language, runtime, backend, hardware, credential and crypto choices are replaceable implementation artifacts.
+- Non-goals: no compute marketplace, no production threshold-recovery cryptography, no external storage protocol, no backend compiler and no direct Kernel execution path.
+- Canonical distinctions: `CAPABILITY_TO_COMPUTE != AUTHORITY_TO_ACT`; `CANDIDATE != DECISION`; `EVIDENCE != AUTHORITATIVE_STATE`; `IMPLEMENTATION != PROTOCOL`.
+- Reference semantic lifecycle: authoritative state -> bounded projection/disclosure -> replaceable worker -> candidate -> fresh exact consequence authorization -> effect -> receipt/evidence -> admitted state transition, with recovery preserving the same logical principal across replacement infrastructure.
+- Verification evidence: the current Python reference profile has compile/ruff/pytest coverage including runtime-loss continuity; the bounded `formal/PersonalDomain.tla` model is checked by TLC in GitHub CI. These are implementation evidence, not normative PEACE language/runtime requirements.
