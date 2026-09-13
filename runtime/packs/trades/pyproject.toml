@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "valo-trades-pack"
+version = "0.1.0"
+description = "VALO Trades Pack — first vertical proof: EV charger installation golden path"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.6,<3"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.6",
+    "hypothesis>=6.100",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/valo_trades_pack"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests", "examples"]
+python_files = ["test_*.py", "*_test.py", "demonstrator_*.py"]
+addopts = "-q"
+
+[tool.ruff.lint]
+ignore = ["BLE001", "C408"]  # pack catches all exceptions to fail closed; dict() spec literals
