@@ -28,89 +28,96 @@ packages:
     tag: valo-reht-v1.1.0
     publish_order: 2
 
+  - distribution: valo-gateway
+    import: valo_gateway
+    version: 0.1.0
+    path: runtime/gateway
+    tag: valo-gateway-v0.1.0
+    publish_order: 3
+
   - distribution: veritas
     import: veritas
     version: 0.2.1
     path: runtime/veritas
     tag: veritas-v0.2.1
-    publish_order: 3
+    publish_order: 4
 
   - distribution: valo-workflow-isa
     import: valo_workflow_isa
     version: 1.0.1
     path: packages/workflow-isa
     tag: valo-workflow-isa-v1.0.1
-    publish_order: 4
+    publish_order: 5
 
   - distribution: valo-function-fabric
     import: valo_function_fabric
     version: 1.1.0
     path: packages/function-fabric
     tag: valo-function-fabric-v1.1.0
-    publish_order: 5
+    publish_order: 6
 
   - distribution: heimel-boundary
     import: heimel_boundary
     version: 0.1.0
     path: packages/boundary
     tag: heimel-boundary-v0.1.0
-    publish_order: 6
+    publish_order: 7
 
   - distribution: heimel-runtime
     import: heimel_runtime
     version: 0.1.2
     path: packages/runtime
     tag: heimel-runtime-v0.1.2
-    publish_order: 7
+    publish_order: 8
 
   - distribution: valo-mal
     import: valo_mal
     version: 0.1.1
     path: packages/mal
     tag: valo-mal-v0.1.1
-    publish_order: 8
+    publish_order: 9
 
   - distribution: valo-c-mcp
     import: valo_c_mcp
     version: 0.1.1
     path: packages/c-mcp
     tag: valo-c-mcp-v0.1.1
-    publish_order: 9
+    publish_order: 10
 
   - distribution: valo-vaig
     import: valo_vaig
     version: 0.1.1
     path: packages/vaig
     tag: valo-vaig-v0.1.1
-    publish_order: 10
+    publish_order: 11
 
   - distribution: valo-conformance
     import: valo_conformance
     version: 0.1.1
     path: packages/conformance
     tag: valo-conformance-v0.1.1
-    publish_order: 11
+    publish_order: 12
 
   - distribution: valo-workspace
     import: valo_workspace
     version: 0.1.0
     path: packages/workspace
     tag: valo-workspace-v0.1.0
-    publish_order: 12
+    publish_order: 13
 
   - distribution: valo-public-procurement
     import: valo_public_procurement
     version: 0.1.1
     path: packages/public-procurement
     tag: valo-public-procurement-v0.1.1
-    publish_order: 13
+    publish_order: 14
 
   - distribution: valo-sdk
     import: valo_sdk
     version: 0.1.3
     path: packages/sdk
     tag: valo-sdk-v0.1.3
-    publish_order: 14
+    publish_order: 15
 
 required_local_gates:
   - manifest versions match package metadata
@@ -130,6 +137,7 @@ publication:
   upload_order:
     - heimel-kernel
     - valo-reht
+    - valo-gateway
     - veritas
     - valo-workflow-isa
     - valo-function-fabric
