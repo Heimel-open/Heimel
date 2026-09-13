@@ -296,6 +296,17 @@ def build_and_test(packages: list[dict[str, str]], timestamp: int) -> list[dict[
             raise verification_error(f"artifact set mismatch: {observed}")
 
         install_python = create_venv(temporary_path / "install-venv")
+        run(
+            [
+                str(install_python),
+                "-m",
+                "pip",
+                "install",
+                "--disable-pip-version-check",
+                "pydantic>=2.6,<3",
+                "rfc8785>=0.1.4",
+            ]
+        )
         wheels_by_package = {
             package["distribution"]: next(
                 path
