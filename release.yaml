@@ -56,6 +56,13 @@ packages:
     tag: valo-vaig-v0.1.0
     publish_order: 6
 
+  - distribution: valo-conformance
+    import: valo_conformance
+    version: 0.1.0
+    path: packages/conformance
+    tag: valo-conformance-v0.1.0
+    publish_order: 7
+
 required_local_gates:
   - manifest versions match package metadata
   - package tests pass
@@ -78,6 +85,7 @@ publication:
     - valo-mal
     - valo-c-mcp
     - valo-vaig
+    - valo-conformance
   post_upload:
     - resolve exact versions from pypi
     - install exact versions into a clean virtual environment
