@@ -140,6 +140,12 @@ It never publishes and does not grant publication authority.
 python3 tools/release_verify.py
 ```
 
+The public contract SDK also includes an offline end-to-end demonstration:
+
+```bash
+valo-contracts demo
+```
+
 The measured receipt is written to `release-receipt.json` and the build outputs
 to `dist/`; both are intentionally ignored by git. Use
 [`release.yaml`](release.yaml) as the source of truth for package versions,

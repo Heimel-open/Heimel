@@ -72,9 +72,9 @@ packages:
 
   - distribution: valo-sdk
     import: valo_sdk
-    version: 0.1.0
+    version: 0.1.1
     path: packages/sdk
-    tag: valo-sdk-v0.1.0
+    tag: valo-sdk-v0.1.1
     publish_order: 9
 
 required_local_gates:

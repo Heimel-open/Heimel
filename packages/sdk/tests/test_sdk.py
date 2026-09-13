@@ -8,6 +8,7 @@ from valo_sdk import (
     evaluate_surface_conformance,
 )
 from valo_sdk.cli import main
+from valo_sdk.demo import run_demo
 
 
 def test_sdk_exposes_contracts_without_runtime_client():
@@ -31,3 +32,12 @@ def test_cli_lists_contract_surface(monkeypatch, capsys):
     assert "CMCPContractV1" in payload["contracts"]
     assert payload["network"] is False
     assert payload["authority"] is False
+
+
+def test_offline_end_to_end_demo_has_no_effect_path():
+    result = run_demo()
+    assert result["mal_decision"] == "IMPORT_FOR_LOCAL_REVIEW"
+    assert result["c_mcp_verification"] == (True, "ok")
+    assert result["conformance_passed"] is True
+    assert result["authority_granted"] is False
+    assert result["external_effect"] is False

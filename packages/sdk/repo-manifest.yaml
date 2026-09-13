@@ -1,5 +1,5 @@
 name: valo-sdk
-version: 0.1.0
+version: 0.1.1
 layer: public-sdk
 description: Local contract SDK and inspection CLI for public VALO references
 license: Apache-2.0

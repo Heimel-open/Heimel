@@ -35,3 +35,15 @@ Replay is part of the control model: a consequence should not only happen throug
 ## Demo rule
 
 A HEIMEL demo must expose an actual mechanism or executable path. A static scenario, diagram or prose explanation is an illustration, not a demo.
+
+## Public contract chain
+
+The offline public-contract demo exercises MAL policy federation, c-MCP
+binding, read-only surface conformance, VAIG gate status and procurement
+evidence in one local process. It performs no network request and no external
+effect:
+
+```bash
+python -m pip install "valo-sdk==0.1.1"
+valo-contracts demo
+```
