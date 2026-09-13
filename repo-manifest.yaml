@@ -1,0 +1,16 @@
+name: valo-function-fabric
+version: 0.1.0
+layer: function-fabric
+description: Versioned, type-safe programs built from Workflow ISA
+
+dependencies:
+  - repo: nsolland/valo-kernel
+    role: world-state
+    anchor_sha: edf39cc914843e763c4385c0024d775c7458e1e8
+    anchor_ref: main
+    merged_at: 2026-08-15
+  - repo: nsolland/valo-workflow-isa
+    role: workflow-instruction-set
+    anchor_sha: 6e5b3633f17bdb150fb2b6118a44b4186d4926ba
+    anchor_ref: main
+    merged_at: 2026-08-15
