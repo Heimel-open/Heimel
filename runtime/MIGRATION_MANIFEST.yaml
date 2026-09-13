@@ -1,6 +1,6 @@
 schema_version: 1
 universe: heimel
-source_policy: explicit non-Olav canonical runtime sources only
+source_policy: explicit public canonical runtime sources only
 
 components:
   - id: kernel
@@ -105,5 +105,5 @@ components:
     source_commit: da0307526685e82b22266fa9ac7bb29b42f70686
 
 excluded:
-  - repository: Olav
-    reason: private and wholly outside Heimel
+  - class: private_sources
+    reason: wholly outside Heimel

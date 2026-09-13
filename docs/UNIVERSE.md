@@ -28,7 +28,7 @@ migration records and archival links when necessary to explain origin. They are
 not public top-level identities or navigation categories. New public material
 must be written and indexed as Heimel material.
 
-Olav is wholly private and outside Heimel. It must not appear in this universe,
+Private sources remain outside Heimel. They must not appear in this universe,
 including as history, provenance, an example or a migration source.
 
 ## Publication path
