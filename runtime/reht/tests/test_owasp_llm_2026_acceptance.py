@@ -60,7 +60,7 @@ def test_crosswalk_does_not_claim_reht_owns_external_risk_classes() -> None:
 
 
 def test_all_repo_acceptance_references_resolve() -> None:
-    test_root = Path(__file__).parent
+    test_root = Path(__file__).parents[1]
     for risk in owasp.OWASP_LLM_2026:
         for reference in risk.negative_tests:
             if reference.startswith("external:"):
