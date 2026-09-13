@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LastSeen</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 0 auto; padding: 1rem; }
+  h1 { font-size: 1.4rem; }
+  h2 { font-size: 1.1rem; margin-top: 1.5rem; }
+  form { display: grid; gap: 0.4rem; }
+  label { font-size: 0.85rem; }
+  input, button { padding: 0.35rem 0.5rem; }
+  pre { background: #0001; padding: 0.75rem; overflow-x: auto; border-radius: 4px; font-size: 0.8rem; }
+  .tagline { color: #666; font-size: 0.9rem; }
+  @media (prefers-color-scheme: dark) { pre { background: #fff1; } .tagline { color: #aaa; } }
+</style>
+</head>
+<body>
+<h1>LastSeen</h1>
+<p class="tagline">Your home remembers. The cloud doesn't. Memory stays local and governed by micro-REHT.</p>
+
+<h2>Remember</h2>
+<form id="remember-form">
+  <label>Object <input name="object_name" required></label>
+  <label>Location <input name="location" required></label>
+  <label>Camera ID <input name="camera_id"></label>
+  <label>Zone ID <input name="zone_id"></label>
+  <label>Image ref <input name="image_ref"></label>
+  <label>Aliases (comma separated) <input name="aliases"></label>
+  <label>Confidence <input name="confidence" type="number" min="0" max="1" step="0.01" value="1"></label>
+  <button type="submit">Remember</button>
+</form>
+
+<h2>Find</h2>
+<form id="find-form">
+  <label>Object <input name="object_name" required></label>
+  <label>Alias <input name="alias"></label>
+  <label>Camera ID <input name="camera_id"></label>
+  <label>Zone ID <input name="zone_id"></label>
+  <label>Since <input name="since" type="datetime-local"></label>
+  <label>Until <input name="until" type="datetime-local"></label>
+  <button type="submit">Find last seen</button>
+</form>
+<button id="history-btn" hidden>Show full history</button>
+
+<h2>Forget</h2>
+<form id="forget-form">
+  <label>Object <input name="object_name" required></label>
+  <button type="submit">Forget with receipt</button>
+</form>
+
+<h2>Response</h2>
+<pre id="output">Ready.</pre>
+
+<script>
+const output = document.getElementById("output");
+async function call(method, url, body) {
+  const options = { method, headers: {} };
+  if (body !== undefined) {
+    options.headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(body);
+  }
+  const response = await fetch(url, options);
+  const text = await response.text();
+  let payload = text;
+  try { payload = JSON.parse(text); } catch (_) {}
+  output.textContent = JSON.stringify({ status: response.status, payload }, null, 2);
+  return { response, payload };
+}
+function formValues(formId) {
+  const data = {};
+  new FormData(document.getElementById(formId)).forEach((value, key) => { data[key] = value; });
+  return data;
+}
+function scopeParams(id) {
+  const params = new URLSearchParams();
+  const values = formValues(id);
+  for (const key of ["camera_id", "zone_id"]) if (values[key]) params.append(key, values[key]);
+  if (values.since) params.set("since", new Date(values.since).toISOString());
+  if (values.until) params.set("until", new Date(values.until).toISOString());
+  return params;
+}
+let currentFindUrl = null;
+document.getElementById("remember-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const values = formValues("remember-form");
+  const aliases = values.aliases ? values.aliases.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  const body = {
+    object_name: values.object_name,
+    location: values.location,
+    camera_id: values.camera_id || undefined,
+    zone_id: values.zone_id || undefined,
+    image_ref: values.image_ref || undefined,
+    confidence: Number(values.confidence),
+    aliases,
+  };
+  await call("POST", "/observations", body);
+});
+document.getElementById("find-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const values = formValues("find-form");
+  const params = scopeParams("find-form");
+  if (values.alias) params.set("alias", values.alias);
+  currentFindUrl = `/objects/${encodeURIComponent(values.object_name)}/last-seen?${params.toString()}`;
+  document.getElementById("history-btn").hidden = false;
+  await call("GET", currentFindUrl);
+});
+document.getElementById("history-btn").addEventListener("click", async () => {
+  if (!currentFindUrl) return;
+  await call("GET", currentFindUrl.replace("/last-seen", "/history"));
+});
+document.getElementById("forget-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const values = formValues("forget-form");
+  await call("DELETE", `/objects/${encodeURIComponent(values.object_name)}`);
+});
+</script>
+</body>
+</html>

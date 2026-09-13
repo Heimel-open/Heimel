@@ -1,0 +1,41 @@
+[
+  {
+    "id": "VE-IDE-001",
+    "navn": "MicroRehtV1 state persistence (restart-safe replay & budgets)",
+    "kategori": "fail-closed-ikke-vedvarende",
+    "problem": "MicroRehtV1 (src/valo_edge/runtime/micro_reht_v1.py) holder ALL beslutningstilstand i minnet: seen_nonce_digests, last_sequence_by_boot, envelope_use_count, envelope_energy_used, envelope_value_used, issued_permits og halted. MicroRehtStateV1 (runtime/contracts_v1.py:96-107) har en compute_digest()-metode (linje 110) designet for persistens, men MicroRehtV1 leser/skriver aldri til disk, mangler flush(), og snapshot_state() (linje 149) er bare en deep-copy ingen caller utenfor test. V0-motoren (runtime/micro_reht.py:90-152) persisteres derimot til <db>.replay-state.json og oppfyller AGENTS.md-invarianten 'Anti-replay survives restart'. V1-motoren bryter samme invarians ved restart.",
+    "behov": "V1-beslutningsmotoren må overleve restart uten aa miste replay-beskyttelse, sekvens-monotoni, bruksbudsjetter (energi/verdi/actions-per-window) og utstedte permitter. Tilstanden maa skrives atomisk (os.replace) til disk paa hver muterende evaluate() og lastes ved konstruksjon, med samme fail-closed-reset ved korrupt/ulagbar state som V0-motoren har.",
+    "losning": "Gi MicroRehtV1 en valgfri state_file (eller gjenbruk db-path). Last MicroRehtStateV1 fra JSON ved __init__ (fail-closed: tomt state ved OSError/JSONDecodeError/ValueError). Kall _persist_state() etter hver evaluate()-mutasjon (linje 393-413) og i trigger_halt/clear_halt. Bruk state.compute_digest() til å oppdage korrupsjon. Behold in-memory snapshot_state() for testing/inspeksjon.",
+    "repo": "valo-edge",
+    "mvp": "MicroRehtV1(state_file=...) laster/skriver MicroRehtStateV1 JSON; evaluate() persisterer etter nonce/sequence/budget-oppdatering; test: restart-simulasjon bevarer replay-DENY og brukt budsjett.",
+    "verdi": "Lukker restart-replay og budsjett-lekkasje i V1-staken; gjor V1 like restart-sikker som V0; oppfyller AGENTS.md anti-replay-invarians.",
+    "falsifikasjon": "Skriv test som kjorer evaluate() to ganger med samme nonce/sequence mot to separate MicroRehtV1-instanser som deler state_file; hvis andre instans returnerer ALLOW istedenfor DENY (PROPOSAL_REPLAY/SEQUENCE_REPLAY), er gapet bekreftet og ideen nodvendig.",
+    "prioritet": "P0"
+  },
+  {
+    "id": "VE-IDE-002",
+    "navn": "Wire consume_permit into V1 evaluate() + persistent permit store",
+    "kategori": "dod-kode-og-manglende-forbruk",
+    "problem": "MicroRehtV1.consume_permit (micro_reht_v1.py:167-174) er koblet til gatewayen i tester (tests/test_device_gateway_v1.py:400 permit_consumer=micro_reht.consume_permit), men evaluate() (linje 386-414) dekrementerer aldri permit.remaining_uses og kaller aldri consume_permit. Gatewayen (device_gateway_v1.py:129) kaller permit_consumer(command.permit_id, proposal_digest) som sjekker permit.proposal_digest != proposal_digest og remaining_uses <= 0 - men siden forbruk aldri skjer, forbli permitter uendret og kan gjenbrukes. Samtidig er gatewayens _spent_command_ids/_spent_permit_uses (linje 62-63) rent in-memory, saa en prosess-restart tilater gjenbruk av samme permit_id + permit_use_index = dobbelt-eksekvering av en fysisk aktuator.",
+    "behov": "Permitter maa forbrukes (dekrementere remaining_uses, markere brukt) idet gatewayen aksepterer kommandoen, og forbruket maa vaere restart-persistent. Dette er selve mekanismen som forhindrer at en tillatelse brukes mer enn angitt antall ganger (permit_uses).",
+    "losning": "La DeviceEnforcementGatewayV1 kalle permit_consumer foer den markerer kommandoen brukt, og la MicroRehtV1.consume_permit vaere den eneste som dekrementerer remaining_uses (idempotent per (permit_id, use_index) via gatewayens _spent_permit_uses, som selv gjores persistent jf. IDE-001). Flytt forbruks-logikken ut av evaluate() og inn i consume_permit slik at evaluate kun utsteder permitten. Dokumenter at consume_permit er final selv ved driver-feil (jf. eksisterende kommentar linje 143).",
+    "repo": "valo-edge",
+    "mvp": "Gateway kaller consume_permit(permit_id, proposal_digest) under lock; consume_permit dekrementerer remaining_uses og returnerer False ved mismatch/oppbrukt; test: samme permit_id+use_index godtas kun én gang, deretter PERMIT_USE_REPLAY/DENY.",
+    "verdi": "Fjerner dod kode (consume_permit) og lukker reell dobbelt-eksekverings-sarbarhet for fysiske aktuatorer; gjor permit-budsjett (permit_uses) meningsfullt.",
+    "falsifikasjon": "Test: utsted permit med permit_uses=1, kjor gateway.enforce() to ganger med samme permit_id+use_index mot fersk gateway-instans som deler persist state; hvis andre enforce returnerer accepted=True, er gapet bekreftet.",
+    "prioritet": "P0"
+  },
+  {
+    "id": "VE-IDE-003",
+    "navn": "V1 clearance verifier + persistent enforcement log",
+    "kategori": "fail-closed-som-ikke-utloses",
+    "problem": "HardwareNeutralGateway (gateway/hardware_neutral_gateway.py) er V0-kun: den rekalkulerer clearance.decision_digest (linje 29) og proposal.proposal_hash (linje 33) og nekter eksekvering ved mismatch - korrekt fail-closed. Men den V1-komponenten som faktisk er bygget, DeviceEnforcementGatewayV1 (device_gateway_v1.py), tar en ClearanceVerifier = Callable[[EdgeClearanceV1], bool] (linje 29) som den kaller paa linje 193, uten at repoet leverer en standard verifier som rekalkulerer EdgeClearanceV1.decision_digest (jf. contracts/v1.py: EdgeClearanceV1 har compute_digest). Uten en slik verifier godtas en V1-clearance paa tillit alene. I tillegg er gatewayens _spent_command_ids/_spent_permit_uses (linje 62-63) in-memory, saa kommando-replay-beskyttelsen forsvinner ved restart.",
+    "behov": "V1-gatewayen maa ha en innebygd clearance_verifier som rekalkulerer og sammenligner EdgeClearanceV1.decision_digest (fail-closed ved mismatch, akkurat som V0-gatewayen), og dens spent-SET maa persisteres saa kommando/permit-replay overlever restart.",
+    "losning": "Legg til en standardverifier i valo_edge.gateway (f.eks. default_clearance_verifier(clearance) = hmac.compare_digest(clearance.compute_digest(), clearance.decision_digest) / decision==ALLOW) som brukes naar ingen verifier er oppgitt. Gi DeviceEnforcementGatewayV1 en valgfri state_file der _spent_command_ids og _spent_permit_uses lastes/skrives atomisk (gjenbruk monster fra MicroRehtEngine._persist_state).",
+    "repo": "valo-edge",
+    "mvp": "default_clearance_verifier rekalkulerer EdgeClearanceV1-digest; gateway persisterer spent-sett til JSON; test: manipulert clearance (feil decision_digest) avvises med CLEARANCE_VERIFICATION_FAILED; restart tillater ikke gjenbruk av command_id.",
+    "verdi": "Lukker at V1-clearance kan aksepteres uten digest-validering, og gjor gateway-replay-beskyttelse restart-sikker; harmoniserer V1 med V0s beviste fail-closed-evidence-chaining.",
+    "falsifikasjon": "Test: bygg en EdgeClearanceV1 med bevisst feil decision_digest, send til gateway uten ekstern verifier; hvis enforce returnerer accepted=True, er gapet bekreftet.",
+    "prioritet": "P1"
+  }
+]
