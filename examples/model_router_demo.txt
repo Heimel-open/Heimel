@@ -1,0 +1,17 @@
+VALO Model Router demo
+
+Run pattern:
+
+1. Create TaskProfile for local low-risk summary.
+Expected: LOCAL -> ollama-small-local.
+
+2. Create TaskProfile for private internal extraction with tools.
+Expected: REMOTE/private -> private-mid.
+
+3. Create TaskProfile for public remote research with remote knowledge.
+Expected: REMOTE -> remote-strong.
+
+The executable Python demo was intentionally not added in this commit because the connector blocked the write. The implemented module and tests are present:
+
+- vacs/src/model_router.py
+- vacs/tests/test_model_router.py

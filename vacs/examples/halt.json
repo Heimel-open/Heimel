@@ -1,0 +1,38 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440003",
+  "agent_id": "agent-admin-04",
+  "timestamp": "2026-06-16T12:00:00Z",
+  "intent": {
+    "action": "delete_data",
+    "target": "user_database",
+    "scope": "all_records"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:auth999",
+        "type": "authorization",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.67
+  },
+  "risk": {
+    "level": "critical",
+    "categories": [
+      "data_loss",
+      "compliance"
+    ],
+    "blast_radius": "system_wide"
+  },
+  "confidence": 0.99,
+  "policy": {
+    "required_signoff": true,
+    "max_risk_level": "high",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU-GDPR"
+  },
+  "decision": "HALT",
+  "signature": "ed25519:placeholder"
+}

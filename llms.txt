@@ -1,0 +1,15 @@
+# VAIG - Runtime Evaluation and Distrust Engine
+
+> Canonical Role: Runtime evaluation, uncertainty assessment, evidence adequacy, and EvaluationReport issuance layer.
+
+## Architectural Boundaries
+
+- VAIG evaluates model output, actual state, and evidence adequacy.
+- VAIG DOES NOT grant positive execution clearance (owned by REHT).
+- VAIG DOES NOT enforce decisions (owned by RACS).
+- VAIG DOES NOT execute actions (owned by Core).
+
+## Canonical Invariants
+
+1. Evaluation != Clearance
+2. EvaluationReport != Execution Permit

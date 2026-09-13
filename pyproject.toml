@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vaig"
+dynamic = ["version"]
+description = "VALO AI Integrity Gateway runtime governance stack"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.100.0",
+    "httpx2>=2.0.0; python_version >= '3.10'",
+    "httpx>=0.24.0; python_version < '3.10'",
+    "rfc8785>=0.1.4",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "requests>=2.31.0",
+    "cryptography>=41.0.0",
+    "numpy>=1.20.0",
+    "fastapi>=0.100.0",
+    "httpx2>=2.0.0; python_version >= '3.10'",
+    "httpx>=0.24.0; python_version < '3.10'",
+]
+# Generic CI (ci-auto.yml) installs '.[dev]'; keep it a superset of test.
+dev = [
+    "pytest>=7.0.0",
+    "requests>=2.31.0",
+    "cryptography>=41.0.0",
+    "numpy>=1.20.0",
+    "fastapi>=0.100.0",
+    "httpx2>=2.0.0; python_version >= '3.10'",
+    "httpx>=0.24.0; python_version < '3.10'",
+]
+activation = [
+    "numpy>=1.20.0",
+]
+semantic = [
+    "sentence-transformers>=2.0.0",
+]
+ml = [
+    "numpy>=1.20.0",
+    "sentence-transformers>=2.0.0",
+    "torch>=1.9.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vaig*", "why*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "vaig._version.__version__"}

@@ -1,0 +1,18 @@
+publiccodeYmlVersion: "0.2"
+name: "VAIG"
+url: "https://github.com/nsolland/VAIG"
+landingURL: "https://github.com/nsolland/VAIG"
+softwareVersion: "0.2.0"
+releaseDate: "2026-08-02"
+platforms:
+  - "linux"
+categories:
+  - "ai-evaluation"
+developmentStatus: "development"
+softwareType: "library"
+description:
+  en:
+    shortDescription: "Runtime evaluation, uncertainty, evidence adequacy, and EvaluationReport layer for VALO."
+    longDescription: "VAIG evaluates actual state and evidence adequacy, providing calibrated distrust metrics and EvaluationReport outputs. It never grants execution authority or clearance."
+legal:
+  license: "MIT"
