@@ -1,0 +1,30 @@
+schema_version: "1.0.0"
+repository:
+  id: valo.insurance-pilot
+  name: "valo-insurance-pilot"
+  canonical_name: valo-insurance-pilot
+  url: https://github.com/nsolland/valo-insurance-pilot
+  org: "nsolland"
+  owner: "VALO"
+  canonical_role: "carrier-facing-pilot-pack"
+  classification: pilot-deliverable
+  visibility: private
+  maturity: pilot
+  product_baseline: valo-insurance-pack@v0.1.0
+  support: maintained
+  normative_status: pilot
+  license: proprietary-unless-file-states-otherwise
+
+purpose:
+  summary: Carrier pilot pack over the frozen valo-insurance-pack v0.1.0 baseline
+  owns:
+    - high-value-procurement scenario
+    - draft policy condition
+    - sample AssuranceProfileV1
+    - sample ClaimsEvidencePackV1
+    - one-page architecture
+
+depends_on:
+  - repo: nsolland/valo-insurance-pack
+    role: frozen-product-baseline
+    anchor_ref: v0.1.0

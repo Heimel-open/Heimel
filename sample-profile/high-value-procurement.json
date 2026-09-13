@@ -1,0 +1,40 @@
+{
+  "action_type": "PROCUREMENT_ORDER_CREATE",
+  "consequence_class": "HIGH",
+  "coverage_condition_ref": "cond-procurement-high-value-v1",
+  "effective_period": {
+    "effective_from": "2026-01-01T00:00:00Z",
+    "effective_until": "2028-01-01T00:00:00Z"
+  },
+  "failure_outcome": "STEP_UP",
+  "freshness_requirements": {
+    "entra_id": 300,
+    "erp_sap_budget": 300,
+    "erp_sap_po_state": 120
+  },
+  "insurer_reference": "insurer:swiss-re-agentic-liability:2026",
+  "metadata": {
+    "max_exposure_usd": 500000,
+    "tier": "high_value",
+    "underwriting_pool": "high-value-procurement-liability"
+  },
+  "minimum_assurance_per_source": {
+    "entra_id": "OIDC_FIDO2_BOUND",
+    "erp_sap_budget": "ERP_AUTHORITATIVE_API",
+    "erp_sap_po_state": "ERP_COMMITTED_STATE"
+  },
+  "profile_digest": "sha256:010f71ec4cade6d3598b26426fcf45054f4379158bdd60712da018a47fabedd8",
+  "profile_id": "carrier-profile-procurement-high-value-v1",
+  "profile_version": "1.0.0",
+  "required_authoritative_sources": [
+    "entra_id",
+    "erp_sap_budget",
+    "erp_sap_po_state"
+  ],
+  "required_capabilities_per_source": {},
+  "revocation_visibility_requirements": {
+    "entra_id": "REALTIME_ACTIVE",
+    "erp_sap_budget": "TRANSACTION_CONSISTENT",
+    "erp_sap_po_state": "VERSION_PINNED"
+  }
+}
