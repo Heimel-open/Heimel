@@ -72,9 +72,9 @@ packages:
 
   - distribution: valo-mal
     import: valo_mal
-    version: 0.1.1
+    version: 0.1.2
     path: packages/mal
-    tag: valo-mal-v0.1.1
+    tag: valo-mal-v0.1.2
     publish_order: 9
 
   - distribution: valo-c-mcp

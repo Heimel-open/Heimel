@@ -1,5 +1,5 @@
 name: valo-mal
-version: 0.1.1
+version: 0.1.2
 layer: model-admissibility
 description: Deterministic, authority-neutral MAL policy-federation reference surface
 license: Apache-2.0
