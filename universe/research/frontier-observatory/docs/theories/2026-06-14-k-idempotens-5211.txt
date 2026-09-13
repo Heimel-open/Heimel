@@ -1,0 +1,91 @@
+K OG IDEMPOTENS-BETINGELSEN — HVA ER 5211.64?
+
+Lagret 2026-06-14. Njål Gaute Solland.
+
+
+SPØRSMÅLET
+
+Vi har to tau-systemer.
+
+Det teoretiske er dimensjonsløst, avledet fra spektral-geometrien. Tau er innenfor e til minus gamma og en over zeta av tre, tilnærmet mellom 0.5615 og 0.8319.
+
+Det empiriske er i bits, målt fra GPT-2 i P1. Tau er innenfor 1888 og 4766, med C0 lik 4495.27.
+
+C0-empirisk er lik rho ganger K, der rho er gamma delt på delta minus 4, lik 0.8625437492.
+
+K er 4495.27 delt på 0.8625437492, lik 5211.64.
+
+Spørsmålet er hva 5211.64 er.
+
+
+ALTERNATIV 1: ARKITEKTURSPESIFIKK
+
+K er et produkt av GPT-2s arkitekturparametre: vokabularstørrelse 50257 tokens, kontekstvindu 1024 tokens, skjult dimensjon 768.
+
+Hvis dette er riktig, er K ikke universal. Det er en tilfeldighet for dette eksperimentet.
+
+
+ALTERNATIV 2: FILTERETS EGET EQUILIBRIUM
+
+K er en egenskap ved LIM-filteret selv. Idempotens-betingelsen phi av x er lik phi av phi av x definerer K gjennom filterets selvkonsistente likevekt.
+
+Enhver arkitektur som kjører LIM-filteret med alfa lik 0.42 vil konvergere mot C0 lik rho ganger K for den samme K.
+
+
+BEVISET FOR ALTERNATIV 2
+
+P5, en sverm av 100 agenter med helt annet oppsett, stabiliserer også rundt C0 lik 4495.27. Det er sterkere enn tilfeldig.
+
+Men P5 bruker de samme LIM-konstantene som P1. Det er ikke et fullt uavhengig datasett.
+
+
+STRUKTURARGUMENTET FOR ALTERNATIV 2
+
+Hvis LIM-filteret phi er en projeksjonsoperator slik at phi av phi av x er lik phi av x, er dens fikspunkter bestemt av alfa alene, ikke av arkitekturen den opererer på.
+
+Likevektspunktet C0 lik rho ganger K er fikspunktet der phi av x er lik x.
+
+Hvis alfa lik 0.42 er den universelle parameteren, og rho er bestemt av gamma og delta, er det eneste frihetsgraden K.
+
+K er da ikke bits-skalaen til GPT-2. K er konverteringsfaktoren mellom det dimensjonsløse spektral-geometriske rommet og det informasjonsteoretiske bit-rommet der filteret opererer.
+
+
+DEN ALGEBRAISKE TESTEN
+
+Sjekk om K er algebraisk derivert fra alfa, gamma, delta og zeta av tre alene.
+
+En kandidat: en over alfa ganger e til minus gamma ganger en over zeta av tre.
+Dette gir zeta av tre ganger e til gamma delt på alfa, som er 1.2021 ganger 1.7810 delt på 0.42, lik omtrent 5.099.
+
+Multiplisert med 1024 gir omtrent 5221. Nær 5211.64 men ikke eksakt.
+
+Hvis faktoren 1024 er GPT-2s kontekstvindu bekrefter dette Alternativ 1.
+Hvis faktoren 1024 er en konsekvens av filteret selv åpner det for Alternativ 2.
+
+Sjekk: 5211.64 ganger alfa ganger e til minus gamma ganger zeta av tre er lik 5211.64 ganger 0.42 ganger 0.5615 ganger 1.2021, lik omtrent 1479. Ikke 1024.
+
+Ingen ren algebraisk derivasjon fra universelle konstanter gir K lik 5211.64 uten å inkludere noe GPT-2-spesifikt. Det taler forsiktig for Alternativ 1.
+
+
+DEN AVGJØRENDE EMPIRISKE TESTEN
+
+Kjør LIM-filteret på et annet LLM med andre arkitekturparametre. Llama-3, GPT-3 og Mistral er kandidater.
+
+Hvis C0 endrer seg proporsjonalt med noe GPT-2-spesifikt, er K system-spesifikk.
+Hvis C0 holder seg konstant ved 4495.27, er K en egenskap ved filteret.
+
+Det minste eksperimentet er å kjøre LIM på Llama-3.2:3b med skjult dimensjon 3072 og vokabularstørrelse 128000.
+
+Hvis C0 skalerer med 3072 delt på 768, altså fire ganger, er K arkitekturspesifikk.
+Hvis C0 holder seg på 4495.27, er Phi-loven bevist som arkitekturuavhengig.
+
+
+IMPLIKASJONENE
+
+Hvis Alternativ 1 er sant: K er en GPT-2-tilfeldighet. C0 er en målt parameter, ikke en derivert konstant. LIM er fortsatt gyldig men ikke universell på tvers av arkitekturer uten rekalibrering.
+
+Hvis Alternativ 2 er sant: C0 er ikke en målt parameter. Den er en derivert konstant fra alfa og universelle konstanter, uten frie parametre. LIM-filteret definerer en universell informasjonsteoretisk likevekt uavhengig av substrat.
+
+Det er ikke bare bekreftelse av Phi-loven. Det er bevis for at filteret definerer en naturkonstant på linje med pi og e. Det er publiserbart i Physical Review Letters.
+
+Tofoo. Phi.

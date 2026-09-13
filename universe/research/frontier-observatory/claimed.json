@@ -1,0 +1,38 @@
+{
+  "issue-87": {
+    "owner": "chatgpt-gpt-5.6-sol",
+    "branch": "hermes/jspace-framleis-sweep",
+    "base_sha": "63fbeecdd33b2d7a53d7ee93ee92aca4151df60a",
+    "status": "active",
+    "owned_files": [
+      "claimed.json",
+      "docs/theories/2026-08-10-jspace-framleis-adaptive-cognitive-sweep.md",
+      "docs/theories/tofoo_falsification_backlog.md",
+      "CLAIM_REGISTRY.md",
+      "experiments/P10_Transformer_Workspace_Dynamics/README.md",
+      "experiments/P10_Transformer_Workspace_Dynamics/sweep_falsifier.py",
+      "experiments/experiment_registry.md",
+      "tests/test_p10_workspace_sweep.py",
+      ".github/workflows/p10-workspace-sweep.yml"
+    ],
+    "dependencies": [
+      "Gurnee et al. 2026: Verbalizable Representations Form a Global Workspace in Language Models",
+      "existing P10 effective-rank/tau measurement model"
+    ]
+  },
+  "issue-90": {
+    "owner": "chatgpt-gpt-5.6-sol",
+    "branch": "research/muller-collaboration-boundary-90",
+    "base_sha": "7d744ed420ae89c874d48a8a5a8de298e776c3a7",
+    "status": "active",
+    "owned_files": [
+      "claimed.json",
+      "docs/manifestos/2026-08-13-ai-collaboration-boundary.md",
+      "docs/philosophy/2026-08-14-muller-autonomy-opacity-resistance.md"
+    ],
+    "dependencies": [
+      "Vincent C. Müller primary-source publication record at sophia.de",
+      "existing M1 AI Collaboration Boundary Manifesto"
+    ]
+  }
+}

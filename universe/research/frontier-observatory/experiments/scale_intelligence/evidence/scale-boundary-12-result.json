@@ -1,0 +1,89 @@
+{
+  "canonical_base": "6fce414ddff6e503d8c7ccdccd560eba75b63b48",
+  "canonical_full_result_digest": "sha256:174ac5da59a3d1ac5a071ebbcdb157c07ed71ff73f2cfe226a1def058e5f9fa9",
+  "canonical_trial_digest": "sha256:b8c1580c17ff3bc893319e6d943c12bdfb8e87b5801bc819a89813bd4dbad3df",
+  "episodes_per_probe_stream": 256,
+  "fixed_substrate_invariants": {
+    "compute_budget": "sha256:64f92577fc6de3232ea4f8df4f892df997ba71e6a449f138523442aa6d99bbed",
+    "initial_state": "sha256:516be5ac4916b990e1bcc5aebf3a696549f1e23e1608154d1eebccd8329abe08",
+    "node_set": "sha256:30b2d76cec04a9b08fa7968b8014fa45507433f261ad7d964d912b3873b93612",
+    "topology": "sha256:b8b63198804176ba8562bea90ec15cb69550fb3e6a339fca797cf1936f96d909",
+    "update_rule": "sha256:649f4fc59abe1c2655acd6ba41b4626b42ed913720470b1b6cd44deea6f0d269"
+  },
+  "preregistration_sha": "d887082aa4f1883391b5d99eb74b0b955d7bfff7",
+  "protocol": "SCALE-BOUNDARY-12",
+  "replicate_seeds": [42042, 43043, 44044, 45045, 46046],
+  "scales": [4,5,6,7,8,9,10,11,12,13,14,15],
+  "scoring_regions": {
+    "full": [0,62,63],
+    "interior": [16,46,31]
+  },
+  "task_blocks": [5,9,13],
+  "trial_count": 180,
+  "verdict": {
+    "boundary_specificity": true,
+    "full": {
+      "gates": {
+        "capability_strict_order": false,
+        "efficiency_strict_order": true,
+        "median_peaks_interior": true,
+        "minimum_small_large_shift": true,
+        "paired_capability_outward": false,
+        "paired_efficiency_outward": true,
+        "within_geometry_alignment": true
+      },
+      "median_peaks": {
+        "capability": {"5":11,"9":9,"13":13},
+        "information_efficiency": {"5":9,"9":11,"13":13}
+      },
+      "paired_outward_counts": {"capability":3,"information_efficiency":5},
+      "replicate_peaks": {
+        "capability": {
+          "5":[15,5,11,13,11],
+          "9":[9,9,9,9,9],
+          "13":[13,13,13,13,13]
+        },
+        "information_efficiency": {
+          "5":[11,9,5,5,9],
+          "9":[11,11,11,11,13],
+          "13":[13,13,13,15,13]
+        }
+      },
+      "status": "FALSIFIED_BY_DATA"
+    },
+    "full_capability_gate_failures": [
+      "capability_strict_order",
+      "paired_capability_outward"
+    ],
+    "interior": {
+      "gates": {
+        "capability_strict_order": true,
+        "efficiency_strict_order": true,
+        "median_peaks_interior": true,
+        "minimum_small_large_shift": true,
+        "paired_capability_outward": true,
+        "paired_efficiency_outward": true,
+        "within_geometry_alignment": true
+      },
+      "median_peaks": {
+        "capability": {"5":5,"9":9,"13":13},
+        "information_efficiency": {"5":5,"9":9,"13":13}
+      },
+      "paired_outward_counts": {"capability":5,"information_efficiency":5},
+      "replicate_peaks": {
+        "capability": {
+          "5":[6,5,5,7,5],
+          "9":[9,9,9,9,9],
+          "13":[13,13,13,13,13]
+        },
+        "information_efficiency": {
+          "5":[5,5,5,5,5],
+          "9":[9,10,9,9,9],
+          "13":[13,13,13,15,13]
+        }
+      },
+      "status": "NOT_FALSIFIED_BY_DATA"
+    },
+    "status": "NOT_FALSIFIED_BY_DATA"
+  }
+}

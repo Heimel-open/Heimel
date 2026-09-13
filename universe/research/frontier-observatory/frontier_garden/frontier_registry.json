@@ -1,0 +1,937 @@
+{
+  "version": "1.0.0",
+  "repository": "valo.tofoo",
+  "standing": "INFORMATIVE_RESEARCH_ONLY",
+  "frontiers": [
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-PHI-001",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-PHI-001",
+          "docs/theories/tofoo_falsification_backlog.md#F-PHI-001"
+        ]
+      },
+      "id": "FG-001",
+      "title": "Large-model coherence interval",
+      "axes": [
+        "WHAT",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "epistemic_status": "hypothesis",
+      "question": "Does the proposed dimensionless coherence interval [0.5615, 0.8319] hold for independently measured large language models beyond the current small model set?",
+      "current_understanding": "The claim registry records a proposed coherence interval with measurements on six models and no independent 70B+ confirmation.",
+      "unresolved": "The available evidence does not establish that the interval generalizes to large models or architectures outside the current measurement set.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "Measure dimensionless tau on at least three 70B+ models; a well-calibrated large model consistently outside the proposed interval across independent runs would falsify the claim as currently stated.",
+      "next_gate": "Run the pending 70B+ measurement program with fixed instrumentation and publish raw measurements and calibration details.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-PHI-001",
+          "purpose": "Current claim maturity and evidence boundary."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-PHI-001",
+          "purpose": "Registered falsification test and pending hardware dependency."
+        }
+      ],
+      "related_frontiers": [
+        "FG-002"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the registered C-PHI-001 / F-PHI-001 unresolved test."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-PHI-002",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-PHI-002",
+          "docs/theories/tofoo_falsification_backlog.md#F-PHI-002"
+        ]
+      },
+      "id": "FG-002",
+      "title": "Cross-architecture tau scaling",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "epistemic_status": "empirical_observation",
+      "question": "Is tau approximately proportional to 0.10 × N^0.48 across independent architecture families, or is the observed exponent specific to the current dataset?",
+      "current_understanding": "The claim registry records an empirical scaling fit based on a limited set including GPT-2, Phi-2 and Mistral-7B.",
+      "unresolved": "Independent architecture families and multiple sizes per family have not yet established a cross-architecture exponent.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "Measure at least three additional architecture families across multiple sizes; exponent outside [0.43, 0.53] or prefactor outside [0.07, 0.13] on an independent family would falsify the current cross-architecture claim.",
+      "next_gate": "Build a preregistered measurement matrix for Mistral, Falcon and Gemma families and estimate uncertainty around exponent and prefactor.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-PHI-002",
+          "purpose": "Current empirical scaling claim and maturity."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-PHI-002",
+          "purpose": "Cross-architecture falsification thresholds."
+        }
+      ],
+      "related_frontiers": [
+        "FG-001",
+        "FG-009"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from C-PHI-002 / F-PHI-002."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-LIM-001",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-LIM-001",
+          "docs/theories/tofoo_falsification_backlog.md#F-LIM-001"
+        ]
+      },
+      "id": "FG-003",
+      "title": "Operational identity criterion",
+      "axes": [
+        "WHAT",
+        "WHO",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "LOW",
+      "epistemic_status": "hypothesis",
+      "question": "Can the LIM statement that identity is what survives boundary-governed transformation over time be restated as an operational, falsifiable criterion without collapsing representation continuity into personal identity?",
+      "current_understanding": "C-LIM-001 is explicitly M0/M1 and the falsification backlog states that it is not falsifiable as currently phrased.",
+      "unresolved": "There is no operational definition that yields a yes/no test for identity across a boundary-governed transformation.",
+      "contradictions": [
+        "The claim is presently meaningful as conceptual framing but cannot yet carry empirical standing."
+      ],
+      "falsifier_or_decisive_test": "First define an operational criterion and a transformation test protocol; until that exists, no empirical falsification is available.",
+      "next_gate": "Produce competing operational definitions that preserve the representation/person distinction and identify discriminating test cases for each.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-LIM-001",
+          "purpose": "Explicit M0/M1 status and person-boundary warning."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-LIM-001",
+          "purpose": "Registered requirement for operational reformulation."
+        }
+      ],
+      "related_frontiers": [
+        "FG-010"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the unresolved operationalization requirement for LIM identity."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-LIM-002",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-LIM-002",
+          "docs/theories/tofoo_falsification_backlog.md#F-LIM-002"
+        ]
+      },
+      "id": "FG-004",
+      "title": "LIM-to-VALO bridge necessity",
+      "axes": [
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "epistemic_status": "hypothesis",
+      "question": "Which, if any, LIM-derived principles are actually necessary for VALO governance invariants rather than merely explanatory or structurally analogous?",
+      "current_understanding": "C-LIM-002 records a structural bridge between Tofoo meaning and VALO execution, but the dependency has not been formally tested.",
+      "unresolved": "It is unknown whether VALO retains all governance invariants when LIM-derived constraints are removed from the analysis.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "Demonstrate a VALO runtime or formal model that preserves its governance invariants without any LIM-derived constraint; that would falsify necessity as currently stated.",
+      "next_gate": "Construct a dependency matrix separating descriptive analogy from constraints that are demonstrably required by VALO invariants.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-LIM-002",
+          "purpose": "Current bridge claim and M2 standing."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-LIM-002",
+          "purpose": "Registered dependency falsification test."
+        }
+      ],
+      "related_frontiers": [
+        "FG-003"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from C-LIM-002 / F-LIM-002."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-FR-005",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-FR-005",
+          "docs/theories/tofoo_falsification_backlog.md#F-FR-005"
+        ]
+      },
+      "id": "FG-005",
+      "title": "Fleet-routing PoA denominator",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "hypothesis",
+      "question": "What is the correct social-welfare objective for the fleet-routing model, and does it support PoA = 1.2622?",
+      "current_understanding": "The backlog records that the standard denominator yields PoA = 6.09, while 1.2622 is recoverable only under an ungrounded interpretation C.",
+      "unresolved": "The denominator corresponding to the true social-welfare objective has not been derived and justified.",
+      "contradictions": [
+        "The registered 1.2622 value conflicts with the standard-denominator calculation of 6.09."
+      ],
+      "falsifier_or_decisive_test": "Derive the social-welfare objective from the demand model. If it is the standard x_opt·l(x_opt) objective, the 1.2622 claim fails.",
+      "next_gate": "Specify the demand model and derive the welfare denominator from first principles before further PoA claims are promoted.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-FR-005",
+          "purpose": "Current low-maturity PoA claim and conflicting standard calculation."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-FR-005",
+          "purpose": "Registered denominator falsification requirement."
+        }
+      ],
+      "related_frontiers": [
+        "FG-006",
+        "FG-007"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the unresolved fleet-routing welfare denominator."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-FR-006",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-FR-006",
+          "docs/theories/tofoo_falsification_backlog.md#F-FR-006"
+        ]
+      },
+      "id": "FG-006",
+      "title": "Post-toll global optimality",
+      "axes": [
+        "WHAT",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "Does the proposed Pigouvian toll actually recover the global social optimum, or is post-toll PoA = 1 false outside the local derivation?",
+      "current_understanding": "The falsification backlog records that current CTMC simulation indicates the global-optimality claim does not hold and labels the claim likely false.",
+      "unresolved": "A formal global proof or corrected simulation has not closed the claim.",
+      "contradictions": [
+        "Existing CTMC evidence points against the post-toll PoA = 1 claim."
+      ],
+      "falsifier_or_decisive_test": "Provide a formal global optimality proof or a corrected CTMC experiment. Continued failure to recover the global optimum falsifies the claim.",
+      "next_gate": "Reproduce the CTMC result independently, fix the objective definition from FG-005, and either retire or restate C-FR-006.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-FR-006",
+          "purpose": "Current unverified global-optimality claim."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-FR-006",
+          "purpose": "Existing contradictory simulation evidence and falsification gate."
+        }
+      ],
+      "related_frontiers": [
+        "FG-005",
+        "FG-007"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the likely-false post-toll optimality claim."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-FR-007",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-FR-007",
+          "docs/theories/tofoo_falsification_backlog.md#F-FR-007"
+        ]
+      },
+      "id": "FG-007",
+      "title": "Arrival-rate invariance of the toll",
+      "axes": [
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "epistemic_status": "hypothesis",
+      "question": "Is the proposed toll invariant to arrival rate in the actual CTMC model, or is that invariance an artifact of an incomplete fluctuation decomposition?",
+      "current_understanding": "C-FR-007 is explicitly conditional M2; the underlying Section 4 CTMC derivation is not yet rigorous.",
+      "unresolved": "The dependence or independence of the toll on arrival rate has not been derived from the CTMC model.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "Derive the fluctuation decomposition rigorously from the CTMC. If the toll depends on arrival rate, or the Section 4 derivation is incorrect, the invariance claim fails.",
+      "next_gate": "Produce the missing CTMC derivation and test the resulting expression numerically across arrival-rate regimes.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-FR-007",
+          "purpose": "Conditional standing of arrival-rate invariance."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-FR-007",
+          "purpose": "Required rigorous CTMC derivation."
+        }
+      ],
+      "related_frontiers": [
+        "FG-005",
+        "FG-006"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from C-FR-007 / F-FR-007."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-JFS-001",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-JFS-001",
+          "docs/theories/tofoo_falsification_backlog.md#F-JFS-001"
+        ]
+      },
+      "id": "FG-008",
+      "title": "J-space adaptive sweep mechanism",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "hypothesis",
+      "question": "Do controlled broad-scan, target-lock and disconfirming conditions produce distinct J-space reorganization followed by a stable decision-relevant candidate set?",
+      "current_understanding": "The claim is conceptual/protocol-level. A deterministic falsifier and synthetic mechanics tests exist, but the empirical J-lens run is still pending and synthetic success is explicitly not evidence for the claim.",
+      "unresolved": "The proposed workspace-selection mechanism has not been demonstrated on instrumented real-model traces beyond lexical or non-J-space controls.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "Run preregistered matched J-lens experiments. Failure of target concentration, counterevidence recruitment, workspace reorganization or repeated candidate stabilization beyond controls falsifies the claim.",
+      "next_gate": "Execute the preregistered multi-task J-lens experiment with matched lexical/task and non-J-space controls and preserve raw per-layer/token sparse coordinates.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-JFS-001",
+          "purpose": "Current J-space adaptive-sweep hypothesis and evidence status."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-JFS-001",
+          "purpose": "Executable falsification design and required controls."
+        }
+      ],
+      "related_frontiers": [
+        "FG-009",
+        "FG-010"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the highest-priority J-space adaptive-sweep falsification gap."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-JFS-002",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-JFS-002",
+          "docs/theories/tofoo_falsification_backlog.md#F-JFS-002"
+        ]
+      },
+      "id": "FG-009",
+      "title": "J-space stability versus spectral coherence",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "hypothesis",
+      "question": "Do stable decision-relevant J-space candidate sets and tau inside the configured Goldilocks regime co-occur more reliably for coherent reasoning than matched failure controls?",
+      "current_understanding": "The existing harness keeps J-space candidate stability and P10 tau coupling independently falsifiable; the paired empirical run is pending.",
+      "unresolved": "No same-trace empirical dataset yet establishes whether workspace stabilization and spectral coherence are coupled, independent or conditionally related.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "Measure J-space stability and tau independently on the same traces. Stable correct candidate sets outside the Goldilocks regime, or tau inside it without decision-relevant stabilization, falsifies the proposed coupling.",
+      "next_gate": "Run the paired J-space + tau experiment on the same traces with the Goldilocks band fixed before evaluation.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-JFS-002",
+          "purpose": "Current coupling hypothesis and independent falsifiability requirement."
+        },
+        {
+          "path": "docs/theories/tofoo_falsification_backlog.md",
+          "claim_or_test_id": "F-JFS-002",
+          "purpose": "Paired-trace falsification design."
+        }
+      ],
+      "related_frontiers": [
+        "FG-001",
+        "FG-002",
+        "FG-008"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from C-JFS-002 / F-JFS-002."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "CLAIM_REGISTRY.md#C-FRL-001",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "CLAIM_REGISTRY.md#C-FRL-001"
+        ]
+      },
+      "id": "FG-010",
+      "title": "Framleis continuity under legitimate novelty",
+      "axes": [
+        "WHAT",
+        "WHO",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "hypothesis",
+      "question": "Can representation-continuity checks distinguish surprising but legitimate novelty from adversarial lineage drift better than simpler predictability or anomaly baselines?",
+      "current_understanding": "C-FRL-001 separates predictability from representation continuity and records the distinction as conceptual/schema-level; no preregistered legitimate-novelty benchmark exists yet.",
+      "unresolved": "The practical value of provenance, lineage, amendment basis and representation invariants has not been measured against simpler anomaly baselines on surprising changes.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "On a preregistered benchmark, if continuity checks cannot distinguish legitimate surprising changes from adversarial drift better than simpler predictability/anomaly baselines, the claim fails.",
+      "next_gate": "Design a benchmark containing predictable changes, surprising legitimate amendments, silent rewrites, poisoning and cumulative drift, with blinded continuity adjudication.",
+      "source_refs": [
+        {
+          "path": "CLAIM_REGISTRY.md",
+          "claim_or_test_id": "C-FRL-001",
+          "purpose": "Current Framleis continuity-versus-predictability claim and explicit benchmark gap."
+        }
+      ],
+      "related_frontiers": [
+        "FG-003",
+        "FG-008"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from C-FRL-001 as an unresolved continuity benchmark frontier."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R22-R23",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R22-R23"
+        ]
+      },
+      "id": "FG-011",
+      "title": "Future compositional reach as a retention signal",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "Does target-independent marginal semantic closure gain predict future compositional capability beyond finite Boolean construction and outperform immediate utility, generic diversity and random retention on pristine task families?",
+      "current_understanding": "Synapse R22 found no generic distribution-level advantage for max-min semantic diversity. R23 then recovered 23 exact cases across frozen budgets versus 13 for diversity and a 19.33 hash-random mean by selecting relations for marginal one-step semantic closure gain.",
+      "unresolved": "The positive result is bounded to deterministic Boolean composition and has not been replicated on a pristine non-Boolean or open semantic task family.",
+      "contradictions": [
+        "Immediate isolated utility and generic max-min diversity were both inadequate future-value proxies in the frozen R22/R23 setting."
+      ],
+      "falsifier_or_decisive_test": "Freeze the R23 selector and evaluate it without tuning on at least one pristine task family. Failure to beat both random retention and immediate-utility retention under matched budgets rejects generalization of the proxy.",
+      "next_gate": "Run a preregistered pristine-family replication with the selector, budgets and comparison rules frozen before target exposure.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-R22-R23",
+          "purpose": "Bounded positive and negative evidence for retention by future compositional reach."
+        }
+      ],
+      "related_frontiers": [
+        "FG-012",
+        "FG-013",
+        "FG-019"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from Synapse R22/R23 selection and retention results."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-RM-FORMATION",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-RM-FORMATION"
+        ]
+      },
+      "id": "FG-012",
+      "title": "Formation of reliable latent regulatory memory",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "How can a system form a useful incomplete regulatory trace before an exact solution is known, without hand-constructing the trace or leaking the future target?",
+      "current_understanding": "Compact regulatory traces can causally bias later regeneration, and learned lineage bias can transfer to related unseen phenotypes. A preregistered pre-solution top-four poising rule was not reliable, making memory formation itself the unresolved mechanism.",
+      "unresolved": "No target-independent formation rule has yet shown reliable held-out benefit when the trace must be created before exact success.",
+      "contradictions": [
+        "Useful partial structure can appear before solution, but the tested top-four formation rule did not preserve it reliably."
+      ],
+      "falsifier_or_decisive_test": "A frozen pre-solution formation rule must beat scratch and matched random traces on held-out targets while remaining incomplete and free of target identifiers; otherwise the candidate rule fails.",
+      "next_gate": "Preregister a formation rule based on partial consequence and future semantic reach, then test it on sealed held-out targets.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-RM-FORMATION",
+          "purpose": "Regulatory-memory successes and the preserved negative pre-solution result."
+        }
+      ],
+      "related_frontiers": [
+        "FG-011",
+        "FG-013",
+        "FG-016",
+        "FG-017"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from regulatory-memory formation, transfer and negative-control results."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-RM4-RM5",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-RM4-RM5"
+        ]
+      },
+      "id": "FG-013",
+      "title": "Safe forgetting under uncertainty",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "What deletion certificate can safely distinguish redundant relation state from uncertain low-utility state in open domains?",
+      "current_understanding": "Conservative retention outperformed policies that treated uncertainty as deletion, and deletion of certified semantic duplicates preserved all represented semantic classes and reconstruction capability under pressure.",
+      "unresolved": "Exact semantic-duplicate certificates are available in the constructed domain but not generally in open semantic research.",
+      "contradictions": [
+        "Low current utility was not evidence of dispensability; relations with low isolated utility were sometimes required for later composition."
+      ],
+      "falsifier_or_decisive_test": "Under matched memory pressure, a proposed open-domain certificate must delete state without reducing held-out capability or future compositional coverage relative to no deletion.",
+      "next_gate": "Define an auditable redundancy certificate for one bounded semantic domain and compare it with score-based pruning and conservative retention.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-RM4-RM5",
+          "purpose": "Evidence for conservative retention and certificate-based forgetting."
+        }
+      ],
+      "related_frontiers": [
+        "FG-011",
+        "FG-012",
+        "FG-015"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from conservative latent retention and safe-forgetting experiments."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R28-R29",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R28-R29"
+        ]
+      },
+      "id": "FG-014",
+      "title": "Selected identity formation",
+      "axes": [
+        "WHAT",
+        "WHO",
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "Does stable computational identity form by selecting a repeatedly demonstrated phenotype and protecting its minimum causal support, rather than by discovering a target-blind natural structural core?",
+      "current_understanding": "R28 did not find a target-blind natural core. R29 selected a stable five-capability phenotype, derived a minimum four-relation cover from successful episodes and preserved exact continuity across 25 of 25 unseen turnover schedules.",
+      "unresolved": "The result is a bounded relational phenotype, not personal identity, and has not been replicated across rich semantic systems or independently designed environments.",
+      "contradictions": [
+        "Structural centrality alone narrowed breadth and did not identify the demonstrated identity phenotype."
+      ],
+      "falsifier_or_decisive_test": "On a pristine environment, compare selected minimum causal support against target-blind structural cores under turnover. Failure to preserve the chosen phenotype better than controls rejects the mechanism's generality.",
+      "next_gate": "Freeze the R29 formation procedure and replicate it on a separately designed task family with a predeclared phenotype and turnover schedule.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-R28-R29",
+          "purpose": "Negative structural-core result and positive selected-identity result."
+        }
+      ],
+      "related_frontiers": [
+        "FG-003",
+        "FG-015",
+        "FG-016",
+        "FG-017"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from R28 structural-core falsification and R29 identity formation."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R30-R31",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R30-R31"
+        ]
+      },
+      "id": "FG-015",
+      "title": "Expansion without self-erasure",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "Can a formed and protected relational phenotype expand into new capabilities without erasing its existing causal core under fixed capacity and consequence budgets?",
+      "current_understanding": "R30 preserved the resident identity phenotype in 150 of 150 episodes but acquired only three of six new targets. R31 later acquired all six under a different plastic retention regime while preserving 360 of 360 identity episodes.",
+      "unresolved": "The positive expansion result reused the same six targets that shaped the struggle regime and therefore needs a pristine split.",
+      "contradictions": [
+        "Protection alone preserved continuity but did not provide sufficient plastic search."
+      ],
+      "falsifier_or_decisive_test": "Freeze the formed core and expansion policy before exposing a pristine target family. Any core regression or failure to improve materially over reset search falsifies the claimed stability-plasticity mechanism.",
+      "next_gate": "Run the frozen R31 policy on a pristine expansion family while retaining exact resident-capability checks throughout learning.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-R30-R31",
+          "purpose": "Identity-preserving expansion result and its pristine-split limitation."
+        }
+      ],
+      "related_frontiers": [
+        "FG-013",
+        "FG-014",
+        "FG-016"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from R30 expansion failure and R31 bounded recovery."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R31",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-R31"
+        ]
+      },
+      "id": "FG-016",
+      "title": "Struggle-driven capability formation",
+      "axes": [
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "Does persistent unresolved need plus selective retention of partial consequence form capabilities that reset search misses, without relying on generic overload or target-specific tuning?",
+      "current_understanding": "R31 persistent-retention recovered six of six capabilities, including all three R30 misses, with about 58 percent fewer evaluations and transport than reset. Overload alone did not improve beyond steady persistence.",
+      "unresolved": "The mechanism has not yet been tested on a pristine task family and must not be generalized as a claim that stress improves learning.",
+      "contradictions": [
+        "More pressure alone was insufficient; persistence plus partial-consequence retention carried the observed advantage."
+      ],
+      "falsifier_or_decisive_test": "With the policy frozen, failure to outperform reset on sealed pristine targets under the same aggregate consequence budget rejects generalization of the mechanism.",
+      "next_gate": "Execute the preregistered pristine-family R31 replication without changing retention capacity, ranking or consequence ceilings.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-R31",
+          "purpose": "Bounded struggle-driven capability result and required next falsifier."
+        }
+      ],
+      "related_frontiers": [
+        "FG-012",
+        "FG-014",
+        "FG-015"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the R31 persistent-retention result."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-RM6",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-RM6"
+        ]
+      },
+      "id": "FG-017",
+      "title": "Representation portability and semantic re-grounding",
+      "axes": [
+        "WHAT",
+        "WHY",
+        "HOW"
+      ],
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "epistemic_status": "empirical_observation",
+      "question": "Can an incomplete history-derived disposition infer enough semantic binding online to transfer across a new representation without an externally supplied exact bridge?",
+      "current_understanding": "RM-6 preserved lineage-specific developmental choice across 512 fresh mixed invertible representations only when an explicit correct semantic bridge was supplied. Raw-coordinate and misbound controls collapsed toward the symmetric attractor distribution.",
+      "unresolved": "The experiment demonstrates bridge-dependent portability, not representation-free memory or learned semantic translation.",
+      "contradictions": [
+        "Byte persistence and coordinate reuse were insufficient without correct semantic binding."
+      ],
+      "falsifier_or_decisive_test": "Provide only bounded paired interaction and consequence evidence in a new representation. A learned bridge must transfer prior disposition better than scratch while wrong or non-identifiable mappings fail closed.",
+      "next_gate": "Run RM-7 with the exact bridge removed and a preregistered bounded semantic re-grounding budget.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-RM6",
+          "purpose": "Representation-shift result and semantic-bridge boundary."
+        }
+      ],
+      "related_frontiers": [
+        "FG-003",
+        "FG-012",
+        "FG-014",
+        "FG-018"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from RM-6 representation-shift transfer and controls."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-TWIN",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-TWIN"
+        ]
+      },
+      "id": "FG-018",
+      "title": "Derivation versus legitimate novelty",
+      "axes": [
+        "WHAT",
+        "WHO",
+        "WHY",
+        "HOW"
+      ],
+      "status": "BLOCKED",
+      "priority": "HIGH",
+      "epistemic_status": "implementation_claim",
+      "question": "Can Twin historical replay reliably classify a candidate as derivation, rediscovery, reframe or legitimate new primitive before the Garden changes represented research state?",
+      "current_understanding": "Twin replay and frozen semantic scoring provide an implemented derivability surface, but secondary review found summary and schema defects and required rework. The collaborative-frontier lanes were specified but not experimentally run.",
+      "unresolved": "The classifier is not yet a validated novelty gate, and a Twin representation cannot decide truth, personhood or authority.",
+      "contradictions": [
+        "Primary scoring was internally reproducible while its release summary and schema still failed secondary review."
+      ],
+      "falsifier_or_decisive_test": "Correct the review defects, freeze the rubric and run blinded cases with known derivability lineage. Failure to separate derivation from seeded novelty above simpler baselines rejects use as a Garden gate.",
+      "next_gate": "Resolve the Twin review defects and run the sealed collaborative-frontier matrix with preserved AI, human, joint and new-model provenance.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-TWIN",
+          "purpose": "Twin replay evidence, review defects and unrun frontier protocol."
+        }
+      ],
+      "related_frontiers": [
+        "FG-010",
+        "FG-017",
+        "FG-019",
+        "FG-020"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from Twin historical replay, secondary review and collaborative-frontier protocol."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-SWARM",
+        "parents": [],
+        "status": "speculative",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-SWARM"
+        ]
+      },
+      "id": "FG-019",
+      "title": "Sparse role-diverse frontier swarm",
+      "axes": [
+        "WHO",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "hypothesis",
+      "question": "Does sparse targeted routing across derivation, synapse, falsifier, counterexample and bridge roles preserve rare high-value candidates and improve verified frontier progress over dense broadcast or majority aggregation?",
+      "current_understanding": "External work supports targeted communication and warns that dense hub-dominated communication can collapse higher-order interaction and diversity. Twin defines sterile role-separated lanes, but the Garden swarm comparison has not been run.",
+      "unresolved": "No matched-budget Tofoo experiment has established which topology, role allocation or candidate-preservation rule improves verified research progress.",
+      "contradictions": [
+        "Model agreement is supplementary evidence and generic diversity did not itself guarantee better held-out capability."
+      ],
+      "falsifier_or_decisive_test": "Under sealed matched frontier packets and budgets, sparse role-diverse routing must outperform dense broadcast, independent duplication and majority-only aggregation on preregistered verified progress without suppressing rare falsifiers.",
+      "next_gate": "Run the existing collaborative-frontier protocol with frequency-blind first review and explicit rare-candidate retention.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-SWARM",
+          "purpose": "Internal protocol and external topology evidence for the unrun swarm frontier."
+        }
+      ],
+      "related_frontiers": [
+        "FG-008",
+        "FG-011",
+        "FG-018",
+        "FG-020"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from selective communication, topology-collapse and Twin swarm work."
+      }
+    },
+    {
+      "lineage_header": {
+        "origin": "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-AUTHORITY",
+        "parents": [],
+        "status": "evidence-backed",
+        "evidence_refs": [
+          "frontier_garden/research_synthesis_2026-08-21.md#FG-SYN-AUTHORITY"
+        ]
+      },
+      "id": "FG-020",
+      "title": "Research-state commit versus action authority",
+      "axes": [
+        "WHO",
+        "WHY",
+        "HOW"
+      ],
+      "status": "OPEN",
+      "priority": "HIGH",
+      "epistemic_status": "implementation_claim",
+      "question": "What minimum machine-checkable contract proves that Garden, Twin, Synapse or a learning evaluator may update represented research state without acquiring consequence-bearing execution authority?",
+      "current_understanding": "Tofoo already separates open questions, claims, results, governed state and authority. HCL-style evaluator commit and Research Factory routing are learning or selection operations, while execution authorization remains outside Tofoo.",
+      "unresolved": "The Garden protocol states the boundary, but no repository-local conformance test currently proves that future adapters cannot turn research-state updates into a direct effect path.",
+      "contradictions": [],
+      "falsifier_or_decisive_test": "A conformance test must demonstrate that every non-informative action path is absent and that Garden packet generation, adjudication and state updates expose no execution credential or authority decision. Any direct effect path fails the contract.",
+      "next_gate": "Define a negative conformance fixture for Garden and Twin adapters that asserts no authority minting, no execution credential and no consequence-bearing tool path.",
+      "source_refs": [
+        {
+          "path": "frontier_garden/research_synthesis_2026-08-21.md",
+          "claim_or_test_id": "FG-SYN-AUTHORITY",
+          "purpose": "Canonical separation between research-state commit, routing, evaluation and execution authority."
+        }
+      ],
+      "related_frontiers": [
+        "FG-004",
+        "FG-010",
+        "FG-018",
+        "FG-019"
+      ],
+      "lineage": {
+        "revision": 1,
+        "parent_revision": null,
+        "change_note": "Seeded from the Garden, Twin, HCL and governed-execution boundary synthesis."
+      }
+    }
+  ]
+}

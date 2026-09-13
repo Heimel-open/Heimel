@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nsolland/Tofoo-/frontier_garden/frontier.schema.json",
+  "title": "Tofoo Frontier Garden Registry v1",
+  "type": "object",
+  "required": [
+    "version",
+    "repository",
+    "standing",
+    "frontiers"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0.0"
+    },
+    "repository": {
+      "const": "valo.tofoo"
+    },
+    "standing": {
+      "const": "INFORMATIVE_RESEARCH_ONLY"
+    },
+    "frontiers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/frontier"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": [
+        "path",
+        "purpose"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_or_test_id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "lineage": {
+      "type": "object",
+      "required": [
+        "revision",
+        "parent_revision",
+        "change_note"
+      ],
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parent_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "change_note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "frontier": {
+      "type": "object",
+      "required": [
+        "lineage_header",
+        "id",
+        "title",
+        "axes",
+        "status",
+        "priority",
+        "epistemic_status",
+        "question",
+        "current_understanding",
+        "unresolved",
+        "falsifier_or_decisive_test",
+        "next_gate",
+        "source_refs",
+        "related_frontiers",
+        "lineage"
+      ],
+      "properties": {
+        "lineage_header": {
+          "$ref": "#/$defs/lineageHeader"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^FG-[0-9]{3}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "axes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "WHAT",
+              "WHO",
+              "WHY",
+              "HOW"
+            ]
+          }
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "ACTIVE",
+            "BLOCKED",
+            "RESOLVED",
+            "RETIRED"
+          ]
+        },
+        "priority": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        },
+        "epistemic_status": {
+          "enum": [
+            "hypothesis",
+            "mathematical_definition",
+            "empirical_observation",
+            "validated_result",
+            "falsification_criterion",
+            "implementation_claim"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_understanding": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unresolved": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contradictions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "falsifier_or_decisive_test": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_gate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        },
+        "related_frontiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^FG-[0-9]{3}$"
+          }
+        },
+        "lineage": {
+          "$ref": "#/$defs/lineage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "lineageHeader": {
+      "type": "object",
+      "required": [
+        "origin",
+        "parents",
+        "status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parents": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "enum": [
+            "speculative",
+            "question",
+            "evidence-backed"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

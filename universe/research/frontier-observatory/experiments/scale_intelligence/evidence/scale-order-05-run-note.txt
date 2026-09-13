@@ -1,0 +1,1 @@
+Execution complete after preregistration. Frozen verdict: FALSIFIED_BY_DATA. No metric or threshold changed after observation.

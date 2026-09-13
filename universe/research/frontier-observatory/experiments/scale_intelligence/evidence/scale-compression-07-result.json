@@ -1,0 +1,80 @@
+{
+  "canonical_base": "649e51f32c016b81846dd61ed08240ddd1d18e19",
+  "episodes_per_scale_replicate": 256,
+  "invariants": {
+    "compute_budget": "sha256:64f92577fc6de3232ea4f8df4f892df997ba71e6a449f138523442aa6d99bbed",
+    "initial_state": "sha256:516be5ac4916b990e1bcc5aebf3a696549f1e23e1608154d1eebccd8329abe08",
+    "node_set": "sha256:30b2d76cec04a9b08fa7968b8014fa45507433f261ad7d964d912b3873b93612",
+    "taskset": "sha256:d52d37f920fe1c49ee8808fae0cd6a44ca9b4253dd28a2d2f7b8b15e73dfbdce",
+    "topology": "sha256:606606709fdc70a7bc08ed48af435a5af59184e5fd0f009606e7524e2753f683",
+    "update_rule": "sha256:649f4fc59abe1c2655acd6ba41b4626b42ed913720470b1b6cd44deea6f0d269"
+  },
+  "preregistration_sha": "79a46e44da238825567226903adc14da06622e57",
+  "protocol": "SCALE-COMPRESSION-07",
+  "replicate_results": {
+    "1": [
+      {"seed": 17017, "target_decodability": 0.7084883432539683, "nuisance_compression": 0.3704809511616533, "sufficient_compression": 0.48654106591204926},
+      {"seed": 18018, "target_decodability": 0.699280753968254, "nuisance_compression": 0.3565332821712332, "sufficient_compression": 0.4722741957155381},
+      {"seed": 19019, "target_decodability": 0.7149677579365079, "nuisance_compression": 0.3617455368955949, "sufficient_compression": 0.4804183187839475},
+      {"seed": 20020, "target_decodability": 0.710968501984127, "nuisance_compression": 0.36928841451940086, "sufficient_compression": 0.4860925708687084},
+      {"seed": 21021, "target_decodability": 0.7071242559523809, "nuisance_compression": 0.3652356155435659, "sufficient_compression": 0.48167964832229376}
+    ],
+    "2": [
+      {"seed": 17017, "target_decodability": 0.7210441468253969, "nuisance_compression": 0.49444382368805617, "sufficient_compression": 0.5866217250239671},
+      {"seed": 18018, "target_decodability": 0.7058531746031745, "nuisance_compression": 0.4855808198640992, "sufficient_compression": 0.5753550172634447},
+      {"seed": 19019, "target_decodability": 0.7269655257936508, "nuisance_compression": 0.4837285689092952, "sufficient_compression": 0.5809130398456883},
+      {"seed": 20020, "target_decodability": 0.7191840277777778, "nuisance_compression": 0.485599609228276, "sufficient_compression": 0.5797480512268139},
+      {"seed": 21021, "target_decodability": 0.7197420634920635, "nuisance_compression": 0.4860247437763099, "sufficient_compression": 0.5802323465616901}
+    ],
+    "4": [
+      {"seed": 17017, "target_decodability": 0.753689236111111, "nuisance_compression": 0.6077947623030778, "sufficient_compression": 0.6729250885740957},
+      {"seed": 18018, "target_decodability": 0.7426215277777778, "nuisance_compression": 0.6077052006081078, "sufficient_compression": 0.6684233601056684},
+      {"seed": 19019, "target_decodability": 0.7594866071428571, "nuisance_compression": 0.6000141820386946, "sufficient_compression": 0.6703971619295748},
+      {"seed": 20020, "target_decodability": 0.7522941468253969, "nuisance_compression": 0.601874760988925, "sufficient_compression": 0.668730255437215},
+      {"seed": 21021, "target_decodability": 0.755797371031746, "nuisance_compression": 0.6057392674958125, "sufficient_compression": 0.6724991938507634}
+    ],
+    "8": [
+      {"seed": 17017, "target_decodability": 0.7853422619047619, "nuisance_compression": 0.679194916814835, "sufficient_compression": 0.72842189327268},
+      {"seed": 18018, "target_decodability": 0.7746775793650793, "nuisance_compression": 0.6767116790730446, "sufficient_compression": 0.7223883771008822},
+      {"seed": 19019, "target_decodability": 0.7942088293650793, "nuisance_compression": 0.6609591050865468, "sufficient_compression": 0.7214831287590158},
+      {"seed": 20020, "target_decodability": 0.7915736607142857, "nuisance_compression": 0.6679410328368097, "sufficient_compression": 0.7245210080310912},
+      {"seed": 21021, "target_decodability": 0.7900235615079365, "nuisance_compression": 0.6669754272671987, "sufficient_compression": 0.7233035939590933}
+    ],
+    "16": [
+      {"seed": 17017, "target_decodability": 0.7587425595238095, "nuisance_compression": 0.6185071495740939, "sufficient_compression": 0.6814852740960192},
+      {"seed": 18018, "target_decodability": 0.7428695436507936, "nuisance_compression": 0.6266765222084953, "sufficient_compression": 0.6798440938568943},
+      {"seed": 19019, "target_decodability": 0.7701822916666666, "nuisance_compression": 0.6124116185215498, "sufficient_compression": 0.682295184899245},
+      {"seed": 20020, "target_decodability": 0.759765625, "nuisance_compression": 0.6120523940082643, "sufficient_compression": 0.6779563516779171},
+      {"seed": 21021, "target_decodability": 0.7610987103174603, "nuisance_compression": 0.6063729271867623, "sufficient_compression": 0.6749824130840051}
+    ]
+  },
+  "replicate_seeds": [17017, 18018, 19019, 20020, 21021],
+  "scales": [1, 2, 4, 8, 16],
+  "validation": {
+    "execution": "CPU-only local Python; 5 scales x 5 replicates x 256 paired nuisance episodes",
+    "falsifier_tests": "6 logical cases passed locally"
+  },
+  "verdict": {
+    "candidate_scale": 8,
+    "gates": {
+      "decodability_gain_vs_scale1": true,
+      "decodability_gain_vs_scale16": false,
+      "nuisance_compression_gain_vs_scale1": true,
+      "paired_wins": true,
+      "sufficient_gain_vs_scale1": true,
+      "sufficient_gain_vs_scale16": true
+    },
+    "nuisance_compression_by_scale": {"1": 0.3646567600582896, "2": 0.4870755130932073, "4": 0.6046256346869235, "8": 0.670356432215687, "16": 0.6152041222998331},
+    "observed_gains": {
+      "decodability_vs_scale1": 0.07899925595238089,
+      "decodability_vs_scale16": 0.028633432539682535,
+      "nuisance_compression_vs_scale1": 0.30569967215739735,
+      "sufficient_vs_scale1": 0.24262244030404506,
+      "sufficient_vs_scale16": 0.044710936701736315
+    },
+    "paired_wins": 5,
+    "status": "FALSIFIED_BY_DATA",
+    "sufficient_compression_by_scale": {"1": 0.4814011599205074, "2": 0.5805740359843209, "4": 0.6705950119794635, "8": 0.7240236002245525, "16": 0.6793126635228162},
+    "target_decodability_by_scale": {"1": 0.7081659226190476, "2": 0.7185577876984127, "4": 0.7527777777777778, "8": 0.7871651785714285, "16": 0.758531746031746}
+  }
+}

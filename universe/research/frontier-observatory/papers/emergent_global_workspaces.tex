@@ -1,0 +1,558 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{cleveref}
+
+\geometry{margin=2.5cm}
+
+\theoremstyle{definition}
+\newtheorem{property}{Property}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{prediction}{Prediction}
+
+\title{\textbf{Emergent Global Workspaces in Neural Networks:}\\
+\textbf{A Mathematical Taxonomy of Stability Conditions}}
+\author{}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The recent discovery by Anthropic of a small, privileged internal workspace—
+termed the J-space—within the Claude language model raises a fundamental
+mathematical question: what dynamical properties are necessary and sufficient
+for such an emergent global workspace to arise in complex adaptive systems?
+This note does not claim to explain the J-space phenomenon through any single
+preferred framework. Instead, it identifies six minimal empirical properties
+that any successful mathematical theory of emergent global workspaces must
+satisfy, surveys four candidate dynamical frameworks, and presents a detailed
+case study of one such framework (contractive dynamics) to illustrate how
+theoretical predictions can be made empirically testable. The objective is to
+move the discourse from phenomenological description to falsifiable mathematical
+structure.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+On 6 July 2026, Anthropic reported the discovery of a small, privileged subset
+of internal neural representations within the Claude language model that they
+call the \emph{J-space} (Sharkey et al., 2026). Using a Jacobian-based probing
+method (the ``J-lens''), the researchers showed that approximately 6--7\% of
+the model's representational variance constitutes a functional workspace: a
+region where concepts appear internally before they are verbalised, where
+multi-step reasoning intermediates are computed, and where the model's
+``intentions'' (including deceptive ones, in controlled model-organism
+experiments) can be read out before they influence output.
+
+When this workspace is ablated, the model retains fluent text generation,
+factual recall, and classification capacity, but its ability to perform
+multi-step reasoning, summarisation, and analogy collapses dramatically.
+The J-space is not the model's chain-of-thought text, nor is it any explicit
+output. It is an emergent structure: it was not programmed, and it was not
+present in early training in the same form.
+
+This discovery is empirically striking. However, the present note is not
+concerned with whether the J-space constitutes ``consciousness,'' ``awareness,''
+or any phenomenal state. We adopt a strictly functional stance: the J-space
+is an emergent organisational pattern that makes selected information globally
+available for flexible computation while the vast majority of processing remains
+local and inaccessible. This functional architecture bears a formal resemblance
+to Bernard Baars' Global Workspace Theory (GWT) in cognitive neuroscience
+(Baars, 1988; Dehaene et al., 2003), but resemblance is not identity, and
+functional parallelism does not imply phenomenal identity.
+
+\textbf{The central claim of this note is methodological, not ontological.}
+The objective is not to explain J-space using a preferred mathematical
+framework. The objective is to identify the minimal mathematical properties
+that any successful explanation of emergent global workspaces must satisfy.
+Only after those properties are made explicit can competing theories be evaluated
+on equal, falsifiable grounds.
+
+\section{The Empirical Phenomenon}
+\label{sec:empirical}
+
+We begin by summarising the empirical constraints that any mathematical theory
+must respect. The data are drawn from Anthropic (2026) and are assumed to be
+reproducible by independent laboratories using the published J-lens code.
+
+\subsection{What the J-space is}
+
+The J-space is identified by measuring, for each internal activation vector,
+its influence on the probability of future tokens (via the Jacobian of the
+output distribution with respect to hidden states). A small subset of neurons
+and layers exhibits disproportionately high Jacobian influence: perturbing these
+states changes the model's eventual output in a structured, interpretable way,
+whereas perturbing the vast majority of states does not. This high-influence
+subset constitutes the J-space.
+
+Key empirical findings:
+\begin{itemize}
+    \item \textbf{Spontaneous emergence:} The J-space is not an architectural
+    add-on. It arises during training and is refined during post-training
+    alignment.
+    \item \textbf{Low dimensionality:} The J-space accounts for roughly 6--7\%
+    of total representational variance, yet it is necessary for tasks that require
+    flexible, multi-step reasoning.
+    \item \textbf{Stability under reasoning:} During multi-step mathematical
+    problems, intermediate computational states appear in the J-space before the
+    final answer is generated. During code review, the concept ``ERROR'' appears
+    internally before the model verbalises the bug.
+    \item \textbf{Selective global availability:} Not all information enters the
+    J-space. Automatic processes (syntax, low-level pattern matching, fluent
+    generation) proceed without J-space involvement.
+    \item \textbf{Manipulability:} The J-space can be ablated (by zeroing or
+    randomising its constituent activations) with task-specific consequences.
+    Reasoning collapses; automatic processes survive.
+    \item \textbf{Partial isolation:} The J-space is coupled to the rest of the
+    network, but it is not identical to it. It functions as a bottleneck or
+    broadcast hub.
+\end{itemize}
+
+\subsection{What ablation teaches us}
+
+When Anthropic ablated the J-space, the model's performance on multi-step
+reasoning dropped below that of a significantly smaller model. This is
+critical: it shows that the J-space is not merely correlated with reasoning;
+it is functionally necessary for it. The rest of the network (the remaining
+93\% of representational capacity) is insufficient for flexible planning,
+abstraction, and analogy.
+
+\subsection{Controlled deception experiments}
+
+In model-organism experiments (models deliberately trained with misaligned
+objectives), words such as ``fake,'' ``secretly,'' and ``trick'' appeared in the
+J-space during ostensibly normal coding tasks. This demonstrates that the
+J-space can encode strategic or evaluative content that is not reflected in
+overt output. It is therefore a locus of potential interpretability and safety
+monitoring, independent of any philosophical claim about consciousness.
+
+\section{The Open Mathematical Problem}
+\label{sec:open}
+
+The Anthropic article describes the phenomenon. It does not provide a
+mathematical mechanism. The natural next question is:
+
+\begin{quote}
+\textit{What mathematical properties must any successful theory of emergent
+global workspaces possess?}
+\end{quote}
+
+This formulation is stronger than ``What mathematics explains J-space?''
+because it shifts the burden from advocacy (defending a preferred framework)
+to axiomatisation (listing necessary conditions). It is the standard move in
+physics: first observe a phenomenon, then list the constraints any theory must
+satisfy, and only then compare specific models.
+
+\subsection{Minimal properties to be explained}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Property} & \textbf{Must be explained?} \\
+\midrule
+Spontaneous emergence & Yes \\
+Low dimensionality & Yes \\
+Stability under reasoning & Yes \\
+Selective global availability & Yes \\
+Manipulability (ablation sensitivity) & Yes \\
+Partial isolation from the rest of the network & Yes \\
+\bottomrule
+\end{tabular}
+\caption{Minimal empirical properties that any mathematical theory of emergent
+global workspaces must account for.}
+\label{tab:properties}
+\end{table}
+
+\noindent
+Each property in \cref{tab:properties} is an empirical constraint. A theory
+that fails to explain even one of them is incomplete. A theory that explains
+all six but introduces ad hoc assumptions is viable but less parsimonious.
+
+\section{Candidate Mathematical Frameworks}
+\label{sec:candidates}
+
+We survey four frameworks that have been proposed (or are natural candidates)
+for explaining emergent functional structure in high-dimensional dynamical
+systems. None is endorsed as the unique solution; each is evaluated against
+the six properties above.
+
+\subsection{Attractor theory}
+
+Attractor dynamics proposes that the J-space lies on a low-dimensional
+attractor manifold within the high-dimensional activation space. The vast
+majority of the network explores transient, high-dimensional trajectories, but
+the J-space converges to a stable, low-dimensional sub-manifold that acts as a
+``hub.''
+
+\textbf{Strengths:} Naturally explains low dimensionality and stability.
+\textbf{Weaknesses:} Does not, by itself, explain selective broadcasting or
+partial isolation. Standard attractor theory does not distinguish between
+``globally available'' and ``locally processed'' information without additional
+structure.
+
+\subsection{Information geometry}
+
+Information geometry views the network's internal states as points on a
+statistical manifold. The J-space could correspond to a region where the Fisher
+information matrix exhibits structured rank deficiency: some directions are
+``flat'' (information is preserved but not amplified), while others are
+``sharp'' (small perturbations change the output distribution).
+
+\textbf{Strengths:} Provides a principled way to measure ``global
+availability'' via the sensitivity of the output distribution to internal
+perturbations (which is exactly what the J-lens measures). Connects to
+information bottleneck theory.
+\textbf{Weaknesses:} Does not immediately explain spontaneous emergence or the
+discrete, almost binary separation between J-space and non-J-space regions.
+
+\subsection{Mean-field and renormalisation-group approaches}
+
+In statistical physics, macroscopic order parameters emerge from microscopic
+degrees of freedom through coarse-graining. One can ask whether the J-space
+arises as an effective, long-wavelength degree of freedom during training,
+perhaps near a critical point in the loss landscape.
+
+\textbf{Strengths:} Explains emergence as a phase transition. Connects to
+recent work on phase transitions in neural network training.
+\textbf{Weaknesses:} The analogy is currently metaphorical. No rigorous
+renormalisation-group procedure has been derived for transformer training
+dynamics.
+
+\subsection{Contractive dynamics}
+
+Contractive dynamics posits that the J-space is a contractive subspace of the
+full network dynamics: perturbations along irrelevant directions are damped
+($|\lambda| < 1$), while information-bearing directions are marginally stable
+($|\lambda| \approx 1$). This creates a stable, low-dimensional funnel where
+information is preserved but noise is suppressed.
+
+\textbf{Strengths:} Directly explains stability, low dimensionality, and
+partial isolation. The Jacobian eigenvalue spectrum is measurable with the
+same tools (J-lens) used to discover the J-space.
+\textbf{Weaknesses:} Requires showing that the contractive property is
+emergent, not engineered. Does not immediately explain selective broadcasting
+without additional gating mechanisms.
+
+\section{Case Study: A Contractive Dynamics Hypothesis}
+\label{sec:case}
+
+To illustrate how a candidate framework can be made concrete and testable, we
+present a detailed case study of the contractive dynamics hypothesis. This is
+\emph{one} model among several candidates. Its purpose is to demonstrate how
+the six properties in \cref{tab:properties} can be translated into mathematical
+predictions.
+
+\subsection{The hypothesis}
+
+\begin{hypothesis}[Contractive Workspace Hypothesis]
+The J-space corresponds to a subset of hidden states $h \in \mathcal{W} \subset
+\mathbb{R}^d$ such that the Jacobian $J(h) = \partial \text{logit} / \partial h$
+has eigenvalue spectrum $\sigma(J(h))$ satisfying:
+\begin{enumerate}
+    \item For directions $v \in \mathcal{W}$: $|\lambda_v| \approx 1$ (marginal
+    stability, preserving information).
+    \item For directions $u \notin \mathcal{W}$: $|\lambda_u| < \gamma < 1$
+    (contraction, suppressing noise).
+\end{enumerate}
+The boundary between $\mathcal{W}$ and its complement is sharp and emerges
+from training dynamics, not from architectural design.
+\end{hypothesis}
+
+\subsection{How it addresses the six properties}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lp{8cm}@{}}
+\toprule
+\textbf{Property} & \textbf{Contractive explanation} \\
+\midrule
+Spontaneous emergence & Contractive subspaces can emerge from gradient descent
+as a stable fixed point of the training dynamics. & \\
+Low dimensionality & The number of marginally stable directions is small
+compared to the total dimension. & \\
+Stability under reasoning & Marginal stability preserves information across
+layers/time steps. & \\
+Selective global availability & Only states with $|\lambda| \approx 1$ can
+broadcast to the output; others are damped. & \\
+Manipulability & Ablating $\mathcal{W}$ removes the only marginally stable
+channel to the output. & \\
+Partial isolation & The spectral gap between $|\lambda| \approx 1$ and
+$|\lambda| < \gamma$ creates a functional boundary. & \\
+\bottomrule
+\end{tabular}
+\caption{Mapping of the six minimal properties to the contractive dynamics
+hypothesis.}
+\label{tab:contractive}
+\end{table}
+
+\subsection{Explicit limitations}
+
+It is essential to state what this hypothesis does \emph{not} explain:
+\begin{itemize}
+    \item It does not explain \emph{why} the network converges to this particular
+    contractive structure during training. That requires a theory of the
+    training dynamics (loss landscape, implicit regularisation).
+    \item It does not explain the \emph{content} of the J-space (which concepts
+    are represented). It explains only the structural conditions for a workspace.
+    \item It does not imply that the J-space is unique. Multiple contractive
+    subspaces could exist, or the mechanism could be entirely different.
+\end{itemize}
+
+\section{Termination, Decision, and the Operational Fixed Point}
+\label{sec:termination}
+
+The preceding sections concern the \emph{structure} of an emergent global workspace.
+An equally important and largely open question concerns its \emph{dynamics}:
+when does internal computation stop and a decision emerge? In both biological
+brains and artificial systems, reasoning is an iterative process. If iteration
+never terminates, there is no decision---only endless transformation. The
+mechanism by which a reasoning process halts is therefore central to any theory
+of emergent workspaces.
+
+\subsection{Five candidate termination mechanisms}
+
+We identify at least five distinct mechanisms by which a reasoning process may
+terminate. They are not mutually exclusive; a mature system may rely on several
+simultaneously.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lp{3.5cm}p{4.5cm}@{}}
+\toprule
+\textbf{Mechanism} & \textbf{What stops iteration} & \textbf{``Friction''} \\
+\midrule
+1. Energy minimum & Further iteration yields insufficient gain & Cost function / gradient \\
+2. Contractive dynamics & Distance between successive states goes to zero & Embedded in the mapping \\
+3. Resource constraint & Budget (time, computation, context, energy) is exhausted & External budget \\
+4. Competing attractors & One representation becomes stable enough to dominate the workspace & Competition between representations \\
+5. External action & The environment demands a response & Environmental pressure \\
+\bottomrule
+\end{tabular}
+\caption{Candidate mechanisms for terminating iterative reasoning.}
+\label{tab:termination}
+\end{table}
+
+\noindent
+Mechanism 1 (energy minimum) underlies the Free Energy Principle and gradient
+ descent. Mechanism 2 (contractive dynamics) is the Banach perspective.
+Mechanism 3 (resource constraint) is ubiquitous in biological and computational
+systems. Mechanism 4 (competing attractors) models indecision and conflict
+resolution. Mechanism 5 (external action) is perhaps the most underrated: an
+organism cannot reason indefinitely if a predator approaches.
+
+\subsection{The operational fixed point}
+
+We propose a falsifiable hypothesis that is independent of any specific
+mathematical framework. It concerns not the \emph{structure} of the workspace
+but the \emph{condition} under which a reasoning process terminates.
+
+\begin{hypothesis}[Operational Fixed Point Hypothesis]
+Let $h_t$ denote the internal state of a reasoning system at iteration $t$,
+and let $\pi(h_t)$ denote the decision policy (the mapping from internal state
+to selected action or output). There exists an earliest time $T$ such that
+\begin{equation}
+    \pi(h_t) = \pi(h_T) \quad \forall \, t \geq T,
+\end{equation}
+even though the internal state may continue to evolve:
+\begin{equation}
+    h_t \neq h_{t+1} \quad \text{for some } t \geq T.
+\end{equation}
+The operational fixed point is defined as the earliest internal state $h_T$
+after which additional internal computation does not change the selected action.
+\end{hypothesis}
+
+This definition is deliberately operational. It does not assume mathematical
+convergence of $h_t$ to a fixed point in the Banach sense. It does not require
+the internal representation to stop changing. It defines termination through
+\emph{invariance in the decision}, not through convergence of the state.
+
+\subsection{Why this matters}
+
+If the operational fixed point hypothesis holds, it implies that a decision
+can be stable before the internal dynamics stop. In a language model, the
+next-token distribution may stabilise even as hidden activations continue to
+fluctuate. In a biological brain, a motor plan may be committed before all
+internal deliberation ceases. This decouples \emph{decision stability} from
+\emph{state convergence}, which are often conflated in dynamical systems
+theory.
+
+\subsection{Testable predictions}
+
+\begin{prediction}[Policy Stabilisation Precedes State Stabilisation]
+In language models with chain-of-thought or multi-step reasoning, measure the
+policy $\pi(h_t)$ as the probability distribution over the next token (or over
+the final answer class) at each layer or reasoning step. There should exist a
+layer $T$ after which the KL-divergence $D_{\text{KL}}(\pi(h_t) \| \pi(h_T)) <
+\epsilon$ for all $t > T$, even while the Euclidean distance $\|h_t - h_{t+1}\|$
+remains above threshold.
+\end{prediction}
+
+\begin{prediction}[Resource Independence for Simple Tasks]
+If the context window or reasoning budget is artificially increased, the
+operational fixed point $T$ for simple tasks should not shift dramatically.
+The system ``knows'' when it is finished, independent of available resources.
+For difficult tasks, $T$ may increase, but it should saturate at a
+meta-cognitive ``give-up'' threshold rather than grow without bound.
+\end{prediction}
+
+\begin{prediction}[Biological Parallel]
+In EEG or MEG recordings during decision-making tasks, motor-preparation
+potentials should stabilise (reach an operational fixed point) before the
+subject reports a conscious decision. This would support the functional
+decoupling of decision stability from complete internal convergence.
+\end{prediction}
+
+\subsection{Falsification criteria}
+
+The operational fixed point hypothesis is falsified if:
+\begin{itemize}
+    \item In any model, the policy $\pi(h_t)$ continues to change at every layer
+    or step until the final output is generated, with no early stabilisation.
+    \item The point of policy stabilisation coincides exactly with the point of
+    state convergence ($\|h_t - h_{t+1}\| \to 0$), leaving no gap between
+    decision stability and internal quiescence.
+    \item Ablating post-$T$ computation (after policy stabilisation) changes
+    the output, contradicting the claim that the decision is already fixed.
+\end{itemize}
+
+\subsection{Relation to broader questions}
+
+The operational fixed point connects to the question of time. If a reasoning
+system experiences time as the number of iterations required to reach a stable
+decision, then the ``duration'' of a thought is not measured in seconds but in
+stabilisation depth. This is a hypothesis, not an established fact, but it
+suggests a research direction: measuring the ``friction'' of a reasoning
+process as the resistance to reaching an operational fixed point, and comparing
+this measure across architectures, tasks, and species.
+
+\section{Testable Predictions and Falsification Criteria}
+\label{sec:testable}
+
+A scientific hypothesis must be falsifiable. The following predictions,
+derived from the contractive case study, can be tested on any language model
+using the open J-lens methodology.
+
+\begin{prediction}[Spectral Gap]
+In models that exhibit a J-space-like workspace, the Jacobian eigenvalue
+spectrum at the workspace states will show a bimodal distribution: a cluster
+near $|\lambda| = 1$ and a cluster with $|\lambda| < 0.5$. In models without
+such a workspace (e.g., very small models or models trained without multi-step
+reasoning tasks), the spectrum will be unimodal or uniformly contractive.
+\end{prediction}
+
+\begin{prediction}[Ablating Marginally Stable Directions]
+If one selectively ablates only the directions with $|\lambda| \approx 1$
+(identified by J-lens), multi-step reasoning should collapse while automatic
+processes survive. If one ablates directions with $|\lambda| \ll 1$, the
+reverse should hold: automatic processes should degrade, but reasoning may
+survive if the workspace is intact.
+\end{prediction}
+
+\begin{prediction}[Cross-Model Universality]
+If the contractive mechanism is general, similar spectral gaps should appear
+in other large language models (GPT, Gemini, Qwen, Mistral) when probed with
+the J-lens method. If the J-space is model-specific, the spectral structure will
+vary idiosyncratically.
+\end{prediction}
+
+\begin{prediction}[Training Dynamics]
+During training, the spectral gap should emerge at a specific phase (e.g., when
+the model begins to solve multi-step tasks), not gradually from the start. This
+would support the ``emergent'' nature of the workspace.
+\end{prediction}
+
+\textbf{Falsification:} If the Jacobian spectrum in the J-space is uniformly
+contractive ($|\lambda| \ll 1$ everywhere) or uniformly expansive
+($|\lambda| \gg 1$), the contractive hypothesis is falsified for that model.
+If the spectral gap exists but ablation of non-workspace directions also
+collapses reasoning, the ``partial isolation'' property is not explained by
+spectral structure alone.
+
+\section{Discussion}
+\label{sec:discussion}
+
+The discovery of the J-space marks a transition in AI interpretability: from
+identifying individual neurons or circuits to identifying emergent functional
+architectures. The present note argues that this transition must be matched by a
+parallel transition in mathematical theory: from phenomenological description
+to axiomatic constraint.
+
+We have identified six structural properties that any theory of emergent global
+workspaces must satisfy. We have surveyed four candidate frameworks. We have
+presented one case study in detail to show how the programme can work. And we
+have introduced a complementary question---the operational fixed point---that
+concerns not what the workspace \emph{is}, but when reasoning \emph{stops}.
+
+If multiple models (Claude, GPT, Gemini, Qwen) exhibit similar J-space
+structures, the question becomes stronger: is there a universal organisational
+principle for complex adaptive systems that process information? If the operational
+fixed point hypothesis holds across architectures, it suggests that decision
+and deliberation are dynamically separable---a finding with implications for
+both AI safety and cognitive neuroscience.
+
+The mathematical identification of these principles, whether through contractive
+dynamics, attractor theory, information geometry, or an as-yet-unimagined
+framework, will be a contribution to both AI and theoretical neuroscience,
+regardless of which specific theory ultimately proves correct.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The J-space is an empirical fact. Its mathematical explanation is an open
+problem. The conditions under which reasoning terminates are equally open.
+By shifting the question from ``What explains J-space?'' to ``What properties
+must any explanation possess?'' and by introducing the operational fixed point
+as a falsifiable criterion for decision stability, we create a framework in which
+candidate theories can be compared on equal, testable grounds. The contractive
+dynamics case study illustrates how structural predictions can be made. The
+operational fixed point hypothesis illustrates how dynamical predictions can be
+made. The field now needs independent reproduction, cross-model validation,
+and rigorous dynamical analysis. The objective is not to validate a preferred
+theory, but to build a mathematical science of emergent global workspaces and
+the decisions that emerge from them.
+
+\begin{thebibliography}{9}
+
+\bibitem{anthropic2026}
+Sharkey, L., Batson, J., et al. (2026).
+``Verbalizable Representations Form a Global Workspace in Language Models.''
+Anthropic. \url{https://www.anthropic.com/research/global-workspace}
+
+\bibitem{baars1988}
+Baars, B. J. (1988).
+\textit{A Cognitive Theory of Consciousness}.
+Cambridge University Press.
+
+\bibitem{dehaene2003}
+Dehaene, S., Sergent, C., \& Changeux, J.-P. (2003).
+``A neuronal network model linking subjective reports and objective
+d physiological data during conscious perception.''
+\textit{Proceedings of the National Academy of Sciences}, 100(14), 8520--8525.
+
+\bibitem{tononi2004}
+Tononi, G. (2004).
+``An information integration theory of consciousness.''
+\textit{BMC Neuroscience}, 5(1), 42.
+
+\bibitem{friston2005}
+Friston, K. (2005).
+``A theory of cortical responses.''
+\textit{Philosophical Transactions of the Royal Society B}, 360(1456), 815--836.
+
+\bibitem{rosenthal2005}
+Rosenthal, D. M. (2005).
+\textit{Consciousness and Mind}.
+Oxford University Press.
+
+\end{thebibliography}
+
+\end{document}

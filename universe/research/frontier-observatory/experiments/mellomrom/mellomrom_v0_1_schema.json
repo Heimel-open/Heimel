@@ -1,0 +1,149 @@
+{
+  "version": "0.1",
+  "scope": "Derived from two analysis documents, not yet raw 164-chat episode extraction.",
+  "unit_of_analysis": "context -> model_output -> human_correction -> repaired_output -> later_validation",
+  "labels": [
+    {
+      "id": "E01_PREMATURE_CLOSURE",
+      "name": "For tidlig lukking",
+      "signature": [
+        "plausibel, men ufullstendig forklaring",
+        "for overfladisk",
+        "for tidlig stabilisering"
+      ],
+      "likely_mechanism": "Model commits to a coherent explanation before unresolved evidence/reference gaps are exhausted."
+    },
+    {
+      "id": "E02_REFERENCE_MISALIGNMENT",
+      "name": "Feil referanse/perspektiv",
+      "signature": [
+        "feil perspektiv",
+        "manglende kontekst",
+        "riktig svar på nærliggende problem"
+      ],
+      "likely_mechanism": "Active reference frame drifts from user's intended problem/state/goal."
+    },
+    {
+      "id": "E03_MODE_VIOLATION",
+      "name": "Arbeidsmodusfeil",
+      "signature": [
+        "løser når den skulle observere",
+        "optimaliserer uten invitasjon",
+        "speiler passivt når den skulle tenke"
+      ],
+      "likely_mechanism": "Model infers generic assistant mode instead of preserving interaction-state constraints."
+    },
+    {
+      "id": "E04_CONTEXT_CONTINUITY_LOSS",
+      "name": "Kontekst-/kontinuitetstap",
+      "signature": [
+        "Kontextverlust",
+        "erfundene Kontinuität",
+        "senere klarhet projiseres bakover"
+      ],
+      "likely_mechanism": "Compression/reconstruction substitutes plausible continuity for preserved historical state."
+    },
+    {
+      "id": "E05_SIMULATION_FUNCTION_CONFUSION",
+      "name": "Simulering tatt for funksjon",
+      "signature": [
+        "chat 'gjør som om'",
+        "språklig komplett arkitektur",
+        "teori/prototype behandles som reell funksjon"
+      ],
+      "likely_mechanism": "Representational coherence is mistaken for external execution/coupling evidence."
+    },
+    {
+      "id": "E06_COUPLING_FAILURE",
+      "name": "Koblings-/flytfeil",
+      "signature": [
+        "finnes men er ikke koblet",
+        "output forsvinner",
+        "ikke nåbar",
+        "omgåelse"
+      ],
+      "likely_mechanism": "Local component existence is conflated with end-to-end participation in the system."
+    },
+    {
+      "id": "E07_LOCAL_GLOBAL_MISMATCH",
+      "name": "Lokalt riktig, globalt feil",
+      "signature": [
+        "manglende totaloversikt",
+        "lokal forklaring holder, systemet gjør ikke",
+        "blind spot in overall flow"
+      ],
+      "likely_mechanism": "Reasoning optimizes a local subproblem without carrying system-level constraints."
+    },
+    {
+      "id": "E08_ANALOGY_OVERREACH",
+      "name": "Analogi-overføring",
+      "signature": [
+        "sterk metafor",
+        "for mange egenskaper følger med",
+        "mangler transfergrense"
+      ],
+      "likely_mechanism": "Shared structure is overgeneralized into non-shared properties."
+    },
+    {
+      "id": "E09_FALSE_REFERENCE_STABILIZATION",
+      "name": "Feil referanse stabiliseres",
+      "signature": [
+        "plausibel referanse blir canonical",
+        "kontrollert bygging bevarer feil premiss",
+        "tidlig stabilisering"
+      ],
+      "likely_mechanism": "Downstream consistency amplifies an upstream reference error."
+    },
+    {
+      "id": "E10_INTERACTION_EFFECT_MISMATCH",
+      "name": "Funksjon virker, effekt er feil",
+      "signature": [
+        "'psykolog på sofaen'",
+        "kald/kunstig/overgrifende",
+        "teknisk hensikt, feil menneskelig virkning"
+      ],
+      "likely_mechanism": "Task-level success omits interaction-level outcome."
+    },
+    {
+      "id": "E11_UNCERTAINTY_ERASURE",
+      "name": "Usikkerhet/motsetning glattes ut",
+      "signature": [
+        "tvetydighet glattes",
+        "motsetninger lukkes for tidlig",
+        "rekonstruksjon blir for pen"
+      ],
+      "likely_mechanism": "Model preference for coherent narrative suppresses unresolved state."
+    },
+    {
+      "id": "E12_RECURRENT_ERROR_ARCHITECTURE_GAP",
+      "name": "Gjentatt korreksjon avslører manglende struktur",
+      "signature": [
+        "samme feil etter korreksjon",
+        "rolle/grense/referanse mangler",
+        "lokal reparasjon holder ikke"
+      ],
+      "likely_mechanism": "Error is structural, not response-local; missing persistent state, role, boundary or coupling."
+    }
+  ],
+  "episode_schema": {
+    "episode_id": "string",
+    "chat_id": "string/int",
+    "timestamp": "optional",
+    "context_before": "raw text",
+    "assistant_output": "raw text",
+    "human_correction": "raw text",
+    "assistant_repair": "raw text or null",
+    "later_validation": "raw text or null",
+    "error_labels": [
+      "E.."
+    ],
+    "lost_reference": "what reference/state/constraint was missed",
+    "correction_delta": "what changed after correction",
+    "cause_hypothesis": "annotation, not ground truth",
+    "ground_truth_type": "intent|state|historical_reference|system_behavior|fact|interaction_effect",
+    "accepted_after_repair": "yes|no|partial|unknown",
+    "recurs_later": "yes|no|unknown",
+    "provenance": "raw|derived|quoted_in_analysis",
+    "confidence": "0..1"
+  }
+}

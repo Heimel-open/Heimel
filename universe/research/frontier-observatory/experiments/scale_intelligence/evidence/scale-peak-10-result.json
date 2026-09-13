@@ -1,0 +1,75 @@
+{
+  "aggregate_by_geometry_scale": {
+    "5": {
+      "4": {"capability": 0.7218936011904755, "information_efficiency": 0.6742606827715932},
+      "5": {"capability": 0.7578062996031744, "information_efficiency": 0.6989371398148959},
+      "6": {"capability": 0.7563864087301583, "information_efficiency": 0.6990299175524918},
+      "7": {"capability": 0.7466765873015867, "information_efficiency": 0.6894442473233765},
+      "8": {"capability": 0.7419394841269837, "information_efficiency": 0.6907137152895698},
+      "9": {"capability": 0.7321180555555555, "information_efficiency": 0.6558306907886361},
+      "10": {"capability": 0.7417968749999994, "information_efficiency": 0.6876977576128644},
+      "11": {"capability": 0.742026289682539, "information_efficiency": 0.6868930539208763},
+      "12": {"capability": 0.7321304563492054, "information_efficiency": 0.6809895454753723},
+      "13": {"capability": 0.7188616071428562, "information_efficiency": 0.6728105887873074},
+      "14": {"capability": 0.746552579365079, "information_efficiency": 0.6896870984023636},
+      "15": {"capability": 0.7262648809523805, "information_efficiency": 0.6765591937140338}
+    },
+    "9": {
+      "4": {"capability": 0.7417658730158719, "information_efficiency": 0.6655361718810396},
+      "5": {"capability": 0.7693390376984118, "information_efficiency": 0.6927928261628118},
+      "6": {"capability": 0.7934709821428569, "information_efficiency": 0.7079713940377618},
+      "7": {"capability": 0.787456597222222, "information_efficiency": 0.7045279628703369},
+      "8": {"capability": 0.8131820436507936, "information_efficiency": 0.723953731930536},
+      "9": {"capability": 0.837109375000001, "information_efficiency": 0.7054064312359564},
+      "10": {"capability": 0.8383556547619045, "information_efficiency": 0.7280097236165526},
+      "11": {"capability": 0.8178571428571427, "information_efficiency": 0.7262503018480446},
+      "12": {"capability": 0.8039434523809523, "information_efficiency": 0.7163215976429902},
+      "13": {"capability": 0.7947048611111107, "information_efficiency": 0.7107905203832573},
+      "14": {"capability": 0.8074032738095238, "information_efficiency": 0.7121777065666542},
+      "15": {"capability": 0.7867807539682536, "information_efficiency": 0.7046524492674805}
+    },
+    "13": {
+      "4": {"capability": 0.7626302083333326, "information_efficiency": 0.6543475530903304},
+      "5": {"capability": 0.7826946924603174, "information_efficiency": 0.6845744832167646},
+      "6": {"capability": 0.8167286706349205, "information_efficiency": 0.7063936043836071},
+      "7": {"capability": 0.8228918650793651, "information_efficiency": 0.7109501521512599},
+      "8": {"capability": 0.8394717261904759, "information_efficiency": 0.724190304344096},
+      "9": {"capability": 0.831901041666668, "information_efficiency": 0.6878921976575488},
+      "10": {"capability": 0.8598400297619047, "information_efficiency": 0.7338997243439278},
+      "11": {"capability": 0.8641989087301584, "information_efficiency": 0.7328802429053178},
+      "12": {"capability": 0.8597966269841264, "information_efficiency": 0.7329230532078651},
+      "13": {"capability": 0.8633432539682541, "information_efficiency": 0.7380108106117069},
+      "14": {"capability": 0.8624007936507933, "information_efficiency": 0.7238570336999564},
+      "15": {"capability": 0.855834573412698, "information_efficiency": 0.7272768161788868}
+    }
+  },
+  "canonical_base": "52758c999ca8d9d4bb1874d1a4db37165a75223c",
+  "episodes_per_probe_stream": 256,
+  "evidence_note": "Full raw trial matrix is deterministically reproducible from scale_peak_run.py, frozen seeds, and canonical base; this evidence file stores the aggregate and digest of the full canonical result object.",
+  "full_trial_digest": "sha256:bc7e6cec01ce74f89e6597377c7d6a07acdbca86d4f526b14d71eeb730820b8b",
+  "gates": {
+    "capability_strict_order": true,
+    "efficiency_strict_order": true,
+    "median_peaks_interior": true,
+    "minimum_small_large_shift": true,
+    "paired_capability_outward": true,
+    "paired_efficiency_outward": true,
+    "within_geometry_alignment": true
+  },
+  "median_peaks": {
+    "capability": {"5": 5, "9": 10, "13": 11},
+    "information_efficiency": {"5": 5, "9": 10, "13": 13}
+  },
+  "paired_outward_counts": {"capability": 5, "information_efficiency": 5},
+  "preregistration_sha": "ec0ec6364dbe69bce910e846caaf926a9f96e64e",
+  "protocol": "SCALE-PEAK-10",
+  "replicate_peaks": {
+    "capability": {"5": [5, 6, 5, 5, 5], "9": [10, 10, 10, 9, 9], "13": [11, 13, 10, 14, 11]},
+    "information_efficiency": {"5": [5, 6, 5, 5, 6], "9": [11, 10, 10, 10, 11], "13": [10, 13, 13, 13, 10]}
+  },
+  "replicate_seeds": [32032, 33033, 34034, 35035, 36036],
+  "scales": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "status": "NOT_FALSIFIED_BY_DATA",
+  "task_blocks": [5, 9, 13],
+  "trial_count": 180
+}

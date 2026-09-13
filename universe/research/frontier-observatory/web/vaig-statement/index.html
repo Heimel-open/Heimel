@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAIG is not a guardrail — VΛLΦ Research Group</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #e8e8e8;
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .statement {
+      margin-bottom: 3rem;
+    }
+
+    .statement h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    .statement h1 span.not {
+      color: #555;
+      text-decoration: line-through;
+      text-decoration-color: #333;
+    }
+
+    .statement h1 span.is {
+      color: #ffffff;
+    }
+
+    .divider {
+      width: 2rem;
+      height: 1px;
+      background: #333;
+      margin: 2rem 0;
+    }
+
+    .body-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #aaa;
+    }
+
+    .body-text p {
+      margin-bottom: 1.2rem;
+    }
+
+    .body-text strong {
+      color: #e8e8e8;
+      font-weight: 400;
+    }
+
+    .distinction {
+      margin: 2.5rem 0;
+      border-left: 1px solid #222;
+      padding-left: 1.5rem;
+    }
+
+    .distinction .row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #111;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .distinction .row:last-child {
+      border-bottom: none;
+    }
+
+    .distinction .row .key {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: #444;
+      padding-top: 0.1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .distinction .row .val {
+      color: #aaa;
+    }
+
+    .distinction .row.highlight .val {
+      color: #e8e8e8;
+    }
+
+    .footer {
+      margin-top: 4rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .phi {
+      color: #444;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="label">VΛLΦ Research Group — Position Statement — 2026</div>
+
+    <div class="statement">
+      <h1>VAIG is <span class="not">not a guardrail</span>.</h1>
+      <h1>VAIG is <span class="is">an admissibility layer</span>.</h1>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="body-text">
+      <p>
+        <strong>Guardrails react to bad output.</strong> They let the system act,
+        observe what happened, and then block or warn after the fact.
+        The damage window is already open.
+      </p>
+      <p>
+        <strong>Admissibility decides whether action is allowed before damage occurs.</strong>
+        It is a gate on actions, not a filter on outputs.
+        The decision happens at the boundary, not after crossing it.
+      </p>
+    </div>
+
+    <div class="distinction">
+      <div class="row">
+        <div class="key">Guardrail</div>
+        <div class="val">Action → Output → Check → Block or warn</div>
+      </div>
+      <div class="row highlight">
+        <div class="key">Admissibility</div>
+        <div class="val">Action proposed → Evaluate → Allow or deny</div>
+      </div>
+      <div class="row">
+        <div class="key">When</div>
+        <div class="val">Guardrail: post-hoc. Admissibility: pre-emptive.</div>
+      </div>
+      <div class="row">
+        <div class="key">What</div>
+        <div class="val">Guardrail: filter on outputs. Admissibility: gate on actions.</div>
+      </div>
+      <div class="row highlight">
+        <div class="key">VAIG</div>
+        <div class="val">Admissibility layer. Not a guardrail.</div>
+      </div>
+    </div>
+
+    <div class="body-text">
+      <p>
+        The distinction is architectural, not cosmetic.
+        A system built around admissibility is structurally different from one built around guardrails —
+        it does not require observation of failure in order to prevent it.
+      </p>
+      <p>
+        VAIG (Valo AI Governance) is an 8-instrument ensemble with a unified distrust engine,
+        a WORM audit log, and pre-execution decision gates grounded in the Φ-Law:
+        a universal stability threshold derived from number theory and chaos theory.
+      </p>
+    </div>
+
+    <div class="footer">
+      <span>VΛLΦ Research Group · njaal.solland@gmail.com</span>
+      <span class="phi">Φ</span>
+    </div>
+
+  </div>
+</body>
+</html>
