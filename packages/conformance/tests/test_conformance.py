@@ -2,8 +2,12 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 from pydantic import ValidationError
-
-from valo_conformance import GovernedPresentationClaimV1, GovernedPresentationEnvelopeV1, SurfaceConformanceObservationV1, evaluate_surface_conformance
+from valo_conformance import (
+    GovernedPresentationClaimV1,
+    GovernedPresentationEnvelopeV1,
+    SurfaceConformanceObservationV1,
+    evaluate_surface_conformance,
+)
 
 
 def digest(char: str) -> str:

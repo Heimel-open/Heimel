@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from .levels import DistrustLevel, GateStatus
 
@@ -23,7 +22,7 @@ class GateDecision:
     status: GateStatus
     combined_status: GateStatus
     coherence: float
-    tav_regime: Optional[str]
+    tav_regime: str | None
     metrics_logged: bool = True
 
     def as_dict(self) -> dict[str, object]:

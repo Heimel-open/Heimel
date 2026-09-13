@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from .models import GovernedPresentationEnvelopeV1, SurfaceConformanceObservationV1, SurfaceConformanceReportV1
+from .models import (
+    GovernedPresentationEnvelopeV1,
+    SurfaceConformanceObservationV1,
+    SurfaceConformanceReportV1,
+)
 
 
 def evaluate_surface_conformance(observation: SurfaceConformanceObservationV1, *, presentation: GovernedPresentationEnvelopeV1 | None = None, moment: datetime | None = None) -> SurfaceConformanceReportV1:

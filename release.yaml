@@ -6,7 +6,7 @@ release:
   registry: pypi
   registry_organization: heimel
   publication_mode: manual-local
-  github_actions: forbidden
+  github_actions: required-for-gates
   tags_are_immutable: true
   tag_target_rule: tag the reviewed merge commit containing the exact package sources
   artifact_rule: record sha256 for every sdist and wheel before upload
@@ -94,7 +94,7 @@ required_local_gates:
   - import smoke tests pass
   - dependency installation resolves from published artifacts in publish order
   - artifact sha256 digests are recorded
-  - no github actions workflow exists
+  - public GitHub Actions workflow is present for reproducible gates
 
 publication:
   approval: explicit-owner-approval-required

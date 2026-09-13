@@ -35,7 +35,7 @@ class GovernedPresentationClaimV1(BaseModel):
     confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @model_validator(mode="after")
-    def validate_truth_boundary(self) -> "GovernedPresentationClaimV1":
+    def validate_truth_boundary(self) -> GovernedPresentationClaimV1:
         if self.origin == "inference":
             if self.truth_status != "INFERRED":
                 raise ValueError("model inference must remain INFERRED")
@@ -74,7 +74,7 @@ class GovernedPresentationEnvelopeV1(BaseModel):
         return None if value is None else _aware(value, "fresh_until")
 
     @model_validator(mode="after")
-    def validate_envelope(self) -> "GovernedPresentationEnvelopeV1":
+    def validate_envelope(self) -> GovernedPresentationEnvelopeV1:
         if self.fresh_until is not None and self.fresh_until < self.projected_at:
             raise ValueError("fresh_until cannot precede projected_at")
         if self.envelope_digest and self.envelope_digest != self.computed_digest:
@@ -122,7 +122,7 @@ class SurfaceConformanceReportV1(BaseModel):
     report_digest: Digest = ""
 
     @model_validator(mode="after")
-    def validate_report(self) -> "SurfaceConformanceReportV1":
+    def validate_report(self) -> SurfaceConformanceReportV1:
         if self.passed != (not self.findings):
             raise ValueError("conformance pass flag differs from findings")
         if self.report_digest and self.report_digest != self.computed_digest:

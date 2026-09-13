@@ -1,5 +1,4 @@
 import pytest
-
 from valo_vaig import (
     AuditReceipt,
     DistrustLevel,

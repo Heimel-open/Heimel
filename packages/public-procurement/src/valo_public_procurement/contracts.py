@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass
-from typing import Mapping
 
 
 def _canonical_digest(payload: Mapping[str, object]) -> str:
@@ -19,7 +19,7 @@ def _canonical_digest(payload: Mapping[str, object]) -> str:
 
 class _Digestible:
     def canonical_payload(self) -> Mapping[str, object]:
-        return asdict(self)  # type: ignore[arg-type]
+        return asdict(self)  # type: ignore[arg-type, call-overload]
 
     @property
     def computed_digest(self) -> str:

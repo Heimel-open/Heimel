@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
-
-from valo_c_mcp import CMCPContractV1, CMCPInvocation, ProtocolStack, canonical_json
-
+from valo_c_mcp import CMCPContractV1, CMCPInvocation, ProtocolStack
 
 NOW = datetime(2026, 8, 14, 4, 0, tzinfo=timezone.utc)
 

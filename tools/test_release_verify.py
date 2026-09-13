@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 import release_verify
 
@@ -26,11 +26,11 @@ class release_verify_tests(unittest.TestCase):
         with self.assertRaises(release_verify.verification_error):
             self.parse("schema_version: 1\n")
 
-    def test_policy_rejects_actions(self) -> None:
+    def test_policy_rejects_unapproved_actions_policy(self) -> None:
         manifest = release_verify.parse_release()
         release = manifest["release"]
         self.assertIsInstance(release, dict)
-        release["github_actions"] = "allowed"
+        release["github_actions"] = "forbidden"
         with self.assertRaises(release_verify.verification_error):
             release_verify.verify_policy(manifest)
 

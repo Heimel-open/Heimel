@@ -6,9 +6,9 @@ clearance or action authority.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from hashlib import sha256
-import json
 from typing import Iterable, Mapping
 
 

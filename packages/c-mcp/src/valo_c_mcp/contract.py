@@ -11,7 +11,6 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-
 CMCP_VERSION = "c-mcp/1"
 TransportKind = Literal["http", "stdio", "sse", "websocket", "browser", "computer_use", "native", "other"]
 InteractionProtocol = Literal["mcp", "a2a", "anp", "ag_ui", "api", "generated_code", "other"]
@@ -100,7 +99,7 @@ class CMCPContractV1(BaseModel):
 
     @classmethod
     def bind(cls, invocation: CMCPInvocation, *, gcop_contract_id: str, gcop_contract_hash: str,
-             ttl_seconds: int = 300, now: datetime | None = None, contract_id: str | None = None) -> "CMCPContractV1":
+             ttl_seconds: int = 300, now: datetime | None = None, contract_id: str | None = None) -> CMCPContractV1:
         if ttl_seconds <= 0:
             raise ValueError("ttl_seconds_must_be_positive")
         if not gcop_contract_id or not gcop_contract_hash:
