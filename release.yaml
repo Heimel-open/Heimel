@@ -16,7 +16,7 @@ release:
 packages:
   - distribution: heimel-kernel
     import: valo_kernel
-    version: 0.1.1
+    version: 0.1.0
     path: packages/kernel
     tag: heimel-kernel-v0.1.0
     publish_order: 1
