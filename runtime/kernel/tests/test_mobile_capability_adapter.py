@@ -16,7 +16,7 @@ from valo_kernel.windows_capability_adapter import (
 def _request(platform: MobilePlatform) -> MobileCapabilityRequest:
     return MobileCapabilityRequest(
         request_id="mobile-1",
-        actor_id="relaion",
+        actor_id="mobile-agent",
         principal_id="user-1",
         platform=platform,
         capability_id="calendar.write",

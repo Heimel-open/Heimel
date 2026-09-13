@@ -2,7 +2,7 @@
 
 Status: proposed general VALO capability
 Owner: nsolland
-Scope: cross-product (VALO, relAIon, Roomit and future products)
+Scope: cross-product (VALO, Heimel and future products)
 
 ## Purpose
 
@@ -133,7 +133,7 @@ Each promoted finding should answer:
 1. What capability does this provide?
 2. What do we have today?
 3. What is the material delta?
-4. Where is it useful (VALO/relAIon/Roomit/other)?
+4. Where is it useful (VALO/Heimel/other)?
 5. What authority, data or consequence risk does it introduce?
 6. What is the cheapest bounded test that can validate the claimed value?
 

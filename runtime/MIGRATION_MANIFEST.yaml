@@ -103,11 +103,6 @@ components:
     path: runtime/packs/insurance-pilot
     source_repository: valo-insurance-pilot
     source_commit: 7bc3a89b4107aa6942e05837266af24ba9503957
-  - id: personal-ai-application
-    path: universe/applications/personal-ai-os
-    source_repository: PersonalAI-OS
-    source_commit: da0307526685e82b22266fa9ac7bb29b42f70686
-
 excluded:
   - class: private_sources
     reason: wholly outside Heimel

@@ -1,6 +1,0 @@
-{"event":"RUN_INITIALIZED","protocol":"ROP-R01","version":"0.1","timestamp":"2026-09-12","operator":"TO_BE_FILLED","notes":"No task, assignment, or scoring changes permitted after first execution."}
-{"event":"TASK_PRESENTED","task_id":"TO_BE_FILLED","timestamp":"TO_BE_FILLED","condition_hidden":true}
-{"event":"REDUCTION_DECISION","task_id":"TO_BE_FILLED","component_id":"TO_BE_FILLED","classification":"TO_BE_FILLED","action":"TO_BE_FILLED","reason":"TO_BE_FILLED"}
-{"event":"RESIDUAL_FROZEN","task_id":"TO_BE_FILLED","residual":"TO_BE_FILLED"}
-{"event":"ANSWER_SUBMITTED","task_id":"TO_BE_FILLED","answer":"TO_BE_FILLED","confidence":null,"time_seconds":null,"steps":null,"reversals":null,"errors":null}
-{"event":"SCORING","task_id":"TO_BE_FILLED","correct":null,"required_dependency_preserved":null,"scorer_id":"TO_BE_FILLED"}

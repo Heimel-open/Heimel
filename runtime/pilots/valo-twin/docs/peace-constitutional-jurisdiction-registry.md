@@ -173,20 +173,14 @@ Different domains can therefore retain different laws while still exchanging mac
 
 > Who are the actors, which rules apply to this exact consequence, who may resolve a conflict, and which effector may make the result real?
 
-## Discovery lineage
+## Implementation Structure
 
-The immediate reasoning started with the question of who could make shared human/AI rules, who could sign for AI actors, who could make such rules binding, and who would execute the consequence.
-
-The working reduction rejected a universal representative and separated four functions:
+The architecture separates four functions:
 
 1. rule/constitutional source;
 2. representation;
 3. jurisdiction/adjudication;
 4. enforcement.
-
-Njål Solland then identified the missing infrastructure directly:
-
-> Vi trenger et registry
 
 The implementation adds:
 

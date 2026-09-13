@@ -120,18 +120,10 @@ Removing it creates a specific failure mode:
 
 > Repeated locally valid acts can accumulate into globally inadmissible depletion, concentration or capture.
 
-## Discovery lineage
+## Implementation Structure
 
-This step arose while extending PEACE to autonomous AI-owned factories and considering a possible AI land/resource grab.
-
-Njål Solland identified the missing requirement directly:
-
-> Bærekraft må inn.
-
-The working session then reduced that requirement to the invariant:
+This extends PEACE to evaluate cumulative effects:
 
 > Authority permits the act. Sustainability constrains the trajectory.
-
-Njål accepted the reduction and instructed `Bygg`.
 
 The resulting implementation is `src/lib/peaceSustainabilityTrajectory.ts` with deterministic tests in `src/lib/peaceSustainabilityTrajectory.test.ts`.

@@ -1,1 +1,0 @@
-SCALE-ORDER-05 is preregistered in SCALE-ORDER-05.md and recorded in evidence/scale-order-05.md. The preregistered integration-differentiation explanation was falsified; the interior capability peak itself replicated.

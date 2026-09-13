@@ -85,7 +85,7 @@ The inference fabric ends at proposal/capability output. It has no direct effect
 
 This permits VALO to treat inference infrastructure as commodity while retaining the non-commodity layer: authoritative state, admissibility, consequence-time authority resolution, deterministic decision semantics, governed effects, and verifiable evidence.
 
-The same boundary supports local Personal AI/relAIon deployments: private local inference can evolve independently of persistent identity/context and independently of the right to create consequence.
+The same boundary supports local governed agent deployments: private local inference can evolve independently of persistent identity/context and independently of the right to create consequence.
 
 Conceptually:
 

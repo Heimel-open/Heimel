@@ -33,14 +33,14 @@ class NeedDomainTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown need domain"):
             get_need_domain("unknown")
 
-    def test_relaion_need_is_only_a_hypothesis_until_human_confirmation(self):
+    def test_need_is_only_a_hypothesis_until_human_confirmation(self):
         hypothesis = NeedHypothesis(
             need_id="need-1",
             domain_id="wellbeing",
             current_state="job no longer fits desired direction",
             proposed_change="explore a materially better-fitting role",
             rationale="persistent mismatch between stated goals and current work",
-            evidence_refs=("relaion:observation:1",),
+            evidence_refs=("observation:1",),
         )
         self.assertFalse(hypothesis.direct_effect_path)
 

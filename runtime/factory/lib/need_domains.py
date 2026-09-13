@@ -56,7 +56,7 @@ def get_need_domain(domain_id: str) -> NeedDomain:
 
 @dataclass(frozen=True)
 class NeedHypothesis:
-    """A possible need inferred by relAIon. It is not authority to act."""
+    """A possible need inferred. It is not authority to act."""
 
     need_id: str
     domain_id: str
@@ -98,7 +98,7 @@ class ConfirmedNeed:
 
 @dataclass(frozen=True)
 class NeedToDoneContract:
-    """Boundary between relAIon need discovery and the governed path toward done."""
+    """Boundary between inferred need discovery and the governed path toward done."""
 
     need: ConfirmedNeed
     done_definition: str
@@ -121,7 +121,7 @@ def confirm_need(
     confirmation_ref: str,
     constraints: tuple[str, ...] = (),
 ) -> ConfirmedNeed:
-    """Convert a relAIon hypothesis into a mandate only after explicit human confirmation."""
+    """Convert a need hypothesis into a mandate only after explicit human confirmation."""
     return ConfirmedNeed(
         need_id=hypothesis.need_id,
         domain_id=hypothesis.domain_id,

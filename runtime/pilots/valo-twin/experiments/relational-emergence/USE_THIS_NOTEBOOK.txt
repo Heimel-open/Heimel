@@ -1,5 +1,0 @@
-NO NOTEBOOK IS NORMATIVE.
-
-Use: experiments/relational-emergence/inspect_eval/
-Run the packaged Inspect AI tasks with `inspect eval` / `inspect eval-set`.
-If Colab is used, it is only a GPU execution host; do not put evaluation logic in notebook cells.

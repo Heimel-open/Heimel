@@ -1,8 +1,0 @@
-{
-  "agent": "collections_agent",
-  "intent": "send_reminder",
-  "target": "standard_business_account",
-  "amount_risk": "low",
-  "critical_service": false,
-  "authority_level": "sufficient"
-}

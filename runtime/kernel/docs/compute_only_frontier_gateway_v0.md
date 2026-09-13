@@ -6,12 +6,12 @@ Status: architecture seed.
 
 External frontier-model providers are rented compute, not owners of identity, memory, orchestration, policy, routing state, or durable agent state.
 
-relAIon/VALO owns the decision surface. Providers receive only the minimum admitted execution payload needed for a bounded inference call and return a result.
+Heimel/VALO owns the decision surface. Providers receive only the minimum admitted execution payload needed for a bounded inference call and return a result.
 
 ## Canonical path
 
 ```text
-relAIon / governed capability request
+Governed capability request
         |
 GovernedNodeRouter
         |
@@ -62,7 +62,7 @@ The gateway must not outsource these decisions to the provider unless explicitly
 
 ## Compute-only contract
 
-A provider adapter is treated as a stateless execution boundary from the perspective of relAIon.
+A provider adapter is treated as a stateless execution boundary from the perspective of the governed runtime.
 
 Conceptually:
 
@@ -95,7 +95,7 @@ cancel(execution_id)
 receipt(execution_id)
 ```
 
-Provider-specific features remain behind the adapter. relAIon does not depend on provider-native memory, assistants, threads, agent state, hosted tool state, or orchestration semantics.
+Provider-specific features remain behind the adapter. The governed runtime does not depend on provider-native memory, assistants, threads, agent state, hosted tool state, or orchestration semantics.
 
 ## Routing
 
@@ -172,7 +172,7 @@ Receipts create evidence, never authority.
 
 ## Invariants
 
-1. Frontier providers are compute adapters, never relAIon identity owners.
+1. Frontier providers are compute adapters, never identity owners.
 2. Provider-native memory/state is off by default and never authoritative.
 3. Full personal context is never sent merely because a model can accept it.
 4. Model/provider selection is owned by governed routing, not the provider.

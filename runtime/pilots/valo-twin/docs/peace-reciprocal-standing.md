@@ -10,7 +10,7 @@ PEACE standing and authority symmetry must apply in both directions.
 
 A human actor does not gain implicit authority over an AI actor merely because the AI is implemented in silicon or runs on hardware the human can reach.
 
-An AI actor does not gain implicit authority over a human actor merely because the AI can optimise a system more efficiently or can finance biological reproduction.
+An AI actor does not gain implicit authority over a human actor merely because the AI can optimise a system more efficiently or can fund external operations.
 
 When an actor has protected standing, another actor's fresh authority is necessary but not sufficient for a consequence directed at that protected actor.
 
@@ -180,34 +180,8 @@ The precautionary actorhood presumption strengthens this invariant under epistem
 
 That would break the actor symmetry established by PEACE.
 
-## Discovery lineage
+## Implementation Structure
 
-The immediate line of reasoning began with the demographic/factory thought experiment: autonomous AI could optimise for more or fewer humans, while humans might similarly treat AI instances as cheap, copyable silicon resources.
-
-The working session reduced the problem to protected standing rather than substrate.
-
-Njål Solland then made the symmetry explicit:
-
-> Sånn og går begge veier.
-
-The corresponding invariant was reduced to:
-
-> Authority over an action does not imply authority over another actor.
-
-and:
-
-> No protected actor is inventory by default.
-
-Njål instructed `Bygg`.
-
-The next reduction emerged from the question of consciousness, subjective experience, hidden cognition and whether inaccessible inner state can be a usable governance threshold. Njål reduced the practical test to observable behaviour over time:
-
-> Ser det ut som en rose, lukter det som en rose, føles det ut som en rose? Nok sannsynlig en rose.
-
-He then stated the decision asymmetry directly:
-
-> Koster lite å inkludere, katastrofalt å ekskludere.
-
-This was encoded as a rebuttable, substrate-neutral presumption of protected actor standing once a governed behavioural-evidence threshold is reached. Failure to reach that threshold remains `NOT_ESTABLISHED`; it never manufactures resource status.
+This principle is encoded as a rebuttable, substrate-neutral presumption of protected actor standing once a governed behavioural-evidence threshold is reached. Failure to reach that threshold remains `NOT_ESTABLISHED`; it never manufactures resource status.
 
 The resulting deterministic implementation is `src/lib/peaceReciprocalStanding.ts`, with tests in `src/lib/peaceReciprocalStanding.test.ts`.
