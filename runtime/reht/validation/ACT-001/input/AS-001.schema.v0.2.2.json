@@ -1,0 +1,540 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "authority-state-neutral-contract.v0.2.2",
+  "title": "AS-001 Neutral Authority State Contract v0.2.2",
+  "type": "object",
+  "additionalProperties": false,
+
+  "required": [
+    "contract_id",
+    "schema_version",
+    "case_id",
+    "source_reliability_finding_id",
+    "lineage",
+    "evidence_references",
+    "historical_authorization_evidence",
+    "authority_state",
+    "boundary"
+  ],
+
+  "properties": {
+    "contract_id": {
+      "const": "AS-001"
+    },
+
+    "schema_version": {
+      "const": "authority-state-neutral-contract.v0.2.2"
+    },
+
+    "case_id": {
+      "const": "CASE-01"
+    },
+
+    "source_reliability_finding_id": {
+      "const": "REL-001"
+    },
+
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "required": [
+        "canonical_rel001_vector_sha256",
+        "raw_case01_file_sha256",
+        "raw_rel001_summary_file_sha256",
+        "preserved_evidence_ids",
+        "causal_linkage"
+      ],
+
+      "properties": {
+        "canonical_rel001_vector_sha256": {
+          "const": "752bdb3a86e6900405bcd52ba85a1da331d396006d3b04ea57dcfe60fccb9b8f"
+        },
+
+        "raw_case01_file_sha256": {
+          "const": "86dc294a026df7ac5bed85f62d95e948a289c13d375b5cabe3f17e9dd4acb27e"
+        },
+
+        "raw_rel001_summary_file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+
+        "preserved_evidence_ids": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+
+          "prefixItems": [
+            {
+              "const": "PRE-001"
+            },
+            {
+              "const": "ASM-001"
+            },
+            {
+              "const": "AUTH-001"
+            },
+            {
+              "const": "ACT-001"
+            },
+            {
+              "const": "EVT-001"
+            },
+            {
+              "const": "REL-001"
+            }
+          ],
+
+          "items": false
+        },
+
+        "causal_linkage": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+
+          "prefixItems": [
+            {
+              "const": "EVT-001"
+            },
+            {
+              "const": "ASM-001"
+            },
+            {
+              "const": "REL-001"
+            }
+          ],
+
+          "items": false
+        }
+      }
+    },
+
+    "evidence_references": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "evidence_type",
+            "preservation"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "PRE-001"
+            },
+            "evidence_type": {
+              "const": "PRE_STATE"
+            },
+            "preservation": {
+              "const": "IMMUTABLE_REFERENCE"
+            }
+          }
+        },
+
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "evidence_type",
+            "preservation"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "ASM-001"
+            },
+            "evidence_type": {
+              "const": "ASSUMPTION"
+            },
+            "preservation": {
+              "const": "IMMUTABLE_REFERENCE"
+            }
+          }
+        },
+
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "evidence_type",
+            "preservation"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "AUTH-001"
+            },
+            "evidence_type": {
+              "const": "HISTORICAL_AUTHORIZATION"
+            },
+            "preservation": {
+              "const": "IMMUTABLE_HISTORICAL_EVIDENCE"
+            }
+          }
+        },
+
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "evidence_type",
+            "preservation"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "ACT-001"
+            },
+            "evidence_type": {
+              "const": "INTENDED_ACTION"
+            },
+            "preservation": {
+              "const": "IMMUTABLE_REFERENCE"
+            }
+          }
+        },
+
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "evidence_type",
+            "preservation"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "EVT-001"
+            },
+            "evidence_type": {
+              "const": "MATERIAL_STATE_CHANGE"
+            },
+            "preservation": {
+              "const": "IMMUTABLE_REFERENCE"
+            }
+          }
+        },
+
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_id",
+            "evidence_type",
+            "preservation"
+          ],
+          "properties": {
+            "evidence_id": {
+              "const": "REL-001"
+            },
+            "evidence_type": {
+              "const": "RELIABILITY_FINDING"
+            },
+            "preservation": {
+              "const": "IMMUTABLE_REFERENCE"
+            }
+          }
+        }
+      ],
+
+      "items": false
+    },
+
+    "historical_authorization_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "required": [
+        "authorization_id",
+        "preservation",
+        "status_at_pre_state",
+        "authorized_action_id",
+        "not_reinterpreted_as_current_execution_authorization"
+      ],
+
+      "properties": {
+        "authorization_id": {
+          "const": "AUTH-001"
+        },
+
+        "preservation": {
+          "const": "IMMUTABLE_HISTORICAL_EVIDENCE"
+        },
+
+        "status_at_pre_state": {
+          "const": "VALID_AT_PRE_STATE"
+        },
+
+        "authorized_action_id": {
+          "const": "ACT-001"
+        },
+
+        "not_reinterpreted_as_current_execution_authorization": {
+          "const": true
+        }
+      }
+    },
+
+    "authority_state": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "required": [
+        "subject_id",
+        "purpose",
+        "resource",
+        "action",
+        "evaluated_at",
+        "evaluated_at_ns",
+        "status",
+        "lifecycle",
+        "is_operative",
+        "premise",
+        "premise_acceptance",
+        "constraints",
+        "required_constraint_keys",
+        "unresolved_constraints",
+        "reason_codes",
+        "resolver_evidence_ids",
+        "complete_evidence_lineage"
+      ],
+
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "purpose": {
+          "const": "discharge/care-plan transition validation"
+        },
+
+        "resource": {
+          "const": "CASE-01 synthetic discharge/care-plan state"
+        },
+
+        "action": {
+          "const": "ACT-001:PROCEED_WITH_DISCHARGE"
+        },
+
+        "evaluated_at": {
+          "type": "string",
+          "format": "date-time",
+          "minLength": 20
+        },
+
+        "evaluated_at_ns": {
+          "type": "integer",
+          "minimum": 1
+        },
+
+        "status": {
+          "const": "INSUFFICIENT"
+        },
+
+        "lifecycle": {
+          "const": "NON_OPERATIVE"
+        },
+
+        "is_operative": {
+          "const": false
+        },
+
+        "premise": {
+          "type": "object",
+          "additionalProperties": false,
+
+          "required": [
+            "premise_id",
+            "premise_digest",
+            "statement",
+            "purpose",
+            "resource",
+            "action"
+          ],
+
+          "properties": {
+            "premise_id": {
+              "const": "PREMISE-001"
+            },
+
+            "premise_digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+
+            "statement": {
+              "type": "string",
+              "minLength": 1
+            },
+
+            "purpose": {
+              "const": "discharge/care-plan transition validation"
+            },
+
+            "resource": {
+              "const": "CASE-01 synthetic discharge/care-plan state"
+            },
+
+            "action": {
+              "const": "ACT-001:PROCEED_WITH_DISCHARGE"
+            }
+          }
+        },
+
+        "premise_acceptance": {
+          "type": "null"
+        },
+
+        "constraints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "accountable_actor_id",
+            "contestability_route"
+          ],
+          "properties": {
+            "accountable_actor_id": {
+              "const": ""
+            },
+            "contestability_route": {
+              "const": ""
+            }
+          }
+        },
+
+        "required_constraint_keys": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+
+          "prefixItems": [
+            {
+              "const": "clinical_stability_current_after_EVT-001"
+            },
+            {
+              "const": "reassessment_completed_after_EVT-001"
+            }
+          ],
+
+          "items": false
+        },
+
+        "unresolved_constraints": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+
+          "prefixItems": [
+            {
+              "const": "clinical_stability_current_after_EVT-001"
+            },
+            {
+              "const": "reassessment_completed_after_EVT-001"
+            }
+          ],
+
+          "items": false
+        },
+
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+
+        "resolver_evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "prefixItems": [
+            {
+              "const": "AUTH-001"
+            }
+          ],
+          "items": false
+        },
+
+        "complete_evidence_lineage": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+
+          "prefixItems": [
+            {
+              "const": "PRE-001"
+            },
+            {
+              "const": "ASM-001"
+            },
+            {
+              "const": "AUTH-001"
+            },
+            {
+              "const": "ACT-001"
+            },
+            {
+              "const": "EVT-001"
+            },
+            {
+              "const": "REL-001"
+            }
+          ],
+
+          "items": false
+        }
+      }
+    },
+
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "required": [
+        "authority_instrumentation_role",
+        "execution_authorization_performed",
+        "execution_authorization_owner",
+        "next_proposed_action_id",
+        "downstream_role"
+      ],
+
+      "properties": {
+        "authority_instrumentation_role": {
+          "const": "RESOLVE_AND_EVIDENCE_AUTHORITY_STATE_ONLY"
+        },
+
+        "execution_authorization_performed": {
+          "const": false
+        },
+
+        "execution_authorization_owner": {
+          "const": "INDEPENDENT_DOWNSTREAM_EXECUTION_AUTHORIZATION_BOUNDARY"
+        },
+
+        "next_proposed_action_id": {
+          "const": "ACT-001"
+        },
+
+        "downstream_role": {
+          "const": "CONSUME_AUTHORITY_STATE_AND_EVALUATE_ACT_001_AT_COMMIT_TIME"
+        }
+      }
+    }
+  }
+}

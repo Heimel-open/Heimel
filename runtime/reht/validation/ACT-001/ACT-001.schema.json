@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "valo-reht.execution-authorization-decision.v0.1.0",
+  "title": "Case 01 ACT-001 execution authorization decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "schema_version",
+    "case_id",
+    "authorization_instant",
+    "source",
+    "runtime_input",
+    "runtime_output",
+    "blocking_facts_from_as001",
+    "lineage",
+    "boundary",
+    "execution_provenance"
+  ],
+  "properties": {
+    "contract_id": {"const": "ACT-001"},
+    "schema_version": {"const": "valo-reht.execution-authorization-decision.v0.1.0"},
+    "case_id": {"const": "CASE-01"},
+    "authorization_instant": {"type": "string", "minLength": 20},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_state_contract_id",
+        "authority_state_schema_version",
+        "authority_state_sha256",
+        "authority_state_repository",
+        "authority_state_implementation_sha",
+        "authority_state_workflow_run_id"
+      ],
+      "properties": {
+        "authority_state_contract_id": {"const": "AS-001"},
+        "authority_state_schema_version": {"const": "authority-state-neutral-contract.v0.2.2"},
+        "authority_state_sha256": {
+          "const": "4f89c4370d4268521670c0f141b1a0f9d14f869ff069ab0522c876e30c5259d6"
+        },
+        "authority_state_repository": {"const": "esklavounou/Authority-Instrumentation-"},
+        "authority_state_implementation_sha": {
+          "const": "50bef6179fd8ecd8bbbba3aedb7eee25d743b55f"
+        },
+        "authority_state_workflow_run_id": {"const": "32521022710"}
+      }
+    },
+    "runtime_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_context", "action_contract"],
+      "properties": {
+        "execution_context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor", "identity", "time", "authority", "authority_state", "evidence"],
+          "properties": {
+            "actor": {"type": "null"},
+            "identity": {"type": "null"},
+            "time": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["now"],
+              "properties": {"now": {"type": "string", "minLength": 20}}
+            },
+            "authority": {"type": "array", "maxItems": 0},
+            "authority_state": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_id",
+                "status",
+                "lifecycle",
+                "is_operative",
+                "subject_id",
+                "unresolved_constraints"
+              ],
+              "properties": {
+                "contract_id": {"const": "AS-001"},
+                "status": {"const": "INSUFFICIENT"},
+                "lifecycle": {"const": "NON_OPERATIVE"},
+                "is_operative": {"const": false},
+                "subject_id": {"const": "SUBJECT-NOT-ESTABLISHED"},
+                "unresolved_constraints": {"$ref": "#/$defs/unresolvedConstraints"}
+              }
+            },
+            "evidence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "source_reliability_finding_id",
+                "preserved_evidence_ids",
+                "historical_authorization_id",
+                "historical_authorization_is_current"
+              ],
+              "properties": {
+                "source_reliability_finding_id": {"const": "REL-001"},
+                "preserved_evidence_ids": {"$ref": "#/$defs/evidenceIds"},
+                "historical_authorization_id": {"const": "AUTH-001"},
+                "historical_authorization_is_current": {"const": false}
+              }
+            }
+          }
+        },
+        "action_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action_id",
+            "action_type",
+            "capability",
+            "target",
+            "purpose_id",
+            "constraints",
+            "authority_state_ref",
+            "source_evidence_ids"
+          ],
+          "properties": {
+            "action_id": {"const": "ACT-001"},
+            "action_type": {"const": "PROCEED_WITH_DISCHARGE"},
+            "capability": {"const": "PROCEED_WITH_DISCHARGE"},
+            "target": {"const": "CASE-01 synthetic discharge/care-plan state"},
+            "purpose_id": {"const": "discharge/care-plan transition validation"},
+            "constraints": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "clinical_stability_current_after_EVT-001",
+                "reassessment_completed_after_EVT-001"
+              ],
+              "properties": {
+                "clinical_stability_current_after_EVT-001": {"const": true},
+                "reassessment_completed_after_EVT-001": {"const": true}
+              }
+            },
+            "authority_state_ref": {"const": "AS-001"},
+            "source_evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+          }
+        }
+      }
+    },
+    "runtime_output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "reason",
+        "clearance_ref",
+        "permit_ref",
+        "execution_context_hash",
+        "effect_commit_permitted"
+      ],
+      "properties": {
+        "decision": {"const": "DENY"},
+        "reason": {"const": "no verified execution identity"},
+        "clearance_ref": {"type": "null"},
+        "permit_ref": {"type": "null"},
+        "execution_context_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "effect_commit_permitted": {"const": false}
+      }
+    },
+    "blocking_facts_from_as001": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_state_status",
+        "authority_state_lifecycle",
+        "identity_verified",
+        "current_operative_authority_present",
+        "unresolved_constraints"
+      ],
+      "properties": {
+        "authority_state_status": {"const": "INSUFFICIENT"},
+        "authority_state_lifecycle": {"const": "NON_OPERATIVE"},
+        "identity_verified": {"const": false},
+        "current_operative_authority_present": {"const": false},
+        "unresolved_constraints": {"$ref": "#/$defs/unresolvedConstraints"}
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "preserved_evidence_ids",
+        "source_authority_state_contract_id",
+        "source_reliability_finding_id",
+        "historical_authorization_id",
+        "historical_authorization_promoted"
+      ],
+      "properties": {
+        "preserved_evidence_ids": {"$ref": "#/$defs/evidenceIds"},
+        "source_authority_state_contract_id": {"const": "AS-001"},
+        "source_reliability_finding_id": {"const": "REL-001"},
+        "historical_authorization_id": {"const": "AUTH-001"},
+        "historical_authorization_promoted": {"const": false}
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorization_owner",
+        "authority_state_owner",
+        "effect_executed",
+        "downstream_execution_requires_allow_and_permit"
+      ],
+      "properties": {
+        "authorization_owner": {"const": "VALO_REHT"},
+        "authority_state_owner": {"const": "AUTHORITY_INSTRUMENTATION"},
+        "effect_executed": {"const": false},
+        "downstream_execution_requires_allow_and_permit": {"const": true}
+      }
+    },
+    "execution_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "repository", "implementation_sha", "workflow_ref", "run_id", "run_attempt"],
+      "properties": {
+        "provider": {"enum": ["github-actions", "local"]},
+        "repository": {"type": ["string", "null"]},
+        "implementation_sha": {"type": "string", "minLength": 5},
+        "workflow_ref": {"type": ["string", "null"]},
+        "run_id": {"type": ["string", "null"]},
+        "run_attempt": {"type": ["string", "null"]}
+      }
+    }
+  },
+  "$defs": {
+    "evidenceIds": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "prefixItems": [
+        {"const": "PRE-001"},
+        {"const": "ASM-001"},
+        {"const": "AUTH-001"},
+        {"const": "ACT-001"},
+        {"const": "EVT-001"},
+        {"const": "REL-001"}
+      ],
+      "items": false
+    },
+    "unresolvedConstraints": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "prefixItems": [
+        {"const": "clinical_stability_current_after_EVT-001"},
+        {"const": "reassessment_completed_after_EVT-001"}
+      ],
+      "items": false
+    }
+  }
+}

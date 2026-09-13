@@ -1,0 +1,26 @@
+{
+  "comparability": "old baselines were measured on GitHub Actions (ubuntu-latest) against a previous valo-kernel and a lighter REHT artifact path; local numbers are NOT DIRECTLY COMPARABLE to the CI baselines. Reported for local relative comparison only; see docs/evidence report for a same-machine old-vs-new run.",
+  "iterations_per_path": 200,
+  "method": "perf_counter_ns; p50/p95/p99 via sorted linear interpolation; REHT-only and TWO-CORE are per frozen scenario",
+  "old_full_chain_baseline_ms": {
+    "p50": "2.1-2.2",
+    "p95": "3.8-4.1"
+  },
+  "old_reht_baseline_ms": {
+    "p50": "0.049-0.063",
+    "p95": "0.124"
+  },
+  "reht_only_per_call_ms": {
+    "max_ms": 0.7355924666666667,
+    "p50_ms": 0.4890987666666667,
+    "p95_ms": 0.5824736266666666,
+    "p99_ms": 0.620957122666666
+  },
+  "scenario_count": 15,
+  "two_core_per_scenario_ms": {
+    "max_ms": 76.78154500000001,
+    "p50_ms": 19.049984066666667,
+    "p95_ms": 34.54720985999997,
+    "p99_ms": 54.09036820399996
+  }
+}

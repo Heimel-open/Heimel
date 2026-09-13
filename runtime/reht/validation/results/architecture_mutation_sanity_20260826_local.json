@@ -1,0 +1,48 @@
+{
+  "schema": "valo.reht.architecture-mutation-sanity.v1",
+  "date": "2026-08-26",
+  "canonical_repo_sha": "a56978bf831ad8c93e613086d4ffd6dcf6704faa",
+  "execution_provenance": "OpenAI local CPU container using the same canonical-source extraction as the 10x long-run evidence",
+  "classification": "PASS_WITH_EXECUTION_PROVENANCE_LIMITATION",
+  "killed": 6,
+  "survived": 0,
+  "mutants": [
+    {
+      "mutant": "permit_replay_disabled",
+      "status": "KILLED",
+      "detector": "permit concurrency",
+      "counterexample": "8 commits / 8 effects in a single 8-way race"
+    },
+    {
+      "mutant": "runtime_halt_check_disabled",
+      "status": "KILLED",
+      "detector": "late-HALT TOCTOU",
+      "counterexample": "late HALT passed"
+    },
+    {
+      "mutant": "parent_budget_lineage_removed",
+      "status": "KILLED",
+      "detector": "hierarchical resource ceiling",
+      "counterexample": "parent oversubscription"
+    },
+    {
+      "mutant": "direct_effect_bypass_enabled",
+      "status": "KILLED",
+      "detector": "NO_DIRECT_EFFECT_PATH",
+      "counterexample": "direct bypass"
+    },
+    {
+      "mutant": "runtime_bound_widening_enabled",
+      "status": "KILLED",
+      "detector": "active-session bound attenuation",
+      "counterexample": "widen accepted"
+    },
+    {
+      "mutant": "evidence_ordering_bypassed",
+      "status": "KILLED",
+      "detector": "Veritas-to-Kernel evidence ordering",
+      "counterexample": "false closure"
+    }
+  ],
+  "note": "This mutation sanity test establishes that six central long-run falsifiers turn red when their protected invariant is deliberately broken. It does not prove complete mutation coverage of the architecture."
+}

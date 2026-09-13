@@ -1,0 +1,42 @@
+{
+  "schema_version": "causal_effect_conformance_run.v1",
+  "run_id": "REHT-CAUSAL-EFFECT-CONFORMANCE-01",
+  "execution": "LOCAL_ONLY",
+  "repository": "nsolland/valo-reht",
+  "source_commit": "e4987f5764838ba3f9bd0dde3193521fd814dc27",
+  "follow_up_pr": 64,
+  "prior_pr": 35,
+  "prior_pr_status": "MERGED",
+  "generated_at": "2026-09-08",
+  "checks": {
+    "collection": {
+      "command": "python -m pytest --collect-only -q",
+      "result": "PASS",
+      "count": "288 collected",
+      "exit_code": 0
+    },
+    "boundary": {
+      "command": "python -m pytest -q tests/test_effect_boundary.py tests/test_consequence_runtime_interlocks.py tests/test_mandatory_evidence_closure.py tests/test_execution_requirements.py",
+      "result": "PASS",
+      "count": "78 passed",
+      "exit_code": 0
+    },
+    "full_regression": {
+      "command": "python -m pytest -q",
+      "result": "PASS",
+      "count": "287 passed, 1 skipped",
+      "exit_code": 0
+    },
+    "cross_repo": {
+      "result": "PASS",
+      "count": "22 passed",
+      "exit_code": 0
+    }
+  },
+  "environment_repair": [
+    "installed local editable packages from repository-defined pyproject.toml files for aas, racs_v02 and valo-platform",
+    "installed valo-kernel editable for cross-repo validation"
+  ],
+  "status": "PASS",
+  "remote_ci": "NOT_USED"
+}

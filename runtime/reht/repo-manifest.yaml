@@ -1,0 +1,14 @@
+# valo-reht — the real REHT, the sole authorization boundary of VALO.
+# Two-core authoritative runtime: Kernel owns operative state; REHT owns authorization.
+# Veritas is a non-authoritative evidence-admission dependency only.
+dependencies:
+  - repo: nsolland/valo-kernel
+    role: authoritative-state-and-execution-context
+    anchor_sha: c1d8daad1bf85019f771c7388c7953bb7a37859c
+    anchor_ref: main
+    merged_at: 2026-08-23
+  - repo: nsolland/Veritas
+    role: non-authoritative-execution-evidence-admission
+    anchor_sha: 7657c6463356b6e7902b620fedbca27ec96294f9
+    anchor_ref: main
+    merged_at: 2026-08-23

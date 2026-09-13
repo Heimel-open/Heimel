@@ -1,0 +1,120 @@
+{
+  "schema_id": "valo.security.assurance-release-overlay.v1",
+  "version": "2026.08.13",
+  "repository_pins": {
+    "Racs": "1fb87c79a68afc9c9b47b3fa5f5a00b65c1fa7e1",
+    "Veritas": "00d9c6777402f5dff093ea6b108b1583b87b6364",
+    "valo-gateway": "99597d2ee978269940d2a1fb0a21824bfb2eef75",
+    "valo-kernel": "108f770998f15a0265f3c7bcc5264cc9bb13f208",
+    "valo-platform": "2c03c4f73a4bef2576bcc3403d96e2d5b79a34db"
+  },
+  "validation_snapshots": {
+    "adaptive_sage_stage5": {
+      "repo": "valo-platform",
+      "commit_sha": "c2dd49bc9a17eb10c3022f5628f4d8afceb90539",
+      "test": "tests/test_adaptive_sage_loop.py"
+    }
+  },
+  "risk_updates": {
+    "LLM04": {
+      "status": "IMPLEMENTED",
+      "add_controls": [
+        "Exact artifact identity, version, content digest, source, provenance, capability and environment admission for live governed tools and MCP sources."
+      ],
+      "add_evidence": [
+        {
+          "repo": "valo-platform",
+          "kind": "test",
+          "locator": "tests/test_artifact_admission.py::test_same_identity_with_different_digest_is_rejected"
+        },
+        {
+          "repo": "valo-platform",
+          "kind": "test",
+          "locator": "tests/governed_tool_runtime/test_live_artifact_admission.py::test_unapproved_mcp_server_cannot_register_as_live_tool"
+        }
+      ],
+      "residual_risk": "Exact admission is implemented and tested for the governed live-tool path, but portfolio-wide mandatory use by every model, package and loader is not yet proven."
+    },
+    "LLM06": {
+      "status": "IMPLEMENTED",
+      "add_controls": [
+        "Action-bound atomic resource reservations, cumulative limits, shared parent capacity, recursion ceilings and concurrent duplicate-consumption resistance."
+      ],
+      "add_evidence": [
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "conformance/test_resource_non_bypass.py::test_required_resource_without_ledger_blocks_before_permit_and_tool"
+        },
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "tests/test_resource_budget_hierarchy.py::test_sibling_children_share_parent_capacity"
+        },
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "tests/test_resource_budget_hierarchy.py::test_same_reservation_cannot_be_double_spent_concurrently"
+        }
+      ],
+      "residual_risk": "The hard resource mechanism is implemented and non-bypass tested; universal attachment of resource requirements to every inference and external-action path is not yet proven."
+    },
+    "ASI04": {
+      "status": "IMPLEMENTED",
+      "add_controls": [
+        "Exact artifact admission for live MCP servers, tool packages and runtime adapters; metadata cannot expand admitted capabilities."
+      ],
+      "add_evidence": [
+        {
+          "repo": "valo-platform",
+          "kind": "test",
+          "locator": "tests/governed_tool_runtime/test_live_artifact_admission.py::test_tool_metadata_cannot_expand_admitted_capabilities"
+        }
+      ],
+      "residual_risk": "The governed live-tool entrypoint is covered; universal enforcement across all model and package loading paths remains to be demonstrated."
+    },
+    "ASI07": {
+      "status": "IMPLEMENTED",
+      "add_controls": [
+        "Signed transport-neutral message envelope with principal/actor, recipient, workflow, purpose, explicit scope, originating authority reference, delegation reference, freshness and anti-replay."
+      ],
+      "add_evidence": [
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "conformance/test_message_security_non_bypass.py::test_signed_agent_message_is_context_never_authority"
+        },
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "tests/test_message_security.py::test_child_message_can_only_narrow_parent_scope"
+        }
+      ],
+      "residual_risk": "The envelope and non-bypass semantics are implemented; mandatory use by every A2A/MCP transport path is not yet proven portfolio-wide."
+    },
+    "ASI08": {
+      "status": "IMPLEMENTED",
+      "add_controls": [
+        "Shared hierarchical resource envelopes constrain sibling fan-out and recursive depth while cumulative reservations prevent repeated valid actions from exceeding a parent ceiling."
+      ],
+      "add_evidence": [
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "tests/test_resource_budget_hierarchy.py::test_recursive_depth_obeys_parent_ceiling"
+        },
+        {
+          "repo": "valo-gateway",
+          "kind": "test",
+          "locator": "tests/test_resource_budget_hierarchy.py::test_cumulative_transaction_limit_spans_multiple_valid_actions"
+        }
+      ],
+      "residual_risk": "Hard fan-out, recursion and cumulative resource controls exist; complete portfolio wiring and distributed resource-state backing remain deployment responsibilities."
+    }
+  },
+  "release_policy": {
+    "certification_claim": false,
+    "component_presence_is_not_deployment_proof": true,
+    "proven_requires_executable_evidence": true
+  }
+}

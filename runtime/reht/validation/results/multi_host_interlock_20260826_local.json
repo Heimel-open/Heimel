@@ -1,0 +1,37 @@
+{
+  "schema": "valo.reht.multi-host-interlock-evidence.v1",
+  "date": "2026-08-26",
+  "implementation_head_at_probe": "78ac8fa3bd5b2c256773f15802196ff0292ad861",
+  "cpu_only": true,
+  "external_api_cost": 0,
+  "observed_failures": {
+    "halt_on_host_a": "HALT_GLOBAL",
+    "halt_seen_on_independent_host_b": null,
+    "lost_global_halt_confirmed": true,
+    "global_budget_limit": 100.0,
+    "host_a_accepted": 100.0,
+    "host_b_accepted": 100.0,
+    "combined_accepted": 200.0,
+    "resource_oversubscription_confirmed": true
+  },
+  "expanded_gate_probe": {
+    "distributed_permit_journal_with_default_runtime_control": "REJECTED",
+    "distributed_permit_journal_runtime_with_default_resource_ledger": "REJECTED",
+    "complete_four_component_distributed_contract": "ACCEPTED_BY_CONSTRUCTION_CONTRACT"
+  },
+  "claims": {
+    "process_local_runtime_control_not_multi_host_safe": true,
+    "process_local_resource_ledger_not_multi_host_safe": true,
+    "multi_host_interlock_guard_coded": true,
+    "distributed_runtime_control_implemented": false,
+    "distributed_resource_ledger_implemented": false,
+    "distributed_components_verified": false
+  },
+  "classification": "LIMITATIONS_CONFIRMED_GUARD_CODED_WITH_EXECUTION_PROVENANCE_LIMITATION",
+  "provenance": {
+    "failure_probe": "local behavior-equivalent execution of RuntimeControlPlane and ResourceBudgetLedger semantics",
+    "gate_probe": "local execution of exact expanded consistency contract logic",
+    "native_branch_pytest": "NOT_RUN",
+    "hosted_ci": "expected startup_failure until independently observed otherwise"
+  }
+}

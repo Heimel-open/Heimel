@@ -1,0 +1,55 @@
+{
+  "schema": "valo.reht.durable-permit-crash-restart.evidence.v1",
+  "date": "2026-08-26",
+  "base_sha": "2740573ffdbc35c419a291338d2876835eaf800d",
+  "branch": "fix/durable-permit-restart-safety",
+  "seed": 20260826,
+  "classification": "PASS_WITH_RESIDUAL_RISK",
+  "execution_provenance": {
+    "runtime": "OpenAI local Linux CPU container",
+    "python": "/usr/bin/python3 3.13.5",
+    "source_loading": "The newly added SQLitePermitStore logic was executed locally from the same source text committed to the branch. Full repository native checkout was unavailable because the container has no GitHub network/auth path.",
+    "cpu_only": true,
+    "external_api_cost": 0
+  },
+  "runs": [
+    {
+      "name": "crash_restart_correctness",
+      "workers": 8,
+      "race_permits": 20,
+      "race_attempts": 160,
+      "duplicate_consumptions": 0,
+      "restart_rearms": 0,
+      "committed_crash_rearms": 0,
+      "uncommitted_transaction_leaks": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "cross_process_scale_probe",
+      "workers": 8,
+      "race_permits": 100,
+      "race_attempts": 800,
+      "duplicate_consumptions": 0,
+      "permits_without_winner": 0,
+      "elapsed_seconds": 0.295,
+      "result": "PASS"
+    }
+  ],
+  "source_backed_residuals": [
+    {
+      "id": "CRASH_AFTER_EFFECT_BEFORE_EVIDENCE",
+      "status": "OPEN",
+      "description": "EffectBoundary durably consumes the permit before invoking the external effect, but terminal evidence is recorded only after the effect returns. A hard process death after the real-world effect and before _record() leaves the permit consumed while the external outcome is indeterminate and no closed receipt is guaranteed."
+    },
+    {
+      "id": "PRODUCTION_INMEMORY_PERMIT_NOT_REJECTED",
+      "status": "OPEN",
+      "description": "InMemoryPermitStore is documented as test/development only, but EffectBoundary production construction does not currently reject it."
+    },
+    {
+      "id": "MULTI_HOST_DISTRIBUTED_REPLAY",
+      "status": "UNVERIFIED",
+      "description": "SQLitePermitStore is intentionally only a same-host/shared-correctly-locking-filesystem reference implementation; no distributed multi-host consensus guarantee is claimed."
+    }
+  ]
+}

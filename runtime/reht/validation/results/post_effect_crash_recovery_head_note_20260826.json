@@ -1,0 +1,14 @@
+{
+  "schema": "valo.reht.post-effect-crash-recovery.head-note.v1",
+  "finalization_branch": "fix/post-effect-crash-recovery",
+  "crash_run_sha": "d1c676c3af319155601d382263e731753fec522f",
+  "post_run_hardening": [
+    "exact receipt/intention binding",
+    "receipt digest recomputation",
+    "closure-to-receipt binding",
+    "orphan consumed permit remains indeterminate"
+  ],
+  "native_checkout_rerun": false,
+  "reason": "github.com DNS resolution unavailable in local runtime",
+  "classification": "STATIC_HARDENING_AFTER_CRASH_PASS"
+}

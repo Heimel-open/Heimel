@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: valo-reht
+Version: 0.1.0
+Summary: Real REHT: the sole authorization boundary of VALO, as a separate v1.1 candidate component.
+Requires-Python: >=3.11
+Requires-Dist: pydantic>=2.6
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: hypothesis>=6; extra == "dev"
+Requires-Dist: ruff>=0.4; extra == "dev"
