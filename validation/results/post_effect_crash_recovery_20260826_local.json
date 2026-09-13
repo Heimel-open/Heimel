@@ -1,0 +1,54 @@
+{
+  "schema": "valo.reht.post-effect-crash-recovery.evidence.v1",
+  "date": "2026-08-26",
+  "base_sha": "02abc7c24a85185e81c29ebb340c8d87bbb303cd",
+  "crash_run_sha": "d1c676c3af319155601d382263e731753fec522f",
+  "branch": "fix/post-effect-crash-recovery",
+  "seed": 20260826,
+  "classification": "PASS_WITH_EXECUTION_PROVENANCE_LIMITATION",
+  "execution_provenance": {
+    "runtime": "OpenAI local Linux CPU container",
+    "cpu_only": true,
+    "external_api_cost": 0,
+    "native_git_checkout": false,
+    "native_checkout_failure": "Could not resolve host: github.com",
+    "note": "The crash/state-machine probe was executed locally against the branch implementation logic. GitHub Actions remains unavailable because jobs fail before startup. Post-run receipt-integrity hardening was statically reviewed but was not native-checkout rerun in this environment."
+  },
+  "crash_falsification": {
+    "hard_process_crashes": 300,
+    "effect_invoking": {
+      "cycles": 100,
+      "expected": "INDETERMINATE_EFFECT",
+      "classification_errors": 0,
+      "effect_replays": 0
+    },
+    "receipt_ready": {
+      "cycles": 100,
+      "expected": "READY_FOR_EVIDENCE_CLOSURE",
+      "classification_errors": 0,
+      "evidence_only_reconciliations": 100
+    },
+    "evidence_closing": {
+      "cycles": 100,
+      "expected": "INDETERMINATE_EVIDENCE_CLOSURE",
+      "classification_errors": 0,
+      "automatic_reconciliations": 0
+    }
+  },
+  "duplicate_intent_probe": {
+    "attempts": 1000,
+    "reopened_executions": 0
+  },
+  "post_run_hardening": [
+    "RECEIPT_READY receipt must bind exact permit/action/context/clearance/effect and REHT ALLOW",
+    "receipt_id is recomputed before durable admission or recovery",
+    "closure must bind the exact receipt and cannot grant authority",
+    "a consumed permit with no prior terminal journal record cannot be rewritten as clean PERMIT_REPLAY/BLOCKED; it remains indeterminate"
+  ],
+  "claims_not_made": [
+    "No distributed multi-host consensus guarantee",
+    "No exactly-once guarantee for arbitrary external systems",
+    "INDETERMINATE states are not automatically resolved",
+    "No native-checkout full-suite PASS is claimed"
+  ]
+}

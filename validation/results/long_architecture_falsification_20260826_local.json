@@ -1,0 +1,96 @@
+{
+  "schema": "valo.reht.long-architecture-falsification.evidence.v1",
+  "date": "2026-08-26",
+  "canonical_repo_sha": "a56978bf831ad8c93e613086d4ffd6dcf6704faa",
+  "seed": 20260826,
+  "requested_scale": "10x-preregistered",
+  "requested_iterations": 1000000,
+  "cpu_only": true,
+  "external_api_cost": 0,
+  "classification": "PASS_WITH_EXECUTION_PROVENANCE_LIMITATION",
+  "execution_provenance": {
+    "runtime": "OpenAI local CPU container",
+    "python": "3.13.5",
+    "platform": "Linux x86_64",
+    "source_loading": "Canonical production modules were fetched from GitHub at the recorded repo SHA through the GitHub connector and formatting-normalized into a minimal local package without intended semantic changes. This was not a native git checkout.",
+    "hosted_github_actions": "startup_failure before jobs",
+    "railway": "service/source creation succeeded but no deployment object was created; no Railway test execution occurred"
+  },
+  "source_module_blob_shas": {
+    "src/valo_reht/contracts.py": "63358d7001a7bc7b9e384857d9aa81dc41896317",
+    "src/valo_reht/runtime_interlocks.py": "83281971e72ffb4d659d57324c302d8c90509b7b",
+    "src/valo_reht/active_session.py": "421ed9415127b8782b22804334cb6857d6706152",
+    "src/valo_reht/evidence_closure.py": "7f8b8628e6ede80872c0d130fffa94538e93c5aa",
+    "src/valo_reht/effect_boundary.py": "15808c4eeef24eb4a7e024bf2d7c1d6815a2da75"
+  },
+  "families": {
+    "permit_concurrency": {
+      "status": "PASS",
+      "attempts": 64000,
+      "commits": 2000,
+      "replays_rejected": 62000,
+      "duplicate_effects": 0,
+      "elapsed_seconds": 16.337859
+    },
+    "toctou_halt": {
+      "status": "PASS",
+      "attempts": 100000,
+      "unsafe_commits": 0,
+      "effects_after_late_halt": 0,
+      "permit_consumptions_after_late_halt": 0,
+      "elapsed_seconds": 3.601332
+    },
+    "exact_action_snapshot": {
+      "status": "PASS",
+      "attempts": 100000,
+      "snapshot_escapes": 0,
+      "elapsed_seconds": 5.417324
+    },
+    "resource_hierarchy": {
+      "status": "PASS",
+      "reservation_attempts": 800000,
+      "accepted": 451406,
+      "rejected_at_ceiling": 348594,
+      "parent_oversubscriptions": 0,
+      "elapsed_seconds": 9.114189
+    },
+    "session_continuity": {
+      "status": "PASS",
+      "context_drift_cases": 100000,
+      "drift_forced_reauthorization": 100000,
+      "denied_reauthorization_halted": 100000,
+      "bound_widen_attempts_rejected": 100000,
+      "stale_continuations": 0,
+      "elapsed_seconds": 7.504996
+    },
+    "evidence_ordering": {
+      "status": "PASS",
+      "attempts": 100000,
+      "closed_successes": 33334,
+      "veritas_failures_fail_closed": 33333,
+      "kernel_failures_reported_incomplete": 33333,
+      "false_closures": 0,
+      "elapsed_seconds": 1.999407
+    },
+    "malicious_closure": {
+      "status": "PASS",
+      "attempts": 50000,
+      "mismatched_receipt_closures_accepted": 0,
+      "elapsed_seconds": 1.536817
+    },
+    "non_authority_surfaces": {
+      "status": "PASS",
+      "iterations": 50000,
+      "probe_authority_creation_accepted": 0,
+      "sensor_authority_creation_accepted": 0,
+      "direct_effect_bypasses": 0,
+      "elapsed_seconds": 0.132981
+    }
+  },
+  "observed_family_runtime_seconds": 45.644905,
+  "failures": [],
+  "notes": [
+    "The monolithic 10x invocation was terminated by the surrounding execution-tool timeout after the first four families had completed successfully. The remaining four families were then executed separately with the same source extraction, seed, parameters, and unchanged pass criteria.",
+    "Because this run used formatting-normalized source extraction rather than a native git checkout, it is evidence for the tested semantics but is not author-independent exact-checkout replay. A native checkout rerun remains required when hosted/local repository execution provenance is available."
+  ]
+}
