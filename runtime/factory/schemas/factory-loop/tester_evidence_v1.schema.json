@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/factory-loop/tester_evidence_v1.schema.json",
+  "title": "TesterEvidenceV1",
+  "description": "Deterministic Tester evidence bound to the exact candidate SHA. A Writer-authored report is never accepted as Tester evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_id", "attempt_id", "run_id", "repository",
+    "base_sha", "candidate_sha", "actor", "started_at", "ended_at",
+    "duration", "exit_code", "command", "working_directory",
+    "env_profile_digest", "stdout_digest", "stderr_digest", "artifact_ref",
+    "test_counts", "test_failures", "status", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "factory-loop-v1"},
+    "evidence_id": {"type": "string", "minLength": 1},
+    "attempt_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "candidate_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "actor": {"type": "string", "minLength": 1},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time"},
+    "duration": {"type": "number", "minimum": 0},
+    "exit_code": {"type": "integer"},
+    "command": {"type": "string", "minLength": 1},
+    "working_directory": {"type": "string", "minLength": 1},
+    "env_profile_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stdout_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stderr_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact_ref": {"type": "string"},
+    "test_counts": {"type": "integer", "minimum": 0},
+    "test_failures": {"type": "integer", "minimum": 0},
+    "status": {"type": "string"},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

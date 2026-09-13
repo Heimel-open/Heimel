@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nsolland.github.io/valo-skills-registry/schemas/skill.schema.json",
+  "title": "VALO Skill Manifest",
+  "description": "Canonical, deterministic skill manifest. No eval/auth/exec logic. Catalog+contract only.",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": {"type": "string", "enum": ["valo.dev/v1"]},
+    "kind": {"type": "string", "enum": ["Skill"]},
+    "metadata": {
+      "type": "object",
+      "required": ["id", "version", "publisher", "license"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(\\.[a-z0-9]+)*$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "publisher": {"type": "string"},
+        "license": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "type": "object",
+      "required": ["description", "inputs", "outputs", "capabilities", "adapters", "governance", "integrity"],
+      "properties": {
+        "description": {"type": "string"},
+        "inputs": {
+          "type": "object",
+          "required": ["schema"],
+          "properties": {"schema": {"type": "string"}}
+        },
+        "outputs": {
+          "type": "object",
+          "required": ["schema"],
+          "properties": {"schema": {"type": "string"}}
+        },
+        "capabilities": {
+          "type": "object",
+          "required": ["requires"],
+          "properties": {
+            "requires": {"type": "array", "items": {"type": "string"}},
+            "provides": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "ref"],
+            "properties": {
+              "type": {"type": "string", "enum": ["mcp", "http", "grpc", "local", "sdk"]},
+              "ref": {"type": "string"}
+            }
+          }
+        },
+        "governance": {
+          "type": "object",
+          "required": ["risk_class", "reht_action", "network_access", "data_retention", "delegation"],
+          "properties": {
+            "risk_class": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+            "reht_action": {"type": "string"},
+            "human_approval": {"type": "string", "enum": ["never", "conditional", "always"]},
+            "network_access": {
+              "type": "object",
+              "properties": {
+                "allow": {"type": "array", "items": {"type": "string"}},
+                "deny": {"type": "array", "items": {"type": "string"}}
+              }
+            },
+            "data_retention": {"type": "string"},
+            "delegation": {"type": "string", "enum": ["allowed", "conditional", "forbidden"]}
+          }
+        },
+        "integrity": {
+          "type": "object",
+          "required": ["package_digest"],
+          "properties": {
+            "package_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+            "signature": {"type": "string"}
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

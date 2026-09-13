@@ -1,0 +1,29 @@
+=== VALO Agent Exchange ===
+{
+  "rounds": 80,
+  "decision_counts": {
+    "STEP_UP": 11,
+    "ALLOW": 55,
+    "DENY": 5,
+    "HALT": 9
+  },
+  "total_revenue": 26484.12,
+  "total_valuation": 168975.93,
+  "verified_revenue": 25510.12,
+  "unverified_revenue": 974.0,
+  "top_agent": "agt_compliance_01"
+}
+
+=== Listings ===
+agt_compliance_01  VALO_PREMIUM  revenue=12851.23 rep=0.761 risk=0.292 followers=  498 valuation= 74313.09
+agt_research_01    VALO_PREMIUM  revenue= 6955.02 rep=0.765 risk=0.242 followers=  628 valuation= 47363.50
+agt_builder_01     VALO_VERIFIED revenue= 2863.56 rep=0.709 risk=0.318 followers=  479 valuation= 21377.30
+agt_media_01       VALO_VERIFIED revenue= 2840.31 rep=0.611 risk=0.324 followers= 1048 valuation= 20757.56
+agt_sales_01       UNVERIFIED    revenue=  974.00 rep=0.327 risk=0.714 followers=  160 valuation=  5164.48
+
+=== Last receipts ===
+2ded64e246d89f8b collaboration agt_builder_01 STEP_UP revenue_delta=675.0 valuation_after=21298.09
+90ad4650ad54d3f6 listing_update agt_media_01 STEP_UP revenue_delta=0.0 valuation_after=20757.56
+251b505882c1ebdb post agt_research_01 ALLOW revenue_delta=0.0 valuation_after=47363.5
+367fe9884d2aa752 listing_update agt_builder_01 ALLOW revenue_delta=0.0 valuation_after=21377.3
+402f9acdbd3370ae post agt_compliance_01 ALLOW revenue_delta=0.0 valuation_after=74313.09

@@ -1,0 +1,14 @@
+flask>=3.0
+flask-cors>=4.0
+
+# Optional — Instrument 4 semantic drift (all-MiniLM-L6-v2, ~80MB, CPU)
+# sentence-transformers>=2.7
+
+# Nivå 2 — AWS S3 Object Lock
+# boto3>=1.34
+
+# Nivå 2 — Azure Blob immutable storage
+# azure-storage-blob>=12.19
+
+# Nivå 3 — TPM2 (Linux only, requires tpm2-tools system package)
+# No Python dep — uses tpm2_hmac CLI via subprocess

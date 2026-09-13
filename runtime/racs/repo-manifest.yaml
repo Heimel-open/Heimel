@@ -1,0 +1,75 @@
+schema_version: "1.0"
+
+repository:
+  id: "valo.racs"
+  canonical_name: "RACS"
+  url: "https://github.com/nsolland/Racs"
+  owner: "nsolland"
+  classification: "protocol-specification"
+  visibility: "public"
+  publication_status: "public-open-source"
+  maturity: "active-development"
+  support: "maintained"
+  normative_status: "normative"
+  license: "Apache-2.0"
+  maintainers:
+    - "nsolland"
+
+purpose:
+  summary: >-
+    Vendor-neutral deterministic protocol for representing and binding governed
+    decisions, exact actions, execution-boundary inputs, and resulting evidence.
+  owns:
+    - "public decision and evidence contract schemas"
+    - "action and execution-binding representations"
+    - "public conformance vectors and validators"
+  does_not_own:
+    - "upstream evidence or risk evaluation"
+    - "organizational authority or authorization policy"
+    - "effect enforcement or action execution"
+    - "private runtime implementation"
+
+boundaries:
+  public_surface:
+    - "normative specification and schemas"
+    - "reference bindings"
+    - "examples and conformance vectors"
+    - "public validators"
+  intentionally_not_published:
+    - "private portfolio topology"
+    - "private repository relationships"
+    - "internal delivery and work-claim metadata"
+    - "unpublished implementation architecture or research"
+    - "customer-specific authority, policy, secrets, and tenant data"
+
+claims:
+  - id: "CLAIM-RACS-001"
+    statement: >-
+      RACS is a public deterministic protocol specification and does not itself
+      create organizational authority or perform external effects.
+    evidence:
+      - "README.md"
+      - "SPECIFICATION.md"
+
+interfaces:
+  - id: "decision-schema"
+    type: "json-schema"
+    path: "spec/racs-decision-v0.2.schema.json"
+  - id: "binding-python"
+    type: "python"
+    path: "reference/bindings/v0.2/python"
+  - id: "binding-rust"
+    type: "rust"
+    path: "reference/bindings/v0.2/rust"
+  - id: "binding-typescript"
+    type: "typescript"
+    path: "reference/bindings/v0.2/typescript"
+
+security:
+  contact: "https://github.com/nsolland/Racs/issues"
+  disclosure: "Never commit credentials, secrets, tenant data, or private architecture material."
+
+machine_reading:
+  canonical_terms: "SPECIFICATION.md"
+  agent_instructions: "AGENTS.md"
+  llm_summary: "llms.txt"

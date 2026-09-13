@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/thin_app_release_binding_v1.schema.json",
+  "title": "ThinAppReleaseBindingV1",
+  "description": "Binds a generated thin-app artifact set to exact portfolio and target repository lineage. This record grants no deployment or execution authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "app_slug",
+    "release_version",
+    "target_repo",
+    "target_source_sha",
+    "portfolio_source_sha",
+    "profile_digest",
+    "artifact_digest",
+    "build_order_id",
+    "authority_effect"
+  ],
+  "properties": {
+    "schema_version": {"const": "thin-app-release-binding.v1"},
+    "app_slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "release_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"},
+    "target_repo": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "target_source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "portfolio_source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "profile_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "build_order_id": {"type": "string", "minLength": 1},
+    "authority_effect": {"const": "none"}
+  }
+}

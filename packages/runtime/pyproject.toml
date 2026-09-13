@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "heimel-runtime"
+version = "0.1.3"
+description = "Heimel governed AI runtime: Kernel, REHT, consequence boundary, Veritas and admission."
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.6",
+    "cryptography>=41.0",
+    "rfc8785>=0.1.4",
+    "jsoncanon>=0.2.3",
+    "valo-reht>=1.1.0",
+    "veritas>=0.2.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/heimel_runtime"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+    "../../runtime/kernel/src",
+    "../../runtime/reht/src",
+    "../../runtime/veritas/src",
+    "../../runtime/racs/reference/python-implementation",
+    "../../runtime/reht/tests",
+]
+testpaths = ["tests"]

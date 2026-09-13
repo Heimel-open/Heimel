@@ -1,0 +1,40 @@
+# Risk classes — versioned policy (any change = Class C).
+# Class A: low-risk, auto-merge eligible after QC_PASS + green CI.
+# Class B: medium-risk, auto-merge eligible after QC_PASS + green CI + human-watchable recommendation.
+# Class C: high-risk / authority / policy / factory-self — REQUIRES explicit human authority.
+
+classes:
+  A:
+    auto_merge: true
+    requires: [qc_pass, ci_green]
+    human_authority: false
+    examples:
+      - "documentation only"
+      - "typo / comment fix"
+      - "test fixture update with no logic change"
+  B:
+    auto_merge: true
+    requires: [qc_pass, ci_green]
+    human_authority: false
+    human_watch: true   # recommendation emitted, human can veto
+    examples:
+      - "feature implementation in existing module"
+      - "bug fix with test"
+  C:
+    auto_merge: false
+    requires: [qc_pass, ci_green, explicit_human_authority]
+    human_authority: true
+    triggers:
+      - "any change to qc_policy.yaml"
+      - "any change to risk_classes.yaml"
+      - "any change to conflict_rules.yaml"
+      - "any change to factory control-plane code (bin/*)"
+      - "any change to credentials or authority model"
+      - "any change to CI / required checks"
+      - "schema migration to claims.db / orchestrator.db / runs.db"
+      - "merge into valo-factory itself (self-authority forbidden)"
+    examples:
+      - "policy tuning"
+      - "new risk class"
+      - "factory code change"
+      - "credential rotation"

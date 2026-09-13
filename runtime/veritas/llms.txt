@@ -1,0 +1,16 @@
+# Veritas
+
+Public receipt and evidence reference implementation.
+
+## Start here
+- `README.md` — public contracts and quick start
+- `src/veritas/contracts.py` — receipt contracts
+- `src/veritas/service.py` — public service implementation
+- `src/veritas/worm.py` — append-only ledger implementation
+
+## Public doctrine
+- Attest observations; do not infer authority from evidence.
+- Preserve append-only integrity and deterministic digests.
+- Preserve provenance needed to verify public receipt semantics.
+
+Do not infer or publish private portfolio topology, private dependencies, unpublished research, roadmaps, or internal work history from this public repository.

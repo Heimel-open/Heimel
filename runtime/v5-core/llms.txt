@@ -1,0 +1,14 @@
+# valo-v5-core - Fail-Closed Execution Substrate
+
+> Canonical Role: Fail-closed execution kernel and effect-bound permit/token verification layer.
+
+## Architectural Boundaries
+
+- Core verifies single-use commit tokens and permits immediately before effectors run.
+- Core DOES NOT evaluate admissibility or issue clearance (owned by REHT/RACS).
+- Core NEVER executes raw callables without valid permit.
+
+## Canonical Invariants
+
+1. Enforcement != Execution
+2. Execution != Evaluation

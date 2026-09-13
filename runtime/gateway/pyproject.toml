@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "valo-gateway"
+version = "0.1.1"
+description = "Vendor-neutral mechanical enforcement and reference gateway for governed actions."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.6,<3", "mcp>=2,<3"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+valo-gateway = "valo_gateway.cli:main"
+valo-style-mcp = "valo_gateway.style_mcp:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
+
+[project.urls]
+Source = "https://github.com/nsolland/valo-gateway"
+Documentation = "https://github.com/nsolland/valo-gateway/blob/main/README.md"
+Security = "https://github.com/nsolland/valo-gateway/blob/main/SECURITY.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/valo_gateway"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests", "conformance"]
+addopts = "-q"
+
+[tool.ruff.lint]
+ignore = ["BLE001"]  # gateway catches all exceptions to emit failure receipts
+
+[tool.ruff.lint.per-file-ignores]
+"src/valo_gateway/__init__.py" = ["F401"]  # public package re-exports
+"src/valo_gateway/agent_profile.py" = ["SIM102"]  # explicit nested validation branches preserve intent
+"tests/test_agent_profile.py" = ["I001"]  # pre-existing fixture import grouping

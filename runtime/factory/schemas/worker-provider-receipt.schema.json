@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/worker-provider-receipt.schema.json",
+  "title": "VALO Worker Provider Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "provider_id",
+    "provider_version",
+    "mission_digest",
+    "event_log_digest",
+    "result_digest",
+    "started_at",
+    "finished_at",
+    "exit_status",
+    "parallel_worker_count",
+    "resumed",
+    "authority_effect"
+  ],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "provider_id": {"type": "string", "minLength": 1},
+    "provider_version": {"type": "string", "minLength": 1},
+    "mission_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "event_log_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "result_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "finished_at": {"type": "string", "format": "date-time"},
+    "exit_status": {
+      "type": "string",
+      "enum": ["success", "failed", "stopped", "budget_exhausted"]
+    },
+    "parallel_worker_count": {"type": "integer", "minimum": 1},
+    "resumed": {"type": "boolean"},
+    "resume_checkpoint_ref": {"type": ["string", "null"]},
+    "authority_effect": {
+      "const": "none",
+      "description": "Worker-provider state and logs are execution evidence, never authority or self-attestation."
+    }
+  }
+}

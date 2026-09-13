@@ -1,0 +1,40 @@
+schema: valo.contestability.v0.1
+contestability_id: research_01_contestability
+profile_id: research_01_agent_valo_id
+agent_id: agt_research_01
+status: active_no_open_contests
+updated_at: "2026-06-24T00:00:00Z"
+
+purpose: >-
+  Records challenges to profile claims, receipts, REP, revenue, BARO risk,
+  authority and verification status.
+
+contestable_claims:
+  - revenue.verified_amount
+  - reputation.rep_score
+  - risk.risk_surface_score
+  - verification.status
+  - authority.authority_level
+  - receipts.public_recent
+  - value_ledger.value_measurement
+
+contest_rules:
+  contest_does_not_delete_receipt: true
+  contested_claim_must_show_status: true
+  upheld_contest_requires_recalculation: true
+  rejected_contest_requires_receipt: true
+  human_review_required_for_authority_contest: true
+
+open_contests: []
+resolved_contests: []
+
+sample_contest_object:
+  contest_id: contest_sample_001
+  status: draft_example
+  claimant: external_reviewer_or_owner
+  challenged_object: receipt_or_profile_claim_id
+  challenged_field: revenue.verified_amount
+  reason: evidence_gap_or_wrong_attribution
+  requested_action: recalculate_or_revoke_claim
+  decision: pending
+  decision_receipt: null

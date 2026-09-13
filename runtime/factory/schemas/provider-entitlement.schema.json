@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/provider-entitlement.schema.json",
+  "title": "VALO Provider Entitlement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "provider_id",
+    "adapter_id",
+    "product",
+    "auth_source",
+    "auth_mode",
+    "entitlement_kind",
+    "entitlement_state",
+    "identity_ref",
+    "entitlement_ref",
+    "capabilities",
+    "quota",
+    "session_ref",
+    "fallback_used",
+    "authority_effect"
+  ],
+  "properties": {
+    "provider_id": {"type": "string", "minLength": 1},
+    "adapter_id": {"type": "string", "minLength": 1},
+    "product": {"type": "string", "minLength": 1},
+    "auth_source": {"type": "string", "minLength": 1},
+    "auth_mode": {
+      "type": "string",
+      "enum": [
+        "provider_account_login",
+        "provider_device_code",
+        "provider_account_oauth",
+        "enterprise_identity",
+        "api_credential"
+      ]
+    },
+    "entitlement_kind": {
+      "type": "string",
+      "enum": ["subscription", "enterprise", "metered_api"]
+    },
+    "entitlement_state": {
+      "type": "string",
+      "enum": ["active", "unknown", "unavailable"]
+    },
+    "identity_ref": {"type": ["string", "null"]},
+    "entitlement_ref": {"type": ["string", "null"]},
+    "capabilities": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "quota": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["integer", "number", "string", "null"]
+      }
+    },
+    "session_ref": {"type": ["string", "null"]},
+    "fallback_used": {"type": "boolean"},
+    "authority_effect": {
+      "const": "none",
+      "description": "Provider identity, entitlement and session state never grant VALO runtime authority."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "valo_reht_no_ungoverned_causal_effect_path_validation.v1",
+  "run_id": "REHT-NO-UNGOVERNED-CAUSAL-EFFECT-PATH-RUNTIME-01",
+  "repository": "nsolland/valo-reht",
+  "branch": "feature/no-ungoverned-causal-effect-path-v1",
+  "tested_commit": "ddb78a76e0e210a97aee57c5c5b4dbfe78051936",
+  "kernel_dependency_commit": "bc2e0d18179571306f301f85fa84af4e54b3cba5",
+  "execution": "LOCAL_ONLY",
+  "remote_ci": "NOT_USED",
+  "timestamp": "2026-09-08",
+  "environment": "local editable valo-kernel and valo-reht installs; Python 3.12.3",
+  "integration": {"command": "python -m pytest -q tests/test_no_ungoverned_causal_effect_path_integration.py", "count": "3 passed", "exit_code": 0},
+  "collection": {"count": "291 collected", "exit_code": 0},
+  "full_suite": {"command": "python -m pytest -q", "count": "290 passed, 1 skipped", "exit_code": 0},
+  "classification": "VALID_LOCAL_ONLY_KERNEL_REHT_INTEGRATION_AND_FULL_REGRESSION"
+}

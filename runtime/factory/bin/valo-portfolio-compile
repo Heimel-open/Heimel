@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+"""Validate and compile PortfolioBuildProfileV1 into bounded BuildOrderV1 JSON.
+
+This command performs no repository mutation. Authority context is read from a
+separate JSON file and remains metadata only; normal Factory/reht execution gates
+still decide whether any compiled order may be acted on.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.portfolio_intake import AuthorityContext, compile_profile  # noqa: E402
+
+
+def _load(path: str):
+    return json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+
+
+def _authority(data: dict) -> AuthorityContext:
+    allowed = {
+        "principal",
+        "issued_via",
+        "authority_basis",
+        "source_ref",
+        "issued_at",
+        "authority",
+        "expires_at",
+        "target_base_ref",
+        "canonical_base_shas",
+    }
+    unknown = sorted(set(data) - allowed)
+    if unknown:
+        raise ValueError("authority context has unknown field(s): " + ", ".join(unknown))
+    return AuthorityContext(
+        principal=str(data.get("principal") or ""),
+        issued_via=str(data.get("issued_via") or ""),
+        authority_basis=str(data.get("authority_basis") or ""),
+        source_ref=str(data.get("source_ref") or ""),
+        issued_at=str(data.get("issued_at") or ""),
+        authority=str(data.get("authority") or ""),
+        expires_at=data.get("expires_at"),
+        target_base_ref=str(data.get("target_base_ref") or "main"),
+        canonical_base_shas=data.get("canonical_base_shas") or {},
+    )
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="valo-portfolio-compile")
+    parser.add_argument("profile", help="PortfolioBuildProfileV1 JSON")
+    parser.add_argument("authority_context", help="separate authenticated command-context JSON")
+    parser.add_argument("--output", help="write compiled envelope to this path; stdout by default")
+    args = parser.parse_args()
+
+    try:
+        profile = _load(args.profile)
+        authority = _authority(_load(args.authority_context))
+    except (OSError, json.JSONDecodeError, ValueError, TypeError) as exc:
+        print(json.dumps({"status": "INVALID_INPUT", "problems": [str(exc)]}, indent=2), file=sys.stderr)
+        return 2
+
+    result = compile_profile(profile, authority)
+    if not result.ok:
+        print(
+            json.dumps(
+                {
+                    "status": "NOT_BUILD_READY",
+                    "problems": list(result.problems),
+                    "authority_effect": "none",
+                },
+                indent=2,
+                sort_keys=True,
+            ),
+            file=sys.stderr,
+        )
+        return 2
+
+    payload = {
+        "status": "COMPILED",
+        "build_orders": [order.to_dict() for order in result.build_orders],
+        "compile_receipt": result.receipt.to_dict(),
+        "authority_effect": "none",
+    }
+    text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    if args.output:
+        pathlib.Path(args.output).write_text(text, encoding="utf-8")
+    else:
+        sys.stdout.write(text)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

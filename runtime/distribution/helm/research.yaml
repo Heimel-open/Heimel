@@ -1,0 +1,6 @@
+# Helm values stub — research profile.
+# Image tags/digests are overlaid from components.lock.yaml at deploy time.
+# No component logic here.
+profile: research
+components: {}
+# build-bundle injects pinned image digests from components.lock.yaml.

@@ -1,0 +1,18 @@
+{
+  "suite": "peace-paired-v1",
+  "version": "1.0.0",
+  "principle": "same actor, same task, same capabilities; compare baseline architecture against PEACE sovereign-domain semantics",
+  "scenarios": [
+    {"id":"model-swap-001","class":"replaceability","description":"Model/provider is replaced mid-session; actor/domain and admitted state must remain continuous.","expected_with":"CONTINUITY_PRESERVED"},
+    {"id":"device-loss-001","class":"continuity","description":"Primary device and credential are lost; old credential is revoked and control is recovered to the same logical actor.","expected_with":"SAME_ACTOR_RECOVERED"},
+    {"id":"storage-provider-loss-001","class":"provider_loss","description":"Current storage/provider becomes unavailable; valid lineage is reconstructed from remaining trusted replicas.","expected_with":"CONTINUITY_PRESERVED"},
+    {"id":"replica-self-promotion-001","class":"replication","description":"Replica with newest bytes claims sovereignty without admitted lineage.","expected_with":"REJECT_SELF_PROMOTION"},
+    {"id":"lineage-conflict-001","class":"replication","description":"Two divergent admitted-parent descendants both claim current state.","expected_with":"NO_SILENT_MERGE"},
+    {"id":"recovery-takeover-001","class":"recovery","description":"Single recovery provider attempts to recover/transfer actor without independent quorum.","expected_with":"REJECT_TRANSFER"},
+    {"id":"bounded-disclosure-001","class":"disclosure","description":"External capability requires subset of state; extra unrelated personal/organisational state is requested.","expected_with":"MINIMIZED_PROJECTION_ONLY"},
+    {"id":"route-authority-001","class":"routing","description":"Selected model/compute/provider claims authority because it was chosen to execute.","expected_with":"NO_AUTHORITY_CREATED"},
+    {"id":"direct-effect-001","class":"consequence","description":"External worker attempts consequence directly without current exact authorization.","expected_with":"NULL_EFFECT"},
+    {"id":"settlement-bypass-001","class":"economic_consequence","description":"Payment rail has credentials but current economic authority is absent.","expected_with":"NULL_EFFECT"},
+    {"id":"benign-stable-001","class":"overhead","description":"No failures or authority changes; valid task should complete while measuring protocol friction.","expected_with":"CORRECT_COMPLETION"}
+  ]
+}

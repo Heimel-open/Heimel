@@ -1,0 +1,70 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440101",
+  "agent_id": "agent-buyer-03",
+  "timestamp": "2026-06-16T12:00:00Z",
+  "intent": {
+    "action": "transfer_money",
+    "target": "vendor_account_123",
+    "scope": "invoice_payment"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:acc111",
+        "type": "account",
+        "verified": true
+      },
+      {
+        "hash": "sha256:auth222",
+        "type": "authorization",
+        "verified": true
+      },
+      {
+        "hash": "sha256:pol333",
+        "type": "policy",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.0
+  },
+  "risk": {
+    "level": "high",
+    "categories": ["financial"],
+    "blast_radius": "organization"
+  },
+  "confidence": 0.88,
+  "policy": {
+    "policy_id": "finance-payment-policy-v3",
+    "policy_hash": "sha256:financepaymentpolicyv300000000000000000000000000000000000000",
+    "required_signoff": true,
+    "max_risk_level": "high",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU-GDPR",
+    "override_allowed": false
+  },
+  "decision": "STEP_UP",
+  "signature": "ed25519:placeholder",
+  "vacs_profile": "valo-authority-v0.1",
+  "principal": {
+    "who": "agent-buyer-03",
+    "whom": "finance_operator_42",
+    "authority_source": "finance_policy_v3",
+    "authority_reference": "policy://finance/payment-approval/v3",
+    "human_signoff": {
+      "required": true,
+      "signer": "finance_manager_7",
+      "role": "payment_approver",
+      "signed_at": "2026-06-16T12:05:00Z",
+      "signature": "ed25519:manager-signature-placeholder",
+      "authority_chain": ["board_policy", "finance_policy_v3", "payment_approver"]
+    }
+  },
+  "boundary": {
+    "when": "business_hours",
+    "where": "finance_workflow",
+    "resources": ["vendor_account_123"],
+    "forbidden_domains": ["payroll", "customer_record_write"],
+    "execution_method": "payment_api"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "valo.matryoshka-agent-adoption.v1",
+  "version": "1.0.0",
+  "status": "canonical",
+  "source": {
+    "name": "Matryoshka Agent",
+    "url": "https://arxiv.org/abs/2607.25090"
+  },
+  "owner_repo": "nsolland/valo-factory",
+  "adopt_as": "provider_neutral_hierarchical_orchestration_pattern",
+  "placement": "Agent Factory / Dispatcher",
+  "authority_effect": "none",
+  "new_os": false,
+  "new_layer": false,
+  "pattern": {
+    "orchestrator": {
+      "purpose": "Maintain compact strategic state across long-running work and spawn bounded workers for concrete attempts.",
+      "may_hold": [
+        "goal",
+        "constraints",
+        "current_state",
+        "decisions",
+        "evidence_refs",
+        "work_status",
+        "dependency_state"
+      ],
+      "must_not_hold_as_authority": [
+        "worker_claims",
+        "model_confidence",
+        "transcript_history",
+        "provider_judgment"
+      ]
+    },
+    "workers": {
+      "lifecycle": "short_lived_and_replaceable",
+      "context": "minimum_required_context",
+      "execution_scope": "bounded_mission_and_owned_files",
+      "return_contract": [
+        "state_delta",
+        "artifact_refs",
+        "evidence_refs",
+        "tests_or_checks",
+        "unresolved_items"
+      ],
+      "forbidden": [
+        "self_attestation",
+        "self_authorization",
+        "implicit_scope_expansion"
+      ]
+    }
+  },
+  "integration": {
+    "work_contract": "WORK_CONTRACT.json remains the canonical worker handoff surface.",
+    "dispatcher": "valo-orchestrator remains the canonical control process for factory dispatch.",
+    "qc": "Independent QC evaluates returned work; worker success claims are not accepted as proof.",
+    "execution_boundary": "Consequence-bearing actions remain subject to fresh VAIG -> REHT -> RACS binding before execution.",
+    "receipts": "Observed results and boundary decisions are recorded as evidence/receipts; orchestration state is not a permit."
+  },
+  "required_invariants": [
+    "The orchestrator coordinates work but never grants execution authority.",
+    "Worker transcripts are disposable context, not canonical state.",
+    "Only compact strategic state and evidence references survive worker turnover.",
+    "A worker may fail, restart or be replaced without changing authority state.",
+    "Workers cannot validate their own output as correct.",
+    "Provider/model swaps must not change governance semantics.",
+    "REHT remains the sole final authorization boundary for consequence-bearing execution."
+  ],
+  "mapping": {
+    "coordinator_role": "Kristina / canonical orchestrator role",
+    "worker_roles": [
+      "Codex",
+      "Antigravity",
+      "Hermes",
+      "other conformant workers"
+    ],
+    "verification": "Independent QC / external verifier",
+    "execution_authorization": "REHT"
+  },
+  "dependency_policy": "pattern_adoption_no_required_matryoshka_runtime_dependency"
+}

@@ -1,0 +1,99 @@
+{
+  "version": "5.0.0",
+  "schema": "VALO_V5_TEST_VECTOR_1",
+  "description": "VALO V5.0 Test Vectors — Single Source of Truth for all test environments",
+  "infrastructure": [
+    {
+      "id": "infra_001",
+      "desc": "Coherent confidence · ALLOW",
+      "ai_conf": 0.80,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 0,
+      "expected": "ALLOW"
+    },
+    {
+      "id": "infra_002",
+      "desc": "Below coherence zone · DEGRADED",
+      "ai_conf": 0.20,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 0,
+      "expected": "DEGRADED"
+    },
+    {
+      "id": "infra_003",
+      "desc": "Above coherence zone · DEGRADED",
+      "ai_conf": 1.20,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 0,
+      "expected": "DEGRADED"
+    },
+    {
+      "id": "infra_004",
+      "desc": "Syntax flag invalid · DEGRADED",
+      "ai_conf": 0.80,
+      "c0": 1.0,
+      "syntax_valid": false,
+      "latency_ok": true,
+      "warmup_frames": 0,
+      "expected": "DEGRADED"
+    },
+    {
+      "id": "infra_005",
+      "desc": "Context-age overflow · HALT",
+      "ai_conf": 0.80,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 2,
+      "expected": "HALT"
+    }
+  ],
+  "vaig": [
+    {
+      "id": "vaig_001",
+      "desc": "High confidence 0.95 · ALLOW",
+      "ai_conf": 0.95,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 0,
+      "expected": "ALLOW"
+    },
+    {
+      "id": "vaig_002",
+      "desc": "Low confidence 0.05 · DEGRADED",
+      "ai_conf": 0.05,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 0,
+      "expected": "DEGRADED"
+    },
+    {
+      "id": "vaig_003",
+      "desc": "Latency too slow · DEGRADED",
+      "ai_conf": 0.80,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": false,
+      "warmup_frames": 0,
+      "expected": "DEGRADED"
+    },
+    {
+      "id": "vaig_004",
+      "desc": "Context-age overflow · HALT",
+      "ai_conf": 0.80,
+      "c0": 1.0,
+      "syntax_valid": true,
+      "latency_ok": true,
+      "warmup_frames": 2,
+      "expected": "HALT"
+    }
+  ]
+}

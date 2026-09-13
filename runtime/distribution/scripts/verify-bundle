@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""verify-bundle — verify a signed bundle / deployment receipt before deploy.
+
+Checks:
+  1. receipt schema validity
+  2. signature present (enforced by profile if enforce_signed_receipts)
+  3. every component in the receipt matches a pin in components.lock.yaml
+     (tag + sha + digest)
+Refuses to pass if any component is unpinned or mismatched. Never fetches
+component source.
+"""
+import argparse
+import json
+import sys
+import yaml
+
+
+def load_schema(path):
+    with open(path) as f:
+        return json.load(f)
+
+
+def verify_receipt(receipt, manifest, enforce_signed):
+    errors = []
+
+    if enforce_signed and not receipt.get("signature"):
+        errors.append("RECEIPT_NOT_SIGNED (profile enforces signed receipts)")
+
+    pins = {(c["name"], c["tag"], c["sha"], c["digest"])
+            for c in manifest.get("components", [])}
+    for c in receipt.get("components", []):
+        key = (c.get("name"), c.get("tag"), c.get("sha"), c.get("digest"))
+        if key not in pins:
+            errors.append(f"UNPINNED_OR_MISMATCHED: {c.get('name')}")
+
+    return not errors, errors
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--receipt", required=True)
+    ap.add_argument("--manifest", default="components/components.lock.yaml")
+    ap.add_argument("--enforce-signed", action="store_true")
+    args = ap.parse_args()
+
+    with open(args.receipt) as f:
+        receipt = json.load(f)
+    with open(args.manifest) as f:
+        manifest = yaml.safe_load(f)
+
+    ok, errors = verify_receipt(receipt, manifest, args.enforce_signed)
+    if not ok:
+        for e in errors:
+            print(f"VERIFY_FAIL: {e}")
+        sys.exit(1)
+    print(f"VERIFY_PASSED receipt={receipt.get('receipt_id')} profile={receipt.get('profile')}")
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

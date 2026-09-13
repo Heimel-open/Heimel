@@ -1,0 +1,4 @@
+name: heimel-kernel
+version: 0.2.3
+source: migrated canonical VALO kernel
+private_sources_included: false

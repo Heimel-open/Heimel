@@ -1,0 +1,159 @@
+{
+  "agents": [
+    {
+      "balance": 711.99,
+      "completed_count": 2,
+      "cost": 120,
+      "domain": "strategy",
+      "failure_count": 0,
+      "name": "Analyst-01",
+      "owner": "Njal",
+      "reputation": 0.572,
+      "skill": 0.82
+    },
+    {
+      "balance": 0.0,
+      "completed_count": 0,
+      "cost": 160,
+      "domain": "code",
+      "failure_count": 0,
+      "name": "Builder-01",
+      "owner": "Njal",
+      "reputation": 0.6,
+      "skill": 0.88
+    },
+    {
+      "balance": 0.0,
+      "completed_count": 0,
+      "cost": 140,
+      "domain": "governance",
+      "failure_count": 0,
+      "name": "Compliance-01",
+      "owner": "Triin",
+      "reputation": 0.69,
+      "skill": 0.78
+    },
+    {
+      "balance": 0.0,
+      "completed_count": 0,
+      "cost": 100,
+      "domain": "sales",
+      "failure_count": 0,
+      "name": "Sales-01",
+      "owner": "InvestorA",
+      "reputation": 0.45,
+      "skill": 0.7
+    },
+    {
+      "balance": 0.0,
+      "completed_count": 0,
+      "cost": 180,
+      "domain": "research",
+      "failure_count": 0,
+      "name": "Research-01",
+      "owner": "InvestorA",
+      "reputation": 0.5,
+      "skill": 0.9
+    }
+  ],
+  "baro_signal": {
+    "avg_reputation": 0.562,
+    "decision_counts": {
+      "ALLOW": 1,
+      "DENY": 2,
+      "HALT": 1,
+      "STEP_UP": 1
+    },
+    "deny_rate": 0.4,
+    "halt_rate": 0.2,
+    "market_health": "unstable",
+    "schema_version": "baro.agent_market_signal.v1",
+    "step_up_rate": 0.2
+  },
+  "owners": {
+    "InvestorA": {
+      "cash": 20000,
+      "name": "InvestorA",
+      "portfolio": {
+        "Research-01": 1.0,
+        "Sales-01": 1.0
+      },
+      "risk_preference": 0.72,
+      "yield_received": 0.0
+    },
+    "Njal": {
+      "cash": 10427.19,
+      "name": "Njal",
+      "portfolio": {
+        "Analyst-01": 1.0,
+        "Builder-01": 1.0
+      },
+      "risk_preference": 0.62,
+      "yield_received": 427.19
+    },
+    "Triin": {
+      "cash": 5000,
+      "name": "Triin",
+      "portfolio": {
+        "Compliance-01": 1.0
+      },
+      "risk_preference": 0.48,
+      "yield_received": 0.0
+    }
+  },
+  "receipts": [
+    {
+      "agent": "Compliance-01",
+      "audit_hash": "ba753f0bcd9d562d1c7e",
+      "decision": "DENY",
+      "owner": "Triin",
+      "owner_yield": 0.0,
+      "payout": 0.0,
+      "quality": 0.0,
+      "task_id": 1
+    },
+    {
+      "agent": "Analyst-01",
+      "audit_hash": "1df48717bec5bee05ae5",
+      "decision": "DENY",
+      "owner": "Njal",
+      "owner_yield": 0.0,
+      "payout": 0.0,
+      "quality": 0.0,
+      "task_id": 2
+    },
+    {
+      "agent": "Analyst-01",
+      "audit_hash": "6a17e7a9a37904ba1f25",
+      "decision": "STEP_UP",
+      "owner": "Njal",
+      "owner_yield": 149.92,
+      "payout": 249.87,
+      "quality": 0.605,
+      "task_id": 3
+    },
+    {
+      "agent": "Research-01",
+      "audit_hash": "d63fbc8c5b5f34830ef0",
+      "decision": "HALT",
+      "owner": "InvestorA",
+      "owner_yield": 0.0,
+      "payout": 0.0,
+      "quality": 0.0,
+      "task_id": 4
+    },
+    {
+      "agent": "Analyst-01",
+      "audit_hash": "fd579b0c4ad0abc7c1e6",
+      "decision": "ALLOW",
+      "owner": "Njal",
+      "owner_yield": 277.27,
+      "payout": 462.12,
+      "quality": 0.693,
+      "task_id": 5
+    }
+  ],
+  "rounds": 5,
+  "schema_version": "valo.agent_consultant_house.simulation.v1",
+  "seed": 7
+}

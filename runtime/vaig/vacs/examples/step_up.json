@@ -1,0 +1,47 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440002",
+  "agent_id": "agent-buyer-03",
+  "timestamp": "2026-06-16T12:00:00Z",
+  "intent": {
+    "action": "transfer_money",
+    "target": "vendor_account_123",
+    "scope": "invoice_payment"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:acc111",
+        "type": "account",
+        "verified": true
+      },
+      {
+        "hash": "sha256:auth222",
+        "type": "authorization",
+        "verified": true
+      },
+      {
+        "hash": "sha256:pol333",
+        "type": "policy",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.0
+  },
+  "risk": {
+    "level": "high",
+    "categories": [
+      "financial"
+    ],
+    "blast_radius": "organization"
+  },
+  "confidence": 0.88,
+  "policy": {
+    "required_signoff": true,
+    "max_risk_level": "high",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU-GDPR"
+  },
+  "decision": "STEP_UP",
+  "signature": "ed25519:placeholder"
+}

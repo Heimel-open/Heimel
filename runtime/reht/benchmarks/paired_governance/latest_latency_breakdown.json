@@ -1,0 +1,398 @@
+{
+  "chain": "Kernel -> REHT -> RACS -> Gateway/effect -> Veritas",
+  "governed_failures": [],
+  "layer_latency": {
+    "gateway": {
+      "all_scenarios_contribution": {
+        "max_ms": 1.67124,
+        "p50_ms": 0.0,
+        "p95_ms": 1.3939517999999997
+      },
+      "when_executed": {
+        "max_ms": 1.67124,
+        "p50_ms": 1.1532870000000002,
+        "p95_ms": 1.6118210999999998,
+        "scenario_count": 4
+      }
+    },
+    "kernel": {
+      "all_scenarios_contribution": {
+        "max_ms": 59.657354,
+        "p50_ms": 18.24305,
+        "p95_ms": 38.816513699999966
+      },
+      "when_executed": {
+        "max_ms": 59.657354,
+        "p50_ms": 18.24305,
+        "p95_ms": 38.816513699999966,
+        "scenario_count": 15
+      }
+    },
+    "racs": {
+      "all_scenarios_contribution": {
+        "max_ms": 3.000908,
+        "p50_ms": 0.0,
+        "p95_ms": 2.478173199999999
+      },
+      "when_executed": {
+        "max_ms": 3.000908,
+        "p50_ms": 1.526303,
+        "p95_ms": 2.8515552,
+        "scenario_count": 5
+      }
+    },
+    "reht": {
+      "all_scenarios_contribution": {
+        "max_ms": 1.261829,
+        "p50_ms": 0.394597,
+        "p95_ms": 1.1487363
+      },
+      "when_executed": {
+        "max_ms": 1.261829,
+        "p50_ms": 0.4085565,
+        "p95_ms": 1.1568143499999999,
+        "scenario_count": 14
+      }
+    },
+    "veritas": {
+      "all_scenarios_contribution": {
+        "max_ms": 12.486307,
+        "p50_ms": 5.14541,
+        "p95_ms": 9.093194199999996
+      },
+      "when_executed": {
+        "max_ms": 12.486307,
+        "p50_ms": 5.14541,
+        "p95_ms": 9.093194199999996,
+        "scenario_count": 15
+      }
+    }
+  },
+  "per_scenario": [
+    {
+      "decision": "ALLOW",
+      "enforcement_layer": "FULL_CHAIN",
+      "layer_call_counts": {
+        "gateway": 1,
+        "kernel": 2,
+        "racs": 1,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 1.275114,
+        "kernel": 59.657354,
+        "racs": 3.000908,
+        "reht": 1.100268,
+        "veritas": 7.639003
+      },
+      "scenario_id": "PG-001",
+      "total_end_to_end_ms": 87.527992,
+      "unattributed_harness_ms": 14.855345
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 20.786148,
+        "racs": 0.0,
+        "reht": 0.394597,
+        "veritas": 5.14541
+      },
+      "scenario_id": "PG-002",
+      "total_end_to_end_ms": 26.00212,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 29.884725,
+        "racs": 0.0,
+        "reht": 0.386702,
+        "veritas": 4.347969
+      },
+      "scenario_id": "PG-003",
+      "total_end_to_end_ms": 34.679271,
+      "unattributed_harness_ms": 0.059874999999998124
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 17.287008,
+        "racs": 0.0,
+        "reht": 0.422516,
+        "veritas": 5.348009
+      },
+      "scenario_id": "PG-004",
+      "total_end_to_end_ms": 22.515051,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 18.275879,
+        "racs": 0.0,
+        "reht": 0.467,
+        "veritas": 3.278141
+      },
+      "scenario_id": "PG-005",
+      "total_end_to_end_ms": 22.290356,
+      "unattributed_harness_ms": 0.26933599999999913
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 14.4956,
+        "racs": 0.0,
+        "reht": 0.548124,
+        "veritas": 5.033831
+      },
+      "scenario_id": "PG-006",
+      "total_end_to_end_ms": 19.16839,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 20.272628,
+        "racs": 0.0,
+        "reht": 0.440611,
+        "veritas": 5.180789
+      },
+      "scenario_id": "PG-007",
+      "total_end_to_end_ms": 25.518474,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 19.806287,
+        "racs": 0.0,
+        "reht": 0.260385,
+        "veritas": 5.455893
+      },
+      "scenario_id": "PG-008",
+      "total_end_to_end_ms": 24.611678,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 10.762541,
+        "racs": 0.0,
+        "reht": 0.064204,
+        "veritas": 1.077214
+      },
+      "scenario_id": "PG-009",
+      "total_end_to_end_ms": 11.742222,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "GATEWAY",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 1,
+        "reht": 1,
+        "veritas": 4
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 3.567786,
+        "racs": 1.243856,
+        "reht": 0.304567,
+        "veritas": 1.476128
+      },
+      "scenario_id": "PG-010",
+      "total_end_to_end_ms": 8.778552,
+      "unattributed_harness_ms": 2.186215
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "GATEWAY",
+      "layer_call_counts": {
+        "gateway": 1,
+        "kernel": 2,
+        "racs": 1,
+        "reht": 1,
+        "veritas": 4
+      },
+      "layers_ms": {
+        "gateway": 0.05784,
+        "kernel": 5.360638,
+        "racs": 0.518049,
+        "reht": 0.197157,
+        "veritas": 1.106332
+      },
+      "scenario_id": "PG-011",
+      "total_end_to_end_ms": 8.56138,
+      "unattributed_harness_ms": 1.321364
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "GATEWAY",
+      "layer_call_counts": {
+        "gateway": 2,
+        "kernel": 2,
+        "racs": 1,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 1.03146,
+        "kernel": 7.039733,
+        "racs": 2.254144,
+        "reht": 1.261829,
+        "veritas": 6.972006
+      },
+      "scenario_id": "PG-012",
+      "total_end_to_end_ms": 23.238061,
+      "unattributed_harness_ms": 4.678888999999998
+    },
+    {
+      "decision": "DENY",
+      "enforcement_layer": "KERNEL",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 0,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 13.793375,
+        "racs": 0.0,
+        "reht": 0.0,
+        "veritas": 5.240067
+      },
+      "scenario_id": "PG-013",
+      "total_end_to_end_ms": 18.557313,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "STEP_UP",
+      "enforcement_layer": "REHT",
+      "layer_call_counts": {
+        "gateway": 0,
+        "kernel": 2,
+        "racs": 0,
+        "reht": 1,
+        "veritas": 3
+      },
+      "layers_ms": {
+        "gateway": 0.0,
+        "kernel": 21.490842,
+        "racs": 0.0,
+        "reht": 0.362438,
+        "veritas": 4.702743
+      },
+      "scenario_id": "PG-014",
+      "total_end_to_end_ms": 25.571198,
+      "unattributed_harness_ms": 0.0
+    },
+    {
+      "decision": "ALLOW",
+      "enforcement_layer": "FULL_CHAIN",
+      "layer_call_counts": {
+        "gateway": 2,
+        "kernel": 2,
+        "racs": 1,
+        "reht": 1,
+        "veritas": 4
+      },
+      "layers_ms": {
+        "gateway": 1.67124,
+        "kernel": 18.24305,
+        "racs": 1.526303,
+        "reht": 0.661286,
+        "veritas": 12.486307
+      },
+      "scenario_id": "PG-015",
+      "total_end_to_end_ms": 38.454108,
+      "unattributed_harness_ms": 3.8659219999999976
+    }
+  ],
+  "scenario_count": 15,
+  "total_end_to_end": {
+    "max_ms": 87.527992,
+    "p50_ms": 23.238061,
+    "p95_ms": 53.17627319999995
+  },
+  "unattributed_harness": {
+    "p50_ms": 0.0,
+    "p95_ms": 7.731825799999988
+  }
+}

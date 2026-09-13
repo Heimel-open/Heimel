@@ -1,0 +1,26 @@
+# Work anchor — Governed Incident ISA
+
+- Active delivery: Add a generic governed incident execution pattern to Workflow ISA: preserve evidence before remediation, classify severity independently of root cause, require fresh authority before mutation, verify post-state before closure, and fail closed when required evidence sources are unhealthy or unavailable.
+- Repository: `nsolland/valo-workflow-isa`
+- Canonical base: `6e5b3633f17bdb150fb2b6118a44b4186d4926ba`
+- Branch: `agent/governed-incident-isa`
+- Draft PR: created immediately after this anchor commit.
+- Owner/claim: ChatGPT implementation on behalf of Njål; repository owner `nsolland`.
+- Owned files:
+  - `src/valo_workflow_isa/patterns/__init__.py`
+  - `src/valo_workflow_isa/patterns/incident.py`
+  - `tests/unit/test_incident_pattern.py`
+  - `docs/work-anchors/2026-08-16-governed-incident-isa.md`
+- Dependencies:
+  - `nsolland/valo-kernel@edf39cc914843e763c4385c0024d775c7458e1e8` (existing pinned dependency; unchanged)
+  - existing REHT/RACS/Gateway/Veritas/BARO ports; no external runtime dependency added
+- Source basis: DevOps Shack, *Production Kubernetes Debugging Flowchart* (26 pages). The source is used only to derive the generic incident-control pattern; Kubernetes-specific commands and remediation advice are not copied into the ISA.
+- Required invariants:
+  - diagnosis may be probabilistic; consequence-bearing remediation may not bypass deterministic preparation and authorization
+  - evidence is preserved before a mutation is proposed or executed
+  - one governed mutation is evaluated against fresh state/authority immediately before execution
+  - successful execution is not sufficient for closure; post-state must be independently verified
+  - missing/stale/unhealthy required evidence sources produce defer/halt semantics, never optimistic success
+  - incident severity/impact classification does not depend on knowing root cause
+  - adapters/playbooks map domain-specific symptoms and probes into this generic pattern; no Kubernetes-specific primitive is added
+- Out of scope: new primitive opcodes, new node classes, REHT/RACS/Gateway/Veritas repository mutation, Kubernetes implementation, merge before CI is green.

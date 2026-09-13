@@ -1,0 +1,21 @@
+name: valo-workspace
+version: 0.1.0
+layer: governed-workspace
+description: Authority-neutral governed workspace and state-admission reference contracts
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-platform
+  commit: e535537c1f8dad164e832e41308a79a9bbc2c8da
+  paths:
+    - src/valo_platform/governed_workspace/contract.py
+    - src/valo_platform/governed_workspace/conformance.py
+    - src/valo_platform/governed_workspace/state_admission.py
+  status: rebuilt-reference-slice
+
+boundary:
+  grants_execution_authority: false
+  executes_effects: false
+  owns_runtime_adapters: false
+  contains_private_runtime: false
+  contains_credentials: false

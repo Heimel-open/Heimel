@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Fail-closed command broker for VAIG -> REHT -> RACS egress governance.
+
+Each stage is an independently configured executable. The broker passes only
+canonical request metadata and prior signed/bound artifacts. Stage output must
+be JSON bound to the same request digest.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import shlex
+import subprocess
+import sys
+from typing import Any, Mapping
+
+QUERY_CONTRACT = "valo.governed-egress.governance-query.v1"
+STAGE_QUERY_CONTRACT = "valo.governed-egress.stage-query.v1"
+HEX = set("0123456789abcdef")
+
+
+class BrokerError(ValueError):
+    pass
+
+
+def canonical_json(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+def require_mapping(value: Any, name: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise BrokerError(f"{name} must be an object")
+    return value
+
+
+def require_string(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise BrokerError(f"{name} must be a non-empty string")
+    return value
+
+
+def require_digest(value: Any, name: str) -> str:
+    digest = require_string(value, name).lower()
+    if len(digest) != 64 or any(ch not in HEX for ch in digest):
+        raise BrokerError(f"{name} must be lowercase SHA-256 hex")
+    return digest
+
+
+def run_stage(name: str, env_name: str, query: Mapping[str, Any], prior: Mapping[str, Any]) -> dict[str, Any]:
+    command_value = os.environ.get(env_name, "").strip()
+    if not command_value:
+        raise BrokerError(f"{env_name} is not configured")
+    command = shlex.split(command_value)
+    if not command:
+        raise BrokerError(f"{env_name} is empty")
+    timeout = float(os.environ.get("VALO_EGRESS_STAGE_TIMEOUT_SECONDS", "5"))
+    if timeout <= 0 or timeout > 60:
+        raise BrokerError("VALO_EGRESS_STAGE_TIMEOUT_SECONDS must be >0 and <=60")
+    payload = {
+        "contract": STAGE_QUERY_CONTRACT,
+        "stage": name,
+        "query": query,
+        "prior_artifacts": prior,
+    }
+    try:
+        result = subprocess.run(
+            command,
+            input=canonical_json(payload),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise BrokerError(f"{name} stage unavailable: {exc}") from exc
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace")[:500]
+        raise BrokerError(f"{name} stage returned {result.returncode}: {detail}")
+    max_output = int(os.environ.get("VALO_EGRESS_STAGE_MAX_OUTPUT_BYTES", "1048576"))
+    if len(result.stdout) > max_output:
+        raise BrokerError(f"{name} stage output exceeds configured limit")
+    try:
+        output = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise BrokerError(f"{name} stage returned invalid JSON") from exc
+    return dict(require_mapping(output, f"{name} stage output"))
+
+
+def validate_artifact(stage: str, artifact: Mapping[str, Any], digest: str) -> dict[str, Any]:
+    identifiers = {
+        "vaig": "evaluation_id",
+        "reht": "clearance_id",
+        "racs": "decision_id",
+    }
+    identifier = identifiers[stage]
+    require_string(artifact.get(identifier), f"{stage}.{identifier}")
+    bound = require_digest(artifact.get("request_digest"), f"{stage}.request_digest")
+    if bound != digest:
+        raise BrokerError(f"{stage} artifact is not bound to the request")
+
+    normalized = dict(artifact)
+    if stage == "vaig":
+        status = require_string(artifact.get("status"), "vaig.status").upper()
+        if status not in {"PASS", "WARN", "FAIL"}:
+            raise BrokerError("vaig.status must be PASS, WARN or FAIL")
+        normalized["status"] = status
+    elif stage == "reht":
+        normalized["status"] = require_string(artifact.get("status"), "reht.status").upper()
+    else:
+        decision = require_string(artifact.get("decision"), "racs.decision").upper()
+        if decision not in {"ALLOW", "MODIFY", "DEFER", "DENY", "STEP_UP", "HALT"}:
+            raise BrokerError("racs.decision is invalid")
+        normalized["decision"] = decision
+        if decision == "MODIFY":
+            replacement = require_digest(
+                artifact.get("replacement_request_digest"),
+                "racs.replacement_request_digest",
+            )
+            if replacement == digest:
+                raise BrokerError("racs replacement digest must differ from request digest")
+            normalized["replacement_request_digest"] = replacement
+    return normalized
+
+
+def broker(query: Mapping[str, Any]) -> dict[str, Any]:
+    require_mapping(query, "query")
+    if query.get("contract") != QUERY_CONTRACT:
+        raise BrokerError(f"contract must be {QUERY_CONTRACT}")
+    for field in ("request_id", "mission_id", "principal_id", "authority_grant_id"):
+        require_string(query.get(field), field)
+    request = require_mapping(query.get("request"), "request")
+    digest = require_digest(request.get("request_digest"), "request.request_digest")
+    require_mapping(query.get("transport"), "transport")
+
+    governance: dict[str, Any] = {}
+    vaig = validate_artifact("vaig", run_stage("vaig", "VALO_EGRESS_VAIG_COMMAND", query, governance), digest)
+    governance["vaig"] = vaig
+
+    # VAIG fail is terminal; synthesize commit-preclusive REHT/RACS artifacts only
+    # if explicitly enabled. Default behavior is to continue through the real
+    # stages so they can emit their own signed denial evidence.
+    reht = validate_artifact("reht", run_stage("reht", "VALO_EGRESS_REHT_COMMAND", query, governance), digest)
+    governance["reht"] = reht
+    racs = validate_artifact("racs", run_stage("racs", "VALO_EGRESS_RACS_COMMAND", query, governance), digest)
+    governance["racs"] = racs
+    return {"governance": governance}
+
+
+def main() -> int:
+    try:
+        query = json.load(sys.stdin)
+        print(json.dumps(broker(query), sort_keys=True, ensure_ascii=False))
+        return 0
+    except (json.JSONDecodeError, BrokerError, OSError, ValueError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}), file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

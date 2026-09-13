@@ -1,0 +1,9 @@
+cameras:
+  kitchen-01:
+    zones:
+      - id: counter
+        location: kitchen counter, beside the coffee machine
+        box: [0, 0, 4, 4]
+      - id: doorway
+        location: kitchen doorway
+        box: [4, 0, 8, 4]

@@ -1,0 +1,26 @@
+name: valo-trades-pack
+version: 0.1.0
+layer: trades-pack
+description: First vertical proof — EV charger installation golden path
+
+dependencies:
+  - repo: nsolland/valo-kernel
+    role: world-state
+    anchor_sha: 108f770998f15a0265f3c7bcc5264cc9bb13f208
+    anchor_ref: main
+    merged_at: 2026-08-07
+  - repo: nsolland/valo-workflow-isa
+    role: workflow-instruction-set
+    anchor_sha: 2ccb25f2513394e22d176e2aa05a31a031f862b9
+    anchor_ref: main
+    merged_at: 2026-08-07
+  - repo: nsolland/valo-function-fabric
+    role: function-fabric
+    anchor_sha: b2f058d664e7c821957941418321f88603ce35e6
+    anchor_ref: main
+    merged_at: 2026-08-07
+  - repo: nsolland/valo-reht
+    role: authorization-boundary
+    anchor_sha: dea6730fed804892018657f9e8d503cf681b7bad
+    anchor_ref: main
+    merged_at: 2026-08-08

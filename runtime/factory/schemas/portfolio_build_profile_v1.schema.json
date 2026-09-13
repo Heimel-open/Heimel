@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/portfolio_build_profile_v1.schema.json",
+  "title": "PortfolioBuildProfileV1",
+  "description": "Validated portfolio-to-factory intake. This profile classifies and constrains build work; it does not grant execution authority. Raw ideas/chats are not valid factory intake. F0 requires exact source SHA and delimited scope before compilation into BuildOrderV1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "source",
+    "portfolio_class",
+    "product_family",
+    "placement",
+    "target_repos",
+    "desired_delivery_stage",
+    "primitive_gate",
+    "reuse_plan",
+    "objective",
+    "scope",
+    "acceptance_criteria",
+    "evidence_refs",
+    "risk_class",
+    "requires_independent_qc",
+    "requires_receipt",
+    "idempotency_key",
+    "authority_effect"
+  ],
+  "properties": {
+    "schema_version": {"const": "portfolio-build-profile.v1"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["idea_id", "concept_version", "map_version", "source_ref", "source_sha"],
+      "properties": {
+        "idea_id": {"type": "string", "minLength": 1},
+        "concept_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "map_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "source_ref": {"type": "string", "minLength": 1},
+        "source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "decision_ref": {"type": ["string", "null"]},
+        "mission_id": {"type": ["string", "null"]}
+      }
+    },
+    "portfolio_class": {
+      "enum": [
+        "P0_CONTROL_PLANE",
+        "P1_PRODUCTION_MACHINERY",
+        "P2_OPERATING_CONTEXT",
+        "P3_DOMAIN_INTEGRATION",
+        "P4_APPLICATION",
+        "P5_RESEARCH_STANDARD_EXPERIMENT"
+      ]
+    },
+    "product_family": {"enum": ["valo", "factory", "os", "applications"]},
+    "placement": {"type": "string", "minLength": 1},
+    "target_capability": {"type": ["string", "null"]},
+    "target_repos": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"}
+    },
+    "desired_delivery_stage": {
+      "enum": ["SPECIFIED", "BUILD_READY", "BUILDING", "VALIDATING", "PILOT", "PRODUCTIZED"]
+    },
+    "primitive_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result", "evidence"],
+      "properties": {
+        "result": {
+          "enum": [
+            "REUSE_EXISTING",
+            "NEW_APPLICATION",
+            "NEW_PROFILE",
+            "NEW_ADAPTER",
+            "NEW_DOMAIN_PACK",
+            "NEW_FUNCTION",
+            "NEW_WORKFLOW",
+            "NEW_PRIMITIVE_ESTABLISHED"
+          ]
+        },
+        "evidence": {"type": "array", "items": {"type": "string"}},
+        "new_primitive_owner": {"type": ["string", "null"]},
+        "migration_ref": {"type": ["string", "null"]},
+        "conformance_ref": {"type": ["string", "null"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"result": {"const": "NEW_PRIMITIVE_ESTABLISHED"}}},
+          "then": {
+            "required": ["new_primitive_owner", "migration_ref", "conformance_ref"],
+            "properties": {
+              "evidence": {"minItems": 1},
+              "new_primitive_owner": {"type": "string", "minLength": 1},
+              "migration_ref": {"type": "string", "minLength": 1},
+              "conformance_ref": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      ]
+    },
+    "reuse_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_inference",
+        "rendering_media",
+        "auth_identity_transport",
+        "scheduling_queues",
+        "storage_database",
+        "connectors_api_clients",
+        "ui_framework",
+        "deployment_runtime",
+        "observability"
+      ],
+      "properties": {
+        "model_inference": {"$ref": "#/$defs/reuseDecision"},
+        "rendering_media": {"$ref": "#/$defs/reuseDecision"},
+        "auth_identity_transport": {"$ref": "#/$defs/reuseDecision"},
+        "scheduling_queues": {"$ref": "#/$defs/reuseDecision"},
+        "storage_database": {"$ref": "#/$defs/reuseDecision"},
+        "connectors_api_clients": {"$ref": "#/$defs/reuseDecision"},
+        "ui_framework": {"$ref": "#/$defs/reuseDecision"},
+        "deployment_runtime": {"$ref": "#/$defs/reuseDecision"},
+        "observability": {"$ref": "#/$defs/reuseDecision"}
+      }
+    },
+    "objective": {"type": "string", "minLength": 1},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paths"],
+      "properties": {
+        "paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "exclude": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "out_of_scope": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "acceptance_criteria": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "risk_class": {"enum": ["A", "B", "C"]},
+    "release_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {"type": ["string", "null"]},
+        "release_version": {"type": ["string", "null"]},
+        "target_channel": {"type": ["string", "null"]}
+      }
+    },
+    "requires_independent_qc": {"const": true},
+    "requires_receipt": {"const": true},
+    "idempotency_key": {"type": "string", "minLength": 1},
+    "authority_effect": {"const": "none"}
+  },
+  "$defs": {
+    "reuseDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "reason"],
+      "properties": {
+        "decision": {"enum": ["REUSE", "NOT_NEEDED", "CUSTOM_REQUIRED"]},
+        "provider_or_component": {"type": ["string", "null"]},
+        "reason": {"type": "string", "minLength": 1},
+        "evidence_ref": {"type": ["string", "null"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"decision": {"const": "CUSTOM_REQUIRED"}}},
+          "then": {
+            "required": ["evidence_ref"],
+            "properties": {"evidence_ref": {"type": "string", "minLength": 1}}
+          }
+        }
+      ]
+    }
+  }
+}

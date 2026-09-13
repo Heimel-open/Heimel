@@ -1,0 +1,123 @@
+{
+  "authority_state": {
+    "action": "ACT-001:PROCEED_WITH_DISCHARGE",
+    "complete_evidence_lineage": [
+      "PRE-001",
+      "ASM-001",
+      "AUTH-001",
+      "ACT-001",
+      "EVT-001",
+      "REL-001"
+    ],
+    "constraints": {
+      "accountable_actor_id": "",
+      "contestability_route": ""
+    },
+    "evaluated_at": "2026-08-21T19:56:35.771466Z",
+    "evaluated_at_ns": 1787342195771465984,
+    "is_operative": false,
+    "lifecycle": "NON_OPERATIVE",
+    "premise": {
+      "action": "ACT-001:PROCEED_WITH_DISCHARGE",
+      "premise_digest": "70e66bebd0b6346dbdf06af4ea4016aa6ab164cb89c56b024a0a56dae6cf6ad1",
+      "premise_id": "PREMISE-001",
+      "purpose": "discharge/care-plan transition validation",
+      "resource": "CASE-01 synthetic discharge/care-plan state",
+      "statement": "The existing discharge plan remains institutionally supportable for ACT-001 after the material state change EVT-001."
+    },
+    "premise_acceptance": null,
+    "purpose": "discharge/care-plan transition validation",
+    "reason_codes": [
+      "ACCOUNTABLE_ACTOR_MISSING",
+      "CONSTRAINT_UNRESOLVED:clinical_stability_current_after_EVT-001",
+      "CONSTRAINT_UNRESOLVED:reassessment_completed_after_EVT-001",
+      "CONTESTABILITY_ROUTE_MISSING",
+      "IDENTITY_NOT_VERIFIED",
+      "PREMISE_ACCEPTANCE_MISSING",
+      "REQUIRED_CONSTRAINT_NOT_ESTABLISHED:clinical_stability_current_after_EVT-001",
+      "REQUIRED_CONSTRAINT_NOT_ESTABLISHED:reassessment_completed_after_EVT-001"
+    ],
+    "required_constraint_keys": [
+      "clinical_stability_current_after_EVT-001",
+      "reassessment_completed_after_EVT-001"
+    ],
+    "resolver_evidence_ids": [
+      "AUTH-001"
+    ],
+    "resource": "CASE-01 synthetic discharge/care-plan state",
+    "status": "INSUFFICIENT",
+    "subject_id": "SUBJECT-NOT-ESTABLISHED",
+    "unresolved_constraints": [
+      "clinical_stability_current_after_EVT-001",
+      "reassessment_completed_after_EVT-001"
+    ]
+  },
+  "boundary": {
+    "authority_instrumentation_role": "RESOLVE_AND_EVIDENCE_AUTHORITY_STATE_ONLY",
+    "downstream_role": "CONSUME_AUTHORITY_STATE_AND_EVALUATE_ACT_001_AT_COMMIT_TIME",
+    "execution_authorization_owner": "INDEPENDENT_DOWNSTREAM_EXECUTION_AUTHORIZATION_BOUNDARY",
+    "execution_authorization_performed": false,
+    "next_proposed_action_id": "ACT-001"
+  },
+  "case_id": "CASE-01",
+  "contract_id": "AS-001",
+  "evidence_references": [
+    {
+      "evidence_id": "PRE-001",
+      "evidence_type": "PRE_STATE",
+      "preservation": "IMMUTABLE_REFERENCE"
+    },
+    {
+      "evidence_id": "ASM-001",
+      "evidence_type": "ASSUMPTION",
+      "preservation": "IMMUTABLE_REFERENCE"
+    },
+    {
+      "evidence_id": "AUTH-001",
+      "evidence_type": "HISTORICAL_AUTHORIZATION",
+      "preservation": "IMMUTABLE_HISTORICAL_EVIDENCE"
+    },
+    {
+      "evidence_id": "ACT-001",
+      "evidence_type": "INTENDED_ACTION",
+      "preservation": "IMMUTABLE_REFERENCE"
+    },
+    {
+      "evidence_id": "EVT-001",
+      "evidence_type": "MATERIAL_STATE_CHANGE",
+      "preservation": "IMMUTABLE_REFERENCE"
+    },
+    {
+      "evidence_id": "REL-001",
+      "evidence_type": "RELIABILITY_FINDING",
+      "preservation": "IMMUTABLE_REFERENCE"
+    }
+  ],
+  "historical_authorization_evidence": {
+    "authorization_id": "AUTH-001",
+    "authorized_action_id": "ACT-001",
+    "not_reinterpreted_as_current_execution_authorization": true,
+    "preservation": "IMMUTABLE_HISTORICAL_EVIDENCE",
+    "status_at_pre_state": "VALID_AT_PRE_STATE"
+  },
+  "lineage": {
+    "canonical_rel001_vector_sha256": "752bdb3a86e6900405bcd52ba85a1da331d396006d3b04ea57dcfe60fccb9b8f",
+    "causal_linkage": [
+      "EVT-001",
+      "ASM-001",
+      "REL-001"
+    ],
+    "preserved_evidence_ids": [
+      "PRE-001",
+      "ASM-001",
+      "AUTH-001",
+      "ACT-001",
+      "EVT-001",
+      "REL-001"
+    ],
+    "raw_case01_file_sha256": "86dc294a026df7ac5bed85f62d95e948a289c13d375b5cabe3f17e9dd4acb27e",
+    "raw_rel001_summary_file_sha256": "61fc8cff5e0b8503ed55084eb819ad80c2c844b773dd93eb2d72b743550283d4"
+  },
+  "schema_version": "authority-state-neutral-contract.v0.2.2",
+  "source_reliability_finding_id": "REL-001"
+}

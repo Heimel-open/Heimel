@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nsolland.github.io/valo-distribution/schemas/distribution-manifest.schema.json",
+  "title": "VALO Distribution Manifest",
+  "description": "Pinned set of components for a distribution build. References only tagged+pinned artifacts. No product logic.",
+  "type": "object",
+  "required": ["apiVersion", "kind", "profile", "components"],
+  "properties": {
+    "apiVersion": {"type": "string", "enum": ["valo.distribution/v1"]},
+    "kind": {"type": "string", "enum": ["DistributionManifest"]},
+    "profile": {"type": "string", "enum": ["edge", "research", "enterprise", "demo"]},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "repo", "tag", "sha", "image", "digest"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "repo": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+          "tag": {"type": "string", "pattern": "^v?[0-9]+\\.[0-9]+\\.[0-9]+([-.].+)?$"},
+          "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "image": {"type": "string", "pattern": "^[a-z0-9./-]+:[A-Za-z0-9._-]+$"},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "required": {"type": "boolean"},
+          "config_contract": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,11 @@
+{
+  "model_id": "step-3.7-flash:free",
+  "display": "step-3.7-flash (free)",
+  "noted_by": "Hermes",
+  "context": "NJÅL–VALO CLEAN HISTORICAL MODEL RUN (prepared)",
+  "registry_record_created_at_utc": "2026-08-17T12:04:39Z",
+  "model_runtime_observed_at_utc": null,
+  "note": "Exact model identifier recorded as provided by the Hermes runtime. Runtime observation time is not independently verified in this staging record.",
+  "repo": "nsolland/Valo-Twin",
+  "base_replay_commit": "9407384f6afad22b6b10e14a9566dd315d536658"
+}

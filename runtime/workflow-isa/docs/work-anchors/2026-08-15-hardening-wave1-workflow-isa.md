@@ -1,0 +1,24 @@
+# Work anchor — Workflow ISA hardening Wave 1
+
+- Active delivery: P0.2 producer audit and bounded repair of demonstrated Workflow ISA runtime failure paths.
+- Repository: `nsolland/valo-workflow-isa`
+- Canonical base: `9d53e667bb1f1881ff8010210acb6c974133f575`
+- Branch: `agent/hardening-wave1-workflow-isa`
+- Owner/claim: AGY producer on behalf of Njål; independent QC performed by Hermes verifier.
+- Independent QC Result: PASS — WORKFLOW_ISA_REPAIR_VERIFIED at verified head 6a590101d99da7515d8ced6bff1e9497ed3a181c (https://github.com/nsolland/valo-workflow-isa/pull/7#issuecomment-5302456239)
+- Owned files:
+  - `src/valo_workflow_isa/runtime/engine.py`
+  - `src/valo_workflow_isa/stdlib/handlers.py`
+  - `src/valo_workflow_isa/testing/fakes.py`
+  - `tests/runtime/test_runtime.py`
+  - `tests/runtime/test_write_pipeline.py`
+  - `examples/demonstrator_2_revocation.py`
+  - `examples/demonstrator_5_retry.py`
+  - `repo-manifest.yaml`
+  - `.github/workflows/ci.yml`
+  - `docs/hardening-wave1-workflow-producer-audit.md`
+  - this work anchor
+- Dependencies:
+  - Hardening baseline: `nsolland/Index@2f92d1028c54f7667382bafed81d5271ffe58f26`
+  - Kernel P0.1 post-merge reproduction: `nsolland/valo-kernel@edf39cc914843e763c4385c0024d775c7458e1e8`
+- Out of scope: REHT, RACS, Gateway, Veritas or Index repository mutation; new architecture; merge.

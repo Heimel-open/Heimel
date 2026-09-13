@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "research.paper.summarize input",
+  "type": "object",
+  "required": ["paper_id"],
+  "properties": {
+    "paper_id": {"type": "string"},
+    "max_length": {"type": "integer", "minimum": 50, "maximum": 5000}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,9 @@
+# Release gates — executed by scripts/validate-distribution.
+# Each gate name maps to a check in the validation script.
+gates:
+  - pins_present          # every component has tag+sha+image+digest
+  - digest_format         # digest is sha256:<64hex>
+  - sha_format            # sha is 40-hex
+  - no_placeholders       # v0.0.0 / zero SHA / zero digest are never deployable
+  - canonical_repo_refs   # known component names resolve to canonical owner repos
+# Profile-specific and remote artifact-existence gates may be appended per release policy.

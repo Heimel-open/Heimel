@@ -1,0 +1,4 @@
+name: heimel-runtime
+version: 0.1.3
+source: Heimel composition root over migrated VALO runtime components
+private_sources_included: false

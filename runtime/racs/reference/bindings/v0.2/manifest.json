@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "stage": "3C-boundary-aware-conformance",
+  "purpose": "RFC 8785 canonicalization, SHA-256 payload digests and fail-closed BoundaryCrossingAssessment binding across the RACS v0.2 artifact chain.",
+  "canonicalization": {
+    "standard": "RFC 8785 (JSON Canonicalization Scheme)",
+    "key_sort": "UTF-16 code-unit order",
+    "digest": "SHA-256 over canonical UTF-8 payload bytes"
+  },
+  "bindings": {
+    "python": {"path": "python", "library": "rfc8785>=0.1.4"},
+    "rust": {"path": "rust", "library": "serde_jcs=0.1"},
+    "typescript": {"path": "typescript", "library": "json-canonicalize@2.0.0"}
+  },
+  "shared_vectors": {
+    "official": "test-vectors/jcs/official/vector-01..06.json",
+    "governance_evaluation": "test-vectors/jcs/racs-v0.2/governance-evaluation.json",
+    "boundary_crossing": "test-vectors/0.2/boundary-crossing/canonical-vectors.json",
+    "runtime_validation": "test-vectors/0.2/runtime-validation/**/*.json"
+  },
+  "governance_evaluation_golden_digest": "sha256:532d2a571f8536890bf9b79994703c63a44c01ba40f71b4733d045674bdb3273",
+  "boundary_invariants": [
+    "ActionEnvelope declares fail-closed boundary requirements",
+    "GovernanceEvaluation binds the exact BoundaryCrossingAssessment digest",
+    "AdmissibilityDetermination preserves the same binding",
+    "GovernanceClearance resolves the full boundary chain before ACCEPT"
+  ],
+  "cross_language_gate": "Python, Rust and TypeScript must emit identical canonical bytes, digests, decisions and normalized reason codes."
+}

@@ -1,0 +1,145 @@
+schema_version: execution-assurance-pilot.v1
+pilot_id: execution-assurance-pilot-v1
+customer_ref: null
+
+offer:
+  name: Execution Assurance Pilot
+  state: PILOT_OFFER
+  platform_identity: VALO
+  authorization_primitive: REHT
+
+scope:
+  tenant: CUSTOMER_TENANT
+  environment: shadow-pilot
+  workflow: ONE_BOUNDED_WORKFLOW
+  subject: ONE_AGENT_OR_AUTOMATION_IDENTITY
+  action_class: ONE_CONSEQUENCE_BEARING_ACTION_CLASS
+  integration_boundary: "observe the final candidate action immediately before the customer's existing execution boundary"
+  out_of_scope:
+    - replacing the customer's IAM, workflow engine or system of record
+    - broad enterprise policy migration
+    - autonomous expansion to new workflows or action classes
+    - new VALO core primitives
+    - model-provider migration unless separately requested
+
+deployment:
+  initial_mode: shadow
+  allowed_progression:
+    - shadow
+    - recommend
+    - enforce
+  safe_default: observe
+  shadow_invariants:
+    non_authoritative: true
+    can_issue_clearance: false
+    external_effect_performed: false
+  enforce_gate:
+    automatic_promotion: false
+    single_step_only: true
+    separation_of_duties: true
+    required_evidence:
+      - mode_promotion_case
+      - owner
+      - independent_approver
+      - mandate_ref
+      - evaluation_summary
+      - rollback_plan
+      - rollback_trigger
+      - valid_until
+      - receipt_ref
+
+runtime_components:
+  - component: shadow_runtime
+    canonical_repo: nsolland/valo-platform
+    role: "non-authoritative shadow evaluation, policy replay, agreement metrics and deployment-mode semantics"
+    pin_required: true
+    artifact_ref: null
+  - component: reht
+    canonical_repo: nsolland/valo-reht
+    role: "sole runtime authorization boundary if the customer later approves enforce mode"
+    pin_required: true
+    artifact_ref: null
+  - component: racs
+    canonical_repo: nsolland/Racs
+    role: "deterministic decision contract binding after REHT clearance"
+    pin_required: true
+    artifact_ref: null
+  - component: gateway
+    canonical_repo: nsolland/valo-gateway
+    role: "customer-side enforcement/effect boundary in approved enforce mode"
+    pin_required: true
+    artifact_ref: null
+  - component: veritas
+    canonical_repo: nsolland/Veritas
+    role: "execution/effect receipt evidence after approved governed execution"
+    pin_required: true
+    artifact_ref: null
+  - component: vaig
+    canonical_repo: nsolland/VAIG
+    role: "optional intelligent evaluation/risk signals; never an authorization source"
+    pin_required: true
+    artifact_ref: null
+
+evidence_contract:
+  required_inputs:
+    - proposed_action
+    - actor_identity
+    - authority_state
+    - purpose
+    - resource_or_world_state
+    - policy_or_constraints
+    - human_action_or_outcome
+  correlation_fields:
+    - tenant_id
+    - task_id
+    - action_id
+    - decision_ref
+    - receipt_ref
+  freshness_required: true
+  unknown_is_valid: true
+
+outputs:
+  shadow:
+    - ShadowEvaluation
+    - OutcomeAgreementRecord
+    - PolicyReplayResult
+    - pilot_metrics_report
+  enforce_if_approved:
+    - reht_clearance
+    - racs_decision
+    - gateway_effect_record
+    - veritas_execution_receipt
+    - outcome_observation
+
+metrics:
+  - in_scope_action_coverage
+  - evidence_completeness
+  - agreement_rate
+  - mismatch_rate
+  - escalation_miss_rate
+  - escalation_false_rate
+  - decision_latency
+  - shadow_external_effect_count
+  - uncorrelated_record_count
+  - unknown_or_insufficient_evidence_rate
+
+acceptance_criteria:
+  - "Every observed in-scope candidate action is tenant/task/action correlated or explicitly reported as an instrumentation gap."
+  - "Shadow mode performs zero external effects and issues zero execution clearances."
+  - "The pilot produces an evidence-completeness and agreement/mismatch baseline from real workflow observations."
+  - "Unknown, stale or insufficient authority/evidence is represented explicitly rather than inferred as permission."
+  - "Any move toward enforcement uses the existing single-step deployment-mode promotion process with independent approval and rollback evidence."
+  - "The customer can disable the observer and export pilot evidence without changing its underlying workflow engine or system of record."
+
+rollback:
+  shadow_disable: remove_or_disable_observer_without_affecting_customer_execution
+  enforce_fallback: shadow
+  customer_system_remains_authoritative: true
+  data_export_required: true
+
+commercial_boundaries:
+  valo_is_product: false
+  reht_is_product: false
+  pilot_is_packaged_offer: true
+  new_core_allowed: false
+  provider_lock_in_allowed: false

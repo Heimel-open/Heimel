@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VACS VALO Profile v0.1",
+  "type": "object",
+  "required": ["vacs_profile", "principal", "boundary"],
+  "properties": {
+    "vacs_profile": {
+      "type": "string",
+      "enum": ["valo-authority-v0.1"]
+    },
+    "principal": {
+      "type": "object",
+      "required": ["who", "whom", "authority_source"],
+      "properties": {
+        "who": {"type": "string"},
+        "whom": {"type": "string"},
+        "authority_source": {"type": "string"},
+        "authority_reference": {"type": "string"},
+        "human_signoff": {
+          "type": "object",
+          "required": ["required"],
+          "properties": {
+            "required": {"type": "boolean"},
+            "signer": {"type": "string"},
+            "role": {"type": "string"},
+            "signed_at": {"type": "string", "format": "date-time"},
+            "signature": {"type": "string"},
+            "authority_chain": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "status": {
+              "type": "string",
+              "enum": ["active", "revoked"]
+            }
+          }
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "required": ["when", "where", "resources", "forbidden_domains"],
+      "properties": {
+        "when": {"type": "string"},
+        "where": {"type": "string"},
+        "resources": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "forbidden_domains": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "execution_method": {"type": "string"}
+      }
+    }
+  }
+}

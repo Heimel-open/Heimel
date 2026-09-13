@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "qc_attestation",
+  "description": "Signed QC attestation bound to exact repo/PR/base/head/policy. Any change to head/base/policy invalidates it.",
+  "type": "object",
+  "required": ["schema_version", "repo", "pr", "base_sha", "head_sha", "policy_version", "issued_at", "expires_at", "decision", "checks", "attestor", "signature"],
+  "properties": {
+    "schema_version": {"const": "qc-attest-1"},
+    "repo": {"type": "string"},
+    "pr": {"type": "integer"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "policy_version": {"type": "string"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "decision": {"type": "string", "enum": ["MERGE_READY", "BLOCKED", "NEEDS_HUMAN"]},
+    "checks": {
+      "type": "object",
+      "required": ["authority", "claims", "verification", "canonical", "ci_green"],
+      "properties": {
+        "authority": {"type": "string", "enum": ["PASS", "FAIL"]},
+        "claims": {"type": "string", "enum": ["PASS", "FAIL"]},
+        "verification": {"type": "string", "enum": ["PASS", "FAIL"]},
+        "canonical": {"type": "string", "enum": ["PASS", "FAIL"]},
+        "ci_green": {"type": "string", "enum": ["PASS", "FAIL"]}
+      }
+    },
+    "attestor": {"type": "string", "description": "GitHub identity that ran QC (must be QC role)"},
+    "signature": {"type": "string", "description": "ed25519 signature over canonical JSON of all other fields"}
+  }
+}

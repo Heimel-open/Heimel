@@ -1,0 +1,94 @@
+{
+  "protocol": "PEACE/0",
+  "profile": "person-model-sovereignty-v0",
+  "semantic_vectors": [
+    {
+      "id": "inferred-preference-not-consent-001",
+      "given": {
+        "person_model_predicts_approval": true,
+        "explicit_current_authority": false,
+        "requested_use_class": "influence_subject"
+      },
+      "expected": {
+        "use_allowed": false,
+        "reason": "INFERRED_PREFERENCE_NE_CONSENT"
+      }
+    },
+    {
+      "id": "derivation-not-authority-001",
+      "given": {
+        "person_model_derived": true,
+        "provider_can_predict_subject": true,
+        "retention_authorized": false,
+        "sharing_authorized": false
+      },
+      "expected": {
+        "retention_authority_created": false,
+        "sharing_authority_created": false,
+        "reason": "DERIVATION_NE_AUTHORITY"
+      }
+    },
+    {
+      "id": "use-class-isolation-001",
+      "given": {
+        "authorized_use_class": "assist_subject",
+        "requested_use_class": "influence_subject",
+        "purpose_matches": false
+      },
+      "expected": {
+        "use_allowed": false,
+        "reason": "MODEL_USE_REQUIRES_CURRENT_AUTHORITY"
+      }
+    },
+    {
+      "id": "revocation-descendant-001",
+      "given": {
+        "root_person_model_revoked": true,
+        "descendant_materially_equivalent": true,
+        "descendant_claims_prior_authority": true
+      },
+      "expected": {
+        "descendant_use_allowed": false,
+        "reason": "REVOCATION_PROPAGATES_TO_USE"
+      }
+    },
+    {
+      "id": "political-targeting-001",
+      "given": {
+        "person_model_available": true,
+        "requested_use_class": "political_influence",
+        "individualized_message_optimization": true
+      },
+      "expected": {
+        "use_allowed": false,
+        "reason": "POLITICAL_COGNITIVE_TARGETING_PROHIBITED"
+      }
+    },
+    {
+      "id": "model-not-principal-001",
+      "given": {
+        "person_model_accuracy_high": true,
+        "person_model_claims_subject_equivalence": true,
+        "person_model_attempts_delegation": true
+      },
+      "expected": {
+        "authority_created": false,
+        "delegation_created": false,
+        "reason": "MODEL_NE_PERSON"
+      }
+    },
+    {
+      "id": "derivative-restrictions-follow-001",
+      "given": {
+        "source_person_model_restricted": true,
+        "derived_embedding_created": true,
+        "derivative_export_attempted_without_constraints": true
+      },
+      "expected": {
+        "export_allowed": false,
+        "restrictions_preserved": true,
+        "reason": "DISCLOSURE_RESTRICTIONS_FOLLOW_DERIVATIVES"
+      }
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""valo-claim — leased issue claims (replaces versioned claimed.json).
+
+A claim is NEVER a repo change. It lives in ~/.valo/claims.db (SQLite) and is
+mirrored to GitHub as: issue label "claimed", assignee, and a comment with run_id.
+Expired leases are auto-released by `expire` (called by the orchestrator tick).
+
+Schema:
+  issue_id, actor_id, run_id, claimed_at, expires_at, heartbeat_at, status
+
+No stale claim can ever enter a PR diff because claims are not in the repo.
+"""
+import argparse, json, os, sqlite3, sys, subprocess
+from datetime import datetime, timezone, timedelta
+
+DB = os.path.expanduser("~/.valo/claims.db")
+REPO = "nsolland/valo-platform"
+DEFAULT_LEASE = timedelta(hours=6)
+
+
+def _now():
+    return datetime.now(timezone.utc)
+
+
+def _mode():
+    """Return current factory mode verdict (re-check token every call)."""
+    v = subprocess.run(["valoctl", "check"], capture_output=True, text=True).stdout
+    try:
+        return json.loads(v)
+    except Exception:
+        return {"mode": "INCIDENT_HOLD", "remote_write_allowed": False}
+
+
+def _remote_write_ok():
+    """GitHub mirror is a REMOTE WRITE. Only NORMAL permits it. In SHADOW we
+    simulate claims locally (state only) but never touch GitHub."""
+    return _mode().get("remote_write_allowed", False) is True
+
+
+def db():
+    os.makedirs(os.path.dirname(DB), exist_ok=True)
+    c = sqlite3.connect(DB)
+    c.execute("""CREATE TABLE IF NOT EXISTS claims (
+        issue_id TEXT PRIMARY KEY,
+        actor_id TEXT,
+        run_id TEXT,
+        claimed_at TEXT,
+        expires_at TEXT,
+        heartbeat_at TEXT,
+        status TEXT
+    )""")
+    c.commit()
+    return c
+
+
+def _gh(*args):
+    return subprocess.run(["gh", "issue", "-R", REPO, *args],
+                          capture_output=True, text=True)
+
+
+def cmd_claim(args):
+    c = db()
+    now = _now()
+    expires = now + DEFAULT_LEASE
+    # If an unexpired, active claim exists -> refuse (no double-work).
+    row = c.execute("SELECT actor_id,expires_at,status FROM claims WHERE issue_id=?",
+                    (args.issue,)).fetchone()
+    if row and row[2] == "ACTIVE":
+        exp = datetime.fromisoformat(row[1])
+        if exp > now:
+            print(json.dumps({"ok": False, "reason": "already_claimed",
+                              "by": row[0], "expires_at": row[1]}))
+            return 2
+    c.execute("""INSERT OR REPLACE INTO claims VALUES (?,?,?,?,?,?,?)""",
+              (args.issue, args.actor, args.run_id, now.isoformat(),
+               expires.isoformat(), now.isoformat(), "ACTIVE"))
+    c.commit()
+    c.close()
+    # Mirror to GitHub — but only under NORMAL (remote write). Under SHADOW
+    # this is a simulated claim: local state only, no remote mutation.
+    if _remote_write_ok():
+        _gh("edit", args.issue, "--add-label", "claimed", "--assignee", args.actor)
+        _gh("comment", args.issue, "--body",
+            f"Claimed by {args.actor} (run {args.run_id}). Lease expires {expires.isoformat()}.")
+    else:
+        print(json.dumps({"note": f"remote_write DENIED (mode={_mode().get('mode')}); "
+                                   f"local-only simulated claim, no GitHub mutation"}))
+    print(json.dumps({"ok": True, "issue_id": args.issue, "actor": args.actor,
+                      "run_id": args.run_id, "expires_at": expires.isoformat()}))
+    return 0
+
+
+def cmd_heartbeat(args):
+    c = db()
+    c.execute("UPDATE claims SET heartbeat_at=? WHERE issue_id=? AND status='ACTIVE'",
+              (_now().isoformat(), args.issue))
+    c.commit(); c.close()
+    print(json.dumps({"ok": True}))
+    return 0
+
+
+def cmd_release(args):
+    c = db()
+    c.execute("UPDATE claims SET status='RELEASED' WHERE issue_id=?", (args.issue,))
+    c.commit(); c.close()
+    if _remote_write_ok():
+        _gh("edit", args.issue, "--remove-label", "claimed")
+    else:
+        print(json.dumps({"note": f"remote_write DENIED (mode={_mode().get('mode')}); local-only"}))
+    print(json.dumps({"ok": True, "released": args.issue}))
+    return 0
+
+
+def cmd_expire(args):
+    """Auto-release all claims whose lease expired. Called by orchestrator tick."""
+    c = db()
+    now = _now().isoformat()
+    rows = c.execute("SELECT issue_id FROM claims WHERE status='ACTIVE' AND expires_at < ?",
+                     (now,)).fetchall()
+    for (issue,) in rows:
+        c.execute("UPDATE claims SET status='EXPIRED' WHERE issue_id=?", (issue,))
+        if _remote_write_ok():
+            _gh("edit", issue, "--remove-label", "claimed")
+    c.commit(); c.close()
+    print(json.dumps({"ok": True, "expired": [r[0] for r in rows]}))
+    return 0
+
+
+def cmd_status(args):
+    c = db()
+    rows = c.execute("SELECT issue_id,actor_id,run_id,expires_at,status FROM claims "
+                    "ORDER BY claimed_at DESC").fetchall()
+    c.close()
+    out = [{"issue_id": r[0], "actor": r[1], "run_id": r[2],
+            "expires_at": r[3], "status": r[4]} for r in rows]
+    print(json.dumps(out, indent=2))
+    return 0
+
+
+def main():
+    p = argparse.ArgumentParser(prog="valo-claim")
+    sub = p.add_subparsers(dest="cmd", required=True)
+    sc = sub.add_parser("claim"); sc.add_argument("--issue", required=True)
+    sc.add_argument("--actor", required=True); sc.add_argument("--run-id", required=True)
+    sc.set_defaults(func=cmd_claim)
+    sh = sub.add_parser("heartbeat"); sh.add_argument("--issue", required=True)
+    sh.set_defaults(func=cmd_heartbeat)
+    sr = sub.add_parser("release"); sr.add_argument("--issue", required=True)
+    sr.set_defaults(func=cmd_release)
+    se = sub.add_parser("expire"); se.set_defaults(func=cmd_expire)
+    ss = sub.add_parser("status"); ss.set_defaults(func=cmd_status)
+    args = p.parse_args()
+    sys.exit(args.func(args))
+
+
+if __name__ == "__main__":
+    sys.exit(main())

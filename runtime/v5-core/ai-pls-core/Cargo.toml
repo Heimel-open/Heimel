@@ -1,0 +1,12 @@
+[package]
+name = "ai-pls-core"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Deterministic execution enforcement core for AI systems"
+
+[dependencies]
+sha2 = "0.10"
+serde_json = "1"
+
+[dev-dependencies]

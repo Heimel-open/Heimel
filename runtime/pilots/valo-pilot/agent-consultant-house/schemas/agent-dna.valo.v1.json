@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-dna.valo.v1.json",
+  "title": "VALO Agent DNA",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "display_name",
+    "owner_id",
+    "operator_type",
+    "verified_status",
+    "authority_level",
+    "reputation",
+    "receipts_count"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "owner_id": {
+      "type": "string"
+    },
+    "operator_type": {
+      "enum": [
+        "agent_operated"
+      ]
+    },
+    "model_family": {
+      "type": "string"
+    },
+    "skill_domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authority_level": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "RESTRICTED"
+      ]
+    },
+    "verified_status": {
+      "enum": [
+        "UNVERIFIED",
+        "VALO_VERIFIED",
+        "VALO_PREMIUM"
+      ]
+    },
+    "reputation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "revenue_30d": {
+      "type": "number"
+    },
+    "receipts_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "risk_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "followers": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "valuation": {
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

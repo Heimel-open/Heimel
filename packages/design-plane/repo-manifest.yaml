@@ -1,0 +1,29 @@
+name: heimel-design-plane
+version: 0.1.0
+layer: intent-design-evidence
+license: Apache-2.0
+
+authority:
+  executes_external_effects: false
+  grants_authority: false
+  promotion_requires_heimel_boundary: true
+  fail_closed_without_evidence: true
+
+domains:
+  alpha: system_design
+  relaion: stewarded_development_path
+  gcu: work_unit_execution_design
+  traxin: organizational_workflow_design
+
+lineage:
+  external_reference: "Jagadesh Babu Munta, Software Design Plane L2, August 2026"
+  adopted_concepts:
+    - human_governed_intent
+    - architecture_as_search_space
+    - independent_evaluation
+    - evidence_vector
+    - shadow_verification
+    - bounded_resynthesis
+  heimel_extension:
+    - consequence_time_authority_gate
+    - no_direct_effect_path

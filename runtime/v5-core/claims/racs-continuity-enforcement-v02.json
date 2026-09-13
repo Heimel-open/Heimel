@@ -1,0 +1,32 @@
+{
+  "repo": "nsolland/valo-v5-core",
+  "stage": "racs-continuity-enforcement-v0.2",
+  "base_sha": "48eac632392b3859df9ad7a3455150eb07d807d0",
+  "branch": "build/racs-continuity-enforcement-v02",
+  "pr": "https://github.com/nsolland/valo-v5-core/pull/36",
+  "owner": "ChatGPT",
+  "scope": "verify signed RACS continuity enforcement artifacts and map them to existing bounded core directives",
+  "claimed_paths": [
+    "l1-guardian/src/racs_continuity.rs",
+    "l1-guardian/src/server.rs",
+    "l1-guardian/tests/racs_continuity.rs",
+    "docs/architecture/RACS_CONTINUITY_ENFORCEMENT_V0_2.md",
+    ".github/workflows/ci-auto.yml"
+  ],
+  "must_not_touch": [
+    "l1-guardian/src/validation_logic.rs",
+    "formal-verification/**",
+    "human-authorized reset semantics",
+    "RACS verification semantics owned by nsolland/Racs"
+  ],
+  "dependencies": [
+    "nsolland/Racs merge 2659660889297ca624a47ca9a8798738ff6cf539",
+    "existing CORE_EXECUTION_PERMIT and COMMIT_TOKEN bindings",
+    "existing CANCELLATION_AUTHORIZATION HALT path"
+  ],
+  "status": "merged",
+  "last_verified_head": "a7759d10e469fae62992529689734f8ba089b9c7",
+  "merge_commit": "9b9de10176921a4f47cf013909ceebfa6fd1fc86",
+  "tests": "repository validation, Python suite, Automatic CI Rust suite, L1 Guardian debug/release, L3 Context, infrastructure simulation, VAIG simulation, integrity build, ValoStateMachine TLA and valo_v5 TLA green",
+  "non_blocking_follow_through": "full-repo Kani and EFAVALO epistemic TLC jobs continued against unchanged formal-verification files"
+}

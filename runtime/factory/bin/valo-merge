@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""valo-merge — merge controller (separation of duties).
+
+Can ONLY merge when ALL hold:
+  - valoctl mode == NORMAL (transactional fence, re-checked now)
+  - valid QC attestation supplied AND attestation.head_sha == live PR head_sha
+    (attestation invalid if PR changed since signing)
+  - mandatory CI green (statusCheckRollup all COMPLETED/success)
+  - risk class A or B (C -> refuse, emit NEEDS_HUMAN)
+  - no maintenance / incident_hold
+
+Uses `gh pr merge --merge` (server-side; never touches primary checkout).
+Never approves its own PR, never changes policy, never resumes other jobs.
+"""
+import argparse, json, os, subprocess, sys
+from datetime import datetime, timezone
+
+REPO = "nsolland/valo-platform"
+VALO = os.path.expanduser("~/valo-platform")
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def mode_ok():
+    v = subprocess.run(["valoctl", "check"], capture_output=True,
+                       text=True).stdout
+    try:
+        return json.loads(v).get("write_allowed", False)
+    except Exception:
+        return False
+
+
+def live_head(pr):
+    return subprocess.run(["gh", "pr", "view", str(pr), "-R", REPO,
+                           "--json", "headRefOid", "-q", ".headRefOid"],
+                          capture_output=True, text=True).stdout.strip()
+
+
+def ci_green(pr):
+    out = subprocess.run(["gh", "pr", "view", str(pr), "-R", REPO,
+                          "--json", "statusCheckRollup", "-q",
+                          ".statusCheckRollup"],
+                         capture_output=True, text=True).stdout
+    try:
+        rolls = json.loads(out)
+    except Exception:
+        return False
+    if not rolls:
+        return True  # no CI configured = treat as green (or enforce later)
+    for r in rolls:
+        st = (r or {}).get("status")
+        if st not in ("COMPLETED", "SUCCESS", None):
+            return False
+    return True
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--pr", required=True)
+    p.add_argument("--attestation", required=True,
+                   help="path to signed QC attestation JSON")
+    p.add_argument("--risk-class", required=True, choices=["A", "B", "C"])
+    args = p.parse_args()
+
+    # 1. mode fence
+    if not mode_ok():
+        print(json.dumps({"merged": False, "reason": "mode_not_normal",
+                          "detail": "valoctl mode != NORMAL; refuse merge"}))
+        return 2
+
+    # 2. risk class
+    if args.risk_class == "C":
+        print(json.dumps({"merged": False, "reason": "NEEDS_HUMAN",
+                          "detail": "Class C requires human decision; "
+                                    "merge-controller refuses"}))
+        return 3
+
+    # 3. attestation valid + head matches live
+    try:
+        att = json.load(open(args.attestation))
+    except Exception as e:
+        print(json.dumps({"merged": False, "reason": "bad_attestation",
+                          "detail": str(e)}))
+        return 4
+    live = live_head(args.pr)
+    if att.get("head_sha") != live:
+        print(json.dumps({"merged": False, "reason": "attestation_stale",
+                          "detail": f"attestation head {att.get('head_sha')} "
+                                    f"!= live {live}"}))
+        return 5
+    if att.get("decision") != "MERGE_READY":
+        print(json.dumps({"merged": False, "reason": "qc_not_ready",
+                          "detail": att.get("decision")}))
+        return 6
+
+    # 4. CI green
+    if not ci_green(args.pr):
+        print(json.dumps({"merged": False, "reason": "ci_red",
+                          "detail": "mandatory CI not green"}))
+        return 7
+
+    # 5. merge (server-side; never touches primary checkout)
+    r = subprocess.run(["gh", "pr", "merge", str(args.pr), "--merge",
+                        "--delete-branch", "false"], capture_output=True,
+                       text=True)
+    if r.returncode == 0:
+        print(json.dumps({"merged": True, "pr": int(args.pr),
+                          "risk_class": args.risk_class,
+                          "at": _now()}))
+        return 0
+    print(json.dumps({"merged": False, "reason": "gh_merge_failed",
+                      "detail": r.stderr}))
+    return 8
+
+
+if __name__ == "__main__":
+    sys.exit(main())

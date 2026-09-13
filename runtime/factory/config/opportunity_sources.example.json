@@ -1,0 +1,51 @@
+{
+  "sources": [
+    {
+      "name": "ai-evals",
+      "lane": "ai_evals",
+      "adapter": "json_feed",
+      "enabled": false,
+      "endpoint_env": "AI_EVALS_FEED_URL",
+      "credential_env": "AI_EVALS_FEED_TOKEN",
+      "fields": {"id": "id", "title": "title", "payout": "payout"},
+      "mode": "read_only"
+    },
+    {
+      "name": "ugc",
+      "lane": "ugc_ads",
+      "adapter": "json_feed",
+      "enabled": false,
+      "endpoint_env": "UGC_FEED_URL",
+      "credential_env": "UGC_FEED_TOKEN",
+      "fields": {"id": "id", "title": "title", "payout": "payout"},
+      "mode": "read_only"
+    },
+    {
+      "name": "clipping",
+      "lane": "clipping",
+      "adapter": "json_feed",
+      "enabled": false,
+      "endpoint_env": "CLIPPING_FEED_URL",
+      "credential_env": "CLIPPING_FEED_TOKEN",
+      "fields": {"id": "id", "title": "title", "payout": "payout"},
+      "mode": "read_only"
+    },
+    {
+      "name": "lead-gen",
+      "lane": "lead_gen",
+      "adapter": "json_feed",
+      "enabled": false,
+      "endpoint_env": "LEAD_GEN_FEED_URL",
+      "credential_env": "LEAD_GEN_FEED_TOKEN",
+      "fields": {"id": "id", "title": "title", "payout": "payout"},
+      "mode": "read_only"
+    }
+  ],
+  "effect_boundary": {
+    "apply": false,
+    "publish": false,
+    "message": false,
+    "purchase": false,
+    "spend": false
+  }
+}

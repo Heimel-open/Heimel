@@ -1,0 +1,100 @@
+schema_version: 1
+universe: heimel
+source_policy: explicit public canonical runtime sources only
+
+components:
+  - id: kernel
+    path: runtime/kernel
+    source_repository: valo-kernel
+    source_commit: 4b612366bd1f714606cf054c5cba60bf6cdbc7bf
+  - id: authorization
+    path: runtime/reht
+    source_repository: valo-reht
+    source_commit: c11d370099a4b3fc35956b7d0d0f3a4f9f40b428
+  - id: enforcement
+    path: runtime/gateway
+    source_repository: valo-gateway
+    source_commit: abe22ea3a820be06c809d4715170ca276e8fd146
+  - id: evidence
+    path: runtime/veritas
+    source_repository: Veritas
+    source_commit: 04bf87115c2fe5252db840f7b09aed343efb7422
+  - id: decision-standard
+    path: runtime/racs
+    source_repository: Racs
+    source_commit: 6aa98cc64143a2b4f18e8c4fde3943fe542e80a8
+  - id: workflow
+    path: runtime/workflow-isa
+    source_repository: valo-workflow-isa
+    source_commit: ea9493c0add04959dfedee97c4dd1d8b3d0c5c9d
+  - id: function-fabric
+    path: runtime/function-fabric
+    source_repository: valo-function-fabric
+    source_commit: 0f50d3d9df36c66b2f870680a4cd6df06dd686ed
+  - id: runtime-contracts
+    path: runtime/runtime-core
+    source_repository: valo-runtime-core
+    source_commit: cb02c989fa48671895de5612e17991dc37ed2261
+  - id: local-runtime
+    path: runtime/runtime-local
+    source_repository: valo-runtime-local
+    source_commit: d27a7d71a4a328e05a4b87ff429a7dd71390ab0b
+  - id: runtime-adapters
+    path: runtime/runtime-adapters
+    source_repository: valo-runtime-adapters
+    source_commit: 551d6657e09e7595542c09819b6196a5101bc456
+  - id: tool-adapters
+    path: runtime/tool-adapters
+    source_repository: valo-tool-adapters
+    source_commit: 747b350bc38c2eb33f41eef2d5755468bc587729
+  - id: mcp
+    path: runtime/mcp
+    source_repository: valo-mcp
+    source_commit: dfa849a7da3654195094455511ae1de32f286bff
+  - id: operator
+    path: runtime/operator
+    source_repository: valo-operator
+    source_commit: 09f14b1a3d1616f9664e6e34f67c48c51474bb79
+  - id: skills
+    path: runtime/skills-registry
+    source_repository: valo-skills-registry
+    source_commit: 607db1f884db0a2fd6cdae0826b2c9e19faf4a1f
+  - id: trades-pack
+    path: runtime/packs/trades
+    source_repository: valo-trades-pack
+    source_commit: 12b1236c4056f57992a443fa63b27da7612c2d97
+  - id: public-pack
+    path: runtime/packs/public
+    source_repository: valo-public-pack
+    source_commit: 864edac3d76792628be0db551f9c01d225c6a656
+  - id: retail-pack
+    path: runtime/packs/retail
+    source_repository: valo-retail-pack
+    source_commit: c1ad658f5bfb3c648a193c4b9cd216db6118c957
+  - id: distribution
+    path: runtime/distribution
+    source_repository: valo-distribution
+    source_commit: aa67c9d8851633f390e69a561000f38a2acc7949
+  - id: validation
+    path: runtime/validation
+    source_repository: valo-validation
+    source_commit: d5a8c9d70430ff354e1b462dea06e709adcc392f
+  - id: extended-validation
+    path: runtime/validation-extended
+    source_repository: valo-validation-extended
+    source_commit: 1729c595ee8d29c17eda0ea21655b9d215f33c5e
+  - id: pilot
+    path: runtime/pilots/valo-pilot
+    source_repository: Valo-Pilot
+    source_commit: 788f5db
+  - id: pilot-twin
+    path: runtime/pilots/valo-twin
+    source_repository: Valo-Twin
+    source_commit: deaa246a
+  - id: factory
+    path: runtime/factory
+    source_repository: valo-factory
+    source_commit: 3acaa3e84a4f47ae5d974befe7e9328c7eaa8b35
+excluded:
+  - class: private_sources
+    reason: wholly outside Heimel

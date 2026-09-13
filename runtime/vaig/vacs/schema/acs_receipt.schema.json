@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACS Receipt v0.1 (HISTORICAL — superseded by RACS Receipt)",
+  "description": "ACS receipt schema (VALO VACS profile v0.1). HISTORICAL: per PLATFORM_ARCHITECTURE.md §7, RACS is the ACTIVE standard; the canonical receipt is the RACS Receipt. See vacs/CANONICAL_STATUS.md.",
+  "required": [
+    "receipt_id",
+    "packet_id",
+    "action_hash",
+    "input_hash",
+    "policy_hash",
+    "decision",
+    "timestamp"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "packet_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "action_hash": {
+      "type": "string"
+    },
+    "input_hash": {
+      "type": "string"
+    },
+    "policy_hash": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "ALLOW",
+        "MODIFY",
+        "DEFER",
+        "DENY",
+        "STEP_UP",
+        "HALT"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature": {
+      "type": "string"
+    }
+  }
+}

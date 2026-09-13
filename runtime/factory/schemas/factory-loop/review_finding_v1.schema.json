@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/factory-loop/review_finding_v1.schema.json",
+  "title": "ReviewFindingV1",
+  "description": "A single finding inside a Reviewer report with severity, status and human-judgment flag.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "finding_id", "report_id", "run_id", "repository",
+    "candidate_sha", "actor", "review_type", "severity", "status", "evidence",
+    "file", "line", "requires_human", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "factory-loop-v1"},
+    "finding_id": {"type": "string", "minLength": 1},
+    "report_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "candidate_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "actor": {"type": "string", "minLength": 1},
+    "review_type": {"type": "string", "minLength": 1},
+    "severity": {"enum": ["blocking", "minor", "out-of-scope"]},
+    "status": {"type": "string"},
+    "evidence": {"type": "string"},
+    "file": {"type": "string"},
+    "line": {"anyOf": [{"const": ""}, {"type": "string"}]},
+    "requires_human": {"type": "boolean"},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

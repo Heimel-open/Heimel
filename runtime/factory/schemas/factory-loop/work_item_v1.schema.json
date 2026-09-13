@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/factory-loop/work_item_v1.schema.json",
+  "title": "WorkItemV1",
+  "description": "Authorized Work Item. Immutable after authorization; a revision creates a superseding version.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "work_item_id", "run_id", "repository", "base_sha",
+    "actor", "created_at", "status", "version", "supersedes", "queue",
+    "objective", "source_observation_id", "brief_digest", "behavior_digest",
+    "approach_digest", "plan_digest", "authority_digest", "correction_round",
+    "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "factory-loop-v1"},
+    "work_item_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "actor": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["SHAPED", "AUTHORIZED", "ATTEMPTING", "CANDIDATE", "TESTED", "REVIEWING", "CORRECTING", "LEARNER_READY", "MERGE_READY", "MERGE_CANDIDATE", "LANDED", "NEEDS_HUMAN", "SUPERSEDED", "CANCELLED"]},
+    "version": {"type": "integer", "minimum": 1},
+    "supersedes": {"type": "string"},
+    "queue": {"enum": ["human", "execution"]},
+    "objective": {"type": "string"},
+    "source_observation_id": {"type": "string"},
+    "brief_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "behavior_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approach_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "plan_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "correction_round": {"type": "integer", "minimum": 0},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

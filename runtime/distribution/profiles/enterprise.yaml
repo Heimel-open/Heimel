@@ -1,0 +1,47 @@
+# Enterprise profile — multi-node, HA, all components, strict contracts.
+profile: enterprise
+description: "Production VALO deployment. All components, HA bounds, external secret manager, signed receipts enforced."
+resource_bounds:
+  cpu: "32"
+  memory: "128Gi"
+  storage: "1Ti"
+components:
+  - name: reht
+    required: true
+  - name: vaig
+    required: true
+  - name: veritas
+    required: true
+  - name: gateway
+    required: true
+  - name: racs
+    required: true
+  - name: speider
+    required: true
+  - name: baro
+    required: true
+config_contracts:
+  - reht: config/reht-enterprise.yaml
+  - vaig: config/vaig-enterprise.yaml
+  - veritas: config/veritas-enterprise.yaml
+  - gateway: config/gateway-enterprise.yaml
+adapters:
+  model_provider: stepfun
+  vector_store: qdrant
+secrets_contract:
+  - name: GATEWAY_TOKEN
+    required: true
+    source: external-kms
+  - name: REHT_SIGNING_KEY
+    required: true
+    source: external-kms
+  - name: VAIG_API_KEY
+    required: true
+    source: external-kms
+  - name: RACS_DECISION_KEY
+    required: true
+    source: external-kms
+packaging:
+  - helm
+  - systemd
+enforce_signed_receipts: true

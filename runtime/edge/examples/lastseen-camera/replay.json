@@ -1,0 +1,27 @@
+{
+  "image": "frame.ppm",
+  "camera_id": "kitchen-01",
+  "frame_timestamp_iso": "2026-08-04T12:00:00Z",
+  "detector_id": "deterministic-replay-v1",
+  "detections": [
+    {
+      "object_name": "keys",
+      "bounding_box": [0, 0, 2, 2],
+      "confidence": 0.98,
+      "detection_id": "a-keys",
+      "aliases": ["nøkler", "keyring"]
+    },
+    {
+      "object_name": "person",
+      "bounding_box": [4, 0, 8, 4],
+      "confidence": 0.99,
+      "detection_id": "b-person"
+    },
+    {
+      "object_name": "wallet",
+      "bounding_box": [3, 0, 5, 2],
+      "confidence": 0.95,
+      "detection_id": "c-wallet"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[Unit]
+Description=VALO Factory 24/7 tick timer (production dispatcher)
+Documentation=https://github.com/nsolland/valo-factory/docs/operations.md
+
+[Timer]
+# Runs every minute. The orchestrator drains itself when mode != NORMAL,
+# so this provides continuous 24/7 production without human babysitting,
+# while still respecting the human-authority gate for Class C changes.
+OnBootSec=30s
+OnUnitActiveSec=60s
+AccuracySec=5s
+RandomizedDelaySec=10
+Persistent=true
+# Surface failures to the journal; paired with valo-deliver for alerting.
+Unit=valo-factory-tick.service
+
+[Install]
+WantedBy=timers.target

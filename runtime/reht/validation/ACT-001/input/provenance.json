@@ -1,0 +1,10 @@
+{
+  "artifact_outer_sha256": "49c7cba78c0042c0375c7c548f9c4365036a5626b7607f6fdd5cfa7fa02c1f8d",
+  "artifact_received_name": "AS-001-GitHub-Attested(1).zip",
+  "authority_state_file_sha256": "4f89c4370d4268521670c0f141b1a0f9d14f869ff069ab0522c876e30c5259d6",
+  "authority_state_schema_sha256": "dd62f35f27cac9e7f53c49fa51455b20b1be015267c273573665bdcd5ab35ef2",
+  "implementation_commit_sha": "50bef6179fd8ecd8bbbba3aedb7eee25d743b55f",
+  "source_repository": "esklavounou/Authority-Instrumentation-",
+  "source_workflow_run_id": "32521022710",
+  "source_workflow_url": "https://github.com/esklavounou/Authority-Instrumentation-/actions/runs/32521022710"
+}

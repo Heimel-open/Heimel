@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.dev/schemas/baro-agent-market-signal.v1.json",
+  "title": "BARO Agent Market Signal",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "market_health",
+    "decision_counts",
+    "step_up_rate",
+    "deny_rate",
+    "halt_rate",
+    "avg_reputation"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "baro.agent_market_signal.v1"
+    },
+    "market_health": {
+      "type": "string",
+      "enum": ["operational", "review-heavy", "unstable"]
+    },
+    "decision_counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "step_up_rate": { "type": "number" },
+    "deny_rate": { "type": "number" },
+    "halt_rate": { "type": "number" },
+    "avg_reputation": { "type": "number" }
+  }
+}

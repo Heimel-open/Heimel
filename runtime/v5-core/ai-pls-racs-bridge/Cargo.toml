@@ -1,0 +1,21 @@
+[package]
+name = "ai-pls-racs-bridge"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+ai-pls-golden-path = { path = "../ai-pls-golden-path" }
+l1-guardian = { path = "../l1-guardian" }
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+ed25519-dalek = "2"
+sha2 = "0.10"
+serde_jcs = "0.1"
+
+[dev-dependencies]
+base64 = "0.22"
+ed25519-dalek = "2"
+serde_jcs = "0.1"

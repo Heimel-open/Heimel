@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""Governed wrapper for NanoNets/Graft.
+
+Graft is a replaceable code-context engine. This wrapper deliberately exposes
+only context operations and prevents Graft from becoming an authority or
+machine-global configuration surface.
+"""
+
+from __future__ import annotations
+
+import argparse
+import ipaddress
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+from urllib.parse import urlparse
+
+
+POLICY_SCHEMA = "valo.graft-context-policy.v1"
+MAX_ALLOWED_COMMANDS = frozenset({"build", "check", "grep", "map", "callers", "skeleton", "ask"})
+LLM_COMMANDS = frozenset({"ask"})
+FORBIDDEN_COMMANDS = frozenset({"init", "upgrade", "mcp", "viz", "version", "_update-check"})
+FORBIDDEN_CLI_OPTIONS = ("--api-key", "--base-url")
+DEFAULT_POLICY = Path(__file__).resolve().parents[1] / "config" / "graft_policy.json"
+
+
+class GraftBoundaryError(ValueError):
+    """Raised when a requested Graft operation crosses the Factory boundary."""
+
+
+def _load_policy() -> dict:
+    path = Path(os.environ.get("VALO_GRAFT_POLICY", str(DEFAULT_POLICY))).expanduser().resolve()
+    try:
+        policy = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise GraftBoundaryError(f"cannot load Graft policy: {exc}") from exc
+    if policy.get("schema") != POLICY_SCHEMA:
+        raise GraftBoundaryError("unsupported Graft policy schema")
+    allowed = policy.get("allowed_commands")
+    if not isinstance(allowed, list) or not allowed:
+        raise GraftBoundaryError("Graft policy must define allowed_commands")
+    unknown = set(allowed) - MAX_ALLOWED_COMMANDS
+    if unknown:
+        raise GraftBoundaryError("policy attempts to allow unsupported commands: " + ", ".join(sorted(unknown)))
+    return policy
+
+
+def _private_endpoint(value: str) -> bool:
+    try:
+        parsed = urlparse(value)
+        if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+            return False
+        host = parsed.hostname.lower()
+        if host == "localhost":
+            return True
+        address = ipaddress.ip_address(host)
+        return bool(address.is_private or address.is_loopback or address.is_link_local)
+    except ValueError:
+        return False
+
+
+def _git_roots(repo: Path) -> list[Path]:
+    if (repo / ".git").exists():
+        return [repo]
+    children = sorted(
+        child for child in repo.iterdir()
+        if child.is_dir() and (child / ".git").exists()
+    )
+    return children if children else [repo]
+
+
+def _require_graft_ignored(repo: Path) -> None:
+    missing: list[str] = []
+    for root in _git_roots(repo):
+        path = root / ".gitignore"
+        try:
+            lines = {line.strip() for line in path.read_text(encoding="utf-8").splitlines()}
+        except OSError:
+            lines = set()
+        if "graft/" not in lines and "/graft/" not in lines:
+            missing.append(str(path))
+    if missing:
+        raise GraftBoundaryError(
+            "refusing to let upstream mutate .gitignore; add graft/ first: " + ", ".join(missing)
+        )
+
+
+def _contains_forbidden_option(args: list[str]) -> str | None:
+    for arg in args:
+        for option in FORBIDDEN_CLI_OPTIONS:
+            if arg == option or arg.startswith(option + "="):
+                return option
+    return None
+
+
+def _prepare_child_env(*, llm: bool) -> dict[str, str]:
+    env = os.environ.copy()
+
+    # Isolate Graft's machine-global cache and seed a fresh update record. Graft
+    # therefore has no reason to spawn its detached npm registry update check.
+    suffix = str(os.getuid()) if hasattr(os, "getuid") else "user"
+    isolated_home = Path(tempfile.gettempdir()) / f"valo-graft-home-{suffix}"
+    update_dir = isolated_home / ".graft"
+    update_dir.mkdir(parents=True, exist_ok=True)
+    (update_dir / "update-check.json").write_text(
+        json.dumps({"latest": None, "checkedAt": int(time.time() * 1000)}, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    env["HOME"] = str(isolated_home)
+    env["USERPROFILE"] = str(isolated_home)
+
+    legacy_or_ambient_keys = (
+        "OPENROUTER_API_KEY",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+    )
+    for key in legacy_or_ambient_keys:
+        env.pop(key, None)
+
+    if not llm:
+        for key in ("GRAFT_API_KEY", "GRAFT_BASE_URL", "GRAFT_MODEL", "GRAFT_PROVIDER"):
+            env.pop(key, None)
+        return env
+
+    if env.get("VALO_GRAFT_ALLOW_LLM") != "1":
+        raise GraftBoundaryError("LLM-backed Graft operations are disabled; set deployment-controlled VALO_GRAFT_ALLOW_LLM=1")
+    base_url = env.get("GRAFT_BASE_URL", "")
+    if not _private_endpoint(base_url):
+        raise GraftBoundaryError("LLM-backed Graft operations require a localhost or literal private-network GRAFT_BASE_URL")
+    if not env.get("GRAFT_API_KEY"):
+        raise GraftBoundaryError("LLM-backed Graft operations require GRAFT_API_KEY")
+    provider = env.get("GRAFT_PROVIDER", "openai").lower()
+    if provider != "openai":
+        raise GraftBoundaryError("governed LLM mode permits only an OpenAI-compatible private endpoint")
+    env["GRAFT_PROVIDER"] = "openai"
+    return env
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="valo-graft")
+    parser.add_argument("--repo", default=".", help="repository or multi-repo workspace root")
+    parser.add_argument("--dry-run", action="store_true", help="validate boundary and print the command without running Graft")
+    parser.add_argument("command", help="Graft command")
+    parser.add_argument("args", nargs=argparse.REMAINDER, help="arguments passed to the approved Graft command")
+    ns = parser.parse_args()
+
+    try:
+        policy = _load_policy()
+        command = ns.command
+        allowed = set(policy["allowed_commands"])
+        if command in FORBIDDEN_COMMANDS or command not in MAX_ALLOWED_COMMANDS or command not in allowed:
+            raise GraftBoundaryError(f"Graft command is outside the governed context boundary: {command}")
+
+        forbidden = _contains_forbidden_option(ns.args)
+        if forbidden:
+            raise GraftBoundaryError(f"{forbidden} is forbidden on the command line; secrets/endpoints must come from deployment env")
+
+        repo = Path(ns.repo).expanduser().resolve()
+        if not repo.is_dir():
+            raise GraftBoundaryError(f"repo does not exist: {repo}")
+        if policy.get("require_graft_gitignore", True):
+            _require_graft_ignored(repo)
+
+        llm = command in LLM_COMMANDS or (command == "build" and "--deep" in ns.args)
+        env = _prepare_child_env(llm=llm)
+
+        binary_name = os.environ.get("VALO_GRAFT_BIN", "graft")
+        binary = shutil.which(binary_name) if not os.path.isabs(binary_name) else binary_name
+        if not binary or not Path(binary).exists():
+            raise GraftBoundaryError("Graft binary not found; install the pinned external dependency before use")
+
+        argv = [str(binary), command, *ns.args]
+        if ns.dry_run:
+            print(json.dumps({"ok": True, "repo": str(repo), "command": argv, "llm": llm}, sort_keys=True))
+            return 0
+
+        return subprocess.run(argv, cwd=repo, env=env, check=False).returncode
+    except GraftBoundaryError as exc:
+        print(f"valo-graft: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

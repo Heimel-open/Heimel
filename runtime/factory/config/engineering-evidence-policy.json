@@ -1,0 +1,51 @@
+{
+  "schema": "valo.engineering-evidence-policy.v1",
+  "version": "1.0.0",
+  "status": "canonical",
+  "owner": "Factory OS",
+  "source": "https://arxiv.org/abs/2607.27250",
+  "canonical_rule": "Context and instruction compliance are workflow guidance, not correctness evidence.",
+  "guidance_classes": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "system_prompt",
+    "runbook",
+    "retrieved_memory",
+    "repository_convention"
+  ],
+  "correctness_evidence_classes": [
+    "executable_contract",
+    "deterministic_test",
+    "regression_fixture",
+    "static_check",
+    "formal_check",
+    "integration_test",
+    "boundary_test",
+    "sha_bound_ci_result",
+    "independent_verification",
+    "observed_postcondition"
+  ],
+  "requirements": {
+    "guidance_is_evidence": false,
+    "instruction_compliance_attests_correctness": false,
+    "worker_self_attestation_satisfies_independent_verification": false,
+    "evidence_must_bind_evaluated_sha": true,
+    "verification_gaps_must_remain_explicit": true,
+    "test_evidence_is_scope_bounded": true,
+    "technical_correctness_grants_execution_authority": false,
+    "agent_capability_transfers_across_task_classes_by_default": false
+  },
+  "receipt_separation": {
+    "guidance_refs": "workflow_context_only",
+    "evidence_refs": "verification_inputs_only",
+    "verification_status": "verified_scope_only",
+    "verification_gaps": "explicit_unknown_or_unverified_scope"
+  },
+  "promotion_gate": {
+    "requires_executable_evidence": true,
+    "requires_exact_sha_binding": true,
+    "independent_verification_when_required": true,
+    "instruction_compliance_alone_can_pass": false
+  },
+  "authority_effect": "none"
+}

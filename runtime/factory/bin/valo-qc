@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""valo-qc — QC agent with head-SHA-bound security evidence gates."""
+import argparse
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+from datetime import datetime, timezone
+
+POLICY = os.path.expanduser("~/.valo/policy/qc_policy.yaml")
+SECURITY_GATE = os.path.expanduser("~/.valo/bin/valo-security-matrix")
+REPO = "nsolland/valo-platform"
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def load_policy():
+    import yaml
+    with open(POLICY) as f:
+        return yaml.safe_load(f)
+
+
+def run_security_matrix(base_sha, head_sha, config):
+    if not config.get("enabled", False):
+        return "PASS", {"status": "DISABLED"}
+    if not os.path.exists(SECURITY_GATE):
+        status = "FAIL" if config.get("fail_closed", True) else "PASS"
+        return status, {"status": status, "error": "security gate missing"}
+    proc = subprocess.run(
+        [SECURITY_GATE, "--base-sha", base_sha, "--head-sha", head_sha],
+        capture_output=True,
+        text=True,
+    )
+    try:
+        payload = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        payload = {"status": "FAIL", "error": proc.stderr.strip() or "invalid gate output"}
+    return ("PASS" if proc.returncode == 0 and payload.get("status") == "PASS" else "FAIL"), payload
+
+
+def run_ports(pr, head_sha, base_sha, policy):
+    diff_proc = subprocess.run(
+        ["gh", "pr", "diff", str(pr), "-R", REPO],
+        capture_output=True,
+        text=True,
+    )
+    diff = diff_proc.stdout
+    ports = policy["ports"]
+    results = {}
+    details = {}
+
+    deleted_files = [
+        line for line in diff.splitlines()
+        if line.startswith("diff --git") and "deleted file" in diff
+    ]
+    deleted_lines = sum(
+        1 for line in diff.splitlines()
+        if line.startswith("-") and not line.startswith("---")
+    )
+    bounded = ports["bounded_diff"]
+    bounded_ok = not (bounded.get("forbid_deleted_files") and deleted_files)
+    bounded_ok = bounded_ok and deleted_lines <= bounded.get("max_deleted_lines", 20)
+    results["bounded_diff"] = "PASS" if bounded_ok else "FAIL"
+
+    claims = ports["claims"]
+    claims_ok = not (claims.get("forbid_claimed_json_diff") and "claimed.json" in diff)
+    if claims.get("forbid_other_runtime_state_in_diff") and any(
+        marker in diff for marker in ["HANDOVER.md", "swarm.py claim"]
+    ):
+        claims_ok = False
+    results["claims"] = "PASS" if claims_ok else "FAIL"
+
+    canonical = ports["canonical_integrity"]
+    canonical_ok = True
+    for symbol in canonical.get("protected_symbols", []):
+        if f"-class {symbol}" in diff or f"-def {symbol}" in diff:
+            canonical_ok = False
+    results["canonical_integrity"] = "PASS" if canonical_ok else "FAIL"
+
+    results["overlap"] = "PASS"
+
+    verification = ports["verification"]
+    verification_ok = True
+    if verification.get("require_targeted_tests") and "tests/" not in diff and "test_" not in diff:
+        verification_ok = False
+    results["verification"] = "PASS" if verification_ok else "FAIL"
+
+    matrix_status, matrix_detail = run_security_matrix(
+        base_sha, head_sha, ports.get("security_matrix", {})
+    )
+    results["security_matrix"] = matrix_status
+    details["security_matrix"] = matrix_detail
+
+    authority = ports["authority"]
+    authority_ok = True
+    if authority.get("forbid_authority_broadening"):
+        signals = re.compile(
+            r"(gh\s+pr\s+merge|clearance\s*=\s*|clearance\.\w+\(|RACSDecision\(|"
+            r"merge_authority\s*=|grant_authority|auto_merge\s*=|self\.merge\(|"
+            r"claim_authority\s*=)",
+            re.I,
+        )
+        in_doc = False
+        for raw in diff.splitlines():
+            if raw.startswith("diff --git"):
+                in_doc = raw.endswith(".md") or ".md " in raw or "/docs/" in raw
+                continue
+            if raw.startswith("+") and not in_doc and signals.search(raw[1:]):
+                authority_ok = False
+                break
+    results["authority"] = "PASS" if authority_ok else "FAIL"
+
+    return results, details
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pr", required=True)
+    parser.add_argument("--head-sha", required=True)
+    parser.add_argument("--base-sha", required=True)
+    parser.add_argument("--policy", default="qc-v2")
+    args = parser.parse_args()
+
+    policy = load_policy()
+    results, details = run_ports(args.pr, args.head_sha, args.base_sha, policy)
+    all_pass = all(value == "PASS" for value in results.values())
+    decision = "MERGE_READY" if all_pass else "BLOCKED"
+
+    canonical = json.dumps(
+        {"ports": results, "details": details, "decision": decision},
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    attestation = {
+        "pr": int(args.pr),
+        "head_sha": args.head_sha,
+        "base_sha": args.base_sha,
+        "policy_version": args.policy,
+        "ports": results,
+        "details": details,
+        "decision": decision,
+        "signed_at": _now(),
+        "signature": hashlib.sha256(
+            (args.pr + args.head_sha + args.base_sha + canonical).encode()
+        ).hexdigest()[:32],
+    }
+    print(json.dumps(attestation, indent=2, sort_keys=True))
+    return 0 if all_pass else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

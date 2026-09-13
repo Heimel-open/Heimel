@@ -1,0 +1,32 @@
+{
+  "schema": "valo.story-manifest.v1",
+  "title": "One story, three surfaces",
+  "subtitle": "VALO Factory multiformat rendering",
+  "theme": {
+    "background": "#0B0D10",
+    "foreground": "#F4F7FB",
+    "accent": "#5EA1FF",
+    "muted": "#AAB4C3"
+  },
+  "slides": [
+    {
+      "kicker": "VALO Factory",
+      "title": "One canonical story",
+      "body": [
+        "Author the narrative once.",
+        "Render it for the browser, inbox and presentation room."
+      ],
+      "footer": "Same source. Different surfaces."
+    },
+    {
+      "kicker": "Outputs",
+      "title": "HTML + PDF + PPTX",
+      "body": [
+        "HTML stays standalone and interactive.",
+        "PDF is the immutable mail and archive snapshot.",
+        "PPTX remains editable when the recipient needs slides."
+      ],
+      "footer": "Every artifact carries the same source digest."
+    }
+  ]
+}

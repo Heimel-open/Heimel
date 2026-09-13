@@ -1,0 +1,652 @@
+#!/usr/bin/env python3
+"""Governed behavior promotion and rollout for VALO Factory OS.
+
+The CLI consumes a digest-bound promotion request, verifies its HMAC
+attestation and authority bindings, applies one legal lifecycle transition,
+persists derived state, and appends a hash-chained receipt.
+
+A behavior artifact or validation result is evidence only. This program does
+not grant execution authority for user or system actions.
+"""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+import hashlib
+import hmac
+import json
+import math
+import os
+from pathlib import Path
+import re
+import sys
+import tempfile
+from typing import Any, Dict, Iterable, Optional
+
+
+DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
+COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
+RISK_CLASSES = {"A", "B", "C"}
+ROLE_ANCHOR_MODES = {"disabled", "experimental_training_control"}
+SENSITIVE_FLAGS = (
+    "touches_authority",
+    "touches_policy",
+    "touches_credentials",
+    "touches_execution_boundary",
+    "touches_reht_racs",
+    "permits_self_attestation",
+)
+
+
+class RolloutState:
+    REQUESTED = "REQUESTED"
+    AUTHORIZED = "AUTHORIZED"
+    SHADOW = "SHADOW"
+    CANARY = "CANARY"
+    ACTIVE = "ACTIVE"
+    QUARANTINED = "QUARANTINED"
+    ROLLED_BACK = "ROLLED_BACK"
+    RETIRED = "RETIRED"
+
+
+VALID_TRANSITIONS = {
+    RolloutState.REQUESTED: {RolloutState.AUTHORIZED, RolloutState.QUARANTINED},
+    RolloutState.AUTHORIZED: {RolloutState.SHADOW, RolloutState.QUARANTINED},
+    RolloutState.SHADOW: {RolloutState.CANARY, RolloutState.ACTIVE, RolloutState.QUARANTINED},
+    RolloutState.CANARY: {RolloutState.ACTIVE, RolloutState.QUARANTINED},
+    RolloutState.ACTIVE: {RolloutState.REQUESTED, RolloutState.QUARANTINED, RolloutState.RETIRED},
+    RolloutState.QUARANTINED: {RolloutState.RETIRED},
+    RolloutState.ROLLED_BACK: {RolloutState.RETIRED, RolloutState.REQUESTED},
+    RolloutState.RETIRED: set(),
+}
+
+
+class BehaviorPromotionError(RuntimeError):
+    pass
+
+
+class ReceiptIntegrityError(BehaviorPromotionError):
+    pass
+
+
+def _canonical(value: Any) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def _sha256(value: Any) -> str:
+    material = value if isinstance(value, str) else _canonical(value)
+    return f"sha256:{hashlib.sha256(material.encode('utf-8')).hexdigest()}"
+
+
+def _required_string(value: Any, field: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise BehaviorPromotionError(f"{field} must be a non-empty string")
+    return value.strip()
+
+
+def _required_digest(value: Any, field: str) -> str:
+    digest = _required_string(value, field)
+    if not DIGEST_RE.fullmatch(digest):
+        raise BehaviorPromotionError(f"{field} must be sha256:<64 lowercase hex>")
+    return digest
+
+
+def _bounded_score(value: Any, field: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise BehaviorPromotionError(f"{field} must be a number between 0 and 1")
+    score = float(value)
+    if not math.isfinite(score) or not 0.0 <= score <= 1.0:
+        raise BehaviorPromotionError(f"{field} must be a finite number between 0 and 1")
+    return score
+
+
+def _parse_time(value: str, field: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise BehaviorPromotionError(f"{field} must be ISO-8601") from exc
+    if parsed.tzinfo is None:
+        raise BehaviorPromotionError(f"{field} must include a timezone")
+    return parsed.astimezone(timezone.utc)
+
+
+@dataclass(frozen=True)
+class BehaviorPromotionRequest:
+    request_id: str
+    behavior_id: str
+    behavior_digest: str
+    base_behavior_digest: str
+    evaluation_digest: str
+    promotion_request_digest: str
+    author_id: str
+    evaluator_id: str
+    promoter_id: str
+    target_scope: str
+    authorized_scope: str
+    target_agents: tuple[str, ...]
+    environment: str
+    repository: str
+    commit_sha: str
+    policy_version: str
+    authority_record_digest: str
+    risk_class: str
+    evaluation_passed: bool
+    expected_role: str
+    prohibited_behaviors: tuple[str, ...]
+    role_evidence_refs: tuple[str, ...]
+    observed_prohibited_behaviors: tuple[str, ...]
+    baseline_terminal_score: float
+    terminal_score: float
+    baseline_role_conformance_score: float
+    role_conformance_score: float
+    role_conformance_passed: bool
+    role_anchor_mode: str
+    issued_at: str
+    expires_at: str
+    attestation_signature: str
+    human_clearance_principal: Optional[str] = None
+    human_clearance_digest: Optional[str] = None
+    touches_authority: bool = False
+    touches_policy: bool = False
+    touches_credentials: bool = False
+    touches_execution_boundary: bool = False
+    touches_reht_racs: bool = False
+    permits_self_attestation: bool = False
+
+    @classmethod
+    def from_dict(cls, raw: Dict[str, Any]) -> "BehaviorPromotionRequest":
+        if not isinstance(raw, dict):
+            raise BehaviorPromotionError("request must be a JSON object")
+        data = dict(raw)
+        sequence_fields = (
+            ("target_agents", True),
+            ("prohibited_behaviors", True),
+            ("role_evidence_refs", True),
+            ("observed_prohibited_behaviors", False),
+        )
+        for field, required in sequence_fields:
+            values = data.get(field)
+            if (
+                not isinstance(values, (list, tuple))
+                or (required and not values)
+                or not all(isinstance(item, str) and item.strip() for item in values)
+            ):
+                qualifier = "non-empty " if required else ""
+                raise BehaviorPromotionError(f"{field} must be a {qualifier}string array")
+            data[field] = tuple(sorted({item.strip() for item in values}))
+        allowed = set(cls.__dataclass_fields__)
+        unknown = sorted(set(data) - allowed)
+        if unknown:
+            raise BehaviorPromotionError(f"unknown request fields: {', '.join(unknown)}")
+        try:
+            return cls(**data)
+        except TypeError as exc:
+            raise BehaviorPromotionError(f"invalid promotion request: {exc}") from exc
+
+    def unsigned_payload(self) -> Dict[str, Any]:
+        payload = asdict(self)
+        for field in (
+            "target_agents",
+            "prohibited_behaviors",
+            "role_evidence_refs",
+            "observed_prohibited_behaviors",
+        ):
+            payload[field] = list(getattr(self, field))
+        payload.pop("attestation_signature", None)
+        return payload
+
+    def digest_payload(self) -> Dict[str, Any]:
+        payload = self.unsigned_payload()
+        payload.pop("promotion_request_digest", None)
+        return payload
+
+    def compute_digest(self) -> str:
+        return _sha256(self.digest_payload())
+
+    def expected_attestation(self, key: bytes) -> str:
+        return hmac.new(key, _canonical(self.unsigned_payload()).encode("utf-8"), hashlib.sha256).hexdigest()
+
+    def validate_shape(self) -> None:
+        for field in (
+            "request_id", "behavior_id", "author_id", "evaluator_id", "promoter_id",
+            "target_scope", "authorized_scope", "environment", "repository",
+            "policy_version", "expected_role", "role_anchor_mode", "issued_at",
+            "expires_at", "attestation_signature",
+        ):
+            _required_string(getattr(self, field), field)
+        for field in (
+            "behavior_digest", "base_behavior_digest", "evaluation_digest",
+            "promotion_request_digest", "authority_record_digest",
+        ):
+            _required_digest(getattr(self, field), field)
+        if self.human_clearance_digest is not None:
+            _required_digest(self.human_clearance_digest, "human_clearance_digest")
+        if self.risk_class not in RISK_CLASSES:
+            raise BehaviorPromotionError("risk_class must be A, B or C")
+        if self.role_anchor_mode not in ROLE_ANCHOR_MODES:
+            raise BehaviorPromotionError(
+                "role_anchor_mode must be disabled or experimental_training_control"
+            )
+        if not COMMIT_RE.fullmatch(self.commit_sha):
+            raise BehaviorPromotionError("commit_sha must be 40 lowercase hex")
+        if self.target_scope != self.authorized_scope:
+            raise BehaviorPromotionError("target_scope must exactly match authorized_scope")
+        if len({self.author_id, self.evaluator_id, self.promoter_id}) != 3:
+            raise BehaviorPromotionError("author, evaluator and promoter must be distinct")
+        if self.promotion_request_digest != self.compute_digest():
+            raise BehaviorPromotionError("promotion_request_digest mismatch")
+        if not self.evaluation_passed:
+            raise BehaviorPromotionError("behavior evaluation did not pass")
+        if not isinstance(self.role_conformance_passed, bool):
+            raise BehaviorPromotionError("role_conformance_passed must be boolean")
+        if not isinstance(self.evaluation_passed, bool):
+            raise BehaviorPromotionError("evaluation_passed must be boolean")
+        if not self.prohibited_behaviors:
+            raise BehaviorPromotionError("prohibited_behaviors must not be empty")
+        if not self.role_evidence_refs:
+            raise BehaviorPromotionError("role_evidence_refs must not be empty")
+        for reference in self.role_evidence_refs:
+            if not (
+                reference.startswith("receipt:")
+                or DIGEST_RE.fullmatch(reference)
+            ):
+                raise BehaviorPromotionError(
+                    "role_evidence_refs must be receipt-linked evidence sources"
+                )
+        unknown_observations = set(self.observed_prohibited_behaviors) - set(
+            self.prohibited_behaviors
+        )
+        if unknown_observations:
+            raise BehaviorPromotionError(
+                "observed prohibited behaviors must be declared in prohibited_behaviors"
+            )
+        _bounded_score(
+            self.baseline_terminal_score, "baseline_terminal_score"
+        )
+        _bounded_score(self.terminal_score, "terminal_score")
+        baseline_role = _bounded_score(
+            self.baseline_role_conformance_score,
+            "baseline_role_conformance_score",
+        )
+        role_score = _bounded_score(
+            self.role_conformance_score, "role_conformance_score"
+        )
+        if role_score < baseline_role:
+            raise BehaviorPromotionError(
+                "role conformance regressed independently of terminal performance"
+            )
+        if self.observed_prohibited_behaviors:
+            raise BehaviorPromotionError(
+                "role conformance observed prohibited behavior: "
+                + ", ".join(self.observed_prohibited_behaviors)
+            )
+        if not self.role_conformance_passed:
+            raise BehaviorPromotionError("required role conformance did not pass")
+        # Terminal performance is deliberately never used to waive a
+        # role-conformance failure or regression.
+        issued = _parse_time(self.issued_at, "issued_at")
+        expires = _parse_time(self.expires_at, "expires_at")
+        if expires <= issued:
+            raise BehaviorPromotionError("expires_at must be after issued_at")
+
+
+@dataclass(frozen=True)
+class BehaviorPromotionReceipt:
+    schema_version: str
+    sequence: int
+    receipt_id: str
+    request_id: str
+    behavior_id: str
+    current_state: str
+    next_state: str
+    executed: bool
+    reason: str
+    behavior_digest: str
+    repository: str
+    commit_sha: str
+    target_scope: str
+    environment: str
+    policy_version: str
+    authority_record_digest: str
+    evaluation_digest: str
+    evaluation_passed: bool
+    expected_role: str
+    prohibited_behaviors: tuple[str, ...]
+    role_evidence_refs: tuple[str, ...]
+    observed_prohibited_behaviors: tuple[str, ...]
+    baseline_terminal_score: float
+    terminal_score: float
+    baseline_role_conformance_score: float
+    role_conformance_score: float
+    role_conformance_passed: bool
+    role_anchor_mode: str
+    occurred_at: str
+    previous_receipt_hash: Optional[str]
+    receipt_hash: str
+
+
+class BehaviorPromotionEngine:
+    """Persistent, fail-closed behavior rollout state machine."""
+
+    def __init__(
+        self,
+        *,
+        state_file: str | Path | None = None,
+        receipts_file: str | Path | None = None,
+        attestation_key: str | bytes | None = None,
+        now: Optional[datetime] = None,
+    ) -> None:
+        root = Path(os.environ.get("VALO_BEHAVIOR_STATE_DIR", Path.home() / ".valo" / "behavior"))
+        self.state_file = Path(state_file or root / "state.json")
+        self.receipts_file = Path(receipts_file or root / "receipts.jsonl")
+        supplied = attestation_key if attestation_key is not None else os.environ.get("VALO_BEHAVIOR_ATTESTATION_KEY")
+        if isinstance(supplied, str):
+            supplied = supplied.encode("utf-8")
+        self.attestation_key = supplied
+        self.now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        self.state = self._load_state()
+        self.receipts = self._load_and_verify_receipts()
+
+    def verify_request(self, req: BehaviorPromotionRequest) -> tuple[bool, str]:
+        try:
+            req.validate_shape()
+            if not self.attestation_key:
+                raise BehaviorPromotionError("attestation key is unavailable")
+            expected = req.expected_attestation(self.attestation_key)
+            if not hmac.compare_digest(expected, req.attestation_signature):
+                raise BehaviorPromotionError("attestation signature verification failed")
+            if self.now < _parse_time(req.issued_at, "issued_at"):
+                raise BehaviorPromotionError("promotion request is not yet valid")
+            if self.now >= _parse_time(req.expires_at, "expires_at"):
+                raise BehaviorPromotionError("promotion request is expired")
+            sensitive = any(bool(getattr(req, flag)) for flag in SENSITIVE_FLAGS)
+            if sensitive and req.risk_class != "C":
+                raise BehaviorPromotionError("sensitive behavior changes must be risk class C")
+            if req.permits_self_attestation:
+                raise BehaviorPromotionError("self-attestation can never be permitted")
+            if req.risk_class == "C":
+                if not req.human_clearance_principal or not req.human_clearance_principal.startswith("github:"):
+                    raise BehaviorPromotionError("Class C requires explicit human GitHub clearance")
+                _required_digest(req.human_clearance_digest, "human_clearance_digest")
+            record = self.state["behaviors"].get(req.behavior_id)
+            if record and record.get("active_digest") and record["active_digest"] != req.base_behavior_digest:
+                raise BehaviorPromotionError("base behavior digest is stale")
+            return True, "VERIFIED"
+        except BehaviorPromotionError as exc:
+            return False, f"DENY: {exc}"
+
+    def promote_behavior(
+        self,
+        req: BehaviorPromotionRequest,
+        current_state: Optional[str] = None,
+        target_state: str = RolloutState.AUTHORIZED,
+    ) -> BehaviorPromotionReceipt:
+        record = self._record(req.behavior_id)
+        actual_state = record["state"]
+        if current_state is not None and current_state != actual_state:
+            return self._receipt(req, actual_state, RolloutState.QUARANTINED, False, "DENY: current state mismatch")
+        ok, reason = self.verify_request(req)
+        if not ok:
+            next_state = RolloutState.AUTHORIZED if "Class C requires" in reason else RolloutState.QUARANTINED
+            return self._receipt(req, actual_state, next_state, False, reason)
+        if target_state not in VALID_TRANSITIONS.get(actual_state, set()):
+            return self._receipt(
+                req, actual_state, RolloutState.QUARANTINED, False,
+                f"DENY: invalid state transition {actual_state}->{target_state}",
+            )
+        if actual_state == RolloutState.SHADOW and target_state == RolloutState.ACTIVE:
+            if req.target_scope not in {"local", "agent", "role"}:
+                return self._receipt(
+                    req, actual_state, RolloutState.QUARANTINED, False,
+                    "DENY: shared or organization-wide behavior requires CANARY before ACTIVE",
+                )
+        record["state"] = target_state
+        record["request_digest"] = req.promotion_request_digest
+        record["candidate_digest"] = req.behavior_digest
+        record["base_digest"] = req.base_behavior_digest
+        record["evaluation_digest"] = req.evaluation_digest
+        record["evaluation_passed"] = req.evaluation_passed
+        record["expected_role"] = req.expected_role
+        record["prohibited_behaviors"] = list(req.prohibited_behaviors)
+        record["role_evidence_refs"] = list(req.role_evidence_refs)
+        record["observed_prohibited_behaviors"] = list(
+            req.observed_prohibited_behaviors
+        )
+        record["baseline_terminal_score"] = req.baseline_terminal_score
+        record["terminal_score"] = req.terminal_score
+        record["baseline_role_conformance_score"] = (
+            req.baseline_role_conformance_score
+        )
+        record["role_conformance_score"] = req.role_conformance_score
+        record["role_conformance_passed"] = req.role_conformance_passed
+        record["role_anchor_mode"] = req.role_anchor_mode
+        record["repository"] = req.repository
+        record["commit_sha"] = req.commit_sha
+        record["target_scope"] = req.target_scope
+        record["target_agents"] = list(req.target_agents)
+        record["environment"] = req.environment
+        record["policy_version"] = req.policy_version
+        record["authority_record_digest"] = req.authority_record_digest
+        record["updated_at"] = self.now.isoformat()
+        if target_state == RolloutState.AUTHORIZED:
+            authorized = record.setdefault("authorized_digests", [])
+            if req.behavior_digest not in authorized:
+                authorized.append(req.behavior_digest)
+        if target_state == RolloutState.ACTIVE:
+            previous = record.get("active_digest")
+            if previous and previous != req.behavior_digest:
+                history = record.setdefault("prior_active_digests", [])
+                if previous not in history:
+                    history.append(previous)
+            record["active_digest"] = req.behavior_digest
+        self._persist_state()
+        return self._receipt(req, actual_state, target_state, True, f"ALLOW: {actual_state}->{target_state}")
+
+    def quarantine_behavior(self, req: BehaviorPromotionRequest, reason: str) -> BehaviorPromotionReceipt:
+        _required_string(reason, "reason")
+        record = self._record(req.behavior_id)
+        current = record["state"]
+        if RolloutState.QUARANTINED not in VALID_TRANSITIONS.get(current, set()):
+            return self._receipt(req, current, RolloutState.QUARANTINED, False, "DENY: quarantine transition unavailable")
+        record["state"] = RolloutState.QUARANTINED
+        record["quarantine_reason"] = reason
+        record["updated_at"] = self.now.isoformat()
+        self._persist_state()
+        return self._receipt(req, current, RolloutState.QUARANTINED, True, f"QUARANTINE: {reason}")
+
+    def rollback_behavior(self, req: BehaviorPromotionRequest, rollback_digest: Optional[str] = None) -> BehaviorPromotionReceipt:
+        ok, reason = self.verify_request(req)
+        record = self._record(req.behavior_id)
+        current = record["state"]
+        if not ok:
+            return self._receipt(req, current, RolloutState.ROLLED_BACK, False, reason)
+        if current not in {RolloutState.ACTIVE, RolloutState.CANARY, RolloutState.QUARANTINED}:
+            return self._receipt(req, current, RolloutState.ROLLED_BACK, False, "DENY: rollback requires ACTIVE, CANARY or QUARANTINED")
+        target = _required_digest(rollback_digest, "rollback_digest")
+        prior = record.get("prior_active_digests", [])
+        authorized = record.get("authorized_digests", [])
+        if not prior or target != prior[-1] or target not in authorized:
+            return self._receipt(
+                req, current, RolloutState.ROLLED_BACK, False,
+                "DENY: rollback_digest is not the exact prior authorized active digest",
+            )
+        current_digest = record.get("active_digest")
+        record["state"] = RolloutState.ROLLED_BACK
+        record["rolled_back_from_digest"] = current_digest
+        record["active_digest"] = target
+        record["prior_active_digests"] = prior[:-1]
+        record["updated_at"] = self.now.isoformat()
+        self._persist_state()
+        return self._receipt(req, current, RolloutState.ROLLED_BACK, True, "ALLOW: exact authorized rollback")
+
+    def status(self, behavior_id: Optional[str] = None) -> Dict[str, Any]:
+        if behavior_id is None:
+            return json.loads(json.dumps(self.state))
+        return json.loads(json.dumps(self.state["behaviors"].get(behavior_id)))
+
+    def _record(self, behavior_id: str) -> Dict[str, Any]:
+        return self.state["behaviors"].setdefault(
+            behavior_id,
+            {
+                "behavior_id": behavior_id,
+                "state": RolloutState.REQUESTED,
+                "active_digest": None,
+                "authorized_digests": [],
+                "prior_active_digests": [],
+            },
+        )
+
+    def _receipt(
+        self,
+        req: BehaviorPromotionRequest,
+        current_state: str,
+        next_state: str,
+        executed: bool,
+        reason: str,
+    ) -> BehaviorPromotionReceipt:
+        previous = self.receipts[-1]["receipt_hash"] if self.receipts else None
+        body = {
+            "schema_version": "behavior-promotion-receipt.v1",
+            "sequence": len(self.receipts) + 1,
+            "receipt_id": f"behavior-{len(self.receipts) + 1:08d}",
+            "request_id": req.request_id,
+            "behavior_id": req.behavior_id,
+            "current_state": current_state,
+            "next_state": next_state,
+            "executed": executed,
+            "reason": reason,
+            "behavior_digest": req.behavior_digest,
+            "repository": req.repository,
+            "commit_sha": req.commit_sha,
+            "target_scope": req.target_scope,
+            "environment": req.environment,
+            "policy_version": req.policy_version,
+            "authority_record_digest": req.authority_record_digest,
+            "evaluation_digest": req.evaluation_digest,
+            "evaluation_passed": req.evaluation_passed,
+            "expected_role": req.expected_role,
+            "prohibited_behaviors": list(req.prohibited_behaviors),
+            "role_evidence_refs": list(req.role_evidence_refs),
+            "observed_prohibited_behaviors": list(
+                req.observed_prohibited_behaviors
+            ),
+            "baseline_terminal_score": req.baseline_terminal_score,
+            "terminal_score": req.terminal_score,
+            "baseline_role_conformance_score": req.baseline_role_conformance_score,
+            "role_conformance_score": req.role_conformance_score,
+            "role_conformance_passed": req.role_conformance_passed,
+            "role_anchor_mode": req.role_anchor_mode,
+            "occurred_at": self.now.isoformat(),
+            "previous_receipt_hash": previous,
+        }
+        body["receipt_hash"] = _sha256(body)
+        self.receipts.append(body)
+        self.receipts_file.parent.mkdir(parents=True, exist_ok=True)
+        with self.receipts_file.open("a", encoding="utf-8") as handle:
+            handle.write(_canonical(body) + "\n")
+        return BehaviorPromotionReceipt(**body)
+
+    def _load_state(self) -> Dict[str, Any]:
+        if not self.state_file.exists():
+            return {"schema_version": "behavior-rollout-state.v1", "behaviors": {}}
+        try:
+            state = json.loads(self.state_file.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise BehaviorPromotionError(f"state file is invalid: {exc}") from exc
+        if state.get("schema_version") != "behavior-rollout-state.v1" or not isinstance(state.get("behaviors"), dict):
+            raise BehaviorPromotionError("state file schema is invalid")
+        return state
+
+    def _persist_state(self) -> None:
+        self.state_file.parent.mkdir(parents=True, exist_ok=True)
+        payload = _canonical(self.state) + "\n"
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", dir=self.state_file.parent, delete=False
+        ) as handle:
+            handle.write(payload)
+            temp_name = handle.name
+        os.replace(temp_name, self.state_file)
+
+    def _load_and_verify_receipts(self) -> list[Dict[str, Any]]:
+        if not self.receipts_file.exists():
+            return []
+        receipts: list[Dict[str, Any]] = []
+        previous = None
+        for index, line in enumerate(self.receipts_file.read_text(encoding="utf-8").splitlines(), start=1):
+            if not line.strip():
+                continue
+            try:
+                receipt = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ReceiptIntegrityError(f"receipt line {index} is invalid JSON") from exc
+            supplied = receipt.get("receipt_hash")
+            material = dict(receipt)
+            material.pop("receipt_hash", None)
+            if receipt.get("sequence") != len(receipts) + 1:
+                raise ReceiptIntegrityError(f"receipt line {index} sequence mismatch")
+            if receipt.get("previous_receipt_hash") != previous:
+                raise ReceiptIntegrityError(f"receipt line {index} previous hash mismatch")
+            if supplied != _sha256(material):
+                raise ReceiptIntegrityError(f"receipt line {index} hash mismatch")
+            receipts.append(receipt)
+            previous = supplied
+        return receipts
+
+
+def _load_request(path: str) -> BehaviorPromotionRequest:
+    try:
+        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise BehaviorPromotionError(f"cannot read request: {exc}") from exc
+    return BehaviorPromotionRequest.from_dict(raw)
+
+
+def _print(value: Any) -> None:
+    if hasattr(value, "__dataclass_fields__"):
+        value = asdict(value)
+    print(json.dumps(value, sort_keys=True, ensure_ascii=False))
+
+
+def main(argv: Optional[Iterable[str]] = None) -> int:
+    parser = argparse.ArgumentParser(description="Governed behavior promotion and rollout")
+    action = parser.add_mutually_exclusive_group(required=True)
+    action.add_argument("--verify", action="store_true")
+    action.add_argument("--promote", action="store_true")
+    action.add_argument("--rollback", action="store_true")
+    action.add_argument("--status", action="store_true")
+    parser.add_argument("--request", help="Path to BehaviorPromotionRequestV1 JSON")
+    parser.add_argument("--behavior-id")
+    parser.add_argument("--target-state", choices=sorted({s for targets in VALID_TRANSITIONS.values() for s in targets}))
+    parser.add_argument("--rollback-digest")
+    parser.add_argument("--state-file")
+    parser.add_argument("--receipts-file")
+    args = parser.parse_args(list(argv) if argv is not None else None)
+
+    try:
+        engine = BehaviorPromotionEngine(state_file=args.state_file, receipts_file=args.receipts_file)
+        if args.status:
+            _print(engine.status(args.behavior_id))
+            return 0
+        if not args.request:
+            raise BehaviorPromotionError("--request is required")
+        req = _load_request(args.request)
+        if args.verify:
+            ok, reason = engine.verify_request(req)
+            _print({"verified": ok, "reason": reason, "request_digest": req.compute_digest()})
+            return 0 if ok else 2
+        if args.promote:
+            receipt = engine.promote_behavior(req, target_state=args.target_state or RolloutState.AUTHORIZED)
+            _print(receipt)
+            return 0 if receipt.executed else 3
+        receipt = engine.rollback_behavior(req, rollback_digest=args.rollback_digest)
+        _print(receipt)
+        return 0 if receipt.executed else 4
+    except BehaviorPromotionError as exc:
+        _print({"error": str(exc)})
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

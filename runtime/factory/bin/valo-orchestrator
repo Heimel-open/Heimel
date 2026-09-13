@@ -1,0 +1,707 @@
+#!/usr/bin/env python3
+"""valo-orchestrator — canonical VALO Factory control process.
+
+Owns dispatcher state. Workers only modify an isolated worktree; they do not
+push, create PRs, QC, merge, or attest completion. Every remote mutation is
+preceded by the current valoctl write gate.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import sqlite3
+import subprocess
+import sys
+import tempfile
+from datetime import datetime, timezone
+from pathlib import Path
+
+VALO = os.path.expanduser("~/valo-platform")
+DB = os.path.expanduser("~/.valo/orchestrator.db")
+REPO = "nsolland/valo-platform"
+RECEIPTS = os.path.expanduser("~/.valo/receipts/valo_factory_receipts.jsonl")
+WORKER_PROVIDER = os.environ.get("VALO_FACTORY_WORKER_PROVIDER", "openai_codex")
+WORKER_TIMEOUT = int(os.environ.get("VALO_FACTORY_WORKER_TIMEOUT", "1800"))
+
+STATES = (
+    "DISCOVERED", "CLAIMED", "IMPLEMENTING", "PR_OPEN", "QC_PENDING",
+    "READY_TO_MERGE", "MERGED", "BLOCKED", "NEEDS_HUMAN", "CANCELLED",
+    "INCIDENT_HOLD",
+)
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def db():
+    os.makedirs(os.path.dirname(DB), exist_ok=True)
+    conn = sqlite3.connect(DB)
+    conn.execute("""CREATE TABLE IF NOT EXISTS runs (
+        run_id TEXT PRIMARY KEY,
+        issue_id TEXT,
+        agent_id TEXT,
+        state TEXT,
+        risk_class TEXT,
+        pr_number TEXT,
+        head_sha TEXT,
+        base_sha TEXT,
+        attestation TEXT,
+        updated_at TEXT
+    )""")
+    conn.commit()
+    return conn
+
+
+def _set_state(
+    run_id, issue, state, *, risk_class=None, pr_number=None,
+    head_sha=None, base_sha=None, attestation=None,
+):
+    if state not in STATES:
+        raise ValueError(f"invalid orchestrator state: {state}")
+    conn = db()
+    conn.execute(
+        """INSERT INTO runs
+           (run_id, issue_id, agent_id, state, risk_class, pr_number,
+            head_sha, base_sha, attestation, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(run_id) DO UPDATE SET
+             issue_id=excluded.issue_id,
+             agent_id=excluded.agent_id,
+             state=excluded.state,
+             risk_class=COALESCE(excluded.risk_class, runs.risk_class),
+             pr_number=COALESCE(excluded.pr_number, runs.pr_number),
+             head_sha=COALESCE(excluded.head_sha, runs.head_sha),
+             base_sha=COALESCE(excluded.base_sha, runs.base_sha),
+             attestation=COALESCE(excluded.attestation, runs.attestation),
+             updated_at=excluded.updated_at""",
+        (
+            str(run_id), str(issue), "orchestrator", state, risk_class,
+            str(pr_number) if pr_number is not None else None,
+            head_sha, base_sha, attestation, _now(),
+        ),
+    )
+    conn.commit()
+    conn.close()
+
+
+def mode_check() -> bool:
+    proc = subprocess.run(
+        ["valoctl", "check"], capture_output=True, text=True
+    )
+    try:
+        payload = json.loads(proc.stdout)
+    except Exception:
+        return False
+    return (
+        proc.returncode == 0
+        and payload.get("mode") == "NORMAL"
+        and payload.get("write_allowed") is True
+        and payload.get("remote_write_allowed") is True
+    )
+
+
+def cmd_status(_args):
+    conn = db()
+    rows = conn.execute(
+        "SELECT run_id,issue_id,state,risk_class,pr_number,updated_at "
+        "FROM runs ORDER BY updated_at DESC"
+    ).fetchall()
+    conn.close()
+    active = [row for row in rows if row[2] not in ("MERGED", "CANCELLED")]
+    human = [row for row in rows if row[2] == "NEEDS_HUMAN"]
+    blocked = [row for row in rows if row[2] == "BLOCKED"]
+    ready = [row for row in rows if row[2] == "READY_TO_MERGE"]
+    mode = subprocess.run(
+        ["valoctl", "status"], capture_output=True, text=True
+    )
+    mode_lines = [
+        line for line in mode.stdout.splitlines() if line.startswith("Mode:")
+    ]
+    mode_line = mode_lines[0] if mode_lines else "Mode: UNKNOWN"
+    today = _now()[:10]
+    merged_today = [
+        row for row in rows
+        if row[2] == "MERGED" and row[5] and row[5].startswith(today)
+    ]
+    print("VALO Factory")
+    print(mode_line)
+    print(f"Active runs: {len(active)}")
+    print(f"PRs ready: {len(ready)}")
+    print(f"Auto-merged today: {len(merged_today)}")
+    print(f"Blocked: {len(blocked)}")
+    print(f"Human decisions required: {len(human)}")
+    for row in human:
+        print(f"NEEDS_HUMAN  issue #{row[1]}  run {row[0]}  state {row[2]}")
+    return 0
+
+
+def _base_sha(base_ref: str) -> str:
+    if base_ref == "main":
+        proc = subprocess.run(
+            [
+                "gh", "repo", "view", REPO, "--json", "defaultBranchRef",
+                "-q", ".defaultBranchRef.target.oid",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        return proc.stdout.strip() if proc.returncode == 0 else ""
+    return f"origin/{base_ref}"
+
+
+def _head_sha(pr: int) -> str:
+    proc = subprocess.run(
+        [
+            "gh", "pr", "view", str(pr), "-R", REPO,
+            "--json", "headRefOid", "-q", ".headRefOid",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    return proc.stdout.strip() if proc.returncode == 0 else ""
+
+
+def _parse_json(proc, action: str, *, allow_nonzero=False):
+    if proc.returncode != 0 and not allow_nonzero:
+        detail = proc.stderr.strip() or proc.stdout.strip()
+        raise RuntimeError(f"{action} failed rc={proc.returncode}: {detail}")
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        detail = proc.stderr.strip() or proc.stdout.strip()
+        raise RuntimeError(f"{action} returned invalid JSON: {detail}") from exc
+
+
+def _require_success(proc, action: str):
+    if proc.returncode != 0:
+        detail = proc.stderr.strip() or proc.stdout.strip()
+        raise RuntimeError(f"{action} failed rc={proc.returncode}: {detail}")
+    if re.search(r"(^|\n)\s*(error|failed)\s*:", proc.stderr or "", re.I):
+        raise RuntimeError(f"{action} reported an error: {proc.stderr.strip()}")
+
+
+def _write_attestation(qcj):
+    fd, path = tempfile.mkstemp(suffix=".json", prefix="attest_")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(qcj, handle, indent=2, sort_keys=True)
+            handle.flush()
+            os.fsync(handle.fileno())
+    except Exception:
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+        raise
+    return path
+
+
+def _write_worker_prompt(issue, issuej, run_id):
+    fd, path = tempfile.mkstemp(suffix=".md", prefix="valo_work_")
+    prompt = f"""# VALO Factory work contract
+
+Repository: {REPO}
+Issue: #{issue}
+Run: {run_id}
+Title: {issuej.get("title", "")}
+
+## Issue body
+{issuej.get("body", "")}
+
+## Execution contract
+Implement the issue in the current isolated worktree.
+Do not push, create/close/merge PRs, change GitHub state, alter authority, or
+claim completion. Do not commit. Leave concrete code/test/doc changes in the
+worktree for the orchestrator to inspect and commit.
+Run targeted local tests when useful. Do not fabricate evidence.
+If the issue cannot be implemented from the available repository context,
+exit non-zero rather than creating placeholder files.
+"""
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        handle.write(prompt)
+        handle.flush()
+        os.fsync(handle.fileno())
+    return path
+
+
+def _provider_receipt(stderr: str):
+    prefix = "VALO_PROVIDER_RECEIPT "
+    for line in reversed((stderr or "").splitlines()):
+        if line.startswith(prefix):
+            try:
+                return json.loads(line[len(prefix):])
+            except json.JSONDecodeError:
+                return None
+    return None
+
+
+def _emit_receipt(
+    issue, pr, decision, cls, run_id, outcome, *, worker_receipt=None
+):
+    receipt = {
+        "issue": issue,
+        "pr": pr,
+        "decision": decision,
+        "risk_class": cls,
+        "run_id": run_id,
+        "outcome": outcome,
+        "at": _now(),
+    }
+    if worker_receipt:
+        receipt["worker"] = worker_receipt
+    canonical = json.dumps(receipt, sort_keys=True, separators=(",", ":"))
+    receipt["receipt_sha256"] = hashlib.sha256(
+        canonical.encode("utf-8")
+    ).hexdigest()
+    path = Path(RECEIPTS)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(receipt, sort_keys=True) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+    print("RECEIPT " + json.dumps(receipt, sort_keys=True))
+    return receipt
+
+
+def _cleanup_run(worktree, branch, attestation, worker_prompt, delete_remote):
+    for path in (attestation, worker_prompt):
+        if path:
+            try:
+                os.unlink(path)
+            except FileNotFoundError:
+                pass
+
+    if worktree:
+        subprocess.run(
+            ["git", "-C", VALO, "worktree", "remove", "--force", worktree],
+            capture_output=True, text=True, check=False,
+        )
+
+    if branch:
+        subprocess.run(
+            ["git", "-C", VALO, "branch", "-D", branch],
+            capture_output=True, text=True, check=False,
+        )
+        if delete_remote and mode_check():
+            subprocess.run(
+                ["git", "-C", VALO, "push", "origin", "--delete", branch],
+                capture_output=True, text=True, check=False,
+            )
+
+
+def _release_claim(issue):
+    if not mode_check():
+        print(
+            f"CLAIM_RELEASE_DEFERRED issue={issue}: mode gate closed",
+            file=sys.stderr,
+        )
+        return False
+    proc = subprocess.run(
+        ["valo-claim", "release", "--issue", str(issue)],
+        capture_output=True, text=True, check=False,
+    )
+    return proc.returncode == 0
+
+
+def _run_worker(worktree, issue, issuej, run_id):
+    provider = WORKER_PROVIDER.strip()
+    if not provider:
+        raise RuntimeError("VALO_FACTORY_WORKER_PROVIDER is empty")
+    prompt_path = _write_worker_prompt(issue, issuej, run_id)
+    before = subprocess.run(
+        ["git", "-C", worktree, "rev-parse", "HEAD"],
+        capture_output=True, text=True,
+    )
+    _require_success(before, "worker pre-head")
+    before_sha = before.stdout.strip()
+
+    worker = subprocess.run(
+        [
+            "valo-agent-provider", "run", provider,
+            "--prompt-file", prompt_path,
+            "--execution-mode", "workspace_write",
+            "--cwd", worktree,
+            "--timeout", str(WORKER_TIMEOUT),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    _require_success(worker, f"worker provider {provider}")
+
+    after = subprocess.run(
+        ["git", "-C", worktree, "rev-parse", "HEAD"],
+        capture_output=True, text=True,
+    )
+    _require_success(after, "worker post-head")
+    if after.stdout.strip() != before_sha:
+        raise RuntimeError("worker committed locally; writer contract forbids commits")
+
+    status = subprocess.run(
+        ["git", "-C", worktree, "status", "--porcelain"],
+        capture_output=True, text=True,
+    )
+    _require_success(status, "worker status")
+    if not status.stdout.strip():
+        raise RuntimeError("worker produced no repository change")
+
+    return prompt_path, _provider_receipt(worker.stderr)
+
+
+def _ensure_worker_did_not_push(worktree, branch):
+    remote = subprocess.run(
+        [
+            "git", "-C", worktree, "ls-remote", "--exit-code",
+            "--heads", "origin", branch,
+        ],
+        capture_output=True, text=True,
+    )
+    if remote.returncode == 0 and remote.stdout.strip():
+        raise RuntimeError(
+            "worker created the remote branch before orchestrator authorization"
+        )
+    if remote.returncode not in (0, 2):
+        detail = remote.stderr.strip() or remote.stdout.strip()
+        raise RuntimeError(f"cannot verify remote branch absence: {detail}")
+
+
+def _recommend(decision, cls):
+    if decision == "MERGE_READY":
+        return (
+            f"AUTO-MERGE OK (class {cls})"
+            if cls in ("A", "B") else "NEEDS_HUMAN (class C)"
+        )
+    if decision == "BLOCKED":
+        return "NEEDS_HUMAN: QC BLOCKED"
+    return "NEEDS_HUMAN"
+
+
+def cmd_shadow(_args):
+    """Read-only shadow inspection. No claim, push, PR, merge or label writes."""
+    check = subprocess.run(
+        ["valoctl", "check"], capture_output=True, text=True
+    )
+    try:
+        mode = json.loads(check.stdout).get("mode")
+    except Exception:
+        mode = "UNKNOWN"
+    if mode != "SHADOW":
+        print(
+            f"REFUSED: shadow requires SHADOW mode, current={mode}",
+            file=sys.stderr,
+        )
+        return 2
+
+    prs = subprocess.run(
+        [
+            "gh", "pr", "list", "-R", REPO, "--state", "open",
+            "--json", "number,title,headRefOid,baseRefName",
+        ],
+        capture_output=True, text=True,
+    )
+    try:
+        pr_list = json.loads(prs.stdout) if prs.returncode == 0 else []
+    except json.JSONDecodeError:
+        pr_list = []
+
+    recs = []
+    for pr in pr_list:
+        num = pr["number"]
+        classify = subprocess.run(
+            ["valo-classify", str(num)], capture_output=True, text=True
+        )
+        cls = classify.stdout.strip()
+        qc = subprocess.run(
+            [
+                "valo-qc", "--pr", str(num),
+                "--head-sha", pr["headRefOid"],
+                "--base-sha", _base_sha(pr["baseRefName"]),
+            ],
+            capture_output=True, text=True,
+        )
+        try:
+            decision = json.loads(qc.stdout).get("decision")
+        except Exception:
+            decision = "PARSE_ERROR"
+        recs.append({
+            "pr": num,
+            "class": cls,
+            "qc": decision,
+            "recommendation": _recommend(decision, cls),
+        })
+
+    print(json.dumps({
+        "mode": "SHADOW",
+        "actions_taken": "NONE",
+        "recommendations": recs,
+    }, indent=2, sort_keys=True))
+    return 0
+
+
+def cmd_tick(_args):
+    """Run one complete NORMAL dispatcher transaction."""
+    if not mode_check():
+        print("MODE != NORMAL: no new write run started.", file=sys.stderr)
+        return 0
+
+    subprocess.run(
+        ["valo-claim", "expire"], capture_output=True, text=True, check=False
+    )
+
+    discovery = subprocess.run(
+        [
+            "gh", "issue", "list", "-R", REPO, "--state", "open",
+            "--json", "number,title,labels",
+        ],
+        capture_output=True, text=True,
+    )
+    try:
+        all_issues = (
+            json.loads(discovery.stdout) if discovery.returncode == 0 else []
+        )
+    except json.JSONDecodeError:
+        all_issues = []
+
+    issues = [
+        item["number"] for item in all_issues
+        if not any(
+            label.get("name") == "claimed"
+            for label in item.get("labels", [])
+        )
+    ]
+    if not issues:
+        print("TICK: no unclaimed issues.")
+        return 0
+
+    issue = issues[0]
+    claim_id = f"orchestrator-{issue}-{int(datetime.now().timestamp())}"
+    claimed = False
+    worktree = None
+    branch = None
+    attestation = None
+    worker_prompt = None
+    worker_receipt = None
+    pr_num = None
+    run_id = None
+    preserve_remote = False
+    risk_class = None
+    head_sha = None
+    base_sha = None
+
+    try:
+        if not mode_check():
+            return 0
+        claim = subprocess.run(
+            [
+                "valo-claim", "claim", "--issue", str(issue),
+                "--actor", "orchestrator", "--run-id", claim_id,
+            ],
+            capture_output=True, text=True,
+        )
+        if claim.returncode != 0:
+            return 0
+        claimed = True
+
+        run = subprocess.run(
+            [
+                "valo-run", "--issue", str(issue), "--agent", "orchestrator",
+                "--authority", "read_write", "--base", "origin/main",
+                "--branch", f"orch-{issue}-{claim_id[-8:]}",
+            ],
+            capture_output=True, text=True,
+        )
+        runj = _parse_json(run, "valo-run")
+        run_id = runj.get("run_id")
+        worktree = runj.get("worktree")
+        branch = runj.get("branch")
+        if not run_id or not worktree or not branch:
+            raise RuntimeError("valo-run output missing run_id/worktree/branch")
+        _set_state(run_id, issue, "IMPLEMENTING")
+
+        issue_view = subprocess.run(
+            [
+                "gh", "issue", "view", str(issue), "-R", REPO,
+                "--json", "title,body",
+            ],
+            capture_output=True, text=True,
+        )
+        issuej = _parse_json(issue_view, "issue view")
+
+        worker_prompt, worker_receipt = _run_worker(
+            worktree, issue, issuej, run_id
+        )
+        _ensure_worker_did_not_push(worktree, branch)
+
+        add = subprocess.run(
+            ["git", "-C", worktree, "add", "-A"],
+            capture_output=True, text=True,
+        )
+        _require_success(add, "git add")
+        diff = subprocess.run(
+            ["git", "-C", worktree, "diff", "--cached", "--quiet"],
+            capture_output=True, text=True,
+        )
+        if diff.returncode == 0:
+            raise RuntimeError("worker changes disappeared before commit")
+        if diff.returncode != 1:
+            _require_success(diff, "git diff --cached")
+
+        commit = subprocess.run(
+            [
+                "git", "-C", worktree, "commit", "-m",
+                f"feat(issue-{issue}): governed worker delivery",
+            ],
+            capture_output=True, text=True,
+        )
+        _require_success(commit, "git commit")
+
+        if not mode_check():
+            raise RuntimeError("mode gate closed before push")
+        push = subprocess.run(
+            ["git", "-C", worktree, "push", "-u", "origin", branch],
+            capture_output=True, text=True,
+        )
+        _require_success(push, "git push")
+
+        if not mode_check():
+            raise RuntimeError("mode gate closed before PR creation")
+        pr = subprocess.run(
+            [
+                "gh", "pr", "create", "-R", REPO,
+                "--head", branch, "--base", "main",
+                "--title", f"Issue {issue}: governed worker delivery",
+                "--body",
+                f"Automated governed delivery for #{issue}. "
+                f"Run `{run_id}`. Worker `{WORKER_PROVIDER}`.",
+            ],
+            capture_output=True, text=True, cwd=worktree,
+        )
+        _require_success(pr, "PR creation")
+        match = re.search(r"pull/(\d+)", f"{pr.stdout}\n{pr.stderr}")
+        if not match:
+            raise RuntimeError("PR creation returned no pull/<number>")
+        pr_num = int(match.group(1))
+        preserve_remote = True
+
+        base_sha = _base_sha("main")
+        head_sha = _head_sha(pr_num)
+        if not base_sha or not head_sha:
+            raise RuntimeError("unable to resolve base/head SHA")
+        _set_state(
+            run_id, issue, "PR_OPEN", pr_number=pr_num,
+            head_sha=head_sha, base_sha=base_sha,
+        )
+
+        classify = subprocess.run(
+            ["valo-classify", str(pr_num)], capture_output=True, text=True
+        )
+        risk_class = classify.stdout.strip()
+        if classify.returncode != 0 or risk_class not in ("A", "B", "C"):
+            risk_class = "C"
+
+        _set_state(
+            run_id, issue, "QC_PENDING", risk_class=risk_class,
+            pr_number=pr_num, head_sha=head_sha, base_sha=base_sha,
+        )
+        qc = subprocess.run(
+            [
+                "valo-qc", "--pr", str(pr_num),
+                "--head-sha", head_sha, "--base-sha", base_sha,
+            ],
+            capture_output=True, text=True,
+        )
+        qcj = _parse_json(qc, "valo-qc", allow_nonzero=True)
+        decision = qcj.get("decision")
+        if decision not in ("MERGE_READY", "BLOCKED"):
+            raise RuntimeError(f"invalid QC decision: {decision}")
+
+        if decision == "MERGE_READY" and risk_class in ("A", "B"):
+            _set_state(
+                run_id, issue, "READY_TO_MERGE", risk_class=risk_class,
+                pr_number=pr_num, head_sha=head_sha, base_sha=base_sha,
+            )
+            _emit_receipt(
+                issue, pr_num, decision, risk_class, run_id,
+                "READY_TO_MERGE", worker_receipt=worker_receipt,
+            )
+            if not mode_check():
+                raise RuntimeError("mode gate closed before merge")
+            attestation = _write_attestation(qcj)
+            merge = subprocess.run(
+                [
+                    "valo-merge", "--pr", str(pr_num),
+                    "--attestation", attestation,
+                    "--risk-class", risk_class,
+                ],
+                capture_output=True, text=True,
+            )
+            mergej = _parse_json(merge, "valo-merge")
+            if mergej.get("merged") is not True:
+                raise RuntimeError(
+                    f"valo-merge did not confirm merged=true: {mergej}"
+                )
+            preserve_remote = False
+            _set_state(
+                run_id, issue, "MERGED", risk_class=risk_class,
+                pr_number=pr_num, head_sha=head_sha, base_sha=base_sha,
+            )
+            _emit_receipt(
+                issue, pr_num, decision, risk_class, run_id, "MERGED",
+                worker_receipt=worker_receipt,
+            )
+            print(f"MERGED pr={pr_num} class={risk_class}")
+        else:
+            _set_state(
+                run_id, issue, "NEEDS_HUMAN", risk_class=risk_class,
+                pr_number=pr_num, head_sha=head_sha, base_sha=base_sha,
+            )
+            _emit_receipt(
+                issue, pr_num, decision, risk_class, run_id, "NEEDS_HUMAN",
+                worker_receipt=worker_receipt,
+            )
+            print(
+                f"NEEDS_HUMAN pr={pr_num} decision={decision} "
+                f"class={risk_class}"
+            )
+        return 0
+    except Exception as exc:
+        print(f"DISPATCH_FAILED issue={issue}: {exc}", file=sys.stderr)
+        if run_id:
+            try:
+                _set_state(
+                    run_id, issue, "BLOCKED", risk_class=risk_class,
+                    pr_number=pr_num, head_sha=head_sha, base_sha=base_sha,
+                )
+                _emit_receipt(
+                    issue, pr_num, "ERROR", risk_class or "C", run_id,
+                    "FAILED", worker_receipt=worker_receipt,
+                )
+            except Exception as receipt_exc:
+                print(f"RECEIPT_SAVE_FAIL {receipt_exc}", file=sys.stderr)
+        return 1
+    finally:
+        _cleanup_run(
+            worktree, branch, attestation, worker_prompt,
+            delete_remote=bool(branch and not preserve_remote),
+        )
+        if claimed:
+            _release_claim(issue)
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="valo-orchestrator")
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("status").set_defaults(func=cmd_status)
+    sub.add_parser("tick").set_defaults(func=cmd_tick)
+    sub.add_parser(
+        "shadow", help="read-only shadow inspection"
+    ).set_defaults(func=cmd_shadow)
+    args = parser.parse_args()
+    return int(args.func(args))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

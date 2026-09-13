@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+"""Validate and fingerprint governed A2A mandate envelopes."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import hmac
+import json
+import re
+import sys
+from datetime import datetime, timezone
+from typing import Any, Mapping
+from urllib.parse import urlparse
+
+CONTRACT = "valo.a2a.mandate-envelope.v1"
+EXTENSION_URI = "urn:valo:a2a:mandate-envelope:v1"
+A2A_VERSION = "1.0"
+OPERATIONS = {"SEND_MESSAGE", "SEND_STREAMING_MESSAGE", "GET_TASK", "LIST_TASKS", "CANCEL_TASK", "SUBSCRIBE_TASK"}
+INTERFACES = {"HTTP+JSON", "JSONRPC", "GRPC"}
+TRUST_BASES = {"SIGNED_AGENT_CARD", "CURATED_REGISTRY", "DIRECT_CONFIGURATION"}
+CONSEQUENCE_CLASSES = {"LOW", "MEDIUM", "HIGH", "CRITICAL"}
+REVERSIBILITY = {"REVERSIBLE", "PARTIALLY_REVERSIBLE", "IRREVERSIBLE"}
+VAIG_STATUSES = {"PASS", "WARN", "FAIL"}
+REHT_STATUSES = {"CLEARED", "NOT_CLEARED", "REVOKED", "EXPIRED"}
+RACS_DECISIONS = {"ALLOW", "MODIFY", "DEFER", "DENY", "STEP_UP", "HALT"}
+HEX64 = re.compile(r"^[a-f0-9]{64}$")
+FORBIDDEN_KEYS = {
+    "authorization", "cookie", "proxy_authorization", "proxy-authorization",
+    "access_token", "refresh_token", "api_key", "apikey", "secret", "password",
+    "raw_body", "body",
+}
+
+
+class EnvelopeError(ValueError):
+    pass
+
+
+def canonical_json(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+def sha256_hex(value: Any) -> str:
+    return hashlib.sha256(canonical_json(value)).hexdigest()
+
+
+def require_mapping(value: Any, name: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise EnvelopeError(f"{name} must be an object")
+    return value
+
+
+def require_string(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise EnvelopeError(f"{name} must be a non-empty string")
+    return value
+
+
+def require_digest(value: Any, name: str) -> str:
+    digest = require_string(value, name).lower()
+    if not HEX64.fullmatch(digest):
+        raise EnvelopeError(f"{name} must be lowercase SHA-256 hex")
+    return digest
+
+
+def parse_timestamp(value: Any, name: str) -> datetime:
+    text = require_string(value, name)
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise EnvelopeError(f"{name} must be ISO 8601") from exc
+    if parsed.tzinfo is None:
+        raise EnvelopeError(f"{name} must include a timezone")
+    return parsed.astimezone(timezone.utc)
+
+
+def reject_secrets(value: Any, path: str = "envelope") -> None:
+    forbidden = {item.replace("-", "_") for item in FORBIDDEN_KEYS}
+    if isinstance(value, Mapping):
+        for key, item in value.items():
+            normalized = str(key).strip().lower().replace("-", "_")
+            if normalized in forbidden:
+                raise EnvelopeError(f"{path}.{key} is forbidden in the mandate envelope")
+            reject_secrets(item, f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            reject_secrets(item, f"{path}[{index}]")
+
+
+def action_core(envelope: Mapping[str, Any]) -> dict[str, Any]:
+    source = require_mapping(envelope.get("source"), "source")
+    target = require_mapping(envelope.get("target"), "target")
+    mandate = require_mapping(envelope.get("mandate"), "mandate")
+    payload = require_mapping(envelope.get("payload"), "payload")
+    return {
+        "contract": CONTRACT,
+        "a2a_version": A2A_VERSION,
+        "extension_uri": EXTENSION_URI,
+        "operation": envelope.get("operation"),
+        "source": {
+            "principal_id": source.get("principal_id"),
+            "agent_id": source.get("agent_id"),
+            "agent_card_digest": source.get("agent_card_digest"),
+        },
+        "target": {
+            "agent_id": target.get("agent_id"),
+            "agent_card_url": target.get("agent_card_url"),
+            "agent_card_digest": target.get("agent_card_digest"),
+            "selected_interface": target.get("selected_interface"),
+            "trust_basis": target.get("trust_basis"),
+            "mal_profile_id": target.get("mal_profile_id"),
+        },
+        "mandate": {
+            "authority_grant_id": mandate.get("authority_grant_id"),
+            "delegation_chain_digest": mandate.get("delegation_chain_digest"),
+            "purpose_digest": mandate.get("purpose_digest"),
+            "scope": mandate.get("scope"),
+            "constraints": mandate.get("constraints", {}),
+            "consequence_class": mandate.get("consequence_class"),
+            "reversibility": mandate.get("reversibility"),
+            "issued_at": mandate.get("issued_at"),
+            "expires_at": mandate.get("expires_at"),
+            "max_delegation_depth": mandate.get("max_delegation_depth"),
+            "redelegation_allowed": mandate.get("redelegation_allowed"),
+            "revocation_registry_ref": mandate.get("revocation_registry_ref"),
+        },
+        "payload": {
+            "a2a_payload_digest": payload.get("a2a_payload_digest"),
+            "message_id": payload.get("message_id"),
+            "task_id": payload.get("task_id"),
+            "context_id": payload.get("context_id"),
+            "tenant": payload.get("tenant"),
+            "content_types": payload.get("content_types", []),
+            "maximum_artifact_bytes": payload.get("maximum_artifact_bytes"),
+        },
+    }
+
+
+def compute_action_digest(envelope: Mapping[str, Any]) -> str:
+    return sha256_hex(action_core(envelope))
+
+
+def validate(envelope: Mapping[str, Any], *, now: datetime | None = None) -> dict[str, Any]:
+    require_mapping(envelope, "envelope")
+    reject_secrets(envelope)
+    if envelope.get("contract") != CONTRACT:
+        raise EnvelopeError(f"contract must be {CONTRACT}")
+    require_string(envelope.get("envelope_id"), "envelope_id")
+    if envelope.get("a2a_version") != A2A_VERSION:
+        raise EnvelopeError(f"a2a_version must be {A2A_VERSION}")
+    if envelope.get("extension_uri") != EXTENSION_URI:
+        raise EnvelopeError(f"extension_uri must be {EXTENSION_URI}")
+    operation = require_string(envelope.get("operation"), "operation").upper()
+    if operation not in OPERATIONS:
+        raise EnvelopeError("operation is not supported")
+
+    source = require_mapping(envelope.get("source"), "source")
+    require_string(source.get("principal_id"), "source.principal_id")
+    require_string(source.get("agent_id"), "source.agent_id")
+    require_digest(source.get("agent_card_digest"), "source.agent_card_digest")
+
+    target = require_mapping(envelope.get("target"), "target")
+    require_string(target.get("agent_id"), "target.agent_id")
+    target_url = require_string(target.get("agent_card_url"), "target.agent_card_url")
+    parsed = urlparse(target_url)
+    if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+        raise EnvelopeError("target.agent_card_url must be credential-free HTTPS")
+    require_digest(target.get("agent_card_digest"), "target.agent_card_digest")
+    interface = require_string(target.get("selected_interface"), "target.selected_interface").upper()
+    if interface not in INTERFACES:
+        raise EnvelopeError("target.selected_interface is invalid")
+    trust_basis = require_string(target.get("trust_basis"), "target.trust_basis").upper()
+    if trust_basis not in TRUST_BASES:
+        raise EnvelopeError("target.trust_basis is invalid")
+    if trust_basis == "SIGNED_AGENT_CARD" and target.get("signature_verified") is not True:
+        raise EnvelopeError("signed Agent Card trust requires signature_verified=true")
+    parse_timestamp(target.get("retrieved_at"), "target.retrieved_at")
+    require_string(target.get("mal_profile_id"), "target.mal_profile_id")
+
+    mandate = require_mapping(envelope.get("mandate"), "mandate")
+    require_string(mandate.get("authority_grant_id"), "mandate.authority_grant_id")
+    require_digest(mandate.get("delegation_chain_digest"), "mandate.delegation_chain_digest")
+    require_digest(mandate.get("purpose_digest"), "mandate.purpose_digest")
+    scope = mandate.get("scope")
+    if not isinstance(scope, list) or not scope or not all(isinstance(item, str) and item.strip() for item in scope):
+        raise EnvelopeError("mandate.scope must contain non-empty strings")
+    if len(set(scope)) != len(scope):
+        raise EnvelopeError("mandate.scope must not contain duplicates")
+    if require_string(mandate.get("consequence_class"), "mandate.consequence_class").upper() not in CONSEQUENCE_CLASSES:
+        raise EnvelopeError("mandate.consequence_class is invalid")
+    if require_string(mandate.get("reversibility"), "mandate.reversibility").upper() not in REVERSIBILITY:
+        raise EnvelopeError("mandate.reversibility is invalid")
+    issued_at = parse_timestamp(mandate.get("issued_at"), "mandate.issued_at")
+    expires_at = parse_timestamp(mandate.get("expires_at"), "mandate.expires_at")
+    if expires_at <= issued_at:
+        raise EnvelopeError("mandate.expires_at must be after issued_at")
+    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    if expires_at <= current:
+        raise EnvelopeError("mandate has expired")
+    depth = mandate.get("max_delegation_depth")
+    if not isinstance(depth, int) or isinstance(depth, bool) or depth < 0:
+        raise EnvelopeError("mandate.max_delegation_depth must be non-negative")
+    if not isinstance(mandate.get("redelegation_allowed"), bool):
+        raise EnvelopeError("mandate.redelegation_allowed must be boolean")
+    if mandate.get("redelegation_allowed") is False and depth != 0:
+        raise EnvelopeError("max_delegation_depth must be zero when redelegation is not allowed")
+    require_string(mandate.get("revocation_registry_ref"), "mandate.revocation_registry_ref")
+
+    payload = require_mapping(envelope.get("payload"), "payload")
+    require_digest(payload.get("a2a_payload_digest"), "payload.a2a_payload_digest")
+    require_string(payload.get("message_id"), "payload.message_id")
+    maximum = payload.get("maximum_artifact_bytes")
+    if maximum is not None and (not isinstance(maximum, int) or isinstance(maximum, bool) or maximum < 0):
+        raise EnvelopeError("payload.maximum_artifact_bytes must be non-negative")
+
+    action_digest = require_digest(envelope.get("action_digest"), "action_digest")
+    expected = compute_action_digest(envelope)
+    if not hmac.compare_digest(action_digest, expected):
+        raise EnvelopeError("action_digest does not match the governed A2A action")
+
+    governance = require_mapping(envelope.get("governance"), "governance")
+    vaig = require_mapping(governance.get("vaig"), "governance.vaig")
+    reht = require_mapping(governance.get("reht"), "governance.reht")
+    racs = require_mapping(governance.get("racs"), "governance.racs")
+    require_string(vaig.get("evaluation_id"), "governance.vaig.evaluation_id")
+    require_string(reht.get("clearance_id"), "governance.reht.clearance_id")
+    require_string(racs.get("decision_id"), "governance.racs.decision_id")
+    for name, artifact in (("vaig", vaig), ("reht", reht), ("racs", racs)):
+        bound = require_digest(artifact.get("action_digest"), f"governance.{name}.action_digest")
+        if not hmac.compare_digest(bound, action_digest):
+            raise EnvelopeError(f"governance.{name} is not bound to this action")
+    vaig_status = require_string(vaig.get("status"), "governance.vaig.status").upper()
+    reht_status = require_string(reht.get("status"), "governance.reht.status").upper()
+    racs_decision = require_string(racs.get("decision"), "governance.racs.decision").upper()
+    if vaig_status not in VAIG_STATUSES:
+        raise EnvelopeError("governance.vaig.status is invalid")
+    if reht_status not in REHT_STATUSES:
+        raise EnvelopeError("governance.reht.status is invalid")
+    if racs_decision not in RACS_DECISIONS:
+        raise EnvelopeError("governance.racs.decision is invalid")
+    if racs_decision == "MODIFY":
+        replacement = require_digest(racs.get("replacement_action_digest"), "governance.racs.replacement_action_digest")
+        if hmac.compare_digest(replacement, action_digest):
+            raise EnvelopeError("replacement action digest must differ from original")
+    transmittable = vaig_status in {"PASS", "WARN"} and reht_status == "CLEARED" and racs_decision == "ALLOW"
+    return {
+        "ok": True,
+        "contract": CONTRACT,
+        "envelope_id": envelope["envelope_id"],
+        "action_digest": action_digest,
+        "a2a_version": A2A_VERSION,
+        "operation": operation,
+        "racs_decision": racs_decision,
+        "transmittable": transmittable,
+        "reason": "RACS_ALLOW" if transmittable else f"RACS_{racs_decision}",
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--envelope", help="JSON file; stdin when omitted")
+    parser.add_argument("--compute-digest", action="store_true")
+    args = parser.parse_args()
+    try:
+        with open(args.envelope, encoding="utf-8") if args.envelope else sys.stdin as handle:
+            envelope = json.load(handle)
+        output = compute_action_digest(require_mapping(envelope, "envelope")) if args.compute_digest else validate(envelope)
+        print(output if isinstance(output, str) else json.dumps(output, sort_keys=True))
+        return 0
+    except (OSError, json.JSONDecodeError, EnvelopeError, ValueError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}), file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,36 @@
+# RACS v0.2 example action envelope
+#
+# Canonical refs-based envelope. Digests are deterministic sha256 bindings
+# generated for the example; real envelopes must bind the exact payload.
+{
+  "action_id": "ae-20260713-101",
+  "tenant_id": "tenant:fin",
+  "action_type": "trade_execution",
+  "actor_ref": "actor:trader-v2",
+  "target_ref": "account-9876",
+  "target_digest": "sha256:1c024617d60bc1a86a650ee4758b1ba75b7243c972eaa3266ff9bbc16d0a7761",
+  "payload_digest": "sha256:6dc00b3da181c6a375e317365280ca06fa9f8145f4fe68087da57064cbb8b1f3",
+  "authority_grant_ref": "auth-20260713-101",
+  "delegation_chain_ref": "delegation:fin",
+  "policy_ref": "policy-trading-2026-v3",
+  "evidence_package_ref": "ev-20260713-101",
+  "purpose_ref": "purpose:rebalancing",
+  "environment_state_ref": "env-20260713",
+  "risk_context_ref": "risk-context:trade",
+  "connector_id": "connector:20260713-101",
+  "capability": "trading.market_order",
+  "consequence_class": "HIGH",
+  "reversibility": "REVERSIBLE",
+  "created_at": "2026-07-13T10:30:00Z",
+  "expires_at": "2026-07-13T10:30:30Z",
+  "replay_nonce": "nonce-20260713-101-abcdef0123456789",
+  "idempotency_key": "idem-20260713-101-xyz",
+  "boundary_requirements": {
+    "required_types": [
+      "EXECUTION"
+    ],
+    "policy_ref": "policy-trading-2026-v3",
+    "policy_digest": "sha256:22ab2ec5bbb4e7e4bed4f3d159036fd27a70bf8744610f5a36e4d8830830031d",
+    "fail_closed": true
+  }
+}

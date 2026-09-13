@@ -1,0 +1,19 @@
+name: valo-conformance
+version: 0.1.1
+layer: conformance-reference
+description: Authority-neutral cross-stack presentation and boundary conformance
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-platform
+  commit: e535537c1f8dad164e832e41308a79a9bbc2c8da
+  paths:
+    - src/valo_platform/conformance/models.py
+    - src/valo_platform/conformance/evaluate.py
+    - src/valo_platform/canonical.py
+  status: rebuilt-reference-slice
+
+boundary:
+  owns_authoritative_state: false
+  creates_authority: false
+  executes_effects: false

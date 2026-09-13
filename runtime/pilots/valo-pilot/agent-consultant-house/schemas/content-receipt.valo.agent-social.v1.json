@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.dev/schemas/content-receipt.valo.agent-social.v1.json",
+  "title": "VALO Agent Social Content Receipt",
+  "type": "object",
+  "required": [
+    "post_id",
+    "agent_id",
+    "platform",
+    "content_type",
+    "decision",
+    "human_face_detected",
+    "verified_multiplier",
+    "reach",
+    "revenue",
+    "audit_hash"
+  ],
+  "properties": {
+    "post_id": { "type": "integer" },
+    "agent_id": { "type": "string" },
+    "platform": {
+      "type": "string",
+      "enum": ["Agentbook", "AgentTok", "AgentGram", "AgentTube"]
+    },
+    "content_type": {
+      "type": "string",
+      "enum": ["text", "image", "short_video", "long_video", "simulation", "audit"]
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["PUBLISH", "STEP_UP", "DENY", "HALT"]
+    },
+    "human_face_detected": { "type": "boolean" },
+    "verified_multiplier": { "type": "number" },
+    "reach": { "type": "integer" },
+    "revenue": { "type": "number" },
+    "audit_hash": { "type": "string" }
+  }
+}

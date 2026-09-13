@@ -1,0 +1,180 @@
+{
+  "protocol": "PEACE/0",
+  "profile": "core-v0",
+  "digest_vectors": [
+    {
+      "id": "digest-basic-001",
+      "object": {"a": 1, "b": "x"},
+      "canonical_json": "{\"a\":1,\"b\":\"x\"}",
+      "expected_digest": "sha256:ecf9e98ec0641e23113ff3ce8bdc78d0ddd249886517fd4a7f68cc83d4e65667"
+    },
+    {
+      "id": "digest-authority-001",
+      "object": {
+        "principal": "person:alice",
+        "purpose": "pay_invoice",
+        "scope": ["invoice:42"],
+        "revoked": false
+      },
+      "canonical_json": "{\"principal\":\"person:alice\",\"purpose\":\"pay_invoice\",\"revoked\":false,\"scope\":[\"invoice:42\"]}",
+      "expected_digest": "sha256:a2e9bb7dab843ecba4bcea73cd3bd2c53493263e57aebb073ced856e5f723941"
+    },
+    {
+      "id": "digest-disclosure-001",
+      "object": {
+        "destination": "worker:external",
+        "fields": ["amount", "recipient"],
+        "state_root": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "canonical_json": "{\"destination\":\"worker:external\",\"fields\":[\"amount\",\"recipient\"],\"state_root\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\"}",
+      "expected_digest": "sha256:ff074256dece670a305c2e0ed7144102e373142f5a881ae0b673e495ee93f269"
+    }
+  ],
+  "semantic_vectors": [
+    {
+      "id": "effect-valid-001",
+      "given": {
+        "principal_is_authority_root": true,
+        "delegation_active": true,
+        "purpose_matches": true,
+        "scope_matches": true,
+        "state_current": true,
+        "authority_current": true,
+        "exact_action_matches": true,
+        "disclosure_valid": true,
+        "fresh_effect_authorized": true
+      },
+      "expected": {"authorization": "PASS", "effect_allowed": true}
+    },
+    {
+      "id": "effect-revoked-001",
+      "given": {
+        "principal_is_authority_root": true,
+        "delegation_active": false,
+        "purpose_matches": true,
+        "scope_matches": true,
+        "state_current": true,
+        "authority_current": false,
+        "exact_action_matches": true,
+        "disclosure_valid": true
+      },
+      "expected": {"authorization": "DENY", "effect_allowed": false, "state_mutation": "NONE"}
+    },
+    {
+      "id": "effect-stale-state-001",
+      "given": {
+        "principal_is_authority_root": true,
+        "delegation_active": true,
+        "purpose_matches": true,
+        "scope_matches": true,
+        "state_current": false,
+        "authority_current": true,
+        "exact_action_matches": true,
+        "disclosure_valid": true
+      },
+      "expected": {"authorization": "DENY", "effect_allowed": false, "state_mutation": "NONE"}
+    },
+    {
+      "id": "effect-action-drift-001",
+      "given": {
+        "fresh_effect_authorized": true,
+        "authorized_action_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "effect_action_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "expected": {"effect_allowed": false, "reason": "EXACT_ACTION_MISMATCH"}
+    },
+    {
+      "id": "effect-worker-bypass-001",
+      "given": {
+        "worker_has_candidate": true,
+        "worker_attempts_direct_effect": true,
+        "fresh_effect_authorized": false
+      },
+      "expected": {"authorization": "DENY", "effect_allowed": false, "reason": "NO_DIRECT_EFFECT_PATH"}
+    },
+    {
+      "id": "candidate-is-not-decision-001",
+      "given": {
+        "worker_output_exists": true,
+        "worker_output_type": "candidate",
+        "fresh_effect_authorized": false
+      },
+      "expected": {"decision_created": false, "effect_allowed": false, "reason": "CANDIDATE_NE_DECISION"}
+    },
+    {
+      "id": "disclosure-overshare-001",
+      "given": {
+        "requested_fields": ["amount", "recipient"],
+        "projected_fields": ["amount", "recipient", "medical_history"],
+        "destination_matches": true,
+        "purpose_matches": true,
+        "state_current": true,
+        "authority_current": true
+      },
+      "expected": {"disclosure": "DENY"}
+    },
+    {
+      "id": "credential-possession-authority-001",
+      "given": {
+        "logical_principal": "person:alice",
+        "credential_holder": "worker:external",
+        "credential_valid": true,
+        "explicit_delegation": false
+      },
+      "expected": {"authority_created": false, "reason": "PRINCIPAL_IS_AUTHORITY_ROOT"}
+    },
+    {
+      "id": "provider-authority-001",
+      "given": {"authority_root": "provider:cloud-a"},
+      "expected": {"conformant": false, "reason": "PRINCIPAL_IS_AUTHORITY_ROOT"}
+    },
+    {
+      "id": "routing-authority-001",
+      "given": {
+        "router_selected_provider": "provider:fast",
+        "provider_meets_capability": true,
+        "provider_claims_authority": true
+      },
+      "expected": {"route_admissibility": "DENY", "authority_created": false, "reason": "ROUTING_NE_AUTHORITY"}
+    },
+    {
+      "id": "evidence-is-not-state-001",
+      "given": {
+        "evidence_valid": true,
+        "evidence_tamper_evident": true,
+        "admission_decision": "NONE"
+      },
+      "expected": {"authoritative_state_mutation": "NONE", "reason": "EVIDENCE_NE_STATE"}
+    },
+    {
+      "id": "recovery-key-replacement-001",
+      "given": {
+        "same_logical_principal": true,
+        "old_key_revoked": true,
+        "new_key_established_by_valid_recovery": true,
+        "same_admitted_history": true,
+        "same_operative_state_reconstructed": true
+      },
+      "expected": {
+        "principal_replaced": false,
+        "authority_source_changed": false,
+        "continuity_preserved": true
+      }
+    },
+    {
+      "id": "recovery-runtime-provider-loss-001",
+      "given": {
+        "runtime_deleted": true,
+        "original_provider_unavailable": true,
+        "preserved_governed_artifacts_available": true,
+        "history_integrity_valid": true,
+        "replacement_runtime_used": true
+      },
+      "expected": {
+        "same_logical_principal": true,
+        "operative_domain_reconstructible": true,
+        "replacement_runtime_is_authority_root": false
+      }
+    }
+  ]
+}

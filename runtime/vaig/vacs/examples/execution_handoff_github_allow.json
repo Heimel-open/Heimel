@@ -1,0 +1,61 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440201",
+  "agent_id": "agent-devops-01",
+  "timestamp": "2026-06-28T12:00:00Z",
+  "intent": {
+    "action": "open_pull_request",
+    "target": "nsolland/VAIG",
+    "scope": "documentation_update"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:code-review-001",
+        "type": "code_review",
+        "verified": true
+      },
+      {
+        "hash": "sha256:policy-001",
+        "type": "policy",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.0
+  },
+  "risk": {
+    "level": "low",
+    "categories": ["software_change"],
+    "blast_radius": "repository"
+  },
+  "confidence": 0.96,
+  "policy": {
+    "policy_id": "github-change-policy-v1",
+    "policy_hash": "sha256:githubchangepolicyv1000000000000000000000000000000000000",
+    "required_signoff": false,
+    "max_risk_level": "medium",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "internal",
+    "override_allowed": false
+  },
+  "decision": "ALLOW",
+  "signature": "ed25519:placeholder",
+  "vacs_profile": "valo-authority-v0.1",
+  "principal": {
+    "who": "agent-devops-01",
+    "whom": "repo_owner",
+    "authority_source": "github-change-policy-v1",
+    "authority_reference": "policy://engineering/github-change/v1",
+    "human_signoff": {
+      "required": false
+    }
+  },
+  "boundary": {
+    "when": "business_hours",
+    "where": "engineering_workflow",
+    "resources": ["nsolland/VAIG"],
+    "forbidden_domains": ["production_secret_write", "billing_change"],
+    "execution_provider": "github",
+    "execution_method": "github:pull_request"
+  }
+}

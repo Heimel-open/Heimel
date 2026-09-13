@@ -1,0 +1,57 @@
+# components.lock.yaml — pinned distribution manifest.
+# Every component MUST have tag + sha (40 hex) + image + digest (sha256:64hex).
+# No product logic here. Pins reference canonical component repos only.
+apiVersion: valo.distribution/v1
+kind: DistributionManifest
+profile: research
+generated_at: "2026-08-04T00:00:00Z"
+components:
+  - name: reht
+    repo: nsolland/reht
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/reht:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: true
+  - name: vaig
+    repo: nsolland/vaig
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/vaig:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: true
+  - name: veritas
+    repo: nsolland/veritas
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/veritas:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: true
+  - name: gateway
+    repo: nsolland/gateway
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/gateway:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: true
+  - name: racs
+    repo: nsolland/racs
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/racs:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: true
+  - name: speider
+    repo: nsolland/speider
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/speider:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: false
+  - name: baro
+    repo: nsolland/baro
+    tag: v0.0.0
+    sha: "0000000000000000000000000000000000000000"
+    image: ghcr.io/nsolland/baro:v0.0.0
+    digest: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    required: false

@@ -1,0 +1,12 @@
+name: valo-workflow-isa
+version: 0.1.0
+layer: workflow-isa
+description: Typed, deterministic workflow instruction set for VALO
+license: Proprietary — VALO Research Group AS
+
+dependencies:
+  - repo: nsolland/valo-kernel
+    role: kernel-contracts
+    anchor_sha: edf39cc914843e763c4385c0024d775c7458e1e8
+    anchor_ref: main
+    merged_at: 2026-08-15

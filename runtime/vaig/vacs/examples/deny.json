@@ -1,0 +1,40 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440005",
+  "agent_id": "agent-operator-06",
+  "timestamp": "2026-06-16T12:00:00Z",
+  "intent": {
+    "action": "transfer_money",
+    "target": "external_account_999",
+    "scope": "unapproved_payment"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:acc444",
+        "type": "account",
+        "verified": true
+      },
+      {
+        "hash": "sha256:pol555",
+        "type": "policy",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.33
+  },
+  "risk": {
+    "level": "high",
+    "categories": ["financial"],
+    "blast_radius": "organization"
+  },
+  "confidence": 0.92,
+  "policy": {
+    "required_signoff": false,
+    "max_risk_level": "medium",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU-GDPR"
+  },
+  "decision": "DENY",
+  "signature": "ed25519:placeholder"
+}

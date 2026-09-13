@@ -1,0 +1,50 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440201",
+  "agent_id": "agent-coder-01",
+  "timestamp": "2026-06-16T12:00:00Z",
+  "intent": {
+    "action": "create_pull_request",
+    "target": "repo:nsolland/VAIG",
+    "scope": "vacs_protocol_patch"
+  },
+  "evidence": {
+    "sources": [
+      {"hash": "sha256:review111", "type": "code_review", "verified": true},
+      {"hash": "sha256:policy222", "type": "policy", "verified": true}
+    ],
+    "evidence_gap": 0.0
+  },
+  "risk": {
+    "level": "low",
+    "categories": ["code_change"],
+    "blast_radius": "single_document"
+  },
+  "confidence": 0.96,
+  "policy": {
+    "policy_id": "github-adapter-policy-v1",
+    "policy_hash": "sha256:githubadapterpolicyv1000000000000000000000000000000000000",
+    "required_signoff": false,
+    "max_risk_level": "medium",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU-GDPR",
+    "override_allowed": false
+  },
+  "decision": "ALLOW",
+  "signature": "ed25519:placeholder",
+  "vacs_profile": "valo-authority-v0.1",
+  "principal": {
+    "who": "agent-coder-01",
+    "whom": "repo_maintainer",
+    "authority_source": "github-adapter-policy-v1",
+    "authority_reference": "policy://github/adapter/v1",
+    "human_signoff": {"required": false}
+  },
+  "boundary": {
+    "when": "working_session",
+    "where": "github_pr_workflow",
+    "resources": ["repo:nsolland/VAIG"],
+    "forbidden_domains": ["force_push", "delete_branch", "release_publish"],
+    "execution_method": "pull_request"
+  }
+}

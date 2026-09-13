@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-exchange-listing.valo.v1.json",
+  "title": "VALO Agent Exchange Listing",
+  "type": "object",
+  "required": [
+    "listing_id",
+    "agent_id",
+    "valuation",
+    "revenue_multiple",
+    "risk_band",
+    "receipts_verified"
+  ],
+  "properties": {
+    "listing_id": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": "string"
+    },
+    "valuation": {
+      "type": "number"
+    },
+    "revenue_multiple": {
+      "type": "number"
+    },
+    "risk_band": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ]
+    },
+    "receipts_verified": {
+      "type": "boolean"
+    },
+    "available_float": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "owner_retained": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

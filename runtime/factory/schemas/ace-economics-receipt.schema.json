@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/ace-economics-receipt.schema.json",
+  "title": "VALO ACE Economics Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "measured_at",
+    "cost_of_cognition",
+    "value_of_cognition",
+    "roi_claimed",
+    "authority_effect"
+  ],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "measured_at": {"type": "string", "format": "date-time"},
+    "cost_of_cognition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tokens": {"type": "number", "minimum": 0},
+        "model_cost": {"type": "number", "minimum": 0},
+        "latency_seconds": {"type": "number", "minimum": 0},
+        "human_time_seconds": {"type": "number", "minimum": 0},
+        "retries": {"type": "integer", "minimum": 0},
+        "verification_cost": {"type": "number", "minimum": 0},
+        "error_rework_cost": {"type": "number", "minimum": 0},
+        "technical_debt_cost": {"type": "number", "minimum": 0},
+        "cleanup_cost": {"type": "number", "minimum": 0},
+        "agent_monitoring_cost": {"type": "number", "minimum": 0},
+        "opportunity_cost": {"type": "number", "minimum": 0},
+        "cancelled_opportunity_cost": {"type": "number", "minimum": 0}
+      }
+    },
+    "value_of_cognition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "time_saved_seconds": {"type": "number", "minimum": 0},
+        "time_to_outcome_improvement_seconds": {"type": "number", "minimum": 0},
+        "enabled_opportunity_value": {"type": "number", "minimum": 0},
+        "verified_business_outcome_value": {"type": "number", "minimum": 0}
+      }
+    },
+    "outcome_ref": {"type": ["string", "null"]},
+    "roi_claimed": {"type": "boolean"},
+    "authority_effect": {
+      "const": "none",
+      "description": "Economic measurements optimize and explain work; they never authorize it."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"roi_claimed": {"const": true}},
+        "required": ["roi_claimed"]
+      },
+      "then": {
+        "required": ["outcome_ref"],
+        "properties": {"outcome_ref": {"type": "string", "minLength": 1}}
+      }
+    }
+  ]
+}

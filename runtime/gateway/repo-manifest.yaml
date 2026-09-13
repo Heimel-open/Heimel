@@ -1,0 +1,4 @@
+name: valo-gateway
+version: 0.1.1
+source: migrated canonical VALO mechanical enforcement gateway
+private_sources_included: false

@@ -1,0 +1,7 @@
+extend = "pyproject.toml"
+
+[lint.per-file-ignores]
+"src/valo_reht/evidence_gate.py" = ["E501", "I001"]
+"src/valo_reht/release_manifest.py" = ["E501", "I001"]
+"tests/test_evidence_gate.py" = ["E501", "I001"]
+"tests/test_security_assurance_release_gate.py" = ["E501", "I001"]

@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+"""Evaluate changed paths against the VALO security evidence matrix."""
+from __future__ import annotations
+
+import argparse
+import fnmatch
+import importlib.util
+import json
+import subprocess
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Iterable
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+LIB_PATH = ROOT / "lib/security_matrix.py"
+
+
+def _load_repo_evaluator():
+    """Load the canonical repo module when the executable is run in-tree."""
+    if not LIB_PATH.is_file():
+        return None
+    module_name = "valo_factory_security_matrix"
+    spec = importlib.util.spec_from_file_location(module_name, LIB_PATH)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module.evaluate
+
+
+_repo_evaluate = _load_repo_evaluator()
+
+if _repo_evaluate is None:
+    # ~/.valo/bin contains standalone executable copies. Keep a deterministic
+    # fallback so the gate does not depend on an uninstalled repo-level lib/.
+    @dataclass(frozen=True)
+    class MatrixResult:
+        status: str
+        categories: tuple[str, ...]
+        required_evidence: tuple[str, ...]
+        missing_evidence: tuple[str, ...]
+
+
+    def _matches(path: str, pattern: str) -> bool:
+        normalized = path.strip().lstrip("./")
+        pattern = pattern.lstrip("./")
+        if fnmatch.fnmatch(normalized, pattern):
+            return True
+        if pattern.startswith("**/"):
+            return fnmatch.fnmatch(normalized, pattern[3:])
+        return False
+
+
+    def _classify_paths(
+        paths: Iterable[str], policy: dict[str, Any]
+    ) -> tuple[str, ...]:
+        categories: set[str] = set()
+        for category, patterns in policy.get("sensitive_paths", {}).items():
+            if any(_matches(path, pattern) for path in paths for pattern in patterns):
+                categories.add(category)
+        return tuple(sorted(categories))
+
+
+    def _required_evidence(
+        categories: Iterable[str], policy: dict[str, Any]
+    ) -> tuple[str, ...]:
+        requirements = set(policy.get("required_evidence", {}).get("default", []))
+        for category in categories:
+            requirements.update(policy.get("required_evidence", {}).get(category, []))
+        return tuple(sorted(requirements))
+
+
+    def evaluate(
+        changed_paths: Iterable[str],
+        manifest: dict[str, Any] | None,
+        policy: dict[str, Any],
+    ) -> MatrixResult:
+        categories = _classify_paths(changed_paths, policy)
+        required = _required_evidence(categories, policy)
+
+        if not categories:
+            return MatrixResult("PASS", categories, required, ())
+
+        if manifest is None:
+            return MatrixResult("FAIL", categories, required, required)
+
+        allowed = set(policy.get("manifest", {}).get("allowed_statuses", ["PASS"]))
+        evidence = manifest.get("evidence", {})
+        missing = tuple(
+            item
+            for item in required
+            if not isinstance(evidence.get(item), dict)
+            or evidence[item].get("status") not in allowed
+            or not evidence[item].get("proof")
+        )
+        return MatrixResult(
+            "PASS" if not missing else "FAIL", categories, required, missing
+        )
+
+else:
+    evaluate = _repo_evaluate
+
+
+def changed_paths(base: str, head: str) -> list[str]:
+    result = subprocess.run(
+        ["git", "diff", "--name-only", base, head],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def load_yaml(path: Path):
+    if not path.exists():
+        return None
+    with path.open(encoding="utf-8") as handle:
+        return yaml.safe_load(handle)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--base-sha", required=True)
+    parser.add_argument("--head-sha", required=True)
+    parser.add_argument("--policy", default=str(ROOT / "config/security_matrix.yaml"))
+    parser.add_argument("--manifest", default="security/evidence.yaml")
+    args = parser.parse_args()
+
+    policy = load_yaml(Path(args.policy))
+    if not policy:
+        raise SystemExit("security matrix policy missing or invalid")
+
+    result = evaluate(
+        changed_paths(args.base_sha, args.head_sha),
+        load_yaml(Path(args.manifest)),
+        policy,
+    )
+    payload = {
+        "status": result.status,
+        "categories": list(result.categories),
+        "required_evidence": list(result.required_evidence),
+        "missing_evidence": list(result.missing_evidence),
+        "base_sha": args.base_sha,
+        "head_sha": args.head_sha,
+    }
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0 if result.status == "PASS" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

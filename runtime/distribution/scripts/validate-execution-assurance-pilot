@@ -1,0 +1,165 @@
+#!/usr/bin/env python3
+"""Validate Execution Assurance Pilot v1 packaging.
+
+Candidate validation checks the buyer-facing contract and architecture boundaries.
+Deployable validation additionally requires every canonical runtime component to
+be pinned by exact source SHA. This script performs no network calls or deployment.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+import jsonschema
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+SCHEMA = ROOT / "schemas" / "execution-assurance-pilot-v1.schema.json"
+
+CANONICAL_REPOS = {
+    "shadow_runtime": "nsolland/valo-platform",
+    "reht": "nsolland/valo-reht",
+    "racs": "nsolland/Racs",
+    "gateway": "nsolland/valo-gateway",
+    "veritas": "nsolland/Veritas",
+    "vaig": "nsolland/VAIG",
+}
+REQUIRED_RUNTIME = {"shadow_runtime", "reht", "racs", "gateway", "veritas"}
+IMMUTABLE_REF = re.compile(r"^(nsolland/[A-Za-z0-9_.-]+)@([0-9a-f]{40})$")
+
+
+def load_yaml(path: Path) -> dict:
+    with path.open(encoding="utf-8") as handle:
+        payload = yaml.safe_load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("pilot contract must be a YAML object")
+    return payload
+
+
+def validate_semantics(pilot: dict, *, deployable: bool) -> list[str]:
+    problems: list[str] = []
+
+    components = pilot["runtime_components"]
+    by_name = {component["component"]: component for component in components}
+    if len(by_name) != len(components):
+        problems.append("runtime_components: duplicate component names")
+    missing = sorted(REQUIRED_RUNTIME - set(by_name))
+    if missing:
+        problems.append("runtime_components: missing required component(s): " + ", ".join(missing))
+
+    for name, component in by_name.items():
+        expected = CANONICAL_REPOS.get(name)
+        if expected and component["canonical_repo"] != expected:
+            problems.append(
+                f"runtime_components.{name}: canonical_repo must be {expected}, got {component['canonical_repo']}"
+            )
+        artifact_ref = component.get("artifact_ref")
+        if deployable:
+            if not artifact_ref:
+                problems.append(f"runtime_components.{name}: deployable package requires immutable artifact_ref")
+                continue
+            match = IMMUTABLE_REF.fullmatch(str(artifact_ref))
+            if not match:
+                problems.append(
+                    f"runtime_components.{name}: artifact_ref must be canonical_repo@40hex_sha"
+                )
+            elif match.group(1) != component["canonical_repo"]:
+                problems.append(
+                    f"runtime_components.{name}: artifact_ref repo does not match canonical_repo"
+                )
+        elif artifact_ref:
+            match = IMMUTABLE_REF.fullmatch(str(artifact_ref))
+            if not match:
+                problems.append(
+                    f"runtime_components.{name}: candidate artifact_ref, when present, must be canonical_repo@40hex_sha"
+                )
+
+    deployment = pilot["deployment"]
+    shadow = deployment["shadow_invariants"]
+    if deployment["initial_mode"] != "shadow":
+        problems.append("deployment.initial_mode: pilot must start in shadow")
+    if not shadow["non_authoritative"] or shadow["can_issue_clearance"] or shadow["external_effect_performed"]:
+        problems.append("deployment.shadow_invariants: shadow must be non-authoritative and effect-free")
+
+    required_enforce_evidence = {
+        "mode_promotion_case",
+        "owner",
+        "independent_approver",
+        "mandate_ref",
+        "evaluation_summary",
+        "rollback_plan",
+        "rollback_trigger",
+        "valid_until",
+        "receipt_ref",
+    }
+    enforce = deployment["enforce_gate"]
+    missing_enforce = sorted(required_enforce_evidence - set(enforce["required_evidence"]))
+    if missing_enforce:
+        problems.append("deployment.enforce_gate: missing evidence: " + ", ".join(missing_enforce))
+    if enforce["automatic_promotion"] is not False:
+        problems.append("deployment.enforce_gate: automatic promotion is forbidden")
+    if enforce["separation_of_duties"] is not True:
+        problems.append("deployment.enforce_gate: separation of duties is required")
+
+    evidence = pilot["evidence_contract"]
+    mandatory_correlation = {"tenant_id", "task_id", "action_id"}
+    missing_corr = sorted(mandatory_correlation - set(evidence["correlation_fields"]))
+    if missing_corr:
+        problems.append("evidence_contract: missing mandatory correlation fields: " + ", ".join(missing_corr))
+    if evidence["freshness_required"] is not True:
+        problems.append("evidence_contract: freshness must be required")
+    if evidence["unknown_is_valid"] is not True:
+        problems.append("evidence_contract: unknown/insufficient evidence must remain valid state")
+
+    metrics = set(pilot["metrics"])
+    for metric in ("shadow_external_effect_count", "uncorrelated_record_count", "evidence_completeness"):
+        if metric not in metrics:
+            problems.append(f"metrics: {metric} is required")
+
+    boundaries = pilot["commercial_boundaries"]
+    if boundaries != {
+        "valo_is_product": False,
+        "reht_is_product": False,
+        "pilot_is_packaged_offer": True,
+        "new_core_allowed": False,
+        "provider_lock_in_allowed": False,
+    }:
+        problems.append("commercial_boundaries: canonical product-state boundary changed")
+
+    if pilot["rollback"]["customer_system_remains_authoritative"] is not True:
+        problems.append("rollback: customer system must remain authoritative")
+
+    return problems
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="validate-execution-assurance-pilot")
+    parser.add_argument("--pilot", default=str(ROOT / "pilots" / "execution-assurance-v1" / "pilot.yaml"))
+    parser.add_argument("--deployable", action="store_true", help="also require immutable runtime pins")
+    args = parser.parse_args()
+
+    try:
+        pilot = load_yaml(Path(args.pilot))
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        jsonschema.validate(pilot, schema)
+        problems = validate_semantics(pilot, deployable=args.deployable)
+    except (OSError, ValueError, yaml.YAMLError, json.JSONDecodeError, jsonschema.ValidationError) as exc:
+        print(f"EXECUTION_ASSURANCE_PILOT_INVALID: {exc}", file=sys.stderr)
+        return 1
+
+    if problems:
+        for problem in problems:
+            print(f"ERROR: {problem}", file=sys.stderr)
+        return 1
+
+    state = "DEPLOYABLE" if args.deployable else "CANDIDATE_VALID"
+    print(f"EXECUTION_ASSURANCE_PILOT_{state}: {args.pilot}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

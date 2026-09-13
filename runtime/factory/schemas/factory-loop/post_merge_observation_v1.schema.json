@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/factory-loop/post_merge_observation_v1.schema.json",
+  "title": "PostMergeObservationV1",
+  "description": "Post-merge findings create Observations only; they never silently trigger authority-bearing execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "observation_id", "run_id", "repository", "base_sha",
+    "candidate_sha", "actor", "observed_at", "severity", "summary",
+    "evidence", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "factory-loop-v1"},
+    "observation_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "candidate_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "actor": {"type": "string", "minLength": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "severity": {"enum": ["info", "warning", "critical"]},
+    "summary": {"type": "string"},
+    "evidence": {"type": "string"},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

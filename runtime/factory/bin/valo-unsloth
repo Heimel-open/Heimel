@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Validate and emit a governed Unsloth PEP handoff.
+
+This CLI never executes training. The resulting JSON is the input to the
+configured policy enforcement point/runtime adapter.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.unsloth_factory import GovernanceError, build_pep_handoff  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="valo-unsloth")
+    parser.add_argument("--request", help="governed JSON request; stdin when omitted")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="validate and print PEP handoff without executing the engine",
+    )
+    args = parser.parse_args()
+
+    try:
+        if args.request:
+            with open(args.request, encoding="utf-8") as handle:
+                request = json.load(handle)
+        else:
+            request = json.load(sys.stdin)
+        handoff = build_pep_handoff(request)
+        output = {"ok": True, "dry_run": bool(args.dry_run), "handoff": handoff}
+        print(json.dumps(output, sort_keys=True, ensure_ascii=False))
+        return 0
+    except (OSError, json.JSONDecodeError, GovernanceError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, sort_keys=True), file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,11 @@
+# # Φ-LOVEN: DOMAIN CONVERGENCE REGISTRY
+
+Source: https://docs.google.com/document/d/1QF8tE_K-hb2naBENp-PtFnt36ZDNV6B24s_lX-sgL_o/edit?usp=drivesdk
+Drive file ID: 1QF8tE_K-hb2naBENp-PtFnt36ZDNV6B24s_lX-sgL_o
+Project: VAIG
+Content hash: cf2988a3
+Gate: auto_approved
+
+---
+
+# Φ-LOVEN: DOMAIN CONVERGENCE REGISTRY **Law of Identity Maintenance (LIM) - Domain Convergence Map** **Dato:** 21. juni 2026 **Versjon:** 1.2 (korrigert etter ekstern gjennomgang) **Ansvarlig:** Njål Gaute Solland **Status:** 18 oppføringer (0 direkte M4, 2 M4-kandidater, 9 M3, 5 M2, 2 Q) --- ## VALIDERINGSNIVÅ **M4:** Uavhengig empirisk/formell validering av LIM-spesifikk prediksjon (per nå: 0 direkte) **M4-kandidat:** Interne målinger/verifikasjoner som potensielt kan nå M4 ved offentliggjøring av artefakter **M3:** Etablert matematisk/fysisk struktur med isomorf eller nær-isomorf form til LIM **M2:** Konseptuell/ontologisk parallell, støtter intuisjonen men mangler kvantitativ mapping **Q:** Kilde uklar / ikke verifisert / i karantene --- ## M4-KANDIDAT (intern, ikke uavhengig verifisert) ### D-AI-001: LLM Koherens / Skaleringslov **Kilde:** Intern empirisk måling (ikke offentliggjort) **Modeller:** GPT-2 (117M), Phi-2 (2.7B), Mistral-7B **Status:** M4-kandidat **Merknad:** τ ≈ 0.10 × N^0.48 og Goldilocks-intervallet [e^(-γ), 1/ζ(3)]. Krever offentlig repo, notebook, seed, datasett og måleprotokoll for å nå M4. Ikke uavhengig reprodusert. ### D-VL-001: VΛLΦ Arkitektur / TLA+ Verifikasjon **Kilde:** Intern formell verifikasjon **Verktøy:** TLA+ model checker **Status:** M4-kandidat **Merknad:** 16.900 tilstander verifisert med 0 brudd. Krever offentlig TLA+-spec, TLC-output og hash/logg for å nå M4. --- ## M3: STRUKTURELL KONVERGENS ### D-QV-001: Kvantevakuum / RHIC STAR **Kilde:** RHIC/STAR Collaboration (eksisterende kilde) **Analogi:** Lambda-anti-Lambda spinn-korrelasjon fra QCD-vakuum/hadronisering **Bekrefter:** Støtter intuisjonen om at materie bærer "minne" av vakuumtilstanden **Status:** M3 (kan vurderes som M4-kandidat hvis formulert som empirisk analogi, ikke direkte aksiombekreftelse) **Korreksjon:** Beviser ikke direkte "identitet er minnet om det som filtreres bort" - det er LIM-tolkning av eksisterende fysikk. ### D-QV-002: Relasjonell Tid / Page-Wo

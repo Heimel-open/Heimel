@@ -1,0 +1,24 @@
+{
+  "schema": "valo.graft-context-policy.v1",
+  "upstream": "NanoNets/Graft",
+  "validated_upstream_commit": "d834ca227d765b2736cfeafb97b0e71e2ea21d50",
+  "validated_package_version": "0.11.0",
+  "allowed_commands": [
+    "build",
+    "check",
+    "grep",
+    "map",
+    "callers",
+    "skeleton",
+    "ask"
+  ],
+  "require_graft_gitignore": true,
+  "llm_mode": "deployment-opt-in-private-endpoint-only",
+  "authority": "none",
+  "notes": [
+    "Graft is a replaceable code-context engine, not an authority source.",
+    "init, upgrade, MCP registration, visualization server and version-network checks are not exposed through valo-graft.",
+    "LLM-backed ask/build --deep requires deployment-controlled opt-in and a localhost or literal private-network OpenAI-compatible endpoint.",
+    "Structural operations run with ambient model-provider credentials removed and an isolated HOME to suppress machine-global Graft maintenance state."
+  ]
+}

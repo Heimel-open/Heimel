@@ -1,0 +1,35 @@
+{
+  "schema": "valo.reht.multi-host-split-brain-evidence.v1",
+  "date": "2026-08-26",
+  "implementation_head_at_gate_probe": "8cc2b8fa0108e3f9730f04530f19db1786f63c35",
+  "cpu_only": true,
+  "external_api_cost": 0,
+  "split_brain_probe": {
+    "attempts": 1000,
+    "independent_sqlite_hosts": 2,
+    "both_hosts_consumed_same_permit": 1000,
+    "both_hosts_opened_same_execution_intent": 1000,
+    "classification": "SAME_HOST_SQLITE_IS_NOT_MULTI_HOST_SAFE"
+  },
+  "consistency_gate_probe": {
+    "sqlite_like_multi_host_permit": "REJECTED",
+    "distributed_permit_same_host_journal": "REJECTED",
+    "undeclared_scope": "REJECTED",
+    "explicit_distributed_consensus_pair": "ACCEPTED_BY_CONSTRUCTION_CONTRACT",
+    "single_host_same_host_pair": "ACCEPTED",
+    "unknown_topology": "FAIL_CLOSED"
+  },
+  "claims": {
+    "same_host_sqlite_split_brain_limitation_confirmed": true,
+    "multi_host_same_host_store_guard_coded": true,
+    "distributed_consensus_backend_implemented": false,
+    "distributed_consensus_backend_verified": false
+  },
+  "classification": "LIMITATION_CONFIRMED_GUARD_CODED_WITH_EXECUTION_PROVENANCE_LIMITATION",
+  "provenance": {
+    "split_brain": "local stdlib SQLite probe matching repository WAL/FULL single-primary-key semantics",
+    "gate": "local execution of exact consistency contract logic committed on branch",
+    "native_branch_pytest": "NOT_RUN",
+    "reason": "local runtime cannot resolve github.com for native checkout; hosted GitHub Actions historically fails before job startup"
+  }
+}

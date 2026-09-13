@@ -1,0 +1,22 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    "fastapi>=0.100.0" \
+    "uvicorn>=0.30.0,<1" \
+    "rfc8785>=0.1.4"
+
+COPY vaig /app/vaig
+COPY deploy/coherence/evaluator_app.py /app/app.py
+
+RUN useradd --create-home --uid 10001 valo \
+    && chown -R valo:valo /app
+USER valo
+
+EXPOSE 8002
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8002", "--no-server-header"]

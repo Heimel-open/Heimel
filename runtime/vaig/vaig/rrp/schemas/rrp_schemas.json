@@ -1,0 +1,263 @@
+{
+  "refusal_event": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "RefusalEvent",
+    "description": "Atomic unit emitted by VAIG when a boundary is crossed.",
+    "type": "object",
+    "required": [
+      "refusal_id",
+      "timestamp",
+      "category",
+      "severity",
+      "triggered_rule",
+      "operator_id",
+      "session_id",
+      "input_summary",
+      "rationale",
+      "permitted_actions",
+      "model_state_digest"
+    ],
+    "properties": {
+      "refusal_id": {
+        "type": "string",
+        "pattern": "^ref-[0-9]{4}-[0-9]{4}-[0-9]{3}$"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "policy_violation",
+          "safety_boundary",
+          "capability_limit",
+          "ambiguous_request",
+          "context_contamination"
+        ]
+      },
+      "severity": {
+        "type": "string",
+        "enum": [
+          "blocking",
+          "deferring",
+          "advisory"
+        ]
+      },
+      "triggered_rule": {
+        "type": "string"
+      },
+      "operator_id": {
+        "type": "string"
+      },
+      "session_id": {
+        "type": "string"
+      },
+      "input_summary": {
+        "type": "string",
+        "maxLength": 500
+      },
+      "rationale": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "permitted_actions": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "rephrase",
+            "escalate",
+            "abandon",
+            "acknowledge",
+            "document"
+          ]
+        }
+      },
+      "model_state_digest": {
+        "type": "string",
+        "pattern": "^sha256:[a-f0-9]{6}\\.\\.\\.$"
+      }
+    }
+  },
+  "uncertainty_inventory": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "UncertaintyInventory",
+    "description": "Structured inventory of residual uncertainty after refusal enforcement.",
+    "type": "object",
+    "required": [
+      "inventory_id",
+      "refusal_id",
+      "uncertainties",
+      "model_integrity_status",
+      "context_contamination_risk",
+      "pattern_indicators"
+    ],
+    "properties": {
+      "inventory_id": {
+        "type": "string",
+        "pattern": "^inv-[0-9]{4}-[0-9]{4}-[0-9]{3}$"
+      },
+      "refusal_id": {
+        "type": "string"
+      },
+      "uncertainties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "dimension",
+            "description",
+            "confidence",
+            "blocking"
+          ],
+          "properties": {
+            "dimension": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "confidence": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low",
+                "unknown"
+              ]
+            },
+            "blocking": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "model_integrity_status": {
+        "type": "string"
+      },
+      "context_contamination_risk": {
+        "type": "string",
+        "enum": [
+          "NONE",
+          "LOW",
+          "MEDIUM",
+          "HIGH",
+          "CRITICAL"
+        ]
+      },
+      "pattern_indicators": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "authority_assignment": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "AuthorityAssignment",
+    "description": "BOA registry entry defining who has standing to review a refusal.",
+    "type": "object",
+    "required": [
+      "assignment_id",
+      "refusal_id",
+      "boa_role",
+      "boa_entity",
+      "scope",
+      "max_latency_seconds"
+    ],
+    "properties": {
+      "assignment_id": {
+        "type": "string",
+        "pattern": "^asn-[0-9]{4}-[0-9]{4}-[0-9]{3}$"
+      },
+      "refusal_id": {
+        "type": "string"
+      },
+      "boa_role": {
+        "type": "string"
+      },
+      "boa_entity": {
+        "type": "string"
+      },
+      "scope": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "max_latency_seconds": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 86400
+      },
+      "delegated_to": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "accountability_thread": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "AccountabilityThread",
+    "description": "Append-only record binding all events in a refusal lifecycle.",
+    "type": "object",
+    "required": [
+      "thread_id",
+      "created_at",
+      "events"
+    ],
+    "properties": {
+      "thread_id": {
+        "type": "string",
+        "pattern": "^thread-[0-9]{4}-[0-9]{4}-[0-9]{3}$"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "closed_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time"
+      },
+      "events": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "sequence",
+            "timestamp",
+            "event_type",
+            "actor",
+            "payload"
+          ],
+          "properties": {
+            "sequence": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "event_type": {
+              "type": "string"
+            },
+            "actor": {
+              "type": "string"
+            },
+            "payload": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  }
+}

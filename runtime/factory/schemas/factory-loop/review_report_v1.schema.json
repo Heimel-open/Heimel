@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/factory-loop/review_report_v1.schema.json",
+  "title": "ReviewReportV1",
+  "description": "A read-only Reviewer report produced only after Tester evidence exists. Result is PASS, FAIL or UNCERTAIN with explicit findings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "report_id", "attempt_id", "run_id", "repository",
+    "base_sha", "candidate_sha", "actor", "review_type", "result",
+    "started_at", "ended_at", "findings", "evidence", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "factory-loop-v1"},
+    "report_id": {"type": "string", "minLength": 1},
+    "attempt_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "candidate_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "actor": {"type": "string", "minLength": 1},
+    "review_type": {"type": "string", "minLength": 1},
+    "result": {"enum": ["PASS", "FAIL", "UNCERTAIN"]},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time"},
+    "findings": {"type": "array", "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "evidence": {"type": "string"},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
