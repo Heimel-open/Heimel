@@ -1,0 +1,312 @@
+from __future__ import annotations
+
+import hashlib
+import json
+from collections.abc import Mapping
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Any
+
+from veritas.contracts import (
+    GovernedWorkspaceLineageEvidenceV1,
+    ObservationPackageV1,
+    ObservedEventV1,
+    VeritasContractError,
+)
+from veritas.execution_substrate import ConfidentialExecutionEvidenceV1
+
+_SCHEMA = "valo.gateway.execution-observation.v1"
+_ALLOWED_STATUS = {"succeeded", "failed", "partial", "blocked"}
+_HEX = set("0123456789abcdef")
+_BASE_FIELDS = frozenset(
+    {
+        "schema",
+        "execution_id",
+        "permit_id",
+        "execution_nonce",
+        "permit_consumed_at",
+        "clearance_id",
+        "clearance_digest",
+        "authority_envelope_id",
+        "authority_digest",
+        "action_digest",
+        "executor_id",
+        "started_at",
+        "completed_at",
+        "status",
+        "response_digest",
+        "receipt_hash",
+        "boundary_replay_digest",
+        "previous_receipt_hash",
+        "skill_binding_digest",
+        "authority_granted",
+        "observation_digest",
+    }
+)
+_WORKSPACE_FIELDS = frozenset(
+    {"workspace_binding", "workspace_binding_digest", "kernel_context_digest"}
+)
+_SUBSTRATE_FIELDS = frozenset(
+    {"execution_substrate_binding", "execution_substrate_digest"}
+)
+_ALLOWED_FIELDS = _BASE_FIELDS | _WORKSPACE_FIELDS | _SUBSTRATE_FIELDS
+
+
+class GatewayExecutionObservationError(ValueError):
+    pass
+
+
+def _gateway_digest(value: Mapping[str, Any]) -> str:
+    raw = json.dumps(
+        dict(value),
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        default=str,
+    ).encode("utf-8")
+    return "sha256:" + hashlib.sha256(raw).hexdigest()
+
+
+def _require_text(name: str, value: Any) -> str:
+    if not isinstance(value, str) or not value:
+        raise GatewayExecutionObservationError(f"{name} is required")
+    return value
+
+
+def _require_hex_digest(name: str, value: Any, *, prefixed: bool = False) -> str:
+    text = _require_text(name, value)
+    raw = text[7:] if prefixed and text.startswith("sha256:") else text
+    if len(raw) != 64 or any(ch not in _HEX for ch in raw):
+        raise GatewayExecutionObservationError(f"{name} must be a sha256 digest")
+    if prefixed and not text.startswith("sha256:"):
+        raise GatewayExecutionObservationError(f"{name} must use sha256: prefix")
+    return text
+
+
+def _require_timestamp(name: str, value: Any) -> str:
+    text = _require_text(name, value)
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError as exc:
+        raise GatewayExecutionObservationError(f"{name} must be ISO-8601") from exc
+    if parsed.tzinfo is None:
+        raise GatewayExecutionObservationError(f"{name} must be timezone-aware")
+    return text
+
+
+def _verify_workspace_binding(
+    data: Mapping[str, Any],
+) -> GovernedWorkspaceLineageEvidenceV1 | None:
+    present = {name for name in _WORKSPACE_FIELDS if name in data}
+    if not present:
+        return None
+    if present != _WORKSPACE_FIELDS:
+        raise GatewayExecutionObservationError(
+            "workspace binding, workspace digest, and Kernel context digest "
+            "must be bound together"
+        )
+    raw_binding = data.get("workspace_binding")
+    if not isinstance(raw_binding, Mapping):
+        raise GatewayExecutionObservationError("workspace_binding must be an object")
+    workspace_digest = _require_hex_digest(
+        "workspace_binding_digest",
+        data.get("workspace_binding_digest"),
+        prefixed=True,
+    )
+    kernel_digest = _require_hex_digest(
+        "kernel_context_digest", data.get("kernel_context_digest"), prefixed=True
+    )
+    try:
+        binding = GovernedWorkspaceLineageEvidenceV1.from_mapping(raw_binding)
+        binding.to_payload()
+    except VeritasContractError as exc:
+        raise GatewayExecutionObservationError(str(exc)) from exc
+    if binding.binding_pair != (workspace_digest, kernel_digest):
+        raise GatewayExecutionObservationError("governed workspace binding digest mismatch")
+    return binding
+
+
+def _verify_execution_substrate(
+    data: Mapping[str, Any],
+) -> ConfidentialExecutionEvidenceV1 | None:
+    present = {name for name in _SUBSTRATE_FIELDS if name in data}
+    if not present:
+        return None
+    if present != _SUBSTRATE_FIELDS:
+        raise GatewayExecutionObservationError(
+            "execution substrate binding and digest must be bound together"
+        )
+    if not _WORKSPACE_FIELDS.issubset(data):
+        raise GatewayExecutionObservationError(
+            "execution substrate evidence requires governed workspace lineage"
+        )
+    raw_binding = data.get("execution_substrate_binding")
+    if not isinstance(raw_binding, Mapping):
+        raise GatewayExecutionObservationError(
+            "execution_substrate_binding must be an object"
+        )
+    digest = _require_hex_digest(
+        "execution_substrate_digest",
+        data.get("execution_substrate_digest"),
+        prefixed=True,
+    )
+    try:
+        binding = ConfidentialExecutionEvidenceV1.from_mapping(raw_binding)
+        binding.to_payload()
+    except VeritasContractError as exc:
+        raise GatewayExecutionObservationError(str(exc)) from exc
+    if binding.binding_digest != digest:
+        raise GatewayExecutionObservationError(
+            "confidential execution substrate digest mismatch"
+        )
+    return binding
+
+
+@dataclass(frozen=True)
+class GatewayExecutionObservationV1:
+    payload: Mapping[str, Any]
+
+    @classmethod
+    def verify(cls, payload: Mapping[str, Any]) -> GatewayExecutionObservationV1:
+        data = dict(payload)
+        if data.get("schema") != _SCHEMA:
+            raise GatewayExecutionObservationError(
+                "unsupported Gateway observation schema"
+            )
+        unexpected = set(data).difference(_ALLOWED_FIELDS)
+        if unexpected:
+            raise GatewayExecutionObservationError(
+                "unexpected Gateway observation fields: "
+                + ", ".join(sorted(unexpected))
+            )
+        if data.get("authority_granted") is not False:
+            raise GatewayExecutionObservationError(
+                "Veritas handoff must never grant authority"
+            )
+
+        for name in (
+            "execution_id",
+            "permit_id",
+            "execution_nonce",
+            "clearance_id",
+            "authority_envelope_id",
+            "executor_id",
+        ):
+            _require_text(name, data.get(name))
+        for name in ("permit_consumed_at", "started_at", "completed_at"):
+            _require_timestamp(name, data.get(name))
+        for name in (
+            "clearance_digest",
+            "authority_digest",
+            "action_digest",
+            "receipt_hash",
+        ):
+            _require_hex_digest(name, data.get(name))
+        _require_hex_digest(
+            "observation_digest", data.get("observation_digest"), prefixed=True
+        )
+
+        status = data.get("status")
+        if status not in _ALLOWED_STATUS:
+            raise GatewayExecutionObservationError("invalid execution status")
+        if data.get("response_digest") is not None:
+            _require_hex_digest("response_digest", data.get("response_digest"))
+        for name in ("previous_receipt_hash", "skill_binding_digest", "boundary_replay_digest"):
+            if data.get(name) is not None:
+                value = data.get(name)
+                if isinstance(value, str) and value.startswith("sha256:"):
+                    _require_hex_digest(name, value, prefixed=True)
+                else:
+                    _require_hex_digest(name, value)
+        _verify_workspace_binding(data)
+        _verify_execution_substrate(data)
+
+        claimed = data.pop("observation_digest")
+        expected = _gateway_digest(data)
+        if claimed != expected:
+            raise GatewayExecutionObservationError(
+                "Gateway observation digest mismatch"
+            )
+
+        started = datetime.fromisoformat(data["started_at"])
+        completed = datetime.fromisoformat(data["completed_at"])
+        consumed = datetime.fromisoformat(data["permit_consumed_at"])
+        if completed < started:
+            raise GatewayExecutionObservationError("completed_at precedes started_at")
+        if consumed > completed:
+            raise GatewayExecutionObservationError(
+                "permit consumed after execution completed"
+            )
+
+        return cls(payload=dict(payload))
+
+    def to_observed_event(
+        self, *, source_id: str = "valo-gateway"
+    ) -> ObservedEventV1:
+        data = dict(self.payload)
+        workspace_binding = _verify_workspace_binding(data)
+        substrate_binding = _verify_execution_substrate(data)
+        provenance: dict[str, Any] = {
+            "permit_id": data["permit_id"],
+            "clearance_id": data["clearance_id"],
+            "authority_envelope_id": data["authority_envelope_id"],
+            "action_digest": data["action_digest"],
+            "receipt_hash": data["receipt_hash"],
+            "execution_status": data["status"],
+            "authority_granted": False,
+        }
+        if workspace_binding is not None:
+            provenance.update(
+                {
+                    "workspace_binding": workspace_binding.to_payload(),
+                    "workspace_binding_digest": data["workspace_binding_digest"],
+                    "kernel_context_digest": data["kernel_context_digest"],
+                }
+            )
+        if substrate_binding is not None:
+            provenance.update(
+                {
+                    "execution_substrate_binding": substrate_binding.to_payload(),
+                    "execution_substrate_digest": data[
+                        "execution_substrate_digest"
+                    ],
+                    "execution_substrate_evidence_only": True,
+                }
+            )
+        return ObservedEventV1(
+            event_id=f"execution:{data['execution_id']}",
+            source_id=source_id,
+            event_type="execution_result_observed",
+            observed_at=datetime.fromisoformat(data["completed_at"]),
+            payload_digest=data["observation_digest"],
+            provenance=provenance,
+        )
+
+    def to_observation_package(self, *, tenant_id: str) -> ObservationPackageV1:
+        """Bind the verified Gateway execution fact into Veritas' immutable chain.
+
+        The package references REHT clearance as authorization evidence and the
+        Gateway observation as the execution handoff. Substrate claims remain
+        observed provenance only; Veritas creates no authority from them.
+        """
+        data = dict(self.payload)
+        _require_text("tenant_id", tenant_id)
+        workspace_binding = _verify_workspace_binding(data)
+        _verify_execution_substrate(data)
+        event = self.to_observed_event()
+        skill_digest = data.get("skill_binding_digest")
+        return ObservationPackageV1(
+            package_id=f"gateway-execution:{data['execution_id']}",
+            tenant_id=tenant_id,
+            execution_id=data["execution_id"],
+            authorization_ref=f"clearance:{data['clearance_id']}",
+            authorization_digest="sha256:" + data["clearance_digest"],
+            handoff_ref=f"gateway-observation:{data['execution_id']}",
+            handoff_digest=data["observation_digest"],
+            observed_events=(event,),
+            skill_binding_digest=skill_digest,
+            workspace_binding=workspace_binding,
+            workspace_binding_digest=data.get("workspace_binding_digest"),
+            kernel_context_digest=data.get("kernel_context_digest"),
+            created_at=datetime.fromisoformat(data["completed_at"]),
+        )

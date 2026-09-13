@@ -1,0 +1,27 @@
+schema_version: "1.0"
+repository:
+  id: "veritas"
+  name: "Veritas"
+  url: "https://github.com/nsolland/Veritas"
+  owner: "nsolland"
+  maintainers:
+    - nsolland
+  classification: receipt
+  role: "Public receipt and evidence integrity reference implementation"
+  status: active
+  visibility: public
+  maturity: active-development
+  support: maintained
+  normative_status: normative-specification
+
+capabilities:
+  - "append_only_worm_receipts"
+  - "canonical_sha256_digests"
+  - "observation_package_attestation"
+  - "evidence_chain_binding"
+  - "provenance_preservation"
+
+prohibitions:
+  - "no_analysis_or_classification"
+  - "no_authorization"
+  - "no_rewriting_history"
