@@ -1,0 +1,22 @@
+name: valo-sdk
+version: 0.1.0
+layer: public-sdk
+description: Local contract SDK and inspection CLI for public VALO references
+license: Apache-2.0
+
+source:
+  repository: heimel-open/Heimel
+  paths:
+    - packages/mal
+    - packages/c-mcp
+    - packages/vaig
+    - packages/conformance
+    - packages/public-procurement
+  status: public-contract-facade
+
+boundary:
+  network_client: false
+  credentials: false
+  token_issuance: false
+  authority_grant: false
+  effect_execution: false

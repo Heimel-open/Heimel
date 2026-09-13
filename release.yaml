@@ -70,6 +70,13 @@ packages:
     tag: valo-public-procurement-v0.1.0
     publish_order: 8
 
+  - distribution: valo-sdk
+    import: valo_sdk
+    version: 0.1.0
+    path: packages/sdk
+    tag: valo-sdk-v0.1.0
+    publish_order: 9
+
 required_local_gates:
   - manifest versions match package metadata
   - package tests pass
@@ -94,6 +101,7 @@ publication:
     - valo-vaig
     - valo-conformance
     - valo-public-procurement
+    - valo-sdk
   post_upload:
     - resolve exact versions from pypi
     - install exact versions into a clean virtual environment

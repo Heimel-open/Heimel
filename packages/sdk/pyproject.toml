@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "valo-sdk"
+version = "0.1.0"
+description = "Portable Python SDK for public VALO reference contracts"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+    "valo-mal==0.1.0",
+    "valo-c-mcp==0.1.0",
+    "valo-vaig==0.1.0",
+    "valo-conformance==0.1.0",
+    "valo-public-procurement==0.1.0",
+]
+
+[project.scripts]
+valo-contracts = "valo_sdk.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/valo_sdk"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
