@@ -49,6 +49,12 @@ def test_gcu_promotion_stops_at_authority_boundary():
 
     assert proposal.status is PromotionStatus.AUTHORITY_REQUIRED
     assert proposal.effect_class == "work_unit_execution"
+    assert proposal.boundary_effect_fields(actor_id="worker-7", target="gcu:gcu-001") == {
+        "effect_id": proposal.digest,
+        "actor_id": "worker-7",
+        "action": "promote:work_unit_execution",
+        "target": "gcu:gcu-001",
+    }
 
 
 def test_promotion_fails_without_shadow_evidence():
