@@ -1,0 +1,38 @@
+{
+  "schema_version": "no_ungoverned_causal_effect_path_validation.v1",
+  "run_ids": [
+    "NO-UNGOVERNED-CAUSAL-EFFECT-PATH-KERNEL-01",
+    "NO-UNGOVERNED-CAUSAL-EFFECT-PATH-TLA-01"
+  ],
+  "repository": "nsolland/valo-kernel",
+  "branch": "feature/no-ungoverned-causal-effect-path-v1",
+  "tested_commit": "bc2e0d18179571306f301f85fa84af4e54b3cba5",
+  "execution": "LOCAL_ONLY",
+  "remote_ci": "NOT_USED",
+  "timestamp": "2026-09-08T13:49:54Z",
+  "kernel": {
+    "targeted_command": ".venv/bin/python -m pytest -o addopts='' -q tests/test_causal_effect_boundary.py tests/test_no_ungoverned_causal_effect_path.py tests/test_deployment_causal_proof.py",
+    "targeted_count": "64 passed",
+    "targeted_exit_code": 0,
+    "full_command": ".venv/bin/python -m pytest -o addopts='' -q",
+    "full_count": "522 passed",
+    "full_exit_code": 0
+  },
+  "tla": {
+    "safe_command": "java -cp $TLA2TOOLS_JAR tlc2.TLC -metadir /tmp/tlc-safe-meta-2 -workers 4 -config formal/NoUngovernedCausalEffectPath.cfg formal/NoUngovernedCausalEffectPath.tla",
+    "safe_exit_code": 0,
+    "safe_states_generated": 303,
+    "safe_distinct_states": 32,
+    "safe_invariant_violations": 0,
+    "safe_log_sha256": "7269fd189efa930461721a66d0e5fb8a57b1bee1d406226f6944c65854f96f23",
+    "unsafe_command": "java -cp $TLA2TOOLS_JAR tlc2.TLC -metadir /tmp/tlc-unsafe-meta-2 -workers 4 -config formal/NoUngovernedCausalEffectPathUnsafe.cfg formal/NoUngovernedCausalEffectPath.tla",
+    "unsafe_exit_code": 12,
+    "unsafe_result": "EXPECTED_COUNTEREXAMPLE",
+    "unsafe_states_generated": 33,
+    "unsafe_distinct_states": 17,
+    "unsafe_depth": 3,
+    "unsafe_invariant": "NO_UNGOVERNED_CAUSAL_EFFECT_PATH",
+    "unsafe_log_sha256": "ff24d4ace22dda76e97a07457bec40f2ab3771fa963baf937adbc77ec6c38cd1"
+  },
+  "classification": "VALID_LOCAL_ONLY_FORMAL_AND_EXECUTABLE_CONFORMANCE"
+}

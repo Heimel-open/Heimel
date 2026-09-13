@@ -1,0 +1,30 @@
+{
+  "schema_version": "causal_effect_boundary_run.v1",
+  "run_id": "CAUSAL-EFFECT-BOUNDARY-01",
+  "execution": "LOCAL_ONLY",
+  "repository": "nsolland/valo-kernel",
+  "source_commit": "dccf29981c48cfcf7debabea155f95cd100ca5ce",
+  "source_pr": 80,
+  "generated_at": "2026-09-08T08:47:41.856819+00:00",
+  "checks": {
+    "boundary": {
+      "command": ".venv/bin/python -m pytest -q tests/test_causal_effect_boundary.py",
+      "result": "PASS",
+      "count": "20 passed",
+      "exit_code": 0
+    },
+    "full_regression": {
+      "command": ".venv/bin/python -m pytest -q",
+      "result": "PASS",
+      "count": "463 passed",
+      "exit_code": 0
+    },
+    "cross_repo": {
+      "result": "PASS",
+      "count": "22 passed",
+      "exit_code": 0
+    }
+  },
+  "status": "PASS",
+  "remote_ci": "NOT_USED"
+}
