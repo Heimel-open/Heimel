@@ -1,0 +1,43 @@
+# Draft coverage condition — high-value procurement
+# Carrier-facing illustration. Not a binding policy wording.
+policy_condition_ref: cond-high-value-procurement-v1
+carrier_reference: insurer:swiss-re-agentic-liability:2026
+product: agentic-procurement-liability
+insured_event: supplier non-delivery or misprocurement loss arising from agent-initiated procurement orders
+
+governance_requirement:
+  chain: [assurance-evaluation, reht, racs, gateway-pep, veritas]
+  required_evidence:
+    - identity_bound        # principal identity (e.g. Entra / FIDO2)
+    - authority_bound       # budget + procurement capability (ERP API)
+    - state_bound           # committed PO state at commit time
+  assurance_result: satisfied   # action must have been machine-satisfied at commit time
+  receipt_chain: veritas        # execution must be in the write-once receipt log
+
+coverage_binding:
+  profile_ref: carrier-profile-procurement-high-value-v1
+  profile_version: 1.0.0
+  action_type: PROCUREMENT_ORDER_CREATE
+  consequence_class: HIGH
+  max_exposure_usd: 500000
+
+exclusions:
+  - actions denied or step-upped by assurance evaluation
+  - actions executed without a REHT ALLOW clearance
+  - actions executed outside the Gateway/PEP boundary
+  - losses from intentional actor misconduct
+
+claims_evidence:
+  pack_schema: ClaimsEvidencePackV1
+  offline_verifiable: true
+  required_artifacts:
+    - exact_action
+    - active_assurance_profile
+    - commit_time_evaluation
+    - reht_clearance
+    - racs_decision
+    - effect_receipt
+    - veritas_verification
+    - policy_binding
+
+status: draft-for-pilot

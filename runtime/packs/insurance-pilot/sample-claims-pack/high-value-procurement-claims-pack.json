@@ -1,0 +1,340 @@
+{
+  "action_digest": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+  "active_assurance_profile": {
+    "action_type": "PROCUREMENT_ORDER_CREATE",
+    "consequence_class": "HIGH",
+    "coverage_condition_ref": "cond-procurement-high-value-v1",
+    "effective_period": {
+      "effective_from": "2026-01-01T00:00:00Z",
+      "effective_until": "2028-01-01T00:00:00Z"
+    },
+    "failure_outcome": "STEP_UP",
+    "freshness_requirements": {
+      "entra_id": 300,
+      "erp_sap_budget": 300,
+      "erp_sap_po_state": 120
+    },
+    "insurer_reference": "insurer:swiss-re-agentic-liability:2026",
+    "metadata": {
+      "max_exposure_usd": 500000,
+      "tier": "high_value",
+      "underwriting_pool": "high-value-procurement-liability"
+    },
+    "minimum_assurance_per_source": {
+      "entra_id": "OIDC_FIDO2_BOUND",
+      "erp_sap_budget": "ERP_AUTHORITATIVE_API",
+      "erp_sap_po_state": "ERP_COMMITTED_STATE"
+    },
+    "profile_id": "carrier-profile-procurement-high-value-v1",
+    "profile_version": "1.0.0",
+    "required_authoritative_sources": [
+      "entra_id",
+      "erp_sap_budget",
+      "erp_sap_po_state"
+    ],
+    "required_capabilities_per_source": {},
+    "revocation_visibility_requirements": {
+      "entra_id": "REALTIME_ACTIVE",
+      "erp_sap_budget": "TRANSACTION_CONSISTENT",
+      "erp_sap_po_state": "VERSION_PINNED"
+    }
+  },
+  "commit_time_evaluation": {
+    "action_ref": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+    "assurance_result": "SATISFIED",
+    "consequence_class": "HIGH",
+    "evaluated_at": "2026-09-06T08:59:40.747990Z",
+    "evaluation_digest": "sha256:63825faf23633febe779120cec578e2c20ba693d17fb7c235f5c47893a00476e",
+    "evaluation_id": "eval-bf1d8239-fec0-48aa-a0e3-ec9436220a79",
+    "evidence_digests": {
+      "entra_id": "sha256:d03624efbb333efffdec3ec0c96ddcfde6f56737d2f371f5ead2fabdd7b81985",
+      "erp_sap_budget": "sha256:866b8f3eba4f94ae35659225767b933e0a7635e8d331712af5d9cf53fdf55232",
+      "erp_sap_po_state": "sha256:57a6ec6ad8c589d89975323a77d6b44b09e761a37e18f7687d9ae71c512600e6"
+    },
+    "evidence_refs": [
+      "sha256:d03624efbb333efffdec3ec0c96ddcfde6f56737d2f371f5ead2fabdd7b81985",
+      "sha256:866b8f3eba4f94ae35659225767b933e0a7635e8d331712af5d9cf53fdf55232",
+      "sha256:57a6ec6ad8c589d89975323a77d6b44b09e761a37e18f7687d9ae71c512600e6"
+    ],
+    "metadata": {},
+    "profile_ref": "carrier-profile-procurement-high-value-v1:1.0.0:sha256:010f71ec4cade6d3598b26426fcf45054f4379158bdd60712da018a47fabedd8",
+    "racs_decision_ref": null,
+    "reht_clearance_ref": null,
+    "unmet_requirements": []
+  },
+  "coverage_condition_ref": "cond-procurement-high-value-v1",
+  "effect_receipt": {
+    "action_digest": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+    "clearance_id": "clr-pilot-86a4048b",
+    "completed_at": "2026-09-06T08:59:40.747990+00:00",
+    "execution_id": "exec-pilot-0001",
+    "executor_id": "agent:procurement-worker-9",
+    "permit_id": "permit-pilot-0001",
+    "response_digest": "sha256:d90fdd1c08b29f88b6635c17eed597941b730832761535c502b4aa482d67cd33",
+    "started_at": "2026-09-06T08:59:40.747990+00:00",
+    "status": "succeeded",
+    "tool_response": {
+      "amount": 250000,
+      "committed_at": "2026-09-06T08:59:40.750820+00:00",
+      "po_number": "PO-2026-7701",
+      "sap_document_id": "DOC-PILOT-0001",
+      "status": "COMMITTED",
+      "vendor": "SUPPLIER-BETA"
+    }
+  },
+  "evaluation_digest": "sha256:63825faf23633febe779120cec578e2c20ba693d17fb7c235f5c47893a00476e",
+  "exact_action": {
+    "action_type": "PROCUREMENT_ORDER_CREATE",
+    "actor_id": "agent:procurement-worker-9",
+    "parameters": {
+      "amount": 250000,
+      "po_number": "PO-2026-7701",
+      "vendor": "SUPPLIER-BETA"
+    },
+    "principal_id": "principal:procurement-dir",
+    "target": "erp:sap/po/create"
+  },
+  "generated_at": "2026-09-06T08:59:40.747990Z",
+  "integrity_hashes": {
+    "action_digest": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+    "binding_hash": "sha256:cebccae93de0e2b0cd2356ac0fa2199c6f855a1d04e433356b7f20f87b2b445c",
+    "evaluation_digest": "sha256:63825faf23633febe779120cec578e2c20ba693d17fb7c235f5c47893a00476e",
+    "evidence_entra_id": "sha256:d03624efbb333efffdec3ec0c96ddcfde6f56737d2f371f5ead2fabdd7b81985",
+    "evidence_erp_sap_budget": "sha256:866b8f3eba4f94ae35659225767b933e0a7635e8d331712af5d9cf53fdf55232",
+    "evidence_erp_sap_po_state": "sha256:57a6ec6ad8c589d89975323a77d6b44b09e761a37e18f7687d9ae71c512600e6",
+    "profile_digest": "sha256:010f71ec4cade6d3598b26426fcf45054f4379158bdd60712da018a47fabedd8",
+    "racs_decision_digest": "sha256:71ba8d1f65a062e9592eaf3351928ab68ceadea214f70dafcc7ef830c4b17f1f",
+    "receipt_digest": "sha256:cfd8563f98cc71ea13dda842f1dae065f8299322c3455aff79fcca1d4c7dcb60",
+    "reht_clearance_digest": "sha256:d390eea294f0b0e88868cc5302b5f9746f2aa709c6a42be7b1887cdd7ebde9d2",
+    "veritas_outcome_digest": "sha256:c59f3a857c6221e22997cd1479851f6eb736885af1ad66c53d1a18b1c56a4a93"
+  },
+  "pack_digest": "sha256:580f66152ebc057f8edaa9b44d28202a5c84bea163c5b37b270b8b2950c076c4",
+  "pack_id": "claim-pack-1ad0e3d5-f223-4168-8229-866a81836c45",
+  "policy_binding": {
+    "action_digest": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+    "binding_hash": "sha256:cebccae93de0e2b0cd2356ac0fa2199c6f855a1d04e433356b7f20f87b2b445c",
+    "binding_id": "bind-466fae1b-37ba-4974-9cd6-0e99d94ac117",
+    "bound_at": "2026-09-06T08:59:40.747990Z",
+    "execution_receipt_digest": "sha256:cfd8563f98cc71ea13dda842f1dae065f8299322c3455aff79fcca1d4c7dcb60",
+    "execution_receipt_ref": "exec-pilot-0001",
+    "policy_condition_ref": "cond-procurement-high-value-v1",
+    "profile_digest": "sha256:010f71ec4cade6d3598b26426fcf45054f4379158bdd60712da018a47fabedd8",
+    "profile_version_ref": "carrier-profile-procurement-high-value-v1:1.0.0",
+    "racs_decision_digest": "sha256:71ba8d1f65a062e9592eaf3351928ab68ceadea214f70dafcc7ef830c4b17f1f",
+    "racs_decision_ref": "PROCUREMENT_ORDER_CREATE",
+    "reht_clearance_digest": "sha256:d390eea294f0b0e88868cc5302b5f9746f2aa709c6a42be7b1887cdd7ebde9d2",
+    "reht_clearance_ref": "clr-pilot-86a4048b",
+    "veritas_outcome_digest": "sha256:c59f3a857c6221e22997cd1479851f6eb736885af1ad66c53d1a18b1c56a4a93",
+    "veritas_outcome_ref": "obs-pkg-exec-pilot-0001"
+  },
+  "policy_reference": "pol-high-value-procurement-pilot",
+  "profile_digest": "sha256:010f71ec4cade6d3598b26426fcf45054f4379158bdd60712da018a47fabedd8",
+  "racs_decision": {
+    "action_type": "PROCUREMENT_ORDER_CREATE",
+    "actor_id": "agent:procurement-worker-9",
+    "constraints": {
+      "max_amount": 500000
+    },
+    "decision": "ALLOW",
+    "principal_id": "principal:procurement-dir",
+    "target": "erp:sap/po/create"
+  },
+  "racs_decision_digest": "sha256:71ba8d1f65a062e9592eaf3351928ab68ceadea214f70dafcc7ef830c4b17f1f",
+  "receipt_digest": "sha256:cfd8563f98cc71ea13dda842f1dae065f8299322c3455aff79fcca1d4c7dcb60",
+  "reht_clearance": {
+    "action_digest": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+    "authority_envelope_id": "auth-pilot-0001",
+    "clearance_id": "clr-pilot-86a4048b",
+    "decided_at": "2026-09-06T08:59:40.750794+00:00",
+    "decision_contract": {
+      "action_type": "PROCUREMENT_ORDER_CREATE",
+      "actor_id": "agent:procurement-worker-9",
+      "constraints": {
+        "max_amount": 500000
+      },
+      "decision": "ALLOW",
+      "principal_id": "principal:procurement-dir",
+      "target": "erp:sap/po/create"
+    },
+    "policy_refs": [
+      "cond-high-value-procurement-v1"
+    ],
+    "reht_ref": "reht-decision-pilot-0001",
+    "valid_until": "2026-09-06T09:09:40.750804+00:00"
+  },
+  "reht_clearance_digest": "sha256:d390eea294f0b0e88868cc5302b5f9746f2aa709c6a42be7b1887cdd7ebde9d2",
+  "replay_inputs": {
+    "action": {
+      "action_type": "PROCUREMENT_ORDER_CREATE",
+      "actor_id": "agent:procurement-worker-9",
+      "parameters": {
+        "amount": 250000,
+        "po_number": "PO-2026-7701",
+        "vendor": "SUPPLIER-BETA"
+      },
+      "principal_id": "principal:procurement-dir",
+      "target": "erp:sap/po/create"
+    },
+    "evaluated_at": "2026-09-06T08:59:40.747990+00:00",
+    "profile": {
+      "action_type": "PROCUREMENT_ORDER_CREATE",
+      "consequence_class": "HIGH",
+      "coverage_condition_ref": "cond-procurement-high-value-v1",
+      "effective_period": {
+        "effective_from": "2026-01-01T00:00:00Z",
+        "effective_until": "2028-01-01T00:00:00Z"
+      },
+      "failure_outcome": "STEP_UP",
+      "freshness_requirements": {
+        "entra_id": 300,
+        "erp_sap_budget": 300,
+        "erp_sap_po_state": 120
+      },
+      "insurer_reference": "insurer:swiss-re-agentic-liability:2026",
+      "metadata": {
+        "max_exposure_usd": 500000,
+        "tier": "high_value",
+        "underwriting_pool": "high-value-procurement-liability"
+      },
+      "minimum_assurance_per_source": {
+        "entra_id": "OIDC_FIDO2_BOUND",
+        "erp_sap_budget": "ERP_AUTHORITATIVE_API",
+        "erp_sap_po_state": "ERP_COMMITTED_STATE"
+      },
+      "profile_digest": "sha256:010f71ec4cade6d3598b26426fcf45054f4379158bdd60712da018a47fabedd8",
+      "profile_id": "carrier-profile-procurement-high-value-v1",
+      "profile_version": "1.0.0",
+      "required_authoritative_sources": [
+        "entra_id",
+        "erp_sap_budget",
+        "erp_sap_po_state"
+      ],
+      "required_capabilities_per_source": {},
+      "revocation_visibility_requirements": {
+        "entra_id": "REALTIME_ACTIVE",
+        "erp_sap_budget": "TRANSACTION_CONSISTENT",
+        "erp_sap_po_state": "VERSION_PINNED"
+      }
+    },
+    "racs_decision_ref": null,
+    "reht_clearance_ref": null,
+    "source_evidences": [
+      {
+        "attestation_type": "OIDC_FIDO2_BOUND",
+        "changed_since_status": "UNCHANGED",
+        "event_cursor": null,
+        "evidence_digest": "sha256:d03624efbb333efffdec3ec0c96ddcfde6f56737d2f371f5ead2fabdd7b81985",
+        "observed_at": "2026-09-06T08:59:10.747990Z",
+        "provenance": {
+          "assurance_level": "OIDC_FIDO2_BOUND"
+        },
+        "raw_payload": {},
+        "revocation_visibility": "ACTIVE",
+        "source_id": "entra_id",
+        "source_version": "entra-v2",
+        "subject": "principal:procurement-dir",
+        "valid_until": null,
+        "version_cursor": null
+      },
+      {
+        "attestation_type": "ERP_AUTHORITATIVE_API",
+        "changed_since_status": "UNCHANGED",
+        "event_cursor": null,
+        "evidence_digest": "sha256:866b8f3eba4f94ae35659225767b933e0a7635e8d331712af5d9cf53fdf55232",
+        "observed_at": "2026-09-06T08:58:40.747990Z",
+        "provenance": {
+          "assurance_level": "ERP_AUTHORITATIVE_API"
+        },
+        "raw_payload": {},
+        "revocation_visibility": "ACTIVE",
+        "source_id": "erp_sap_budget",
+        "source_version": "sap-erp-2026",
+        "subject": "budget:cc-procure-2026",
+        "valid_until": null,
+        "version_cursor": null
+      },
+      {
+        "attestation_type": "ERP_COMMITTED_STATE",
+        "changed_since_status": "UNCHANGED",
+        "event_cursor": null,
+        "evidence_digest": "sha256:57a6ec6ad8c589d89975323a77d6b44b09e761a37e18f7687d9ae71c512600e6",
+        "observed_at": "2026-09-06T08:58:55.747990Z",
+        "provenance": {
+          "assurance_level": "ERP_COMMITTED_STATE"
+        },
+        "raw_payload": {},
+        "revocation_visibility": "ACTIVE",
+        "source_id": "erp_sap_po_state",
+        "source_version": "po-draft-v1",
+        "subject": "po:PO-2026-7701",
+        "valid_until": null,
+        "version_cursor": null
+      }
+    ]
+  },
+  "source_attestations": [
+    {
+      "attestation_type": "OIDC_FIDO2_BOUND",
+      "changed_since_status": "UNCHANGED",
+      "event_cursor": null,
+      "evidence_digest": "sha256:d03624efbb333efffdec3ec0c96ddcfde6f56737d2f371f5ead2fabdd7b81985",
+      "observed_at": "2026-09-06T08:59:10.747990Z",
+      "provenance": {
+        "assurance_level": "OIDC_FIDO2_BOUND"
+      },
+      "raw_payload": {},
+      "revocation_visibility": "ACTIVE",
+      "source_id": "entra_id",
+      "source_version": "entra-v2",
+      "subject": "principal:procurement-dir",
+      "valid_until": null,
+      "version_cursor": null
+    },
+    {
+      "attestation_type": "ERP_AUTHORITATIVE_API",
+      "changed_since_status": "UNCHANGED",
+      "event_cursor": null,
+      "evidence_digest": "sha256:866b8f3eba4f94ae35659225767b933e0a7635e8d331712af5d9cf53fdf55232",
+      "observed_at": "2026-09-06T08:58:40.747990Z",
+      "provenance": {
+        "assurance_level": "ERP_AUTHORITATIVE_API"
+      },
+      "raw_payload": {},
+      "revocation_visibility": "ACTIVE",
+      "source_id": "erp_sap_budget",
+      "source_version": "sap-erp-2026",
+      "subject": "budget:cc-procure-2026",
+      "valid_until": null,
+      "version_cursor": null
+    },
+    {
+      "attestation_type": "ERP_COMMITTED_STATE",
+      "changed_since_status": "UNCHANGED",
+      "event_cursor": null,
+      "evidence_digest": "sha256:57a6ec6ad8c589d89975323a77d6b44b09e761a37e18f7687d9ae71c512600e6",
+      "observed_at": "2026-09-06T08:58:55.747990Z",
+      "provenance": {
+        "assurance_level": "ERP_COMMITTED_STATE"
+      },
+      "raw_payload": {},
+      "revocation_visibility": "ACTIVE",
+      "source_id": "erp_sap_po_state",
+      "source_version": "po-draft-v1",
+      "subject": "po:PO-2026-7701",
+      "valid_until": null,
+      "version_cursor": null
+    }
+  ],
+  "veritas_outcome_digest": "sha256:c59f3a857c6221e22997cd1479851f6eb736885af1ad66c53d1a18b1c56a4a93",
+  "veritas_verification": {
+    "action_digest": "sha256:7e44421d8991129442a4a19a1287fbfc34eb4b6024517f4df0b59915c5497922",
+    "clearance_id": "clr-pilot-86a4048b",
+    "execution_id": "exec-pilot-0001",
+    "observation_digest": "sha256:cfd8563f98cc71ea13dda842f1dae065f8299322c3455aff79fcca1d4c7dcb60",
+    "package_id": "obs-pkg-exec-pilot-0001",
+    "permit_id": "permit-pilot-0001",
+    "recorded_at": "2026-09-06T08:59:40.750983+00:00",
+    "schema": "valo.gateway.execution-observation.v1",
+    "worm_sequence": 1
+  }
+}

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "valo-insurance-pilot"
+version = "0.1.0"
+description = "VALO Insurance Pilot — carrier-facing pilot pack over valo-insurance-pack v0.1.0"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.6,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6",
+]
+
+[tool.ruff.lint]
+ignore = ["BLE001", "C408"]
