@@ -1,0 +1,35 @@
+# valo-operator — v1.1-candidate governance API layer over the domain packs.
+dependencies:
+  - repo: nsolland/valo-kernel
+    role: world-state
+    anchor_sha: 108f770998f15a0265f3c7bcc5264cc9bb13f208
+    anchor_ref: main
+    tag: v1.0.0
+    merged_at: 2026-08-08
+  - repo: nsolland/valo-workflow-isa
+    role: workflow-instruction-set
+    anchor_sha: 2ccb25f2513394e22d176e2aa05a31a031f862b9
+    anchor_ref: main
+    tag: v1.0.0
+    merged_at: 2026-08-08
+  - repo: nsolland/valo-function-fabric
+    role: function-fabric
+    anchor_sha: b2f058d664e7c821957941418321f88603ce35e6
+    anchor_ref: main
+    tag: v1.0.0
+    merged_at: 2026-08-08
+  - repo: nsolland/valo-reht
+    role: authorization-boundary
+    anchor_sha: dea6730fed804892018657f9e8d503cf681b7bad
+    anchor_ref: main
+    merged_at: 2026-08-08
+  - repo: nsolland/valo-trades-pack
+    role: first-vertical-proof
+    anchor_sha: b3249ea33a3046843920ceec216b6522b2e3eaad
+    anchor_ref: main
+    merged_at: 2026-08-08
+  - repo: nsolland/valo-public-pack
+    role: second-vertical-proof
+    anchor_sha: 5fd4e3c85baee17f8c1b1dac861c50bf1e9a5eeb
+    anchor_ref: main
+    merged_at: 2026-08-08

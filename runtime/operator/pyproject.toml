@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "valo-operator"
+version = "0.1.0"
+description = "VALO Operator v1 — read-only governance API over the domain packs; deterministic actions through the real REHT boundary."
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "hypothesis>=6", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+    ".",
+    "../valo-public-pack/src",
+    "../valo-trades-pack/src",
+    "../valo-function-fabric/src",
+    "../valo-workflow-isa/src",
+    "../valo-kernel/src",
+    "../valo-reht/src",
+    "../valo-platform/src",
+    "../action-attestation-service/src",
+    "../Baro/src",
+    "../Veritas/src",
+]
+testpaths = ["tests"]
+norecursedirs = ["deps", ".*", "build"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "SIM", "PERF", "C4", "UP", "B", "BLE001"]
+ignore = ["BLE001"]
