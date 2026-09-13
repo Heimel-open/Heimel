@@ -1,0 +1,36 @@
+{
+  "schema_version": "action-frontier-benchmark.v1",
+  "structural": {
+    "dense_parallel": {
+      "estimated_ms_avoided": 255,
+      "parallel_group_count": 2,
+      "selected_completion_ms": 26,
+      "sequential_completion_ms": 281
+    },
+    "determinism": {
+      "permutations_checked": 24,
+      "unique_route_digests": 1
+    },
+    "human_delay": {
+      "local_fast_route_completion_ms": 5002,
+      "selected_candidate_id": "slow-end-to-end",
+      "selected_completion_ms": 101
+    },
+    "recovery": {
+      "retry_reason": "ROUTE_RETRY_EXHAUSTED",
+      "safe_halt": false,
+      "selected_mode": "ALTERNATE_PROVIDER"
+    },
+    "semantic_integrity": {
+      "fast_invalid_reason": "ROUTE_SEMANTIC_INTEGRITY_FAILED",
+      "selected_candidate_id": "semantic-valid"
+    },
+    "sparse_frontier": {
+      "active_candidates": 1,
+      "downstream_evaluations_avoided": 63,
+      "input_candidates": 64,
+      "pruned_candidates": 63,
+      "selected_candidate_id": "dup-00"
+    }
+  }
+}
