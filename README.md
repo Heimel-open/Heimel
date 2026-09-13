@@ -91,7 +91,7 @@ Workflow ISA and Function Fabric are conditional process/capability layers. VAIG
 
 The standards and reference contracts are open and vendor-neutral. Models, agents, workflows and applications can change without moving the consequence boundary.
 
-HEIMEL now publishes three curated Apache-2.0 reference packages while canonical runtime ownership remains in the source repositories:
+HEIMEL now publishes curated Apache-2.0 reference packages while canonical runtime ownership remains in the source repositories:
 
 - **[Kernel reference core](packages/kernel)** — operative state, admission and deterministic replay
 - **[Workflow ISA](packages/workflow-isa)** — typed deterministic process semantics
@@ -119,6 +119,7 @@ Heimel-open/Heimel
     ├── c-mcp
     ├── vaig
     ├── conformance
+    ├── workspace
     ├── public-procurement
     └── sdk
 ```
