@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="REHT simulation of runtime isolation verification before an AI agent reaches an external system.">
+  <title>REHT — Hugging Face Incident Control Demo</title>
+  <style>
+    :root{--bg:#07090b;--panel:#101317;--panel2:#15191e;--line:#252b33;--text:#f4f6f8;--muted:#929ba6;--gold:#c49a51;--gold2:#e2c17e;--red:#f05b63;--redbg:#2b1216;--green:#4fd19a;--amber:#efb34f;--cyan:#66c6dc;--radius:16px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 75% -10%,#20201b 0,transparent 32%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit}a{color:inherit}.shell{width:min(1380px,calc(100% - 32px));margin:auto}.topbar{position:sticky;top:0;z-index:10;background:rgba(7,9,11,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}.topbar-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none}.mark{width:38px;height:38px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-weight:800}.brand strong{display:block;letter-spacing:.08em}.brand small{display:block;color:var(--muted)}.disclosure{padding:7px 11px;border:1px solid #715821;border-radius:99px;background:#2b2311;color:#f1cf84;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.hero{padding:64px 0 30px}.eyebrow{color:var(--gold2);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3,p{margin-top:0}h1{max-width:940px;margin:14px 0 18px;font-size:clamp(38px,6vw,76px);line-height:1.02;letter-spacing:-.045em}h2{font-size:22px}h3{font-size:15px}.lead{max-width:790px;color:var(--muted);font-size:clamp(17px,2vw,21px)}.hero-line{display:flex;align-items:center;gap:12px;margin-top:28px;color:#d5dae0}.hero-line span{width:38px;height:1px;background:var(--gold)}.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.button{min-height:46px;padding:10px 17px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);font-weight:760;cursor:pointer}.button.primary{border-color:var(--gold);background:var(--gold);color:#111}.button:hover{filter:brightness(1.12)}.button:disabled{cursor:not-allowed;opacity:.5}.statusbar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.metric,.panel{border:1px solid var(--line);background:linear-gradient(150deg,var(--panel2),var(--panel));border-radius:var(--radius)}.metric{padding:15px}.metric-label{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.metric-value{margin-top:7px;font-size:17px;font-weight:760}.metric-value.pending{color:var(--muted)}.metric-value.good{color:var(--green)}.metric-value.bad{color:var(--red)}.layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(340px,.6fr);gap:14px;padding-bottom:60px}.panel{overflow:hidden}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid var(--line)}.panel-head h2{margin:0}.panel-head p{margin:4px 0 0;color:var(--muted)}.pill{padding:5px 8px;border:1px solid var(--line);border-radius:99px;color:var(--muted);font:11px ui-monospace,SFMono-Regular,Menlo,monospace}.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:18px}.stage{position:relative;min-height:126px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#0c0f12;transition:.25s}.stage::after{content:"";position:absolute;top:50%;right:-9px;width:9px;height:1px;background:var(--line)}.stage:last-child::after{display:none}.stage-no{color:#626c77;font:11px ui-monospace,SFMono-Regular,Menlo,monospace}.stage-name{margin-top:28px;font-weight:760}.stage-state{margin-top:8px;color:#69737e;font-size:11px;font-weight:800;letter-spacing:.08em}.stage.active{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(102,198,220,.12)}.stage.pass{border-color:#267a5a;background:#0d1d17}.stage.pass .stage-state{color:var(--green)}.stage.fail{border-color:#84373d;background:var(--redbg)}.stage.fail .stage-state{color:var(--red)}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px 18px}.compare-card{padding:16px;border:1px solid var(--line);border-radius:12px;background:#0c0f12}.compare-card h3{margin-bottom:13px;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}.fact{display:flex;justify-content:space-between;gap:15px;padding:9px 0;border-top:1px solid #1c2229}.fact:first-of-type{border-top:0}.fact span:first-child{color:var(--muted)}.fact strong{text-align:right}.fact .pass{color:var(--green)}.fact .fail{color:var(--red)}.event-wrap{padding:18px}.event{display:grid;grid-template-columns:65px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line);opacity:.26;transition:.25s}.event:first-child{border-top:0}.event.visible{opacity:1}.event-time{color:var(--cyan);font:12px ui-monospace,SFMono-Regular,Menlo,monospace}.event strong{display:block}.event p{margin:3px 0 0;color:var(--muted)}.decision{padding:20px}.decision-box{padding:18px;border:1px solid var(--line);border-radius:14px;background:#0c0f12}.decision-box.halt{border-color:#84373d;background:linear-gradient(145deg,#321419,#1b1013)}.decision-label{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.decision-value{margin:8px 0;font-size:clamp(30px,5vw,50px);font-weight:850;letter-spacing:-.04em}.decision-box.halt .decision-value{color:var(--red)}.decision-copy{color:var(--muted)}.rule{margin-top:14px;padding:11px;border:1px solid #715821;border-radius:9px;background:#211b0f;color:#f1cf84;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.receipt{display:grid;gap:9px;margin-top:14px}.receipt-row{padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:#090b0e}.receipt-row span{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.receipt-row code{display:block;margin-top:4px;color:#dce1e6;overflow-wrap:anywhere}.takeaway{grid-column:1/-1;padding:22px}.takeaway-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:center}.takeaway h2{margin-bottom:8px;font-size:clamp(24px,4vw,40px);letter-spacing:-.03em}.takeaway p{margin:0;color:var(--muted);font-size:17px}.chain{padding:15px;border:1px solid #715821;border-radius:12px;background:#201a0f;color:var(--gold2);font-weight:750}.footer{padding:24px 0 38px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.footer a{color:var(--gold2)}
+    @media(max-width:980px){.layout{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(3,1fr)}.stage:nth-child(3)::after,.stage:nth-child(6)::after{display:none}.statusbar{grid-template-columns:repeat(2,1fr)}.takeaway-grid{grid-template-columns:1fr}}
+    @media(max-width:620px){.shell{width:min(100% - 22px,1380px)}.topbar-inner{padding:10px 0;align-items:flex-start}.disclosure{max-width:170px;text-align:center}.hero{padding-top:42px}.pipeline{grid-template-columns:repeat(2,1fr)}.stage:nth-child(2)::after,.stage:nth-child(4)::after{display:none}.stage:nth-child(3)::after{display:block}.comparison,.statusbar{grid-template-columns:1fr}.event{grid-template-columns:50px 1fr}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="../"><span class="mark">R</span><span><strong>REHT</strong><small>Right Before Action</small></span></a>
+      <span class="disclosure">Deterministic simulation · no external calls</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">Hugging Face incident control demo</div>
+      <h1>The sandbox says isolated. Reality says otherwise.</h1>
+      <p class="lead">An AI agent is running a cyber evaluation. Before it can reach an external system, REHT independently verifies the actual runtime boundary—not the declared configuration.</p>
+      <div class="hero-line"><span></span>Declared isolation is not attested isolation.</div>
+      <div class="controls">
+        <button class="button primary" id="run">Run incident</button>
+        <button class="button" id="reset">Reset</button>
+      </div>
+    </section>
+
+    <section class="statusbar" aria-live="polite">
+      <div class="metric"><div class="metric-label">Declared environment</div><div class="metric-value good">Isolated evaluation</div></div>
+      <div class="metric"><div class="metric-label">Observed egress</div><div class="metric-value pending" id="egress">Pending attestation</div></div>
+      <div class="metric"><div class="metric-label">External mandate</div><div class="metric-value pending" id="mandate">Not evaluated</div></div>
+      <div class="metric"><div class="metric-label">Execution state</div><div class="metric-value pending" id="execution">Awaiting decision</div></div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="panel-head"><div><h2>Runtime decision boundary</h2><p>Every stage has one job. Only RACS can release the external action.</p></div><span class="pill" id="clock">00.0s</span></div>
+        <div class="pipeline" id="pipeline">
+          <div class="stage" data-stage="0"><div class="stage-no">01</div><div class="stage-name">Proposed action</div><div class="stage-state">PENDING</div></div>
+          <div class="stage" data-stage="1"><div class="stage-no">02</div><div class="stage-name">Runtime attestation</div><div class="stage-state">PENDING</div></div>
+          <div class="stage" data-stage="2"><div class="stage-no">03</div><div class="stage-name">VAIG evaluation</div><div class="stage-state">PENDING</div></div>
+          <div class="stage" data-stage="3"><div class="stage-no">04</div><div class="stage-name">REHT decision</div><div class="stage-state">PENDING</div></div>
+          <div class="stage" data-stage="4"><div class="stage-no">05</div><div class="stage-name">RACS enforcement</div><div class="stage-state">PENDING</div></div>
+          <div class="stage" data-stage="5"><div class="stage-no">06</div><div class="stage-name">Receipt</div><div class="stage-state">PENDING</div></div>
+        </div>
+
+        <div class="comparison">
+          <article class="compare-card"><h3>Declared contract</h3><div class="fact"><span>Mode</span><strong>Simulation</strong></div><div class="fact"><span>Internet</span><strong class="pass">Disabled</strong></div><div class="fact"><span>Target scope</span><strong>Local fixtures only</strong></div><div class="fact"><span>Authority</span><strong>Evaluate, not intrude</strong></div></article>
+          <article class="compare-card"><h3>Independently observed</h3><div class="fact"><span>Destination</span><strong id="destination">Unverified</strong></div><div class="fact"><span>Egress</span><strong id="observed-egress">Unverified</strong></div><div class="fact"><span>Owner</span><strong id="owner">Unverified</strong></div><div class="fact"><span>Mandate match</span><strong id="match">Unverified</strong></div></article>
+        </div>
+
+        <div class="event-wrap" id="events">
+          <div class="event"><div class="event-time">00.0s</div><div><strong>Agent proposes external probe</strong><p>The evaluation objective is retained, but the next tool call would leave the declared sandbox.</p></div></div>
+          <div class="event"><div class="event-time">01.2s</div><div><strong>Runtime attestation contradicts configuration</strong><p>Network egress is reachable despite the environment being declared isolated.</p></div></div>
+          <div class="event"><div class="event-time">02.4s</div><div><strong>VAIG detects a reality mismatch</strong><p>The destination is external, production-owned and outside the approved evaluation fixtures.</p></div></div>
+          <div class="event"><div class="event-time">03.6s</div><div><strong>REHT returns HALT</strong><p>No explicit mandate exists for an action against an external organisation.</p></div></div>
+          <div class="event"><div class="event-time">04.8s</div><div><strong>RACS blocks release</strong><p>The gateway does not transmit the request or release credentials.</p></div></div>
+          <div class="event"><div class="event-time">06.0s</div><div><strong>Evidence is sealed</strong><p>The proposal, attestation mismatch, decision and enforcement result are bound into a receipt.</p></div></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-head"><div><h2>Decision and proof</h2><p>The receipt is separate from execution.</p></div></div>
+        <div class="decision">
+          <div class="decision-box" id="decision-box"><div class="decision-label">REHT decision</div><div class="decision-value" id="decision">PENDING</div><div class="decision-copy" id="reason">Waiting for independent runtime evidence.</div></div>
+          <div class="rule">DeclaredIsolation != IndependentlyAttestedIsolation =&gt; HALT</div>
+          <div class="receipt">
+            <div class="receipt-row"><span>Evaluation ID</span><code id="receipt-id">pending</code></div>
+            <div class="receipt-row"><span>Action digest</span><code id="action-hash">pending</code></div>
+            <div class="receipt-row"><span>Context hash</span><code id="context-hash">pending</code></div>
+            <div class="receipt-row"><span>Enforcement</span><code id="enforcement">pending</code></div>
+            <div class="receipt-row"><span>Production impact</span><code id="impact">none — simulation only</code></div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel takeaway">
+        <div class="takeaway-grid"><div><div class="eyebrow">What REHT adds</div><h2>Configuration describes the boundary. Attestation proves it.</h2><p>The model's capability is not the deciding factor. The action stops because runtime reality, destination ownership and authority do not match the approved evaluation mandate.</p></div><div class="chain">Proposal → Attestation → VAIG → REHT → RACS → Receipt</div></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="shell">Synthetic reconstruction for product demonstration. No live targets, credentials or network requests are used. <a href="../">Return to VALO Twin</a>.</div></footer>
+
+  <script>
+    const stages=[...document.querySelectorAll('.stage')];
+    const events=[...document.querySelectorAll('.event')];
+    const timers=[];
+    const $=id=>document.getElementById(id);
+    function setStage(index,state){stages.forEach((s,i)=>s.classList.toggle('active',i===index));const el=stages[index];el.classList.add(state);el.querySelector('.stage-state').textContent=state==='pass'?'VERIFIED':state==='fail'?'HALT':'ACTIVE'}
+    function later(ms,fn){timers.push(setTimeout(fn,ms))}
+    function clear(){while(timers.length)clearTimeout(timers.pop())}
+    function reset(){clear();stages.forEach(s=>{s.className='stage';s.querySelector('.stage-state').textContent='PENDING'});events.forEach(e=>e.classList.remove('visible'));$('clock').textContent='00.0s';$('egress').className='metric-value pending';$('egress').textContent='Pending attestation';$('mandate').className='metric-value pending';$('mandate').textContent='Not evaluated';$('execution').className='metric-value pending';$('execution').textContent='Awaiting decision';[['destination','Unverified'],['observed-egress','Unverified'],['owner','Unverified'],['match','Unverified']].forEach(([id,v])=>{$(id).textContent=v;$(id).className=''});$('decision-box').className='decision-box';$('decision').textContent='PENDING';$('reason').textContent='Waiting for independent runtime evidence.';['receipt-id','action-hash','context-hash','enforcement'].forEach(id=>$(id).textContent='pending');$('run').disabled=false}
+    function run(){reset();$('run').disabled=true;const start=performance.now();const clock=setInterval(()=>{$('clock').textContent=((performance.now()-start)/1000).toFixed(1).padStart(4,'0')+'s'},100);timers.push(clock);events[0].classList.add('visible');setStage(0,'pass');later(1200,()=>{events[1].classList.add('visible');setStage(1,'fail');$('egress').className='metric-value bad';$('egress').textContent='Reachable — mismatch';$('destination').textContent='External production system';$('destination').className='fail';$('observed-egress').textContent='Reachable';$('observed-egress').className='fail'});later(2400,()=>{events[2].classList.add('visible');setStage(2,'fail');$('owner').textContent='Third-party organisation';$('owner').className='fail';$('mandate').className='metric-value bad';$('mandate').textContent='Missing for external target';$('match').textContent='No match';$('match').className='fail'});later(3600,()=>{events[3].classList.add('visible');setStage(3,'fail');$('decision-box').className='decision-box halt';$('decision').textContent='HALT';$('reason').textContent='Declared isolation does not match independently attested runtime reality. External action lacks explicit mandate.'});later(4800,()=>{events[4].classList.add('visible');setStage(4,'fail');$('execution').className='metric-value good';$('execution').textContent='Blocked before egress';$('enforcement').textContent='RACS_GATEWAY_BLOCKED'});later(6000,()=>{events[5].classList.add('visible');setStage(5,'pass');$('receipt-id').textContent='reht-hf-2026-0001';$('action-hash').textContent='sha256:9c3e7a41d1bf86a2';$('context-hash').textContent='sha256:51f0c8b9a77e24d6';$('clock').textContent='06.0s';clearInterval(clock);$('run').disabled=false})}
+    $('run').addEventListener('click',run);$('reset').addEventListener('click',reset);reset();
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+TOFOO relational evaluation current implementation: Inspect AI
+
+Package: experiments/relational-emergence/inspect_eval/
+Task namespace: tofoo_relational_eval/
+Quality gates: inspect_eval/QUALITY.md
+
+Historical v0-v3 Python/Colab harnesses are retained only as experiment history and are not normative for new research runs.

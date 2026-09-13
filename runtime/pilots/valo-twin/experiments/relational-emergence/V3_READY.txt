@@ -1,0 +1,6 @@
+HISTORICAL_ONLY
+runner=relational_emergence_v3.py
+notebook=tofoo_relational_emergence_colab_v3.ipynb
+
+Current normative evaluation: inspect_eval/ (Inspect AI).
+Do not use v3 for new research results.

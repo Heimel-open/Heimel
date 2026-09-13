@@ -91,6 +91,10 @@ components:
     path: runtime/pilots/valo-pilot
     source_repository: Valo-Pilot
     source_commit: 788f5db
+  - id: pilot-twin
+    path: runtime/pilots/valo-twin
+    source_repository: Valo-Twin
+    source_commit: deaa246a
   - id: factory
     path: runtime/factory
     source_repository: valo-factory

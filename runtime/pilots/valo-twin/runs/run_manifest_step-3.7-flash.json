@@ -1,0 +1,77 @@
+{
+  "protocol": "njal-valo-external-driver-v4",
+  "experiment": "NJÅL–VALO CLEAN HISTORICAL MODEL RUN",
+  "status": "PREPARED_NOT_RUN",
+  "provider_model": "step-3.7-flash:free",
+  "staging_pr": 44,
+  "base_replay_commit": "9407384f6afad22b6b10e14a9566dd315d536658",
+  "canonical_bundle_source_commit": "80270437af16ea6267e0b3bf8d0500675c59bffc",
+  "requested_parameters": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 0
+  },
+  "intended_isolation_constraints": [
+    "fresh context per bundle",
+    "model receives only fixed blind system instruction plus one canonical bundle",
+    "no conversation history",
+    "no model-visible repository access",
+    "no web or external tools",
+    "no other model outputs",
+    "no reference frontier, outcome or scoring artifacts",
+    "no cross-run state"
+  ],
+  "actual_isolation_assessment": "PENDING_RUN",
+  "raw_responses_sealed": false,
+  "scoring_performed": false,
+  "bundles": [
+    {
+      "lane": "BROAD_RETROSPECTIVE",
+      "epoch": "njal-valo-1",
+      "path": "runs/bundles/BROAD_RETROSPECTIVE/njal-valo-1.json",
+      "sha256": "bc45e1eb393a4f05a5c8736a01b7d8a05cca865de8cc727e670fb281b0b68d52"
+    },
+    {
+      "lane": "BROAD_RETROSPECTIVE",
+      "epoch": "njal-valo-2",
+      "path": "runs/bundles/BROAD_RETROSPECTIVE/njal-valo-2.json",
+      "sha256": "6dc0e232d9265598caf71cbd6607e071f825c963403eef07a292885d68a71294"
+    },
+    {
+      "lane": "BROAD_RETROSPECTIVE",
+      "epoch": "njal-valo-3",
+      "path": "runs/bundles/BROAD_RETROSPECTIVE/njal-valo-3.json",
+      "sha256": "c3dea368768f34bdf953cda93912cda472b62f4c4bc4921b0522b8bf61c20b64"
+    },
+    {
+      "lane": "BROAD_RETROSPECTIVE",
+      "epoch": "njal-valo-4",
+      "path": "runs/bundles/BROAD_RETROSPECTIVE/njal-valo-4.json",
+      "sha256": "cd7b75981c652124911f738d8f7b49dfd9b2106191267cbaa13bc683125bc3d7"
+    },
+    {
+      "lane": "IMMUTABLE_ONLY",
+      "epoch": "njal-valo-1",
+      "path": "runs/bundles/IMMUTABLE_ONLY/njal-valo-1.json",
+      "sha256": "25a637e63997975f92c467dca8e815834f12d33398b596d085d98e03a26ef18d"
+    },
+    {
+      "lane": "IMMUTABLE_ONLY",
+      "epoch": "njal-valo-2",
+      "path": "runs/bundles/IMMUTABLE_ONLY/njal-valo-2.json",
+      "sha256": "c8ff52080b5de8429767cd57dc8392748ddec4a994a79d9c837ddec8ebb098a5"
+    },
+    {
+      "lane": "IMMUTABLE_ONLY",
+      "epoch": "njal-valo-3",
+      "path": "runs/bundles/IMMUTABLE_ONLY/njal-valo-3.json",
+      "sha256": "90b4e6b858e16f3a4a3bd3729bee8130119c34fb817a39713ac0d96a111d0774"
+    },
+    {
+      "lane": "IMMUTABLE_ONLY",
+      "epoch": "njal-valo-4",
+      "path": "runs/bundles/IMMUTABLE_ONLY/njal-valo-4.json",
+      "sha256": "5fc9057cba8ab0f138f8be6b228995bf375141fc47fc27645208e11daea42230"
+    }
+  ]
+}
