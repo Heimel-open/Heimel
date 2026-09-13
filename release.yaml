@@ -58,9 +58,9 @@ packages:
 
   - distribution: heimel-runtime
     import: heimel_runtime
-    version: 0.1.1
+    version: 0.1.2
     path: packages/runtime
-    tag: heimel-runtime-v0.1.1
+    tag: heimel-runtime-v0.1.2
     publish_order: 7
 
   - distribution: valo-mal
