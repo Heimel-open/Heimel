@@ -38,8 +38,7 @@ The current package order is:
 1. `heimel-kernel` `0.1.0`
 2. `valo-workflow-isa` `1.0.1`
 3. `valo-function-fabric` `1.1.0`
-4. `heimel-boundary` `0.1.0`
-5. `valo-mal` `0.1.1`
+4. `valo-mal` `0.1.1`
 5. `valo-c-mcp` `0.1.1`
 6. `valo-vaig` `0.1.1`
 7. `valo-conformance` `0.1.1`

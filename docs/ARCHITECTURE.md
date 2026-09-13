@@ -82,8 +82,6 @@ A governing contract may require one or more conditional capabilities. Their use
 
 The public repository contains curated Apache-2.0 packages:
 
-- `packages/boundary` — local-only reference for fresh authorization, exact
-  effect binding, one-shot permits, mechanical enforcement and receipts.
 
 - `packages/kernel` — minimal operative-state, replay and admission core
 - `packages/workflow-isa` — typed deterministic workflow semantics
