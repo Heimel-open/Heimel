@@ -1,0 +1,48 @@
+name: Extended TLC Validation (2.8M States)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  tlc-extended:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Java 11 (Cached)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      
+      - name: Download TLA+ Tools
+        run: wget -q https://github.com/tlaplus/tlaplus/releases/download/v1.8.0/tla2tools.jar
+      
+      - name: Run Extended TLC Validation
+        run: |
+          echo "Starting extended TLC validation (2.8M states)..."
+          echo "Allocating 5GB heap and leveraging all available cores."
+          java -Xmx5g -cp tla2tools.jar tlc2.TLC -workers auto -config ValoStateMachine.cfg ValoStateMachine.tla 2>&1 | tee tlc-results-extended.txt
+      
+      - name: Check TLC Results
+        run: |
+          if grep -q "Model checking completed" tlc-results-extended.txt; then
+            echo "✅ TLC validation PASSED"
+            echo "--- STATS & SUMMARY ---"
+            tail -n 40 tlc-results-extended.txt
+          else
+            echo "❌ TLC validation FAILED"
+            cat tlc-results-extended.txt
+            exit 1
+          fi
+      
+      - name: Upload Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tlc-results-extended
+          path: tlc-results-extended.txt
+          retention-days: 90
