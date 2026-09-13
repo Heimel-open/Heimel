@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "heimel-kernel"
-version = "0.2.2"
+version = "0.2.3"
 description = "VALO Kernel + Governed World Model — deterministic state owner for the VALO governed world"
 readme = "README.md"
 requires-python = ">=3.11"
