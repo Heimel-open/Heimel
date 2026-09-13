@@ -47,6 +47,13 @@ class release_verify_tests(unittest.TestCase):
         with self.assertRaises(release_verify.verification_error):
             release_verify.verify_archive_paths(["package/credentials/token.pem"], Path("bad.whl"))
 
+    def test_release_tags_bind_to_reviewed_commit(self) -> None:
+        manifest = release_verify.parse_release()
+        packages = manifest["packages"]
+        self.assertIsInstance(packages, list)
+        with self.assertRaises(release_verify.verification_error):
+            release_verify.verify_tag_targets(packages, "0" * 40)
+
 
 if __name__ == "__main__":
     unittest.main()
