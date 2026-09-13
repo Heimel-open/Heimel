@@ -42,6 +42,13 @@ packages:
     tag: valo-mal-v0.1.0
     publish_order: 4
 
+  - distribution: valo-c-mcp
+    import: valo_c_mcp
+    version: 0.1.0
+    path: packages/c-mcp
+    tag: valo-c-mcp-v0.1.0
+    publish_order: 5
+
 required_local_gates:
   - manifest versions match package metadata
   - package tests pass
@@ -62,6 +69,7 @@ publication:
     - valo-workflow-isa
     - valo-function-fabric
     - valo-mal
+    - valo-c-mcp
   post_upload:
     - resolve exact versions from pypi
     - install exact versions into a clean virtual environment

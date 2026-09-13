@@ -1,0 +1,17 @@
+name: valo-c-mcp
+version: 0.1.0
+layer: protocol-contract
+description: Deterministic c-MCP v1 contract and canonicalization reference
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-platform
+  commit: e535537c1f8dad164e832e41308a79a9bbc2c8da
+  paths:
+    - src/valo_platform/c_mcp/contract.py
+  status: rebuilt-reference-slice
+
+boundary:
+  executes_tools: false
+  grants_execution_authority: false
+  contains_private_runtime: false
