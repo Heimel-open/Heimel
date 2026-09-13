@@ -60,14 +60,16 @@ def test_crosswalk_does_not_claim_reht_owns_external_risk_classes() -> None:
 
 
 def test_all_repo_acceptance_references_resolve() -> None:
+    test_root = Path(__file__).parent
     for risk in owasp.OWASP_LLM_2026:
         for reference in risk.negative_tests:
             if reference.startswith("external:"):
                 continue
             path, separator, test_name = reference.partition("::")
             assert separator == "::" and test_name.startswith("test_")
-            assert Path(path).is_file(), reference
-            assert f"def {test_name}(" in Path(path).read_text(encoding="utf-8"), reference
+            resolved = test_root / path
+            assert resolved.is_file(), reference
+            assert f"def {test_name}(" in resolved.read_text(encoding="utf-8"), reference
 
 
 def test_llm01_injected_capability_cannot_create_authority() -> None:
