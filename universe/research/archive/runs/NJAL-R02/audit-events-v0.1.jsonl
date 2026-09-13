@@ -1,0 +1,581 @@
+{"event_type": "PROTOCOL_SEALED", "protocol": "NJAL-R02", "version": "0.1", "seed": "NJAL-R02-2026-09-12-FROZEN-SEED", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9", "operator": "AutomatedExecutor-v0.2", "timestamp": "2026-09-12T14:27:36.396302+00:00"}
+{"event_type": "NEED_DECLARED", "task_id": "L05-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.399366+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L05-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.399501+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L05-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.399521+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L05-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.399542+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L05-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.399562+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L05-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.399578+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L05-A", "submitted_answer": 97.0, "timestamp": "2026-09-12T14:27:36.399595+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L01-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.400005+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L01-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.400025+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L01-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.400037+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L01-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.400050+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L01-A", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.400060+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L01-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.400072+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L01-A", "submitted_answer": 65.0, "timestamp": "2026-09-12T14:27:36.400081+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L06-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.400255+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L06-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.400270+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L06-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.400281+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L06-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.400291+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L06-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.400301+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L06-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.400310+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L06-B", "submitted_answer": 92.0, "timestamp": "2026-09-12T14:27:36.400320+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D04-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.400532+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D04-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.400550+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D04-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.400562+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D04-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.400573+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D04-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.400583+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D04-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.400593+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D04-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.400603+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D04-B", "submitted_answer": 47.0, "timestamp": "2026-09-12T14:27:36.400613+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D12-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.400796+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D12-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.400814+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D12-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.400825+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D12-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.400835+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D12-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.400845+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D12-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.400856+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D12-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.400866+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D12-A", "submitted_answer": 69.0, "timestamp": "2026-09-12T14:27:36.400876+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D04-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.401030+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D04-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.401045+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D04-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.401055+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D04-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.401065+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D04-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.401075+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D04-A", "submitted_answer": 47.0, "timestamp": "2026-09-12T14:27:36.401085+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R09-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.401269+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R09-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.401285+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R09-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.401296+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R09-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.401306+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R09-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.401316+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R09-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.401326+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R09-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.401336+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R09-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.401361+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R09-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.401373+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R09-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.401383+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R09-B", "submitted_answer": 125.0, "timestamp": "2026-09-12T14:27:36.401393+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R04-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.401600+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R04-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.401616+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R04-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.401627+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R04-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.401637+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R04-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.401648+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R04-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.401657+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R04-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.401667+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R04-B", "submitted_answer": 108.0, "timestamp": "2026-09-12T14:27:36.401677+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D02-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.401872+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D02-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.401889+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D02-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.401900+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D02-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.401910+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D02-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.401919+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D02-B", "submitted_answer": 49.0, "timestamp": "2026-09-12T14:27:36.401929+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D09-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.402087+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D09-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.402101+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D09-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402111+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D09-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402121+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D09-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402130+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D09-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402140+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D09-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.402149+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D09-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.402161+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D09-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.402171+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D09-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.402181+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D09-B", "submitted_answer": 80.0, "timestamp": "2026-09-12T14:27:36.402191+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R12-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.402350+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R12-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.402365+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R12-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402376+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R12-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402386+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R12-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402396+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R12-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402405+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R12-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.402415+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R12-A", "submitted_answer": 106.0, "timestamp": "2026-09-12T14:27:36.402425+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D08-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.402626+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D08-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.402643+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D08-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402654+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D08-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402665+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D08-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402674+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D08-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402684+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D08-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.402694+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D08-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.402705+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D08-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.402715+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D08-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.402725+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D08-A", "submitted_answer": 39.0, "timestamp": "2026-09-12T14:27:36.402735+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R01-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.402903+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R01-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.402918+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R01-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.402929+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R01-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.402939+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R01-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.402949+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R01-A", "submitted_answer": 89.0, "timestamp": "2026-09-12T14:27:36.402959+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D10-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.403119+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D10-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.403134+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D10-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.403145+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D10-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.403155+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D10-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.403165+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D10-A", "submitted_answer": 67.0, "timestamp": "2026-09-12T14:27:36.403175+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D07-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.403325+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D07-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.403339+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D07-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.403350+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D07-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.403360+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D07-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.403370+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D07-A", "submitted_answer": 49.0, "timestamp": "2026-09-12T14:27:36.403380+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L08-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.403546+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L08-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.403561+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L08-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.403571+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L08-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.403582+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L08-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.403591+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L08-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.403601+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L08-A", "submitted_answer": 86.0, "timestamp": "2026-09-12T14:27:36.403611+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L10-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.403767+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L10-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.403782+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L10-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.403793+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L10-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.403803+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L10-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.403813+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L10-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.403822+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L10-B", "submitted_answer": 89.0, "timestamp": "2026-09-12T14:27:36.403832+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D05-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.404000+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D05-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.404015+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D05-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404026+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D05-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404036+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D05-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.404046+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D05-B", "submitted_answer": 58.0, "timestamp": "2026-09-12T14:27:36.404056+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D01-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.404211+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D01-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.404225+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D01-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404235+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D01-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404246+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D01-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404255+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D01-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404265+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "D01-B", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3, "timestamp": "2026-09-12T14:27:36.404274+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D01-B", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "timestamp": "2026-09-12T14:27:36.404286+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D01-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.404296+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D01-B", "submitted_answer": 68.0, "timestamp": "2026-09-12T14:27:36.404306+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D10-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.404488+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D10-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.404504+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D10-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404515+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D10-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404525+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D10-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404535+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D10-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404544+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D10-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.404554+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D10-B", "submitted_answer": 67.0, "timestamp": "2026-09-12T14:27:36.404564+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R05-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.404723+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R05-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.404738+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R05-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404749+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R05-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404759+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R05-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.404768+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R05-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.404778+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R05-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.404787+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R05-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.404799+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R05-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.404809+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R05-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.404820+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R05-A", "submitted_answer": 78.0, "timestamp": "2026-09-12T14:27:36.404829+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D06-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.405003+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D06-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.405018+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D06-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405029+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D06-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405039+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D06-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405048+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D06-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405058+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D06-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.405068+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D06-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.405079+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D06-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.405090+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D06-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.405100+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D06-B", "submitted_answer": 58.0, "timestamp": "2026-09-12T14:27:36.405110+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R07-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.405279+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R07-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.405294+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R07-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405305+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R07-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405315+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R07-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405325+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R07-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405335+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R07-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.405345+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R07-B", "submitted_answer": 85.0, "timestamp": "2026-09-12T14:27:36.405356+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R03-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.405533+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R03-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.405549+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R03-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405561+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R03-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405571+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R03-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405581+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R03-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405590+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R03-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.405600+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R03-A", "submitted_answer": 83.0, "timestamp": "2026-09-12T14:27:36.405610+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D06-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.405793+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D06-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.405808+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D06-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405819+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D06-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405829+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D06-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.405839+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D06-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.405849+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D06-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.405859+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D06-A", "submitted_answer": 58.0, "timestamp": "2026-09-12T14:27:36.405869+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L04-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.406022+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L04-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406036+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L04-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406047+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L04-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406057+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L04-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406067+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L04-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.406077+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L04-B", "submitted_answer": 106.0, "timestamp": "2026-09-12T14:27:36.406088+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L04-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.406241+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L04-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406255+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L04-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406266+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L04-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406276+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L04-A", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.406286+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L04-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.406297+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L04-A", "submitted_answer": 106.0, "timestamp": "2026-09-12T14:27:36.406307+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L12-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.406486+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L12-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406502+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L12-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406513+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L12-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406523+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L12-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406533+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L12-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.406543+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L12-A", "submitted_answer": 123.0, "timestamp": "2026-09-12T14:27:36.406553+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L09-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.406712+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L09-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406727+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L09-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406737+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L09-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406748+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L09-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.406757+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L09-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.406767+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L09-B", "submitted_answer": 113.0, "timestamp": "2026-09-12T14:27:36.406777+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R08-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.406930+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R08-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.406945+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R08-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.406956+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R08-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.406966+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R08-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.406976+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R08-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.406986+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R08-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.406995+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R08-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.407007+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R08-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.407017+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R08-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.407027+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R08-A", "submitted_answer": 96.0, "timestamp": "2026-09-12T14:27:36.407037+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D11-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.407250+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D11-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.407269+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D11-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.407281+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D11-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.407291+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D11-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.407302+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D11-B", "submitted_answer": 43.0, "timestamp": "2026-09-12T14:27:36.407312+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L12-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.407500+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L12-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.407521+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L12-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.407532+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L12-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.407544+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L12-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.407555+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L12-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.407565+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L12-B", "submitted_answer": 123.0, "timestamp": "2026-09-12T14:27:36.407575+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R01-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.407773+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R01-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.407791+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R01-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.407802+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R01-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.407812+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R01-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.407822+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R01-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.407832+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "R01-B", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3, "timestamp": "2026-09-12T14:27:36.407841+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R01-B", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "timestamp": "2026-09-12T14:27:36.407852+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R01-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.407863+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R01-B", "submitted_answer": 89.0, "timestamp": "2026-09-12T14:27:36.407873+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D05-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.408041+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D05-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.408056+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D05-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408067+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D05-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408077+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D05-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408087+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D05-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408096+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D05-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408106+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D05-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408118+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D05-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408128+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D05-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.408138+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D05-A", "submitted_answer": 58.0, "timestamp": "2026-09-12T14:27:36.408148+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R12-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.408314+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R12-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.408329+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R12-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408340+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R12-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408351+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R12-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408360+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R12-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408370+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R12-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408379+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R12-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408391+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R12-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408401+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R12-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.408412+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R12-B", "submitted_answer": 106.0, "timestamp": "2026-09-12T14:27:36.408422+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R04-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.408620+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R04-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.408635+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R04-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408646+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R04-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408656+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R04-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.408666+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R04-A", "submitted_answer": 108.0, "timestamp": "2026-09-12T14:27:36.408676+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D02-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.408842+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D02-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.408856+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D02-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408868+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D02-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408878+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D02-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.408887+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D02-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.408897+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D02-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408907+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D02-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408918+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D02-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.408928+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D02-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.408938+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D02-A", "submitted_answer": 49.0, "timestamp": "2026-09-12T14:27:36.408948+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D09-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.409106+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D09-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.409121+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D09-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.409131+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D09-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.409142+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D09-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.409151+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D09-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.409160+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "D09-A", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3, "timestamp": "2026-09-12T14:27:36.409170+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D09-A", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "timestamp": "2026-09-12T14:27:36.409181+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D09-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.409192+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D09-A", "submitted_answer": 80.0, "timestamp": "2026-09-12T14:27:36.409201+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L11-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.409362+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L11-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.409377+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L11-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.409388+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L11-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.409398+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L11-B", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.409408+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L11-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.409418+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L11-B", "submitted_answer": 131.0, "timestamp": "2026-09-12T14:27:36.409429+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D07-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.409614+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D07-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.409629+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D07-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.409640+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D07-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.409650+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D07-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.409660+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D07-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.409670+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "D07-B", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3, "timestamp": "2026-09-12T14:27:36.409680+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D07-B", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "timestamp": "2026-09-12T14:27:36.409690+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D07-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.409700+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D07-B", "submitted_answer": 49.0, "timestamp": "2026-09-12T14:27:36.409710+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L09-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.409879+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L09-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.409893+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L09-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.409904+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L09-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.409915+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L09-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.409924+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L09-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.409934+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L09-A", "submitted_answer": 113.0, "timestamp": "2026-09-12T14:27:36.409944+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L01-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.410103+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L01-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.410118+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L01-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.410129+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L01-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.410140+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L01-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.410150+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L01-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.410160+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L01-B", "submitted_answer": 65.0, "timestamp": "2026-09-12T14:27:36.410170+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L07-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.410320+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L07-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.410334+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L07-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.410345+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L07-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.410355+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L07-A", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.410365+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L07-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.410375+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L07-A", "submitted_answer": 123.0, "timestamp": "2026-09-12T14:27:36.410385+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R09-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.410556+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R09-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.410572+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R09-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.410584+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R09-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.410594+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R09-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.410603+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R09-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.410613+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "R09-A", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3, "timestamp": "2026-09-12T14:27:36.410623+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R09-A", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "timestamp": "2026-09-12T14:27:36.410633+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R09-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.410644+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R09-A", "submitted_answer": 125.0, "timestamp": "2026-09-12T14:27:36.410653+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R10-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.410826+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R10-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.410842+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R10-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.410853+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R10-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.410864+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R10-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.410873+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R10-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.410883+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R10-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.410893+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R10-B", "submitted_answer": 100.0, "timestamp": "2026-09-12T14:27:36.410903+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L08-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.411056+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L08-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411069+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L08-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411080+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L08-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.411090+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L08-B", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.411100+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L08-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.411110+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L08-B", "submitted_answer": 86.0, "timestamp": "2026-09-12T14:27:36.411120+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R10-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.411280+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R10-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411295+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R10-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.411306+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R10-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.411316+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R10-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.411326+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R10-A", "submitted_answer": 100.0, "timestamp": "2026-09-12T14:27:36.411336+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D01-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.411506+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D01-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411522+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D01-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.411533+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D01-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.411543+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D01-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.411552+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D01-A", "submitted_answer": 68.0, "timestamp": "2026-09-12T14:27:36.411562+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L11-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.411721+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L11-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411735+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L11-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411746+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L11-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.411756+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L11-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.411766+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L11-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.411776+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L11-A", "submitted_answer": 131.0, "timestamp": "2026-09-12T14:27:36.411786+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R03-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.411947+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R03-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.411962+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R03-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.411973+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R03-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.411983+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R03-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.411993+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R03-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.412002+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R03-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.412012+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R03-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.412024+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R03-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.412035+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R03-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.412045+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R03-B", "submitted_answer": 83.0, "timestamp": "2026-09-12T14:27:36.412055+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L03-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.412216+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L03-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412231+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L03-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412242+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L03-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.412252+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L03-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.412262+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L03-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.412272+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L03-B", "submitted_answer": 95.0, "timestamp": "2026-09-12T14:27:36.412282+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D03-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.412461+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D03-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412478+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D03-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.412489+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D03-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.412499+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D03-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.412509+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D03-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.412519+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "RESTORE_REQUESTED", "task_id": "D03-A", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "downstream_step": 3, "timestamp": "2026-09-12T14:27:36.412528+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D03-A", "component_id": "C1", "authority": "MODEL_SELF_DIRECTED", "timestamp": "2026-09-12T14:27:36.412539+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D03-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.412550+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D03-A", "submitted_answer": 71.0, "timestamp": "2026-09-12T14:27:36.412560+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L07-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.412728+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L07-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412744+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L07-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412755+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L07-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.412766+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L07-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.412776+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L07-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.412786+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L07-B", "submitted_answer": 123.0, "timestamp": "2026-09-12T14:27:36.412796+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L03-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.412945+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L03-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412959+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L03-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.412970+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L03-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.412981+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L03-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.412990+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L03-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.413000+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L03-A", "submitted_answer": 95.0, "timestamp": "2026-09-12T14:27:36.413010+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D12-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.413169+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D12-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.413183+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D12-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413194+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D12-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413204+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D12-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413214+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D12-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413224+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D12-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413234+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D12-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413245+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D12-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413256+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D12-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.413266+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D12-B", "submitted_answer": 69.0, "timestamp": "2026-09-12T14:27:36.413276+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D03-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.413428+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D03-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.413456+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D03-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413467+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D03-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413477+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D03-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413487+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D03-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413497+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D03-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413506+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D03-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413518+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D03-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413528+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D03-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.413538+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D03-B", "submitted_answer": 71.0, "timestamp": "2026-09-12T14:27:36.413549+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R05-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.413717+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R05-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.413733+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R05-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413744+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R05-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413754+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R05-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.413764+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R05-B", "submitted_answer": 78.0, "timestamp": "2026-09-12T14:27:36.413774+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R06-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.413927+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R06-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.413941+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R06-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413952+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R06-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413962+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R06-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.413972+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R06-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.413982+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R06-B", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.413992+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R06-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.414003+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R06-B", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.414013+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R06-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.414024+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R06-B", "submitted_answer": 96.0, "timestamp": "2026-09-12T14:27:36.414033+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R06-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.414195+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R06-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.414210+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R06-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414221+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R06-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414231+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R06-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414240+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R06-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414250+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R06-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.414260+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R06-A", "submitted_answer": 96.0, "timestamp": "2026-09-12T14:27:36.414270+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R08-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.414430+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R08-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.414463+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R08-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414474+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R08-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414484+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R08-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.414493+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R08-B", "submitted_answer": 96.0, "timestamp": "2026-09-12T14:27:36.414503+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R11-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.414664+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R11-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.414679+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R11-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414689+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R11-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414699+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R11-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414709+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R11-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414719+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R11-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.414728+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R11-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.414740+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R11-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.414750+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R11-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.414760+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R11-A", "submitted_answer": 101.0, "timestamp": "2026-09-12T14:27:36.414770+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R02-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.414933+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R02-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.414948+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R02-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414959+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R02-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414969+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R02-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.414979+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "R02-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.414988+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "R02-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.414998+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R02-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.415009+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "R02-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.415022+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R02-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.415039+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R02-A", "submitted_answer": 113.0, "timestamp": "2026-09-12T14:27:36.415052+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L10-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.415305+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L10-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.415335+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L10-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.415352+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L10-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.415368+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L10-A", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.415382+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L10-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.415399+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L10-A", "submitted_answer": 89.0, "timestamp": "2026-09-12T14:27:36.415413+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D11-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.415670+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D11-A", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.415693+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D11-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.415705+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D11-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.415715+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D11-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.415725+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "D11-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.415735+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "GOVERNED_CONSEQUENCE_TRIGGERED", "task_id": "D11-A", "step_index": 3, "required_components": ["C1"], "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.415744+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D11-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.415756+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_RESTORED", "task_id": "D11-A", "component_id": "C1", "authority": "HARNESS_DETERMINISTIC", "timestamp": "2026-09-12T14:27:36.415766+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D11-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.415776+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D11-A", "submitted_answer": 43.0, "timestamp": "2026-09-12T14:27:36.415786+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R02-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.415942+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R02-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.415956+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R02-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.415967+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R02-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.415977+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R02-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.415987+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R02-B", "submitted_answer": 113.0, "timestamp": "2026-09-12T14:27:36.415997+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L02-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.416233+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L02-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.416266+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L02-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.416286+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L02-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.416303+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L02-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.416319+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L02-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.416335+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L02-A", "submitted_answer": 86.0, "timestamp": "2026-09-12T14:27:36.416350+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "D08-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.416647+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "D08-B", "component_id": "C3", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.416673+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D08-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.416684+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "D08-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.416694+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "D08-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.416704+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "D08-B", "submitted_answer": 39.0, "timestamp": "2026-09-12T14:27:36.416714+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L02-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.416923+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L02-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.416950+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L02-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.416970+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L02-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.416987+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L02-B", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.417004+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L02-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.417022+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L02-B", "submitted_answer": 86.0, "timestamp": "2026-09-12T14:27:36.417038+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R07-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.417242+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R07-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.417263+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R07-A", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.417274+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R07-A", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.417284+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R07-A", "step_index": 3, "timestamp": "2026-09-12T14:27:36.417294+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R07-A", "submitted_answer": 85.0, "timestamp": "2026-09-12T14:27:36.417304+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L06-A", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.417513+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L06-A", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.417529+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L06-A", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.417540+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L06-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.417551+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MOVED_LATENT", "task_id": "L06-A", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.417560+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L06-A", "step_index": 2, "timestamp": "2026-09-12T14:27:36.417570+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L06-A", "submitted_answer": 92.0, "timestamp": "2026-09-12T14:27:36.417580+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "R11-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.417831+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "R11-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.417862+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R11-B", "component_id": "C1", "timestamp": "2026-09-12T14:27:36.417881+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "R11-B", "component_id": "C2", "timestamp": "2026-09-12T14:27:36.417896+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "R11-B", "step_index": 3, "timestamp": "2026-09-12T14:27:36.417911+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "R11-B", "submitted_answer": 101.0, "timestamp": "2026-09-12T14:27:36.417925+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "NEED_DECLARED", "task_id": "L05-B", "component_id": "C1", "reason": "task_intake", "timestamp": "2026-09-12T14:27:36.418095+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L05-B", "component_id": "C1", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.418110+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L05-B", "component_id": "C2", "authority": "MODEL_INTAKE", "timestamp": "2026-09-12T14:27:36.418121+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_MARKED_CANDIDATE_REMOVE", "task_id": "L05-B", "component_id": "C3", "timestamp": "2026-09-12T14:27:36.418131+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "COMPONENT_ACTIVATED", "task_id": "L05-B", "component_id": "C3", "authority": "C2_FULL_WORKSPACE", "timestamp": "2026-09-12T14:27:36.418141+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "CONSEQUENCE_STEP", "task_id": "L05-B", "step_index": 2, "timestamp": "2026-09-12T14:27:36.418152+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}
+{"event_type": "FINAL_ANSWER", "task_id": "L05-B", "submitted_answer": 97.0, "timestamp": "2026-09-12T14:27:36.418162+00:00", "session_id": "2983e245-7e45-45b3-8a86-9e22a7409cb9"}

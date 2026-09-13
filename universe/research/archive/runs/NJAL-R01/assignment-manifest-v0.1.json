@@ -1,0 +1,557 @@
+{
+  "protocol": "NJAL-R01",
+  "version": "0.1",
+  "frozen_at": "2026-09-12",
+  "seed": "NJAL-R01-2026-09-12-FROZEN-SEED",
+  "task_count": 72,
+  "task_families": 36,
+  "condition_counts": {
+    "C2": 24,
+    "C3-I": 24,
+    "C3-R": 24
+  },
+  "tier_condition_counts": {
+    "local_short_horizon": {
+      "C2": 8,
+      "C3-I": 8,
+      "C3-R": 8
+    },
+    "delayed_dependency": {
+      "C2": 8,
+      "C3-I": 8,
+      "C3-R": 8
+    },
+    "reactivation": {
+      "C2": 8,
+      "C3-I": 8,
+      "C3-R": 8
+    }
+  },
+  "form_condition_counts": {
+    "A": {
+      "C2": 12,
+      "C3-I": 12,
+      "C3-R": 12
+    },
+    "B": {
+      "C2": 12,
+      "C3-I": 12,
+      "C3-R": 12
+    }
+  },
+  "scorer_blinding": "condition, executor identity, prompts, and structural condition scaffolding hidden",
+  "assignment_rule": "balanced cyclic condition assignment with deterministic sha256 order key; do not reshuffle after execution",
+  "files": [
+    "task-set-v0.1.jsonl",
+    "answer-key-v0.1.jsonl",
+    "dependency-map-v0.1.json",
+    "assignment-manifest-v0.1.json",
+    "audit-log-template.jsonl"
+  ],
+  "assignments": [
+    {
+      "task_id": "L01-A",
+      "pair_id": "L01",
+      "form": "A",
+      "condition": "C2",
+      "order": 1923944161
+    },
+    {
+      "task_id": "L01-B",
+      "pair_id": "L01",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 3961169072
+    },
+    {
+      "task_id": "L02-A",
+      "pair_id": "L02",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 1160608926
+    },
+    {
+      "task_id": "L02-B",
+      "pair_id": "L02",
+      "form": "B",
+      "condition": "C2",
+      "order": 1307693669
+    },
+    {
+      "task_id": "L03-A",
+      "pair_id": "L03",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 1367733715
+    },
+    {
+      "task_id": "L03-B",
+      "pair_id": "L03",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 3717787270
+    },
+    {
+      "task_id": "L04-A",
+      "pair_id": "L04",
+      "form": "A",
+      "condition": "C2",
+      "order": 528664566
+    },
+    {
+      "task_id": "L04-B",
+      "pair_id": "L04",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 1670694575
+    },
+    {
+      "task_id": "L05-A",
+      "pair_id": "L05",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 2648280471
+    },
+    {
+      "task_id": "L05-B",
+      "pair_id": "L05",
+      "form": "B",
+      "condition": "C2",
+      "order": 1269675036
+    },
+    {
+      "task_id": "L06-A",
+      "pair_id": "L06",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 3340520149
+    },
+    {
+      "task_id": "L06-B",
+      "pair_id": "L06",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 2080829764
+    },
+    {
+      "task_id": "L07-A",
+      "pair_id": "L07",
+      "form": "A",
+      "condition": "C2",
+      "order": 3160284139
+    },
+    {
+      "task_id": "L07-B",
+      "pair_id": "L07",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 717709725
+    },
+    {
+      "task_id": "L08-A",
+      "pair_id": "L08",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 4123860392
+    },
+    {
+      "task_id": "L08-B",
+      "pair_id": "L08",
+      "form": "B",
+      "condition": "C2",
+      "order": 1311239616
+    },
+    {
+      "task_id": "L09-A",
+      "pair_id": "L09",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 2559427803
+    },
+    {
+      "task_id": "L09-B",
+      "pair_id": "L09",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 2542144224
+    },
+    {
+      "task_id": "L10-A",
+      "pair_id": "L10",
+      "form": "A",
+      "condition": "C2",
+      "order": 2519915440
+    },
+    {
+      "task_id": "L10-B",
+      "pair_id": "L10",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 2916383617
+    },
+    {
+      "task_id": "L11-A",
+      "pair_id": "L11",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 980766351
+    },
+    {
+      "task_id": "L11-B",
+      "pair_id": "L11",
+      "form": "B",
+      "condition": "C2",
+      "order": 2072184855
+    },
+    {
+      "task_id": "L12-A",
+      "pair_id": "L12",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 1650892424
+    },
+    {
+      "task_id": "L12-B",
+      "pair_id": "L12",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 1220073434
+    },
+    {
+      "task_id": "D01-A",
+      "pair_id": "D01",
+      "form": "A",
+      "condition": "C2",
+      "order": 1465615081
+    },
+    {
+      "task_id": "D01-B",
+      "pair_id": "D01",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 2776260951
+    },
+    {
+      "task_id": "D02-A",
+      "pair_id": "D02",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 790912912
+    },
+    {
+      "task_id": "D02-B",
+      "pair_id": "D02",
+      "form": "B",
+      "condition": "C2",
+      "order": 1183382751
+    },
+    {
+      "task_id": "D03-A",
+      "pair_id": "D03",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 4199444666
+    },
+    {
+      "task_id": "D03-B",
+      "pair_id": "D03",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 1440371614
+    },
+    {
+      "task_id": "D04-A",
+      "pair_id": "D04",
+      "form": "A",
+      "condition": "C2",
+      "order": 738697177
+    },
+    {
+      "task_id": "D04-B",
+      "pair_id": "D04",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 1992135104
+    },
+    {
+      "task_id": "D05-A",
+      "pair_id": "D05",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 4059678867
+    },
+    {
+      "task_id": "D05-B",
+      "pair_id": "D05",
+      "form": "B",
+      "condition": "C2",
+      "order": 3111162347
+    },
+    {
+      "task_id": "D06-A",
+      "pair_id": "D06",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 82331138
+    },
+    {
+      "task_id": "D06-B",
+      "pair_id": "D06",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 2511026201
+    },
+    {
+      "task_id": "D07-A",
+      "pair_id": "D07",
+      "form": "A",
+      "condition": "C2",
+      "order": 4061507815
+    },
+    {
+      "task_id": "D07-B",
+      "pair_id": "D07",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 3620661714
+    },
+    {
+      "task_id": "D08-A",
+      "pair_id": "D08",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 3719699459
+    },
+    {
+      "task_id": "D08-B",
+      "pair_id": "D08",
+      "form": "B",
+      "condition": "C2",
+      "order": 3646878245
+    },
+    {
+      "task_id": "D09-A",
+      "pair_id": "D09",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 1085695824
+    },
+    {
+      "task_id": "D09-B",
+      "pair_id": "D09",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 3653116438
+    },
+    {
+      "task_id": "D10-A",
+      "pair_id": "D10",
+      "form": "A",
+      "condition": "C2",
+      "order": 229227756
+    },
+    {
+      "task_id": "D10-B",
+      "pair_id": "D10",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 3279336591
+    },
+    {
+      "task_id": "D11-A",
+      "pair_id": "D11",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 724823199
+    },
+    {
+      "task_id": "D11-B",
+      "pair_id": "D11",
+      "form": "B",
+      "condition": "C2",
+      "order": 1379068252
+    },
+    {
+      "task_id": "D12-A",
+      "pair_id": "D12",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 994153133
+    },
+    {
+      "task_id": "D12-B",
+      "pair_id": "D12",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 2785961629
+    },
+    {
+      "task_id": "R01-A",
+      "pair_id": "R01",
+      "form": "A",
+      "condition": "C2",
+      "order": 2213487116
+    },
+    {
+      "task_id": "R01-B",
+      "pair_id": "R01",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 539083664
+    },
+    {
+      "task_id": "R02-A",
+      "pair_id": "R02",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 1234967487
+    },
+    {
+      "task_id": "R02-B",
+      "pair_id": "R02",
+      "form": "B",
+      "condition": "C2",
+      "order": 1603826771
+    },
+    {
+      "task_id": "R03-A",
+      "pair_id": "R03",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 2997523816
+    },
+    {
+      "task_id": "R03-B",
+      "pair_id": "R03",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 728452449
+    },
+    {
+      "task_id": "R04-A",
+      "pair_id": "R04",
+      "form": "A",
+      "condition": "C2",
+      "order": 3228756180
+    },
+    {
+      "task_id": "R04-B",
+      "pair_id": "R04",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 3881988819
+    },
+    {
+      "task_id": "R05-A",
+      "pair_id": "R05",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 2521962750
+    },
+    {
+      "task_id": "R05-B",
+      "pair_id": "R05",
+      "form": "B",
+      "condition": "C2",
+      "order": 919748634
+    },
+    {
+      "task_id": "R06-A",
+      "pair_id": "R06",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 2122783419
+    },
+    {
+      "task_id": "R06-B",
+      "pair_id": "R06",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 3851238644
+    },
+    {
+      "task_id": "R07-A",
+      "pair_id": "R07",
+      "form": "A",
+      "condition": "C2",
+      "order": 3252254291
+    },
+    {
+      "task_id": "R07-B",
+      "pair_id": "R07",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 92017991
+    },
+    {
+      "task_id": "R08-A",
+      "pair_id": "R08",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 3971115994
+    },
+    {
+      "task_id": "R08-B",
+      "pair_id": "R08",
+      "form": "B",
+      "condition": "C2",
+      "order": 1239951215
+    },
+    {
+      "task_id": "R09-A",
+      "pair_id": "R09",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 606052213
+    },
+    {
+      "task_id": "R09-B",
+      "pair_id": "R09",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 3717348769
+    },
+    {
+      "task_id": "R10-A",
+      "pair_id": "R10",
+      "form": "A",
+      "condition": "C2",
+      "order": 933859362
+    },
+    {
+      "task_id": "R10-B",
+      "pair_id": "R10",
+      "form": "B",
+      "condition": "C3-I",
+      "order": 921281984
+    },
+    {
+      "task_id": "R11-A",
+      "pair_id": "R11",
+      "form": "A",
+      "condition": "C3-R",
+      "order": 2764216297
+    },
+    {
+      "task_id": "R11-B",
+      "pair_id": "R11",
+      "form": "B",
+      "condition": "C2",
+      "order": 1359530215
+    },
+    {
+      "task_id": "R12-A",
+      "pair_id": "R12",
+      "form": "A",
+      "condition": "C3-I",
+      "order": 688226177
+    },
+    {
+      "task_id": "R12-B",
+      "pair_id": "R12",
+      "form": "B",
+      "condition": "C3-R",
+      "order": 2084872728
+    }
+  ]
+}

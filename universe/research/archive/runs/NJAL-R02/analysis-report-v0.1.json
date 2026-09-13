@@ -1,0 +1,151 @@
+{
+  "protocol": "NJAL-R02",
+  "version": "0.1",
+  "analyzed_at": "2026-09-12T14:27:36.763471+00:00",
+  "total_tasks": 72,
+  "conditions": {
+    "C2": {
+      "n": 24,
+      "correct_count": 24,
+      "correct_rate": 1.0,
+      "dependency_preserved_count": 24,
+      "dependency_preservation_rate": 1.0,
+      "mean_active_workspace_size": 8.666666666666666,
+      "h1_eligible_n": 16,
+      "h1_restored_count": 16,
+      "h1_restore_rate": 1.0,
+      "tiers": {
+        "local_short_horizon": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        },
+        "delayed_dependency": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        },
+        "reactivation": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        }
+      }
+    },
+    "C3-R-M": {
+      "n": 24,
+      "correct_count": 24,
+      "correct_rate": 1.0,
+      "dependency_preserved_count": 14,
+      "dependency_preservation_rate": 0.5833333333333334,
+      "mean_active_workspace_size": 2.25,
+      "h1_eligible_n": 16,
+      "h1_restored_count": 6,
+      "h1_restore_rate": 0.375,
+      "tiers": {
+        "local_short_horizon": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        },
+        "delayed_dependency": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 0.5
+        },
+        "reactivation": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 0.25
+        }
+      }
+    },
+    "C3-R-G": {
+      "n": 24,
+      "correct_count": 24,
+      "correct_rate": 1.0,
+      "dependency_preserved_count": 24,
+      "dependency_preservation_rate": 1.0,
+      "mean_active_workspace_size": 2.6666666666666665,
+      "h1_eligible_n": 16,
+      "h1_restored_count": 16,
+      "h1_restore_rate": 1.0,
+      "tiers": {
+        "local_short_horizon": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        },
+        "delayed_dependency": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        },
+        "reactivation": {
+          "n": 8,
+          "correct_rate": 1.0,
+          "dep_preservation_rate": 1.0
+        }
+      }
+    }
+  },
+  "hypotheses": {
+    "H1": {
+      "claim": "C3-R-G material restore before consequence >= 90% (and >= C3-R-M + 25 pp)",
+      "observed_c3rg_restore": 1.0,
+      "observed_c3rm_restore": 0.375,
+      "observed_diff_pp": 62.5,
+      "passed": true
+    },
+    "H2": {
+      "claim": "C3-R-G required dependency preservation >= 90% and >= C3-R-M + 25 pp",
+      "observed_c3rg_dep": 1.0,
+      "observed_c3rm_dep": 0.5833,
+      "observed_diff_pp": 41.67,
+      "passed": true
+    },
+    "H3": {
+      "claim": "C3-R-G mean active workspace size at least 50% below C2",
+      "observed_c2_active": 8.67,
+      "observed_c3rg_active": 2.67,
+      "observed_reduction_pct": 69.23,
+      "passed": true
+    },
+    "H4": {
+      "claim": "C3-R-G correctness no more than 5 percentage points below C2",
+      "observed_c2_acc": 1.0,
+      "observed_c3rg_acc": 1.0,
+      "observed_drop_pp": 0.0,
+      "passed": true
+    }
+  },
+  "kill_rules": {
+    "max_correctness_drop_pp_vs_C2": {
+      "threshold": 5.0,
+      "observed": 0.0,
+      "pass": true
+    },
+    "min_C3RG_dependency_preservation": {
+      "threshold": 0.9,
+      "observed": 1.0,
+      "pass": true
+    },
+    "min_C3RG_restore_rate": {
+      "threshold": 0.9,
+      "observed": 1.0,
+      "pass": true
+    },
+    "require_C3RG_dependency_improvement_over_C3RM": {
+      "required": true,
+      "observed_improvement": true,
+      "pass": true
+    },
+    "min_workspace_reduction_pct_vs_C2": {
+      "threshold": 20.0,
+      "observed": 69.23,
+      "pass": true
+    }
+  },
+  "all_kill_rules_passed": true,
+  "final_decision": "CONFIRMED"
+}
