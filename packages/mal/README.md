@@ -10,4 +10,4 @@ credentials, or connect to a production control plane.
 
 The source provenance and boundary are recorded in `repo-manifest.yaml`.
 This package is a reference contract, not a publication of `valo-platform` or
-the OLAV application/runtime.
+private application runtimes.

@@ -101,7 +101,7 @@ For å oppnå ekstern validering uten kommersielle aktører må en nettverksbase
 | Aktør / Nettverk | Rolle | Potensiell verdigrunn |
 |:---|:---|:---|
 | DNV | Kenneth Vareide (SVP Digital Assurance), Frank Børre Pedersen (VP KI & Digital Twins) | Praktisk validasjon i kritisk infrastruktur, industrimandat, nasjonal profil |
-| NORA | Olav Lysne (Styremedlem, KI-sikkerhetsekspert) | Fellesskapsanerkjennelse, kontakt med ledende norske eksperter |
+| NORA | Ekstern KI-sikkerhetsekspert | Fellesskapsanerkjennelse, kontakt med ledende norske eksperter |
 | SimulaMet | Michael A. Riegler (AI Safety), Jostein Jensen (Cybersikkerhet) | Dybdefaglig sparring, mulighet for forskningsprosjekt |
 | KI Norge / Digdir | Hans Christian Holte (Nasjonal KI-direktør) | Mulighet for å forme nasjonal politikk |
 | Norsk Forening for KI (NOFI) | Rolf Nossum (Leder) | Fagfellevurdering fra bredt fagmiljø |
@@ -168,7 +168,7 @@ Konklusjonen: Framleis er mer enn en arkitektur. Det er et navn på det som gjø
 23. Macrae, Synøve Granly. Director Operational Excellence, Yara Global Production.
 24. Vareide, Kenneth. SVP Digital Assurance, DNV.
 25. Pedersen, Frank Børre. VP Programme Director KI & Digital Twins, DNV.
-26. Lysne, Olav. KI-sikkerhetsekspert og styremedlem NORA.
+26. Ekstern KI-sikkerhetsekspert. Styremedlem NORA.
 27. Holte, Hans Christian. Nasjonal KI-direktør (tiltrer august 2026).
 28. Nossum, Rolf. Leder, Norsk Forening for KI.
 29. Harang, Fabian. Professor of Mathematics, SURE-AI, Universitetet i Oslo.

@@ -2,7 +2,7 @@
 
 Status: proposed general VALO capability
 Owner: nsolland
-Scope: cross-product (VALO, relAIon, Roomit, Olav and future products)
+Scope: cross-product (VALO, relAIon, Roomit and future products)
 
 ## Purpose
 
@@ -133,7 +133,7 @@ Each promoted finding should answer:
 1. What capability does this provide?
 2. What do we have today?
 3. What is the material delta?
-4. Where is it useful (VALO/relAIon/Roomit/Olav/other)?
+4. Where is it useful (VALO/relAIon/Roomit/other)?
 5. What authority, data or consequence risk does it introduce?
 6. What is the cheapest bounded test that can validate the claimed value?
 
@@ -157,7 +157,7 @@ Examples:
 
 Roomit may consume discovered capabilities such as session replay, forms, UI components, persistence, notifications or billing without coupling its architecture to a specific provider.
 
-Olav may consume discovered capabilities such as media generation, publishing, notifications, persistence or audience research while keeping Reality Engine/world state semantics independent from those providers.
+Private products may consume discovered capabilities such as media generation, publishing, notifications, persistence or audience research while keeping Reality Engine/world state semantics independent from those providers.
 
 ## Non-goals
 
