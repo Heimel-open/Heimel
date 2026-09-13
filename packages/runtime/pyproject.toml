@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "heimel-runtime"
-version = "0.1.0"
+version = "0.1.1"
 description = "Heimel governed AI runtime: Kernel, REHT, consequence boundary, Veritas and admission."
 requires-python = ">=3.11"
 dependencies = [

@@ -1,4 +1,4 @@
 name: heimel-runtime
-version: 0.1.0
+version: 0.1.1
 source: Heimel composition root over migrated VALO runtime components
 olav_included: false
