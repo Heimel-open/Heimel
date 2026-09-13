@@ -1,0 +1,34 @@
+apiVersion: valo.dev/v1
+kind: Skill
+metadata:
+  id: sales.prospect.enrich
+  version: 1.0.0
+  publisher: valo
+  license: proprietary
+spec:
+  description: Enrich a bounded prospect record with business-contact and company context.
+  inputs:
+    schema: schemas/sales.prospect.enrich.input.json
+  outputs:
+    schema: schemas/sales.prospect.enrich.output.json
+  capabilities:
+    requires:
+      - external.read.company
+      - personal_data.read.business_contact
+  adapters:
+    - type: mcp
+      ref: valo-tool-adapters/clay
+    - type: http
+      ref: valo-tool-adapters/company-registry
+  governance:
+    risk_class: medium
+    reht_action: prospect.enrich
+    human_approval: conditional
+    network_access:
+      allow:
+        - api.provider.example
+    data_retention: ephemeral
+    delegation: forbidden
+  integrity:
+    package_digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    signature: ""

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "communications.draft.reply input",
+  "type": "object",
+  "required": ["thread_id", "mandate_scope"],
+  "properties": {
+    "thread_id": {"type": "string"},
+    "mandate_scope": {"type": "string"},
+    "tone": {"type": "string", "enum": ["neutral", "formal", "warm"]}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,33 @@
+apiVersion: valo.dev/v1
+kind: Skill
+metadata:
+  id: research.paper.summarize
+  version: 1.0.0
+  publisher: valo
+  license: proprietary
+spec:
+  description: Summarize a bounded research paper into a structured brief with claims and evidence refs.
+  inputs:
+    schema: schemas/research.paper.summarize.input.json
+  outputs:
+    schema: schemas/research.paper.summarize.output.json
+  capabilities:
+    requires:
+      - external.read.paper
+  adapters:
+    - type: http
+      ref: valo-tool-adapters/arxiv
+    - type: local
+      ref: valo-runtime-local
+  governance:
+    risk_class: low
+    reht_action: paper.summarize
+    human_approval: never
+    network_access:
+      allow:
+        - arxiv.org
+    data_retention: ephemeral
+    delegation: allowed
+  integrity:
+    package_digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    signature: ""
