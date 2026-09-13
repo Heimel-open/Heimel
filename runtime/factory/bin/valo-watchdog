@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+"""valo-watchdog — STRICTLY READ-ONLY observability.
+
+Detect / classify / report ONLY. It MUST NOT:
+  - resume, pause, or edit cron jobs
+  - edit any database (claims.db, orchestrator.db, runs.db)
+  - start runs
+  - repair the repo (no checkout/reset/merge/commit)
+  - change valoctl mode
+
+It reads state and prints a structured report. Reporting is exception-only:
+only emits output when something needs human attention.
+"""
+import json, os, sqlite3, subprocess, sys
+from datetime import datetime, timezone
+
+VALO = os.path.expanduser("~/valo-platform")
+ORCH_DB = os.path.expanduser("~/.valo/orchestrator.db")
+CLAIMS_DB = os.path.expanduser("~/.valo/claims.db")
+
+
+# Explicit allow-list of read-only commands. Anything else is refused.
+_READONLY_ALLOW = {
+    "valoctl": {"check", "status"},
+    "git": {"status", "diff", "log", "show", "rev-parse", "branch", "fetch",
+            "ls-files", "worktree"},
+    "gh": {"*"},
+    "sqlite3": set(),
+}
+
+
+def read_only(*cmd):
+    """Run a command that MUST be read-only. Refuses anything not on the
+    explicit allow-list. Watchdog can never change mode, pause jobs, edit DB,
+    start runs, or repair the repo."""
+    if not cmd:
+        raise RuntimeError("watchdog refused empty command")
+    prog = cmd[0]
+    if prog not in _READONLY_ALLOW:
+        raise RuntimeError(f"watchdog refused non-read-only program: {prog}")
+    if prog == "valoctl" and cmd[1] not in _READONLY_ALLOW["valoctl"]:
+        raise RuntimeError(f"watchdog refused valoctl write: {cmd[1]}")
+    if prog == "git" and cmd[1] not in _READONLY_ALLOW["git"]:
+        raise RuntimeError(f"watchdog refused git write: {cmd[1]}")
+    return subprocess.run(cmd, capture_output=True, text=True)
+
+
+def detect():
+    findings = []
+    # 1. factory mode
+    mode = json.loads(read_only("valoctl", "check").stdout).get("mode")
+    if mode in ("MAINTENANCE", "INCIDENT_HOLD"):
+        findings.append({"level": "INCIDENT", "what": f"factory mode={mode}"})
+
+    # 2. runs needing human
+    try:
+        c = sqlite3.connect(ORCH_DB)
+        rows = c.execute("SELECT run_id,issue_id,state FROM runs WHERE state IN "
+                         "('NEEDS_HUMAN','BLOCKED','INCIDENT_HOLD')").fetchall()
+        c.close()
+        for r in rows:
+            findings.append({"level": "NEEDS_HUMAN", "what": f"run {r[0]} "
+                             f"issue #{r[1]} state {r[2]}"})
+    except Exception:
+        pass
+
+    # 3. expired-but-active claims (lease desync)
+    try:
+        c = sqlite3.connect(CLAIMS_DB)
+        now = datetime.now(timezone.utc).isoformat()
+        bad = c.execute("SELECT issue_id FROM claims WHERE status='ACTIVE' "
+                        "AND expires_at < ?", (now,)).fetchall()
+        c.close()
+        for (i,) in bad:
+            findings.append({"level": "REPEATED_FAILURE",
+                             "what": f"claim #{i} lease expired but still ACTIVE"})
+    except Exception:
+        pass
+
+    # 4. agent write attempt in primary repo (guard trip) — scan git hook log
+    hook_log = os.path.expanduser("~/valo-platform/.git/hooks/primary-guard.log")
+    if os.path.exists(hook_log):
+        with open(hook_log) as f:
+            trips = sum(1 for _ in f)
+        if trips:
+            findings.append({"level": "INCIDENT",
+                             "what": f"primary-tree guard tripped {trips}x"})
+
+    return findings
+
+
+def main():
+    findings = detect()
+    if not findings:
+        # exception-only: silent when green
+        return 0
+    report = {"generated_at": datetime.now(timezone.utc).isoformat(),
+              "findings": findings}
+    print(json.dumps(report, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

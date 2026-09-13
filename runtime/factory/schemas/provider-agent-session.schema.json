@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/provider-agent-session.schema.json",
+  "title": "VALO Provider Agent Session Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "provider_id",
+    "adapter_id",
+    "execution_mode",
+    "prompt_digest",
+    "command_surface",
+    "started_at_ns",
+    "finished_at_ns",
+    "exit_status",
+    "returncode",
+    "stdout_digest",
+    "stderr_digest",
+    "authority_effect"
+  ],
+  "properties": {
+    "provider_id": {
+      "type": "string",
+      "enum": [
+        "openai_codex",
+        "anthropic_claude_code",
+        "google_antigravity",
+        "github_copilot"
+      ]
+    },
+    "adapter_id": {"type": "string", "minLength": 1},
+    "execution_mode": {
+      "type": "string",
+      "enum": ["read_only", "workspace_write"]
+    },
+    "prompt_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "command_surface": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1
+    },
+    "started_at_ns": {"type": "integer", "minimum": 0},
+    "finished_at_ns": {"type": "integer", "minimum": 0},
+    "exit_status": {
+      "type": "string",
+      "enum": ["success", "failed", "timeout"]
+    },
+    "returncode": {"type": "integer"},
+    "stdout_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "stderr_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "authority_effect": {
+      "const": "none",
+      "description": "Provider execution evidence never grants VALO runtime authority."
+    }
+  }
+}

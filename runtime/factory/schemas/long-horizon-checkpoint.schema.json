@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/long-horizon-checkpoint.schema.json",
+  "title": "VALO Long Horizon Checkpoint",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "run_id",
+    "mission_id",
+    "state",
+    "stage",
+    "cursor",
+    "sandbox_id",
+    "sandbox_state",
+    "completed_action_ids",
+    "evidence_refs",
+    "active_context",
+    "authority_effect",
+    "updated_at_ns"
+  ],
+  "properties": {
+    "schema": {"const": "valo.long-horizon.checkpoint.v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "state": {"enum": ["ACTIVE", "PAUSED", "COMPLETED", "BLOCKED"]},
+    "stage": {"type": "string", "minLength": 1},
+    "cursor": {"type": "string"},
+    "sandbox_id": {"type": "string", "minLength": 1},
+    "sandbox_state": {"enum": ["CREATED", "ACTIVE", "SEALED", "RELEASED"]},
+    "completed_action_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "active_context": {"type": "array", "items": {"type": "object"}},
+    "authority_effect": {"const": "none"},
+    "updated_at_ns": {"type": "integer", "minimum": 1}
+  }
+}

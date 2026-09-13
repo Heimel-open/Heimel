@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+"""valo-classify — assign risk class A/B/C from qc_policy hints.
+
+Class A: automatic merge (docs/tests/additive/isolated, no deletions, no sensitive)
+Class B: automatic merge after double-check (limited prod, adapters, not authority-changing)
+Class C: requires human (authority/secrets/migration/destructive/CI/branch-protection/
+        canonical-symbol/undetermined-conflict/production-deploy/port-FAIL)
+
+Separation of duties: classifier only READS; it never merges.
+"""
+import argparse, json, os, subprocess, sys
+from datetime import datetime, timezone
+
+POLICY = os.path.expanduser("~/.valo/policy/qc_policy.yaml")
+REPO = "nsolland/valo-platform"
+
+
+def classify(pr, head_sha, base_sha):
+    import yaml
+    policy = yaml.safe_load(open(POLICY))
+    diff = subprocess.run(["gh", "pr", "diff", str(pr), "-R", REPO],
+                          capture_output=True, text=True).stdout
+    files = subprocess.run(["gh", "pr", "view", str(pr), "-R", REPO,
+                            "--json", "files", "-q", ".files.[].path"],
+                           capture_output=True, text=True).stdout.split()
+
+    triggers = policy["risk_classes"]["C_requires_human"]["triggers"]
+    low = diff.lower()
+    # C triggers: scan diff text + filenames for authority/secrets/migration/etc.
+    for t in triggers:
+        kw = t.lower().replace(" ", "")
+        # heuristic: detect canonical symbol replacement
+        if t == "canonical symbol replacement":
+            if any(s in diff for s in ["RACSDecision", "CubeSandboxExecutionSubstrate",
+                                       "ActionCaseRecord"]):
+                return "C", f"canonical symbol touch: {t}"
+        # detect destructive deletions / secrets / migration / branch protection
+        if kw in low or any(kw in f.lower() for f in files):
+            return "C", f"trigger: {t}"
+
+    # A: docs/tests/additive/isolated, no deletions, no sensitive
+    deleted = "deleted file" in diff
+    sensitive = any(s in " ".join(files).lower() for s in
+                    ["secret", "credential", ".env", "private_key", "token"])
+    only_docs_tests = all(f.endswith((".md", ".py")) and
+                          (f.startswith("tests/") or f.startswith("docs/") or
+                           "/docs/" in f or f.endswith(".md"))
+                          for f in files) if files else False
+    if not deleted and not sensitive and only_docs_tests:
+        return "A", "documentation/test/additive, no deletions, no sensitive"
+
+    # B: limited prod / adapters / provider interfaces, not authority-changing
+    b_criteria = policy["risk_classes"]["B_automatic_double_check"]["criteria"]
+    if not deleted and not sensitive:
+        return "B", "limited production / adapter / provider interface (not authority-changing)"
+
+    return "C", "unclear — default to human"
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--pr", required=True)
+    p.add_argument("--head-sha", required=True)
+    p.add_argument("--base-sha", required=True)
+    args = p.parse_args()
+    cls, reason = classify(args.pr, args.head_sha, args.base_sha)
+    out = {"pr": int(args.pr), "risk_class": cls, "reason": reason}
+    print(json.dumps(out, indent=2))
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

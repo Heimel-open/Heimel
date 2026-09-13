@@ -1,0 +1,21 @@
+[Unit]
+Description=VALO Factory orchestrator tick (production dispatcher)
+Documentation=https://github.com/nsolland/valo-factory/docs/operations.md
+# Only the orchestrator runs the loop. It drives worker/QC/merge as
+# duty-separated subprocesses; it never holds all three PATs.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Human-in-command boundary: the orchestrator itself re-checks the valoctl
+# mode token before every write. If mode != NORMAL it drains and refuses.
+# So this timer is safe to leave enabled — it produces nothing when the
+# factory is in MAINTENANCE / INCIDENT_HOLD / SHADOW.
+ExecStart=/bin/bash -lc 'valo-orchestrator tick 2>&1 | valo-deliver --channels "${VALO_DELIVER_CHANNELS:-log}"'
+# Run under the dedicated orchestrator identity if installed per operations.md
+# User=valo-orchestrator
+# The orchestrator dispatches to valo-worker / valo-qc / valo-merge via sudo -u
+# when credential isolation is configured; otherwise it runs as the operator.
+Nice=10
+# Oneshot + timer: if a tick crashes it is retried next minute, not looped.

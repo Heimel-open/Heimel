@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""valo-intake — universal BuildOrderV1 intake validator.
+
+Generalizes the repo-specific dispatcher intake (bin/valo-orchestrator) into a
+repo-agnostic first stage. Reads a BuildOrderV1 JSON (file, `--build-order`, or
+stdin), normalizes it, validates authority basis / target repo / delimited
+scope / expiry / idempotency, and prints a machine-readable intake decision.
+
+Decisions:
+  ACCEPTED             build order is normalized and ready for the repo resolver
+  NEEDS_HUMAN          missing target_repo / authority_basis / delimited scope,
+                       malformed timestamps, expired, missing required fields
+  ALREADY_PROCESSED    same idempotency_key already produced a mission
+
+Authority fields are METADATA. They are preserved as data and never authorize
+execution by themselves.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.build_order_intake import (  # noqa: E402
+    ACCEPTED,
+    ALREADY_PROCESSED,
+    NEEDS_HUMAN,
+    SqliteIntakeRegistry,
+    intake,
+)
+
+
+def load_build_order(raw: str | None, path: str | None) -> dict:
+    if path:
+        with open(path, encoding="utf-8") as handle:
+            return json.load(handle)
+    if raw:
+        return json.loads(raw)
+    return json.load(sys.stdin)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="valo-intake")
+    parser.add_argument(
+        "--build-order",
+        help="inline BuildOrderV1 JSON (alternatively a file path or stdin)",
+    )
+    parser.add_argument(
+        "--file",
+        help="path to a BuildOrderV1 JSON file",
+    )
+    parser.add_argument(
+        "--registry",
+        default=SqliteIntakeRegistry.DEFAULT_DB,
+        help="sqlite idempotency registry (default: ~/.valo/intake.db)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="validate + normalize only; do not persist the idempotency key",
+    )
+    args = parser.parse_args()
+
+    try:
+        raw = load_build_order(args.build_order, args.file)
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"valo-intake: cannot read build order: {exc}", file=sys.stderr)
+        return 1
+
+    registry = None if args.dry_run else SqliteIntakeRegistry(args.registry)
+    try:
+        result = intake(raw, registry=registry)
+    finally:
+        if registry is not None:
+            registry.close()
+
+    payload = {
+        "status": result.status,
+        "schema_version": result.build_order.schema_version
+        if result.build_order
+        else None,
+        "problems": list(result.problems),
+    }
+    if result.build_order is not None:
+        payload["normalized"] = result.build_order.to_dict()
+    if result.mission_id:
+        payload["mission_id"] = result.mission_id
+    if result.prior_mission_id:
+        payload["prior_mission_id"] = result.prior_mission_id
+    if result.build_order is not None and result.status == ACCEPTED:
+        payload["mission"] = result.build_order.as_mission(result.mission_id)
+
+    print(json.dumps(payload, indent=2, sort_keys=True))
+
+    if result.status == NEEDS_HUMAN:
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

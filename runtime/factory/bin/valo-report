@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+"""valo-report — exception-only reporting + compact dashboard.
+
+Renders the single status message you actually need:
+  VALO Factory
+  Mode: NORMAL
+  Active runs: 3
+  PRs ready: 2
+  Auto-merged today: 7
+  Blocked: 1
+  Human decisions required: 1
+  NEEDS_HUMAN
+  PR #812 ...
+
+Rules:
+  - Only emits NEEDS_HUMAN / INCIDENT / POLICY_CHANGE / AUTHORITY_CHANGE /
+    REPEATED_FAILURE findings (exception-only).
+  - Green state => NO message (watchdog pattern: silent when OK).
+"""
+import json, os, sqlite3, subprocess, sys
+from datetime import datetime, timezone
+
+ORCH_DB = os.path.expanduser("~/.valo/orchestrator.db")
+REPO = "nsolland/valo-platform"
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def build():
+    c = sqlite3.connect(ORCH_DB)
+    rows = c.execute("SELECT run_id,issue_id,state,pr_number FROM runs").fetchall()
+    c.close()
+    active = [r for r in rows if r[2] not in ("MERGED", "CANCELLED")]
+    blocked = [r for r in rows if r[2] == "BLOCKED"]
+    human = [r for r in rows if r[2] == "NEEDS_HUMAN"]
+    ready = [r for r in rows if r[2] == "READY_TO_MERGE"]
+    merged_today = [r for r in rows if r[2] == "MERGED"
+                    and r and _now()[:10] in (r[3] or "")]
+    mode = json.loads(subprocess.run(["valoctl", "check"], capture_output=True,
+                                     text=True).stdout).get("mode")
+    return {
+        "mode": mode, "active": len(active), "ready": len(ready),
+        "merged_today": len(merged_today), "blocked": len(blocked),
+        "human": [{"pr": r[3], "issue": r[1], "run": r[0]} for r in human],
+    }
+
+
+def main():
+    s = build()
+    lines = ["VALO Factory", f"Mode: {s['mode']}",
+             f"Active runs: {s['active']}", f"PRs ready: {s['ready']}",
+             f"Auto-merged today: {s['merged_today']}",
+             f"Blocked: {s['blocked']}",
+             f"Human decisions required: {len(s['human'])}"]
+    for h in s["human"]:
+        lines.append("NEEDS_HUMAN")
+        lines.append(f"  PR #{h['pr']}  issue #{h['issue']}  run {h['run']}")
+        lines.append("  Recommended action: REVIEW")
+    msg = "\n".join(lines)
+    # exception-only: only print if there is something to surface
+    if s["human"] or s["mode"] != "NORMAL" or s["blocked"]:
+        print(msg)
+        return 0
+    # silent when green
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

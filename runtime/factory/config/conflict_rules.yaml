@@ -1,0 +1,33 @@
+# Conflict rules — versioned policy (any change = Class C).
+# Applied by QC during classification + by merge-controller before merge.
+
+rules:
+  # claimed.json must never appear in a PR diff (legacy swarm artifact)
+  claimed_json:
+    action: BLOCK
+    resolution: use_main        # drop the file from the branch, take main's version
+    message: "claimed.json is a legacy runtime artifact; PRs must not carry it"
+
+  # HANDOVER.md / claimed.json on dev branches are evidence, not deliverables
+  evidence_files:
+    patterns: ["HANDOVER.md", "claimed.json"]
+    action: BLOCK_IF_IN_PR_DIFF
+    resolution: use_main
+
+  # Protected symbols that must not be touched without Class C
+  protected_symbols:
+    patterns:
+      - "valoctl"
+      - "valo-merge"
+      - "valo-qc"
+      - "qc_policy.yaml"
+      - "risk_classes.yaml"
+      - "conflict_rules.yaml"
+    action: REQUIRE_CLASS_C
+
+  # Canonical file single-writer: only the owning module edits its own config
+  canonical_ownership:
+    "config/qc_policy.yaml": factory_maintainers
+    "config/risk_classes.yaml": factory_maintainers
+    "config/conflict_rules.yaml": factory_maintainers
+    "bin/*": factory_maintainers

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/long-horizon-authorization.schema.json",
+  "title": "VALO Long Horizon Action Authorization Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_digest",
+    "vaig",
+    "reht",
+    "racs",
+    "issued_at_ns",
+    "expires_at_ns",
+    "authority_effect"
+  ],
+  "properties": {
+    "action_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "vaig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evaluation_id", "action_digest"],
+      "properties": {
+        "evaluation_id": {"type": "string", "minLength": 1},
+        "action_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "reht": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clearance_id", "action_digest"],
+      "properties": {
+        "clearance_id": {"type": "string", "minLength": 1},
+        "action_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "racs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "decision", "action_digest"],
+      "properties": {
+        "decision_id": {"type": "string", "minLength": 1},
+        "decision": {"enum": ["ALLOW", "MODIFY", "DEFER", "DENY", "STEP_UP", "HALT"]},
+        "action_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "issued_at_ns": {"type": "integer", "minimum": 1},
+    "expires_at_ns": {"type": "integer", "minimum": 1},
+    "authority_effect": {"const": "execution_clearance"}
+  }
+}

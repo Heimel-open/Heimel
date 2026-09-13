@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.local/schemas/workflow-primitive.schema.json",
+  "title": "VALO Factory Workflow Primitive",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "primitive_id",
+    "version",
+    "description",
+    "steps",
+    "required_capabilities",
+    "authority_effect"
+  ],
+  "properties": {
+    "primitive_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "capability",
+          "consequence_bearing",
+          "authority_path"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "capability": {
+            "type": "string",
+            "minLength": 1
+          },
+          "consequence_bearing": {
+            "type": "boolean"
+          },
+          "authority_path": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "consequence_bearing": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "authority_path": {
+                  "prefixItems": [
+                    {"const": "vaig"},
+                    {"const": "reht"},
+                    {"const": "racs"}
+                  ],
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "authority_path": {
+                  "maxItems": 0
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "required_capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority_effect": {
+      "const": "none"
+    }
+  }
+}

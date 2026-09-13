@@ -1,0 +1,130 @@
+{
+  "schema": "valo.harness-providers.v1",
+  "version": "1.2.0",
+  "status": "canonical",
+  "canonical_rule": "Harnesses are replaceable execution/orchestration providers. They never become authority sources and never replace model/provider identity.",
+  "providers": [
+    {
+      "harness_id": "native",
+      "product": "VALO native provider adapter path",
+      "status": "active",
+      "authority_effect": "none",
+      "self_development_allowed": false
+    },
+    {
+      "harness_id": "jcode",
+      "product": "jcode coding-agent harness",
+      "source": "https://github.com/1jehuang/jcode",
+      "source_commit": "dd8755f7e71f0673911d481b625b8a559c81a8b6",
+      "source_version": "0.71.1",
+      "status": "adopted_optional",
+      "observed_capabilities": [
+        "low_overhead_multi_session_runtime",
+        "provider_routing",
+        "non_interactive_json_run",
+        "parallel_agent_support",
+        "recursive_child_agent_spawn",
+        "file_change_awareness",
+        "direct_and_broadcast_agent_messaging",
+        "persistent_memory",
+        "sdk_and_wrapper_surfaces"
+      ],
+      "adopted_swarm_patterns": [
+        "bounded_parent_to_child_delegation",
+        "explicit_child_owned_file_scope",
+        "parallel_file_collision_detection",
+        "coordination_messages_are_non_authoritative",
+        "persistent_memory_requires_provenance_and_freshness",
+        "no_parent_authority_inheritance",
+        "fresh_reht_clearance_for_consequence_bearing_child_execution"
+      ],
+      "required_wrapper_flags": [
+        "--quiet",
+        "--no-update",
+        "--no-selfdev"
+      ],
+      "provider_mapping": {
+        "openai_codex": "openai",
+        "anthropic_claude_code": "claude",
+        "google_antigravity": "antigravity",
+        "github_copilot": "copilot"
+      },
+      "activation_requirements": [
+        "isolated_workspace_or_worktree",
+        "explicit_owned_files",
+        "bounded_mission",
+        "child_workers_receive_explicit_delegated_scope",
+        "child_owned_files_must_be_subset_of_parent_claim",
+        "parallel_worker_file_sets_must_not_overlap",
+        "agent_messages_are_coordination_evidence_only",
+        "persistent_memory_bound_to_provenance_and_freshness",
+        "provider_identity_preserved_separately_from_harness_identity",
+        "independent_qc_before_promotion",
+        "no_self_attestation",
+        "no_self_development",
+        "fresh_reht_clearance_for_consequence_bearing_execution",
+        "veritas_receipt_for_external_effects"
+      ],
+      "execution_modes": {
+        "workspace_write": "planned",
+        "read_only": "fail_closed_until_documented_upstream_read_only_contract_is_conformance_tested"
+      },
+      "authority_effect": "none",
+      "self_development_allowed": false,
+      "dependency_policy": "optional_replaceable_harness"
+    },
+    {
+      "harness_id": "muse_code",
+      "product": "Meta Muse Code coding-agent harness",
+      "source": "https://research.meta.ai/blog/introducing-muse-code-and-muse-spark-1-2",
+      "source_date": "2026-08-05",
+      "status": "observed_optional_fail_closed",
+      "observed_capabilities": [
+        "persistent_specialist_subagents",
+        "append_only_local_event_log",
+        "replay_exact_restart_safe_runtime",
+        "goal_conditioned_long_horizon_execution",
+        "context_compaction",
+        "planning_and_adversarial_plan_stress_testing",
+        "large_repository_end_to_end_workflows"
+      ],
+      "adopted_patterns": [
+        "persistent_specialist_pool",
+        "hash_chained_runtime_event_history",
+        "restart_safe_recovery",
+        "immutable_goal_binding",
+        "provenance_preserving_context_compaction"
+      ],
+      "activation_requirements": [
+        "bounded_non_interactive_cli_contract_documented",
+        "execution_mode_controls_conformance_tested",
+        "isolated_workspace_or_worktree",
+        "explicit_owned_files",
+        "bounded_mission",
+        "provider_identity_preserved_separately_from_harness_identity",
+        "independent_qc_before_promotion",
+        "no_self_attestation",
+        "fresh_reht_clearance_for_consequence_bearing_execution",
+        "veritas_receipt_for_external_effects"
+      ],
+      "execution_modes": {
+        "workspace_write": "fail_closed_until_cli_contract_is_conformance_tested",
+        "read_only": "fail_closed_until_cli_contract_is_conformance_tested"
+      },
+      "authority_effect": "none",
+      "self_development_allowed": false,
+      "dependency_policy": "optional_replaceable_harness"
+    }
+  ],
+  "global_invariants": [
+    "Harness identity and model/provider identity are separate and both must be bound to an invocation.",
+    "A harness may orchestrate tools, memory, agents and model providers but never grants authority.",
+    "Parent worker authority never propagates to child workers through swarm delegation.",
+    "Parallel workers must have explicit non-overlapping owned-file scopes before concurrent writes.",
+    "Agent messages and persistent memory are coordination/context evidence only and never create mandate.",
+    "Self-development is disabled for externally supplied harnesses inside VALO Factory.",
+    "Provider or harness success is execution evidence only and never self-attestation of correctness.",
+    "Persistent subagents, event logs, goal state and compacted context are runtime state only and never authorization evidence.",
+    "REHT remains the sole final authorization boundary for consequence-bearing execution."
+  ]
+}

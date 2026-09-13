@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/opportunity.schema.json",
+  "title": "Unified Opportunity Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "opportunity_id",
+    "source",
+    "external_id",
+    "title",
+    "lane",
+    "payout",
+    "currency",
+    "estimated_compute_cost",
+    "estimated_human_cost",
+    "estimated_other_cost",
+    "acceptance_probability",
+    "repeatability",
+    "payment_reliability",
+    "risk_penalty",
+    "automation_allowed",
+    "rights_clear"
+  ],
+  "properties": {
+    "opportunity_id": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "minLength": 1},
+    "external_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "lane": {
+      "enum": [
+        "ai_evals",
+        "ugc_ads",
+        "clipping",
+        "affiliate",
+        "lead_gen",
+        "localization",
+        "ecommerce_catalog",
+        "paid_research"
+      ]
+    },
+    "payout": {"type": "number", "minimum": 0},
+    "currency": {"type": "string", "minLength": 3},
+    "estimated_compute_cost": {"type": "number", "minimum": 0},
+    "estimated_human_cost": {"type": "number", "minimum": 0},
+    "estimated_other_cost": {"type": "number", "minimum": 0},
+    "acceptance_probability": {"type": "number", "minimum": 0, "maximum": 1},
+    "repeatability": {"type": "number", "minimum": 0, "maximum": 1},
+    "payment_reliability": {"type": "number", "minimum": 0, "maximum": 1},
+    "risk_penalty": {"type": "number", "minimum": 0},
+    "deadline": {"type": ["string", "null"]},
+    "requirements": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "automation_allowed": {"type": "boolean"},
+    "rights_clear": {"type": "boolean"}
+  }
+}

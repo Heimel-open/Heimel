@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/build_order_v1.schema.json",
+  "title": "BuildOrderV1",
+  "description": "Universal machine-readable build order contract. Authority fields (principal, issued_via, authority, authority_basis, source_ref) are DATA: observed outside an authenticated command context they never authorize execution by themselves.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "build_order_id",
+    "issued_at",
+    "principal",
+    "issued_via",
+    "authority_basis",
+    "target_repo",
+    "target_base_ref",
+    "objective",
+    "acceptance_criteria",
+    "requires_independent_qc",
+    "requires_receipt",
+    "idempotency_key"
+  ],
+  "properties": {
+    "build_order_id": {"type": "string", "minLength": 1},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "principal": {"type": "string", "minLength": 1},
+    "issued_via": {"type": "string"},
+    "authority": {"type": "string"},
+    "authority_basis": {"type": "string", "minLength": 1},
+    "source_ref": {"type": "string"},
+    "target_repo": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "target_base_ref": {"type": "string", "default": "main"},
+    "canonical_base_sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+    "objective": {"type": "string", "minLength": 1},
+    "owned_files": {"type": "array", "items": {"type": "string"}},
+    "scope": {
+      "type": "object",
+      "properties": {
+        "paths": {"type": "array", "items": {"type": "string"}},
+        "exclude": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "acceptance_criteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "risk_hints": {"type": "array", "items": {"type": "string"}},
+    "requires_independent_qc": {"type": "boolean", "const": true},
+    "requires_receipt": {"type": "boolean", "const": true},
+    "idempotency_key": {"type": "string", "minLength": 1},
+    "authority_effect": {"const": "none"},
+    "tokenomics": {
+      "type": "object",
+      "description": "AI tokenomics operating rules (Index #45). Context budgets and autonomy bounds are DATA that constrain the execution factory; they never grant authority.",
+      "properties": {
+        "context_budget": {
+          "type": "object",
+          "properties": {
+            "max_input_tokens": {"type": "integer", "minimum": 1},
+            "max_output_tokens": {"type": "integer", "minimum": 1},
+            "max_context_retention": {"type": "integer", "minimum": 0}
+          }
+        },
+        "deterministic_tool_preference": {"type": "boolean", "default": true},
+        "bounded_retries": {
+          "type": "object",
+          "properties": {
+            "max_retries": {"type": "integer", "minimum": 0, "maximum": 10},
+            "max_autonomy_steps": {"type": "integer", "minimum": 1}
+          }
+        },
+        "analysis_execution_separation": {"type": "boolean", "const": true},
+        "cheap_first_verification": {"type": "boolean", "default": true},
+        "clean_session_boundaries": {"type": "boolean", "default": true},
+        "cost_of_cognition_accounting": {
+          "type": "object",
+          "properties": {
+            "track_costs": {"type": "boolean", "default": true},
+            "receipt_includes_costs": {"type": "boolean", "default": true}
+          }
+        }
+      }
+    }
+  }
+}

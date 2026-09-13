@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valoresearch.org/schemas/experience-memory-record.schema.json",
+  "title": "VALO Factory Experience Memory Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "adapter_id",
+    "provider_id",
+    "session_id",
+    "source_ref",
+    "source_digest",
+    "content_digest",
+    "observed_at_ns",
+    "binding",
+    "authority_effect"
+  ],
+  "properties": {
+    "record_id": {"type": "string", "minLength": 1},
+    "adapter_id": {"type": "string", "minLength": 1},
+    "provider_id": {"type": "string", "minLength": 1},
+    "session_id": {"type": "string", "minLength": 1},
+    "source_ref": {"type": "string"},
+    "source_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "observed_at_ns": {"type": "integer", "minimum": 0},
+    "valid_until_ns": {"type": ["integer", "null"], "minimum": 0},
+    "superseded_by": {"type": ["string", "null"]},
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo"],
+      "properties": {
+        "repo": {"type": "string", "minLength": 1},
+        "commit_sha": {"type": ["string", "null"]},
+        "pr_number": {"type": ["integer", "null"], "minimum": 1},
+        "test_refs": {"type": "array", "items": {"type": "string"}},
+        "receipt_refs": {"type": "array", "items": {"type": "string"}},
+        "decision_refs": {"type": "array", "items": {"type": "string"}},
+        "file_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "authority_effect": {"const": "none"}
+  }
+}

@@ -1,0 +1,522 @@
+#!/usr/bin/env python3
+"""Provider-neutral governed egress authorization service.
+
+The gate owns neither transport nor authority. It binds intercepted request
+metadata to VAIG, REHT and RACS artifacts, returns a fail-closed transport
+decision, and exposes local endpoints used by CrabTrap-compatible adapters.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import hmac
+import importlib.machinery
+import importlib.util
+import json
+import os
+import pathlib
+import shlex
+import subprocess
+import sys
+import time
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from typing import Any, Mapping
+from urllib.parse import urlparse
+
+REQUEST_CONTRACT = "valo.governed-egress.request.v1"
+AUTHORIZE_CONTRACT = "valo.governed-egress.authorize.v1"
+GOVERNANCE_QUERY_CONTRACT = "valo.governed-egress.governance-query.v1"
+DECISION_CONTRACT = "valo.governed-egress.decision.v1"
+ALLOWED_METHODS = {
+    "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE", "CONNECT"
+}
+RACS_DECISIONS = {"ALLOW", "MODIFY", "DEFER", "DENY", "STEP_UP", "HALT"}
+SENSITIVE_HEADERS = {
+    "authorization", "cookie", "proxy-authorization", "set-cookie",
+    "x-api-key", "x-auth-token"
+}
+HEX = set("0123456789abcdef")
+
+
+class ProtocolError(ValueError):
+    """Raised when a governed egress payload violates the protocol."""
+
+
+class GovernanceUnavailable(RuntimeError):
+    """Raised when the configured governance broker cannot produce artifacts."""
+
+
+def _load_response_inspector():
+    path = pathlib.Path(__file__).with_name("valo-response-inspector")
+    loader = importlib.machinery.SourceFileLoader("valo_response_inspector_runtime", str(path))
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[loader.name] = module
+    loader.exec_module(module)
+    return module
+
+
+RESPONSE_INSPECTOR = _load_response_inspector()
+
+
+def canonical_json(value: Any) -> bytes:
+    return json.dumps(
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    ).encode("utf-8")
+
+
+def sha256_hex(value: Any) -> str:
+    return hashlib.sha256(canonical_json(value)).hexdigest()
+
+
+def require_mapping(value: Any, name: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise ProtocolError(f"{name} must be an object")
+    return value
+
+
+def require_string(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ProtocolError(f"{name} must be a non-empty string")
+    return value
+
+
+def require_sha256(value: Any, name: str) -> str:
+    digest = require_string(value, name).lower()
+    if len(digest) != 64 or any(ch not in HEX for ch in digest):
+        raise ProtocolError(f"{name} must be lowercase SHA-256 hex")
+    return digest
+
+
+def normalize_request(request: Mapping[str, Any]) -> dict[str, Any]:
+    method = require_string(request.get("method"), "request.method").upper()
+    if method not in ALLOWED_METHODS:
+        raise ProtocolError("request.method is not supported")
+
+    url = require_string(request.get("url"), "request.url")
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise ProtocolError("request.url must be an absolute HTTP(S) URL")
+    if parsed.username or parsed.password:
+        raise ProtocolError("request.url must not contain credentials")
+
+    raw_header_names = request.get("header_names", [])
+    if not isinstance(raw_header_names, list) or not all(
+        isinstance(item, str) and item.strip() for item in raw_header_names
+    ):
+        raise ProtocolError("request.header_names must be a list of strings")
+    header_names = sorted({item.strip().lower() for item in raw_header_names})
+
+    # Header names may be used as metadata. Header values are forbidden by contract.
+    _ = any(name in SENSITIVE_HEADERS for name in header_names)
+
+    body_sha256 = require_sha256(request.get("body_sha256"), "request.body_sha256")
+    body_size = request.get("body_size_bytes")
+    if not isinstance(body_size, int) or isinstance(body_size, bool) or body_size < 0:
+        raise ProtocolError("request.body_size_bytes must be a non-negative integer")
+
+    content_type = request.get("content_type")
+    if content_type is not None and not isinstance(content_type, str):
+        raise ProtocolError("request.content_type must be a string when present")
+
+    websocket = request.get("websocket", False)
+    if not isinstance(websocket, bool):
+        raise ProtocolError("request.websocket must be boolean")
+
+    return {
+        "method": method,
+        "url": url,
+        "header_names": header_names,
+        "body_sha256": body_sha256,
+        "body_size_bytes": body_size,
+        "content_type": content_type,
+        "websocket": websocket,
+    }
+
+
+def request_digest(request: Mapping[str, Any]) -> str:
+    return sha256_hex(normalize_request(request))
+
+
+def normalize_transport(value: Any) -> dict[str, Any]:
+    transport = require_mapping(value, "transport")
+    adapter = require_string(transport.get("adapter"), "transport.adapter")
+    static_rule = require_string(
+        transport.get("static_rule_decision"), "transport.static_rule_decision"
+    ).upper()
+    if static_rule not in {"ALLOW", "DENY", "NO_MATCH"}:
+        raise ProtocolError(
+            "transport.static_rule_decision must be ALLOW, DENY or NO_MATCH"
+        )
+    judge = transport.get("judge_decision")
+    if judge is not None:
+        judge = require_string(judge, "transport.judge_decision").upper()
+        if judge not in {"ALLOW", "DENY", "UNKNOWN"}:
+            raise ProtocolError(
+                "transport.judge_decision must be ALLOW, DENY or UNKNOWN"
+            )
+    return {
+        "adapter": adapter,
+        "static_rule_decision": static_rule,
+        "judge_decision": judge,
+    }
+
+
+def bound_artifact(
+    governance: Mapping[str, Any],
+    name: str,
+    digest: str,
+    id_field: str,
+) -> Mapping[str, Any]:
+    artifact = require_mapping(governance.get(name), f"governance.{name}")
+    require_string(artifact.get(id_field), f"governance.{name}.{id_field}")
+    artifact_digest = require_sha256(
+        artifact.get("request_digest"), f"governance.{name}.request_digest"
+    )
+    if not hmac.compare_digest(artifact_digest, digest):
+        raise ProtocolError(f"governance.{name} is not bound to this request")
+    return artifact
+
+
+def decision(
+    payload: Mapping[str, Any],
+    result: str,
+    reason_code: str,
+    digest: str,
+    governance: Mapping[str, Any],
+    transport: Mapping[str, Any],
+) -> dict[str, Any]:
+    vaig = governance.get("vaig", {})
+    reht = governance.get("reht", {})
+    racs = governance.get("racs", {})
+    evidence = {
+        "vaig_evaluation_id": vaig.get("evaluation_id"),
+        "reht_clearance_id": reht.get("clearance_id"),
+        "racs_decision_id": racs.get("decision_id"),
+        "authority_grant_id": payload.get("authority_grant_id"),
+    }
+    output: dict[str, Any] = {
+        "contract": DECISION_CONTRACT,
+        "request_id": payload.get("request_id"),
+        "mission_id": payload.get("mission_id"),
+        "decision": result,
+        "reason_code": reason_code,
+        "request_digest": digest,
+        "evidence": evidence,
+        "transport_advisory": {
+            "adapter": transport.get("adapter"),
+            "static_rule_decision": transport.get("static_rule_decision"),
+            "judge_decision": transport.get("judge_decision"),
+        },
+    }
+    if result == "MODIFY":
+        output["replacement_request_digest"] = racs.get("replacement_request_digest")
+    issued_at_ns = time.time_ns()
+    receipt_core = {
+        "contract": output["contract"],
+        "request_id": output["request_id"],
+        "mission_id": output["mission_id"],
+        "decision": output["decision"],
+        "reason_code": output["reason_code"],
+        "request_digest": output["request_digest"],
+        "evidence": output["evidence"],
+        "issued_at_ns": issued_at_ns,
+    }
+    output["receipt"] = {
+        "issued_at_ns": issued_at_ns,
+        "decision_digest": sha256_hex(receipt_core),
+    }
+    return output
+
+
+def evaluate(payload: Mapping[str, Any]) -> dict[str, Any]:
+    require_mapping(payload, "payload")
+    if payload.get("contract") != REQUEST_CONTRACT:
+        raise ProtocolError(f"contract must be {REQUEST_CONTRACT}")
+
+    for field in ("request_id", "mission_id", "principal_id", "authority_grant_id"):
+        require_string(payload.get(field), field)
+
+    request = require_mapping(payload.get("request"), "request")
+    normalized = normalize_request(request)
+    digest = sha256_hex(normalized)
+    supplied_digest = request.get("request_digest")
+    if supplied_digest is not None:
+        supplied_digest = require_sha256(supplied_digest, "request.request_digest")
+        if not hmac.compare_digest(supplied_digest, digest):
+            raise ProtocolError("request.request_digest does not match request metadata")
+
+    transport = normalize_transport(payload.get("transport"))
+    governance = require_mapping(payload.get("governance"), "governance")
+
+    # Deterministic transport deny is defense-in-depth and may stop early.
+    # Transport allow and LLM judge results are advisory only.
+    if transport["static_rule_decision"] == "DENY":
+        return decision(
+            payload, "DENY", "TRANSPORT_STATIC_DENY", digest, governance, transport
+        )
+
+    # v1 cannot govern the data phase after a WebSocket upgrade.
+    if normalized["websocket"]:
+        return decision(
+            payload, "DENY", "WEBSOCKET_FRAMES_UNGOVERNED", digest, governance, transport
+        )
+
+    vaig = bound_artifact(governance, "vaig", digest, "evaluation_id")
+    reht = bound_artifact(governance, "reht", digest, "clearance_id")
+    racs = bound_artifact(governance, "racs", digest, "decision_id")
+
+    vaig_status = require_string(
+        vaig.get("status"), "governance.vaig.status"
+    ).upper()
+    if vaig_status not in {"PASS", "WARN", "FAIL"}:
+        raise ProtocolError("governance.vaig.status must be PASS, WARN or FAIL")
+    if vaig_status == "FAIL":
+        return decision(payload, "DENY", "VAIG_FAIL", digest, governance, transport)
+
+    reht_status = require_string(
+        reht.get("status"), "governance.reht.status"
+    ).upper()
+    if reht_status != "CLEARED":
+        return decision(
+            payload, "DENY", "REHT_NOT_CLEARED", digest, governance, transport
+        )
+
+    racs_decision = require_string(
+        racs.get("decision"), "governance.racs.decision"
+    ).upper()
+    if racs_decision not in RACS_DECISIONS:
+        raise ProtocolError("governance.racs.decision is invalid")
+
+    if racs_decision == "ALLOW":
+        return decision(
+            payload, "ALLOW", "RACS_ALLOW", digest, governance, transport
+        )
+
+    if racs_decision == "MODIFY":
+        replacement = require_sha256(
+            racs.get("replacement_request_digest"),
+            "governance.racs.replacement_request_digest",
+        )
+        if hmac.compare_digest(replacement, digest):
+            raise ProtocolError(
+                "replacement_request_digest must differ from the original request"
+            )
+        return decision(
+            payload, "MODIFY", "RACS_MODIFY", digest, governance, transport
+        )
+
+    reason_by_decision = {
+        "DEFER": "RACS_DEFER",
+        "DENY": "RACS_DENY",
+        "STEP_UP": "RACS_STEP_UP",
+        "HALT": "RACS_HALT",
+    }
+    return decision(
+        payload,
+        "DENY",
+        reason_by_decision[racs_decision],
+        digest,
+        governance,
+        transport,
+    )
+
+
+def governance_query(payload: Mapping[str, Any], normalized: Mapping[str, Any], digest: str, transport: Mapping[str, Any]) -> dict[str, Any]:
+    command_value = os.environ.get("VALO_EGRESS_GOVERNANCE_COMMAND", "").strip()
+    if not command_value:
+        raise GovernanceUnavailable("VALO_EGRESS_GOVERNANCE_COMMAND is not configured")
+    command = shlex.split(command_value)
+    if not command:
+        raise GovernanceUnavailable("VALO_EGRESS_GOVERNANCE_COMMAND is empty")
+
+    query = {
+        "contract": GOVERNANCE_QUERY_CONTRACT,
+        "request_id": payload["request_id"],
+        "mission_id": payload["mission_id"],
+        "principal_id": payload["principal_id"],
+        "authority_grant_id": payload["authority_grant_id"],
+        "request": {**normalized, "request_digest": digest},
+        "transport": transport,
+    }
+    timeout = float(os.environ.get("VALO_EGRESS_GOVERNANCE_TIMEOUT_SECONDS", "5"))
+    if timeout <= 0 or timeout > 60:
+        raise GovernanceUnavailable("VALO_EGRESS_GOVERNANCE_TIMEOUT_SECONDS must be >0 and <=60")
+    try:
+        result = subprocess.run(
+            command,
+            input=canonical_json(query),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise GovernanceUnavailable(f"governance command failed: {exc}") from exc
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace")[:500]
+        raise GovernanceUnavailable(
+            f"governance command returned {result.returncode}: {detail}"
+        )
+    max_output = int(os.environ.get("VALO_EGRESS_GOVERNANCE_MAX_OUTPUT_BYTES", "1048576"))
+    if len(result.stdout) > max_output:
+        raise GovernanceUnavailable("governance command output exceeds configured limit")
+    try:
+        output = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise GovernanceUnavailable("governance command returned invalid JSON") from exc
+    output = require_mapping(output, "governance command output")
+    return dict(require_mapping(output.get("governance"), "governance command output.governance"))
+
+
+def authorize(payload: Mapping[str, Any]) -> dict[str, Any]:
+    require_mapping(payload, "payload")
+    if payload.get("contract") != AUTHORIZE_CONTRACT:
+        raise ProtocolError(f"contract must be {AUTHORIZE_CONTRACT}")
+    for field in ("request_id", "mission_id", "principal_id", "authority_grant_id"):
+        require_string(payload.get(field), field)
+
+    request = require_mapping(payload.get("request"), "request")
+    normalized = normalize_request(request)
+    digest = sha256_hex(normalized)
+    supplied_digest = request.get("request_digest")
+    if supplied_digest is not None and not hmac.compare_digest(
+        require_sha256(supplied_digest, "request.request_digest"), digest
+    ):
+        raise ProtocolError("request.request_digest does not match request metadata")
+    transport = normalize_transport(payload.get("transport"))
+
+    # Early deny paths do not depend on the governance broker.
+    governance: dict[str, Any] = {}
+    if transport["static_rule_decision"] != "DENY" and not normalized["websocket"]:
+        governance = governance_query(payload, normalized, digest, transport)
+
+    full_payload = {
+        "contract": REQUEST_CONTRACT,
+        "request_id": payload["request_id"],
+        "mission_id": payload["mission_id"],
+        "principal_id": payload["principal_id"],
+        "authority_grant_id": payload["authority_grant_id"],
+        "request": {**normalized, "request_digest": digest},
+        "transport": transport,
+        "governance": governance,
+    }
+    return evaluate(full_payload)
+
+
+class GateHandler(BaseHTTPRequestHandler):
+    server_version = "VALOGovernedEgress/2"
+
+    def log_message(self, format: str, *args: Any) -> None:
+        # Do not emit request bodies or headers. Standard access line only.
+        sys.stderr.write(
+            "%s - - [%s] %s\n"
+            % (self.client_address[0], self.log_date_time_string(), format % args)
+        )
+
+    def _write_json(self, status: int, value: Mapping[str, Any]) -> None:
+        body = canonical_json(value)
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_GET(self) -> None:
+        if self.path == "/healthz":
+            self._write_json(200, {"ok": True, "service": "valo-egress-gate", "version": 2})
+            return
+        self._write_json(404, {"ok": False, "error": "not_found"})
+
+    def do_POST(self) -> None:
+        handlers = {
+            "/v1/evaluate": evaluate,
+            "/v1/authorize": authorize,
+            "/v1/evaluate-response": RESPONSE_INSPECTOR.inspect,
+        }
+        handler = handlers.get(self.path)
+        if handler is None:
+            self._write_json(404, {"ok": False, "error": "not_found"})
+            return
+
+        configured_token = os.environ.get("VALO_EGRESS_SHARED_TOKEN", "")
+        if configured_token:
+            expected = f"Bearer {configured_token}"
+            supplied = self.headers.get("Authorization", "")
+            if not hmac.compare_digest(supplied, expected):
+                self._write_json(401, {"ok": False, "error": "unauthorized"})
+                return
+
+        max_bytes = int(os.environ.get("VALO_EGRESS_MAX_REQUEST_BYTES", "2097152"))
+        length_header = self.headers.get("Content-Length")
+        if length_header is None:
+            self._write_json(411, {"ok": False, "error": "content_length_required"})
+            return
+        try:
+            length = int(length_header)
+        except ValueError:
+            self._write_json(400, {"ok": False, "error": "invalid_content_length"})
+            return
+        if length < 0 or length > max_bytes:
+            self._write_json(413, {"ok": False, "error": "request_too_large"})
+            return
+
+        try:
+            raw = self.rfile.read(length)
+            payload = json.loads(raw)
+            output = handler(payload)
+            self._write_json(200, output)
+        except GovernanceUnavailable as exc:
+            self._write_json(503, {"ok": False, "error": str(exc)})
+        except (json.JSONDecodeError, ProtocolError, RESPONSE_INSPECTOR.InspectionError, ValueError) as exc:
+            self._write_json(400, {"ok": False, "error": str(exc)})
+
+
+def serve(bind: str, port: int) -> int:
+    if bind not in {"127.0.0.1", "::1", "localhost"} and os.environ.get(
+        "VALO_EGRESS_ALLOW_REMOTE"
+    ) != "1":
+        raise ProtocolError(
+            "non-loopback bind requires VALO_EGRESS_ALLOW_REMOTE=1"
+        )
+    server = ThreadingHTTPServer((bind, port), GateHandler)
+    server.serve_forever()
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--request", help="JSON request file; stdin when omitted")
+    parser.add_argument("--authorize", action="store_true", help="invoke governance broker before evaluation")
+    parser.add_argument("--response", action="store_true", help="inspect a governed upstream response")
+    parser.add_argument("--serve", action="store_true")
+    parser.add_argument("--bind", default=os.environ.get("VALO_EGRESS_BIND", "127.0.0.1"))
+    parser.add_argument(
+        "--port", type=int, default=int(os.environ.get("VALO_EGRESS_PORT", "8082"))
+    )
+    args = parser.parse_args()
+    try:
+        if args.serve:
+            if args.port < 1 or args.port > 65535:
+                raise ProtocolError("port must be between 1 and 65535")
+            return serve(args.bind, args.port)
+        with open(args.request, encoding="utf-8") if args.request else sys.stdin as handle:
+            payload = json.load(handle)
+        if args.authorize and args.response:
+            raise ProtocolError("--authorize and --response are mutually exclusive")
+        if args.response:
+            output = RESPONSE_INSPECTOR.inspect(payload)
+        elif args.authorize:
+            output = authorize(payload)
+        else:
+            output = evaluate(payload)
+        print(json.dumps(output, sort_keys=True, ensure_ascii=False))
+        return 0
+    except (OSError, json.JSONDecodeError, ProtocolError, GovernanceUnavailable, RESPONSE_INSPECTOR.InspectionError, ValueError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}), file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

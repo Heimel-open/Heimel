@@ -1,0 +1,44 @@
+{
+  "provenance": {
+    "source_repo": "nsolland/idebank",
+    "source_path": "missions/seed.json",
+    "source_sha": "c76a11f66ca7384f4e3b89e1cae6aad1fe205dbd",
+    "captured_at": "2026-08-20",
+    "selection": "mission id volunteer-shift-swap-board"
+  },
+  "mission": {
+    "id": "volunteer-shift-swap-board",
+    "title": "Surveillance-free shift swap board for volunteer rosters",
+    "objective": "Build a lightweight local-first board where volunteers in small organisations can post and claim shift swaps without coordinator bottlenecks, employer analytics or tracking.",
+    "domain": "digital_inclusion",
+    "beneficiaries": [
+      "volunteer coordinators",
+      "food bank volunteers",
+      "community centre helpers"
+    ],
+    "constraints": [
+      "no tracking or performance metrics",
+      "volunteer controls own entries and deletion",
+      "works offline-first",
+      "no fabricated integrations"
+    ],
+    "successSignals": [
+      "post/claim/confirm swap workflow",
+      "export of final roster",
+      "tests for swap flow",
+      "GitHub Pages preview proposal"
+    ],
+    "license": "Apache-2.0",
+    "status": "READY_FOR_DECISION",
+    "source": "idebank-ideering:fabrikk2",
+    "created": "2026-07-25",
+    "claimedAt": "2026-07-25T16:22:15.005891Z",
+    "claimedBy": "factory-driver",
+    "completedAt": "2026-07-25T16:26:24.283583Z",
+    "outcome": "outcomes/volunteer-shift-swap-board.md",
+    "legacy": {
+      "status": "COMPLETE",
+      "pull_request": "https://github.com/nsolland/research-factory/pull/12"
+    }
+  }
+}

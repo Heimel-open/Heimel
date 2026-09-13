@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# ============================================================================
+# valo-git — agent-safe git shim. Agents MUST use this instead of `git`.
+#
+# Enforces:
+#  1. Agents NEVER touch the primary operator checkout (VALO_AGENT_RUN=1 +
+#     inside ~/valo-platform => block checkout/reset/merge/push/commit).
+#  2. Transactional maintenance fence: every WRITE action re-checks the
+#     valoctl mode token immediately before running. Under MAINTENANCE or
+#     INCIDENT_HOLD, write actions are refused (exit 2).
+# ============================================================================
+set -e
+
+PRIMARY="$(cd "$HOME/valo-platform" 2>/dev/null && git rev-parse --show-toplevel 2>/dev/null || true)"
+HERE="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+
+# Which git subcommand?
+SUBCMD="${1:-}"
+
+WRITE_CMDS="checkout reset merge push commit branch switch rebase clean"
+
+is_write() {
+  for w in $WRITE_CMDS; do
+    [ "$SUBCMD" = "$w" ] && return 0
+  done
+  return 1
+}
+
+# --- Guard 1: primary-tree protection for agents ---
+if [ "${VALO_AGENT_RUN:-0}" = "1" ] && [ -n "$HERE" ] && [ "$HERE" = "$PRIMARY" ]; then
+  echo "🚫 valo-git: agent write to PRIMARY repo forbidden (BLOCKER #1)." >&2
+  echo "   Operate only inside /tmp/valo-runs/<run_id>/. Use valo-run to start." >&2
+  exit 1
+fi
+
+# --- Guard 2: transactional maintenance fence (write actions only) ---
+if is_write "$SUBCMD"; then
+  # Read-only / observability actions (status, diff, log, fetch) are always allowed.
+  VERDICT="$(valoctl check 2>/dev/null || echo '{"write_allowed":false}')"
+  if ! echo "$VERDICT" | grep -q '"write_allowed": *true'; then
+    MODE="$(echo "$VERDICT" | grep -o '"mode": *"[A-Z_]*"' | head -1 | sed 's/.*: *"//;s/"//')"
+    echo "🚫 valo-git: write action '$SUBCMD' refused — factory mode=$MODE." >&2
+    echo "   Human must run: valoctl exit   (to return to NORMAL)" >&2
+    exit 2
+  fi
+fi
+
+# Pass through to real git.
+exec git "$@"

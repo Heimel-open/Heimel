@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/long-horizon-judge-evidence.schema.json",
+  "title": "VALO Long Horizon Judge Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "run_id",
+    "subject_worker_id",
+    "subject_provider_id",
+    "judge_id",
+    "judge_provider_id",
+    "provider_independent",
+    "findings",
+    "evidence_refs",
+    "evidence_digest",
+    "authority_effect",
+    "created_at_ns"
+  ],
+  "properties": {
+    "schema": {"const": "valo.long-horizon.judge-evidence.v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "subject_worker_id": {"type": "string", "minLength": 1},
+    "subject_provider_id": {"type": "string", "minLength": 1},
+    "judge_id": {"type": "string", "minLength": 1},
+    "judge_provider_id": {"type": "string", "minLength": 1},
+    "provider_independent": {"type": "boolean"},
+    "findings": {"type": "array", "items": {"type": "object"}},
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "evidence_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority_effect": {"const": "none"},
+    "created_at_ns": {"type": "integer", "minimum": 1}
+  }
+}

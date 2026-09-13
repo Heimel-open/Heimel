@@ -1,0 +1,54 @@
+{
+  "schema": "valo.local-model-profile.v1",
+  "version": "1.0.0",
+  "status": "adopted",
+  "id": "muse-glimmer-30b-gguf",
+  "source": {
+    "publisher": "Unsloth AI",
+    "model_author": "Meta Superintelligence Lab",
+    "url": "https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF",
+    "license": "Apache-2.0"
+  },
+  "model": {
+    "repository": "unsloth/Muse-Glimmer-30B-GGUF",
+    "default_artifact": "UD-Q4_K_XL",
+    "model_id": "unsloth/Muse-Glimmer-30B-GGUF:UD-Q4_K_XL",
+    "context_length": 131072,
+    "input_modalities": ["text", "image"],
+    "output_modalities": ["text"],
+    "capabilities": [
+      "multi_step_reasoning",
+      "tool_use",
+      "failure_recovery",
+      "multimodal_understanding",
+      "agentic_task_completion"
+    ]
+  },
+  "runtime": {
+    "preferred": "llama.cpp",
+    "openai_compatible": true,
+    "default_endpoint": "http://127.0.0.1:8080/v1",
+    "launch": "llama serve -hf unsloth/Muse-Glimmer-30B-GGUF:UD-Q4_K_XL",
+    "valo_environment": {
+      "VALO_MODEL_ENDPOINT": "http://127.0.0.1:8080/v1",
+      "VALO_MODEL_BEARER_TOKEN": "",
+      "VALO_MODEL_ID": "unsloth/Muse-Glimmer-30B-GGUF:UD-Q4_K_XL"
+    }
+  },
+  "harness": {
+    "hermes_agent": {
+      "optional": true,
+      "provider": "custom",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "default_model": "unsloth/Muse-Glimmer-30B-GGUF:UD-Q4_K_XL"
+    }
+  },
+  "governance": {
+    "authority_effect": "none",
+    "model_is_authority_source": false,
+    "harness_is_authority_source": false,
+    "required_execution_path": ["VAIG", "reht", "gateway", "Veritas"],
+    "rule": "Muse Glimmer may reason, perceive, propose and call tools through the harness, but no consequence-bearing action executes without fresh evaluation and reht authorization at the execution boundary."
+  },
+  "dependency_policy": "optional_replaceable_local_model_after_conformance"
+}

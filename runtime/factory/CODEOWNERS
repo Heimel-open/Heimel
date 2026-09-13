@@ -1,0 +1,11 @@
+# CODEOWNERS — documentation of control-plane ownership.
+# NOTE: This file is DOCUMENTATION ONLY. The repository ruleset has
+# require_code_owner_review = false, so code-owner status here is NOT a
+# required review gate. Authority for control-plane changes is granted
+# exclusively by the "VALO Human Authority / control-plane" check-run,
+# produced manually by nsolland via workflow_dispatch (single human authority).
+#
+# nsolland is the sole human authority. No collaborator, no extra identity,
+# no bot stands in as a fake independent reviewer.
+
+* @nsolland

@@ -1,0 +1,87 @@
+# Governed Agent2Agent 1.0 connector profile.
+connector:
+  request_contract: valo.a2a.client-request.v1
+  mandate_contract: valo.a2a.mandate-envelope.v1
+  receipt_contract: valo.a2a.receipt.v1
+  extension_uri: urn:valo:a2a:mandate-envelope:v1
+  a2a_version: "1.0"
+  enabled: false
+  enforcement_mode: shadow
+  fail_mode: deny
+
+bindings:
+  implemented:
+    - HTTP+JSON
+  operations:
+    - SEND_MESSAGE
+    - GET_TASK
+    - LIST_TASKS
+    - CANCEL_TASK
+  streaming: deny_until_governed_sse
+  jsonrpc: not_implemented
+  grpc: not_implemented
+  require_tls: true
+  follow_redirects: false
+  require_version_header: true
+
+agent_card:
+  discovery_path: /.well-known/agent-card.json
+  require_https: true
+  reject_private_network_by_default: true
+  record_exact_digest: true
+  reject_drift_after_clearance: true
+  require_external_signature_verifier_for_signed_cards: true
+  require_curated_registry_for_registry_trust: true
+  direct_configuration_production: false
+
+mandate:
+  require_principal_binding: true
+  require_authority_grant: true
+  require_delegation_chain: true
+  delegation_narrows_only: true
+  require_purpose_digest: true
+  require_expiry: true
+  require_revocation_registry: true
+  require_mal_profile: true
+  exact_payload_digest_binding: true
+  last_moment_digest_check: true
+
+racs_enforcement:
+  ALLOW: transmit_exact_bound_operation
+  MODIFY: block_original_and_resubmit
+  DEFER: do_not_transmit
+  DENY: do_not_transmit
+  STEP_UP: do_not_transmit
+  HALT: do_not_transmit
+
+artifacts:
+  maximum_bytes: 1048576
+  inspect_all_returned_json: true
+  reject_prompt_injection: true
+  reject_secret_material: true
+  reject_unsafe_urls: true
+  preserve_original_response: true
+  local_execution_authorized: false
+  require_new_reht_before_local_consequence: true
+
+receipts:
+  required: true
+  hash_chained_jsonl: true
+  fsync_each_event: true
+  include_raw_credentials: false
+  include_raw_auth_token: false
+
+environment:
+  VALO_A2A_RECEIPT_LOG: /var/lib/valo/receipts/a2a.jsonl
+  VALO_A2A_AUTHORITY_CHECK_COMMAND: <authority-delegation-revocation-mal-checker>
+  VALO_A2A_AGENT_CARD_VERIFY_COMMAND: <agent-card-signature-verifier>
+  VALO_A2A_CURATED_REGISTRY: /etc/valo/a2a-agent-registry.json
+  VALO_A2A_CARD_CACHE: /var/lib/valo/a2a-agent-card-cache.json
+  VALO_A2A_AUTH_TOKEN: <runtime-secret-only>
+  VALO_A2A_AUTH_SCHEME: Bearer
+  VALO_A2A_TIMEOUT_SECONDS: "10"
+  VALO_A2A_MAX_CARD_BYTES: "262144"
+  VALO_A2A_MAX_RESPONSE_BYTES: "1048576"
+  VALO_A2A_MAX_ARTIFACT_BYTES: "1048576"
+  VALO_A2A_ALLOW_PRIVATE_NETWORK: "0"
+  VALO_A2A_ALLOW_DIRECT_CONFIGURATION: "0"

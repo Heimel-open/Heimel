@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/a2a_mandate_envelope.schema.json",
+  "title": "VALO Governed A2A Mandate Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "envelope_id",
+    "a2a_version",
+    "extension_uri",
+    "operation",
+    "source",
+    "target",
+    "mandate",
+    "payload",
+    "governance",
+    "action_digest"
+  ],
+  "properties": {
+    "contract": {"const": "valo.a2a.mandate-envelope.v1"},
+    "envelope_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "a2a_version": {"const": "1.0"},
+    "extension_uri": {"const": "urn:valo:a2a:mandate-envelope:v1"},
+    "operation": {"enum": ["SEND_MESSAGE", "SEND_STREAMING_MESSAGE", "GET_TASK", "LIST_TASKS", "CANCEL_TASK", "SUBSCRIBE_TASK"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principal_id", "agent_id", "agent_card_digest"],
+      "properties": {
+        "principal_id": {"type": "string", "minLength": 1},
+        "agent_id": {"type": "string", "minLength": 1},
+        "agent_card_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_id", "agent_card_url", "agent_card_digest", "selected_interface", "trust_basis", "retrieved_at", "mal_profile_id"],
+      "properties": {
+        "agent_id": {"type": "string", "minLength": 1},
+        "agent_card_url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "agent_card_digest": {"$ref": "#/$defs/digest"},
+        "selected_interface": {"enum": ["HTTP+JSON", "JSONRPC", "GRPC"]},
+        "trust_basis": {"enum": ["SIGNED_AGENT_CARD", "CURATED_REGISTRY", "DIRECT_CONFIGURATION"]},
+        "signature_verified": {"type": "boolean"},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "mal_profile_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "mandate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_grant_id", "delegation_chain_digest", "purpose_digest", "scope", "consequence_class", "reversibility", "issued_at", "expires_at", "max_delegation_depth", "redelegation_allowed", "revocation_registry_ref"],
+      "properties": {
+        "authority_grant_id": {"type": "string", "minLength": 1},
+        "delegation_chain_digest": {"$ref": "#/$defs/digest"},
+        "purpose_digest": {"$ref": "#/$defs/digest"},
+        "scope": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "constraints": {"type": "object", "additionalProperties": true},
+        "consequence_class": {"enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+        "reversibility": {"enum": ["REVERSIBLE", "PARTIALLY_REVERSIBLE", "IRREVERSIBLE"]},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "max_delegation_depth": {"type": "integer", "minimum": 0},
+        "redelegation_allowed": {"type": "boolean"},
+        "revocation_registry_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a2a_payload_digest", "message_id"],
+      "properties": {
+        "a2a_payload_digest": {"$ref": "#/$defs/digest"},
+        "message_id": {"type": "string", "minLength": 1},
+        "task_id": {"type": "string", "minLength": 1},
+        "context_id": {"type": "string", "minLength": 1},
+        "tenant": {"type": "string"},
+        "content_types": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "maximum_artifact_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vaig", "reht", "racs"],
+      "properties": {
+        "vaig": {"$ref": "#/$defs/vaig"},
+        "reht": {"$ref": "#/$defs/reht"},
+        "racs": {"$ref": "#/$defs/racs"}
+      }
+    },
+    "action_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "vaig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evaluation_id", "action_digest", "status"],
+      "properties": {
+        "evaluation_id": {"type": "string", "minLength": 1},
+        "action_digest": {"$ref": "#/$defs/digest"},
+        "status": {"enum": ["PASS", "WARN", "FAIL"]}
+      }
+    },
+    "reht": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clearance_id", "action_digest", "status"],
+      "properties": {
+        "clearance_id": {"type": "string", "minLength": 1},
+        "action_digest": {"$ref": "#/$defs/digest"},
+        "status": {"enum": ["CLEARED", "NOT_CLEARED", "REVOKED", "EXPIRED"]}
+      }
+    },
+    "racs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "action_digest", "decision"],
+      "properties": {
+        "decision_id": {"type": "string", "minLength": 1},
+        "action_digest": {"$ref": "#/$defs/digest"},
+        "decision": {"enum": ["ALLOW", "MODIFY", "DEFER", "DENY", "STEP_UP", "HALT"]},
+        "replacement_action_digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  }
+}

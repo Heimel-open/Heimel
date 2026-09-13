@@ -1,0 +1,42 @@
+{
+  "schema": "valo.experience-memory-adapters.v1",
+  "version": "1.0.0",
+  "status": "canonical",
+  "canonical_rule": "Experience-memory providers supply recall context and evidence only. They never grant authority, revive expired authority, or replace canonical artifact and receipt sources.",
+  "adapters": [
+    {
+      "id": "deja-vu-local",
+      "source": "deja-vu",
+      "source_url": "https://github.com/vshulcz/deja-vu",
+      "transport": ["mcp", "cli"],
+      "deployment": "optional_local",
+      "capabilities": [
+        "retroactive_session_indexing",
+        "cross_agent_recall",
+        "file_session_blame",
+        "cross_provider_handoff",
+        "recall_audit_log",
+        "ingest_redaction"
+      ],
+      "canonical_output": "schemas/experience-memory-record.schema.json",
+      "requirements": [
+        "raw_transcript_is_context_not_truth",
+        "bind_to_repo_and_artifact_evidence_when_available",
+        "track_freshness_and_supersession",
+        "stale_or_superseded_memory_is_not_injected",
+        "cross_repo_recall_requires_independent_verification",
+        "raw_query_and_recalled_context_are_not_persisted_in_valo_receipts",
+        "provider_memory_never_creates_or_revives_authority",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "required_runtime_dependency": false
+    }
+  ],
+  "invariants": [
+    "Transcript history is observation, not canonical truth.",
+    "A recalled decision must be checked against current code, tests, policy, receipts and supersession state before consequential reuse.",
+    "Memory retrieval may influence context selection but never the REHT authorization decision by itself.",
+    "Provider replacement must not change the canonical Experience Memory record contract."
+  ]
+}

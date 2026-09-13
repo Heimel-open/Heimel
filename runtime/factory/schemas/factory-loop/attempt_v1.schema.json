@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/factory-loop/attempt_v1.schema.json",
+  "title": "AttemptV1",
+  "description": "Each Attempt runs in an isolated worktree on an exact base SHA.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "attempt_id", "work_item_id", "run_id", "repository",
+    "base_sha", "candidate_sha", "actor", "worktree_id", "started_at",
+    "status", "correction_round", "authority_digest", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "factory-loop-v1"},
+    "attempt_id": {"type": "string", "minLength": 1},
+    "work_item_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "candidate_sha": {"anyOf": [{"const": ""}, {"type": "string", "pattern": "^[0-9a-f]{40}$"}]},
+    "actor": {"type": "string", "minLength": 1},
+    "worktree_id": {"type": "string", "minLength": 1},
+    "started_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["STARTED", "CANDIDATE", "TESTED", "REVIEWED", "CORRECTING", "NEEDS_HUMAN", "BLOCKED", "LEARNED", "LANDED", "CANCELLED"]},
+    "correction_round": {"type": "integer", "minimum": 0},
+    "authority_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

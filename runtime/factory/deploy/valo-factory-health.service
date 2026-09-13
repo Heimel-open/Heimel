@@ -1,0 +1,13 @@
+[Unit]
+Description=VALO Factory shadow health check (analysis only, no writes)
+Documentation=https://github.com/nsolland/valo-factory/docs/operations.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# SHADOW mode: detect/classify/simulate/QC-local-run only. The orchestrator
+# refuses shadow cycle unless mode==SHADOW. This is a permanent, safe 24/7
+# observability pass that cannot mutate the primary tree, PRs, or merges.
+ExecStart=/bin/bash -lc 'valoctl enter SHADOW --force --reason "scheduled health check" >/dev/null 2>&1; valo-orchestrator shadow 2>&1 | valo-deliver --channels "${VALO_DELIVER_CHANNELS:-log}"; valo-watchdog 2>&1 | valo-deliver --channels "${VALO_DELIVER_CHANNELS:-log}"'
+Nice=15

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VALO Edge Substrate Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "runtime_id",
+    "action",
+    "authority_effect",
+    "next_boundary",
+    "reasons",
+    "missing_capabilities",
+    "replay_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "valo.edge-substrate-decision.v1"
+    },
+    "status": {
+      "enum": [
+        "ADMISSIBLE",
+        "ADMISSIBLE_TO_EGRESS_GATE",
+        "ADMISSIBLE_TO_REHT",
+        "REFUSED"
+      ]
+    },
+    "runtime_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action": {
+      "enum": [
+        "observe",
+        "network_egress",
+        "actuate"
+      ]
+    },
+    "authority_effect": {
+      "const": "none"
+    },
+    "next_boundary": {
+      "enum": [
+        "observation",
+        "governed-egress",
+        "fresh-reht",
+        "repair-substrate-evidence"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "missing_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "replay_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
