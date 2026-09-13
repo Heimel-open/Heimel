@@ -1,0 +1,64 @@
+{
+  "schema": "relaion.legacy-migration.v1",
+  "canonical_product": "relAIon",
+  "legacy_names": ["Relygon"],
+  "policy": {
+    "historical_provenance_preserved": true,
+    "new_work_under_legacy_name": false,
+    "retroactive_promotion": false
+  },
+  "absorbed": [
+    {
+      "source": "PersonalAI-OS",
+      "source_ref": "origin/feat/relygon-asset-pool-cottage",
+      "source_commits": ["a89d781", "c87df59"],
+      "classification": "absorbed",
+      "canonical_paths": [
+        "src/paios/relaion_asset_pool.py",
+        "tests/test_relaion_asset_pool.py"
+      ],
+      "reason": "Valid governed proposal architecture with executable tests; no booking, access grant, payment, insurance bind, or execution bypass."
+    },
+    {
+      "source": "PersonalAI-OS",
+      "source_ref": "origin/relygon/device-compatibility-tiers",
+      "source_commits": ["0a8abfd", "d3d06d5"],
+      "classification": "absorbed",
+      "canonical_paths": ["docs/relaion/device-compatibility.md"],
+      "reason": "Still-valid provider and device compatibility architecture; terminology updated to canonical relAIon."
+    }
+  ],
+  "already_canonical_or_superseded": [
+    {
+      "source": "PersonalAI-OS",
+      "source_ref": "origin/rename/relaion",
+      "classification": "superseded",
+      "reason": "Partial rename branch; canonical relAIon docs already exist on feature/relaion-canonical-home."
+    },
+    {
+      "source": "website-deployer",
+      "source_ref": "origin/fix/relygon-product-identity-20260831",
+      "classification": "superseded",
+      "reason": "Product identity was subsequently migrated by existing relAIon commits; old branch is not copied."
+    }
+  ],
+  "provenance_only": [
+    {
+      "source": "synapse-lab",
+      "source_refs": [
+        "origin/codex/relygon-personal-handbook",
+        "origin/experiment/relygon-alpha-home"
+      ],
+      "classification": "provenance_only",
+      "reason": "Research and experimental material without sufficiently bound active relAIon intent; retain history, do not import blindly."
+    },
+    {
+      "source": "valo-kernel / valo-kernel-anchor / valo-platform",
+      "classification": "provenance_only",
+      "reason": "Historical Relygon references in commits; no active legacy working-tree material identified for absorption."
+    }
+  ],
+  "residual_decision": [
+    "Reactivation of experimental synapse-lab material requires explicit active product intent."
+  ]
+}
