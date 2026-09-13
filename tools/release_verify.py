@@ -149,7 +149,9 @@ def verify_package_metadata(package: dict[str, object]) -> dict[str, str]:
 
     wheel = tomllib.loads((package_path / "pyproject.toml").read_text(encoding="utf-8"))
     wheel_packages = wheel.get("tool", {}).get("hatch", {}).get("build", {}).get("targets", {}).get("wheel", {}).get("packages", [])
-    if f"src/{import_name}" not in wheel_packages:
+    setuptools_find = wheel.get("tool", {}).get("setuptools", {}).get("packages", {}).get("find", {})
+    uses_setuptools_src = setuptools_find.get("where") == ["src"]
+    if f"src/{import_name}" not in wheel_packages and not uses_setuptools_src:
         raise verification_error(f"wheel package does not expose {import_name}")
 
     repo_manifest = read_repo_manifest(package_path / "repo-manifest.yaml")

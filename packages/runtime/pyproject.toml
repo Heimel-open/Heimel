@@ -12,6 +12,8 @@ dependencies = [
     "cryptography>=41.0",
     "rfc8785>=0.1.4",
     "jsoncanon>=0.2.3",
+    "valo-reht>=1.1.0",
+    "veritas>=0.2.1",
 ]
 
 [tool.hatch.build.targets.wheel]

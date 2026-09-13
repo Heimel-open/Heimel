@@ -1,0 +1,4 @@
+name: heimel-kernel
+version: 0.2.0
+source: migrated canonical VALO kernel
+olav_included: false
