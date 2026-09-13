@@ -1,0 +1,18 @@
+{
+  "base_version": "0.2",
+  "additive_delta_version": "0.3",
+  "note": "v0.2.1 adds optional, fail-closed Governed Workspace lineage to the v0.2 chain. Legacy payloads remain valid. v0.3 remains an additive AgentBound-inspired delta and never supersedes v0.2 in place.",
+  "base_contract_count": 139,
+  "delta_contracts": [
+    "aaec-trajectory-context",
+    "authority-evaluation-fragment",
+    "execution-receipt",
+    "governance-replay-bundle",
+    "target-action-contract",
+    "task-authority-materialization"
+  ],
+  "dual_version_families": [
+    "execution-receipt"
+  ],
+  "base_revision": "0.2.1"
+}

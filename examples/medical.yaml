@@ -1,0 +1,36 @@
+# RACS v0.2 example action envelope
+#
+# Canonical refs-based envelope. Digests are deterministic sha256 bindings
+# generated for the example; real envelopes must bind the exact payload.
+{
+  "action_id": "ae-20260713-201",
+  "tenant_id": "tenant:health",
+  "action_type": "record_access",
+  "actor_ref": "actor:clinician-v1",
+  "target_ref": "patient-5541",
+  "target_digest": "sha256:0a12ade8c23e095fb90ad85df9f0618669c886daa085e7984be974109207ed0e",
+  "payload_digest": "sha256:5dc2dbc3577873bf9d26e3c7afd66c2f4203a3e8c9a1940566772c8e947c75d6",
+  "authority_grant_ref": "auth-20260713-201",
+  "delegation_chain_ref": "delegation:health",
+  "policy_ref": "policy-health-2026-v1",
+  "evidence_package_ref": "ev-20260713-201",
+  "purpose_ref": "purpose:care",
+  "environment_state_ref": "env-20260713",
+  "risk_context_ref": "risk-context:record-access",
+  "connector_id": "connector:20260713-201",
+  "capability": "health.record.read",
+  "consequence_class": "MEDIUM",
+  "reversibility": "COMPENSATABLE",
+  "created_at": "2026-07-13T10:30:00Z",
+  "expires_at": "2026-07-13T10:30:30Z",
+  "replay_nonce": "nonce-20260713-201-abcdef0123456789",
+  "idempotency_key": "idem-20260713-201-xyz",
+  "boundary_requirements": {
+    "required_types": [
+      "EXECUTION"
+    ],
+    "policy_ref": "policy-health-2026-v1",
+    "policy_digest": "sha256:63de49f98d92031d861519667f8d5f8afa6b60fa393aa77de984fce036bb6d06",
+    "fail_closed": true
+  }
+}

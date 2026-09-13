@@ -1,0 +1,125 @@
+{
+  "racs_jcs_1": "RFC 8785",
+  "digest_alg": "sha256",
+  "generated_by": "P0.2 golden-vector tooling (issue #991)",
+  "vectors": {
+    "action_envelope_v0.2": {
+      "payload": {
+        "action_id": "act-0001",
+        "tenant_id": "tenant-abc",
+        "action_type": "payment.transfer",
+        "actor_ref": "did:valo:actor-7",
+        "target_ref": "did:valo:vipps-acct-9",
+        "target_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "payload_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "authority_grant_ref": "ag-1",
+        "delegation_chain_ref": "dc-1",
+        "policy_ref": "pol-1",
+        "evidence_package_ref": "ep-1",
+        "purpose_ref": "purp-1",
+        "environment_state_ref": "env-1",
+        "risk_context_ref": "rc-1",
+        "connector_id": "connector-vipps",
+        "capability": "finance.pay",
+        "consequence_class": "HIGH",
+        "reversibility": "COMPENSATABLE",
+        "created_at": "2026-07-25T12:00:00Z",
+        "expires_at": "2026-07-25T12:05:00Z",
+        "replay_nonce": "abcdefghijklmnop",
+        "idempotency_key": "idem-0001",
+        "boundary_requirements": {
+          "required_types": [
+            "EXECUTION",
+            "DISCLOSURE"
+          ],
+          "policy_ref": "pol-1",
+          "policy_digest": "sha256:2346bf89746cfd262cfc6abe4d6c9075ec110928617b7d1bfc9e97948376d1c4",
+          "fail_closed": true
+        }
+      },
+      "payload_digest": "sha256:682e7701af1d68c8e696346f7a61f7a7fa990a8045303d03b318804ed9e39774",
+      "schema": "action-envelope-v0.2.schema.json"
+    },
+    "governance_evaluation_v0.2": {
+      "payload": {
+        "evaluation_id": "ge-1",
+        "action_id": "act-0001",
+        "action_envelope_digest": "sha256:22673bc5aa341850069d1ca12c347b2272db71ff3fe12f640e95129ae53d11b1",
+        "tenant_id": "tenant-abc",
+        "evaluator_id": "vaig-aarm",
+        "evaluator_version": "1.0.0",
+        "decision": "ALLOW",
+        "authority_status": "PRESENT_AND_VALID",
+        "policy_status": "PRESENT_AND_VALID",
+        "evidence_status": "PRESENT_AND_VALID",
+        "purpose_status": "PRESENT_AND_VALID",
+        "state_status": "PRESENT_AND_VALID",
+        "risk_status": "PRESENT_AND_VALID",
+        "boundary_assessment_binding": {
+          "assessment_ref": "assessment:boundary-crossing-v1",
+          "assessment_digest": "sha256:f986be8e1ebea6312d40fe60092b82476dd9a1f64f7e39b975618d66b6442ff9"
+        },
+        "evaluated_at": "2026-07-25T11:59:00Z",
+        "valid_until": "2026-07-25T12:04:00Z"
+      },
+      "payload_digest": "sha256:c332d5395a8202d55899f28c47319ca38c2c55a1f8a017c118663beee2e00e31",
+      "schema": "governance-evaluation-v0.2.schema.json"
+    },
+    "admissibility_determination_v0.2": {
+      "payload": {
+        "determination_id": "ad-1",
+        "action_id": "act-0001",
+        "action_envelope_digest": "sha256:22673bc5aa341850069d1ca12c347b2272db71ff3fe12f640e95129ae53d11b1",
+        "tenant_id": "tenant-abc",
+        "authority_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "delegation_chain_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "policy_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "evidence_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "purpose_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "state_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "evaluation_bindings": [
+          {
+            "evaluation_ref": "ge-1",
+            "evaluation_digest": "sha256:17b19648c6525e586878153127a63cb9a00a180a1212160cc16fb541e6578567"
+          }
+        ],
+        "boundary_assessment_binding": {
+          "assessment_ref": "assessment:boundary-crossing-v1",
+          "assessment_digest": "sha256:aaf8b7c9cd1f7a2326bf0f44d487583a1eea72ee31cf259991553f5659cdff79"
+        },
+        "state": "ADMISSIBLE",
+        "determined_at": "2026-07-25T12:00:00Z",
+        "valid_until": "2026-07-25T12:05:00Z",
+        "revocation_registry_ref": "rr-1"
+      },
+      "payload_digest": "sha256:3674d54c3b58d7e80e3b1616034e068d5a0c18a5f00738f04fb122ca983a2729",
+      "schema": "admissibility-determination-v0.2.schema.json"
+    },
+    "execution_receipt_v0.2": {
+      "payload": {
+        "execution_receipt_id": "er-1",
+        "execution_id": "ex-1",
+        "tenant_id": "tenant-abc",
+        "action_id": "act-0001",
+        "action_envelope_digest": "sha256:22673bc5aa341850069d1ca12c347b2272db71ff3fe12f640e95129ae53d11b1",
+        "clearance_id": "ad-1",
+        "clearance_digest": "sha256:d1f6b1df9ecd9d431e714f13f8a0375429963bea0c39192b44bd317c1387e065",
+        "commit_token_id": "ct-1",
+        "commit_token_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "connector_id": "connector-vipps",
+        "capability": "finance.pay",
+        "target_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "payload_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "started_at": "2026-07-25T12:00:30Z",
+        "completed_at": "2026-07-25T12:00:31Z",
+        "technical_outcome": "SUCCEEDED",
+        "provider_reference": "vipps-txn-xyz",
+        "response_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "reversal_status": "NOT_APPLICABLE",
+        "previous_receipt_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "payload_digest": "sha256:31fb25024d064d0692cebf8f15b20701e82f4db4214a1c3d01c9f7c9c4817883",
+      "schema": "execution-receipt-v0.2.schema.json"
+    }
+  }
+}

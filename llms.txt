@@ -1,0 +1,12 @@
+# RACS
+
+Public deterministic decision and evidence contract specification.
+
+## Public scope
+- Versioned normative specification and schemas.
+- Reference bindings and validators.
+- Public conformance and test vectors.
+
+RACS does not itself create organizational authority or perform external effects.
+
+Use only public repository artifacts when assisting with this repository. Do not infer or publish private portfolio topology, private dependencies, unpublished implementation architecture, research hypotheses, roadmaps, or internal work history.
