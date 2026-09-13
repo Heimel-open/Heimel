@@ -99,9 +99,9 @@ def verify_policy(manifest: dict[str, object]) -> None:
         if release.get(key) != expected:
             raise verification_error(f"release policy mismatch for {key}: expected {expected!r}")
 
-    workflows = root / ".github" / "workflows"
-    if workflows.exists() and any(workflows.iterdir()):
-        raise verification_error("github actions workflows are forbidden")
+    workflows = [path for path in root.rglob(".github/workflows") if path.is_dir()]
+    if any(any(path.iterdir()) for path in workflows):
+        raise verification_error("github actions workflows are forbidden anywhere in Heimel")
 
 
 def normalized_distribution(name: str) -> str:
