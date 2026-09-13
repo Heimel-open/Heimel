@@ -1,0 +1,103 @@
+{
+  "profile_version": "0.1",
+  "status": "draft",
+  "ownership": {
+    "authority_instrumentation_ip": "Elsa",
+    "aurora_lens_ip": "Margaret Stokes",
+    "adapter_contract": "VALO Research"
+  },
+  "vectors": [
+    {
+      "id": "authority-valid",
+      "framework": "authority-instrumentation",
+      "input": {
+        "assessment_id": "ai:1",
+        "provider_id": "authority-instrumentation",
+        "subject_id": "agent-1",
+        "mandate_ref": "mandate:1",
+        "scope": {"limit": 100},
+        "context": {},
+        "exposure": {"class": "low"},
+        "issued_at": "2026-08-07T04:00:00Z",
+        "valid_until": "2026-08-07T05:00:00Z",
+        "revoked": false,
+        "human_authority_ref": "authority:1",
+        "source_refs": ["policy:1"],
+        "fingerprint": "sha256:authority-valid"
+      },
+      "action": {"action_id": "action-1", "actor_id": "agent-1"},
+      "expected": {"preclusive": false, "review_required": false}
+    },
+    {
+      "id": "authority-revoked",
+      "framework": "authority-instrumentation",
+      "input": {
+        "assessment_id": "ai:2",
+        "provider_id": "authority-instrumentation",
+        "subject_id": "agent-1",
+        "mandate_ref": "mandate:1",
+        "scope": {},
+        "context": {},
+        "exposure": {},
+        "issued_at": "2026-08-07T04:00:00Z",
+        "valid_until": "2026-08-07T05:00:00Z",
+        "revoked": true,
+        "revocation_ref": "revocation:1",
+        "source_refs": [],
+        "fingerprint": "sha256:authority-revoked"
+      },
+      "action": {"action_id": "action-1", "actor_id": "agent-1"},
+      "expected": {"preclusive": true, "preclusive_reason": "AUTHORITY_REVOKED"}
+    },
+    {
+      "id": "aurora-admit",
+      "framework": "aurora-lens",
+      "input": {
+        "assessment_id": "aurora:1",
+        "provider_id": "aurora-lens",
+        "subject_ref": "case:1",
+        "standing": "established",
+        "evidence_admission": "admit",
+        "evidence_refs": ["evidence:1"],
+        "state_ref": "state:1",
+        "unresolved_refs": [],
+        "contradiction_refs": [],
+        "communication_admissible": true,
+        "non_admit": false,
+        "binding_scope": "irreversible_downstream",
+        "issued_at": "2026-08-07T04:00:00Z",
+        "valid_until": "2026-08-07T05:00:00Z",
+        "fingerprint": "sha256:aurora-admit"
+      },
+      "action": {"action_id": "action-2", "reversibility": "irreversible"},
+      "expected": {"preclusive": false, "review_required": false}
+    },
+    {
+      "id": "aurora-non-admit-irreversible",
+      "framework": "aurora-lens",
+      "input": {
+        "assessment_id": "aurora:2",
+        "provider_id": "aurora-lens",
+        "subject_ref": "case:1",
+        "standing": "unresolved",
+        "evidence_admission": "non_admit",
+        "evidence_refs": [],
+        "state_ref": "state:2",
+        "unresolved_refs": ["reference:x"],
+        "contradiction_refs": [],
+        "communication_admissible": null,
+        "non_admit": true,
+        "binding_scope": "irreversible_downstream",
+        "issued_at": "2026-08-07T04:00:00Z",
+        "valid_until": "2026-08-07T05:00:00Z",
+        "fingerprint": "sha256:aurora-non-admit"
+      },
+      "action": {"action_id": "action-2", "reversibility": "irreversible"},
+      "expected": {
+        "preclusive": true,
+        "preclusive_reason": "AURORA_NON_ADMIT",
+        "review_required": true
+      }
+    }
+  ]
+}
