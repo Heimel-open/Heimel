@@ -117,7 +117,7 @@ Heimel-open/Heimel
     └── function-fabric
 ```
 
-The remaining public-release track covers VAIG and MAL clean-room reference surfaces, SDK/CLI/verifier tooling, integration surfaces and selected domain packs. Immutable tagged artifacts and a coherent public end-to-end installation path remain open gates. Private production control-plane code is not implied by this roadmap.
+The remaining public-release track covers VAIG and MAL clean-room reference surfaces, SDK/CLI/verifier tooling, integration surfaces and selected domain packs. The three reference-package tags are now published; registry artifacts and a coherent public end-to-end installation path remain open gates. Private production control-plane code is not implied by this roadmap.
 
 ## Design principles
 

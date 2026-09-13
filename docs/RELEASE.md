@@ -24,8 +24,12 @@ measured evidence, not permission to publish.
 
 ## Publication handoff
 
+The package tags declared in `release.yaml` are published and all point to the
+reviewed commit containing the exact package sources. The remaining handoff is
+registry publication and post-upload verification.
+
 An owner with registry credentials must review the receipt, push the immutable
-package tags declared in `release.yaml`, upload the artifacts in publish order,
+upload the artifacts in publish order,
 and then verify the exact versions from the registry in a clean environment.
 No credentials or upload authority belong in this repository.
 
