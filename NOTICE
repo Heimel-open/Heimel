@@ -1,0 +1,14 @@
+PEACE Protocol
+Copyright 2026 Njål Gaute Solland
+
+This repository contains the public PEACE Protocol specification, schemas, conformance vectors and related reference material.
+
+Acknowledgements
+
+Margaret Stokes contributed conceptual critique and distinctions through design discussions and document exchanges that materially sharpened PEACE v0, including the treatment of candidate material, admissibility, accepted/rejected/unresolved admission outcomes, standing, the distinction between proposal and decision, the distinction between evidence and authoritative state, and the distinction between a replica and the sovereign actor/domain. Attribution here recognizes conceptual contribution and does not imply ownership of general axioms, ordinary terminology, the protocol as a whole, or any contributor's pre-existing work.
+
+The Apache License 2.0 applies to covered repository content. The licence does not grant permission to use PEACE logos, certification marks or branding in a way that implies official certification, endorsement or sponsorship.
+
+Compatibility, conformance and certification terminology is governed by TRADEMARKS.md.
+
+Publication of this repository does not constitute certification, legal advice, regulatory approval, operational assurance or authorization for any real-world action.
