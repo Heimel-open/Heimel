@@ -47,3 +47,8 @@ effect:
 python -m pip install "valo-sdk==0.1.3"
 valo-contracts demo
 ```
+
+The `heimel-boundary` package provides the minimal runnable consequence-boundary
+reference: local authority state issues a permit for one exact effect, the
+gateway rejects stale, expired, mismatched and replayed permits, and a receipt
+records the local simulated outcome. It never calls an external effect.
