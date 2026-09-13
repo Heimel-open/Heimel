@@ -242,10 +242,32 @@ def build_and_test(packages: list[dict[str, str]], timestamp: int) -> list[dict[
         build_python = create_venv(temporary_path / "build-venv")
         run([str(build_python), "-m", "pip", "install", "--disable-pip-version-check", "build==1.3.0", "pytest>=8,<9"])
 
+        # Test the source tree before building it.  Installing the packages as
+        # editable projects here is deliberately avoided: Function Fabric has
+        # internal package dependencies which are not expected to be available
+        # from PyPI until the publish-order test below installs our artifacts.
+        run(
+            [
+                str(build_python),
+                "-m",
+                "pip",
+                "install",
+                "--disable-pip-version-check",
+                "pydantic>=2.6,<3",
+                "rfc8785>=0.1.4",
+                "hypothesis>=6.100",
+            ]
+        )
+        source_path = os.pathsep.join(
+            str(root / package["path"] / "src") for package in packages
+        )
+        test_environment = environment | {"PYTHONPATH": source_path}
         for package in packages:
             package_path = root / package["path"]
-            run([str(build_python), "-m", "pip", "install", "--disable-pip-version-check", "-e", f"{package_path}[dev]"])
-            run([str(build_python), "-m", "pytest", "-q", str(package_path / "tests")])
+            run(
+                [str(build_python), "-m", "pytest", "-q", str(package_path / "tests")],
+                env=test_environment,
+            )
             run([str(build_python), "-m", "build", "--outdir", str(dist_dir), str(package_path)], env=environment)
 
         artifacts = sorted(path for path in dist_dir.iterdir() if path.is_file())
@@ -274,8 +296,30 @@ def build_and_test(packages: list[dict[str, str]], timestamp: int) -> list[dict[
             raise verification_error(f"artifact set mismatch: {observed}")
 
         install_python = create_venv(temporary_path / "install-venv")
-        wheels = [str(path) for path in artifacts if path.suffix == ".whl"]
-        run([str(install_python), "-m", "pip", "install", "--disable-pip-version-check", *wheels])
+        wheels_by_package = {
+            package["distribution"]: next(
+                path
+                for path in artifacts
+                if path.suffix == ".whl"
+                and normalized_distribution(artifact_metadata(path)[0])
+                == normalized_distribution(package["distribution"])
+            )
+            for package in packages
+        }
+        for package in packages:
+            # --no-index makes this a real proof that the exact locally-built
+            # artifacts, in manifest publish order, satisfy dependencies.
+            run(
+                [
+                    str(install_python),
+                    "-m",
+                    "pip",
+                    "install",
+                    "--disable-pip-version-check",
+                    "--no-index",
+                    str(wheels_by_package[package["distribution"]]),
+                ]
+            )
         imports = ";".join(f"import {item['import']}" for item in packages)
         run([str(install_python), "-c", imports])
 
