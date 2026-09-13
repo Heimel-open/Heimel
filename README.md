@@ -14,6 +14,8 @@ Open infrastructure for deciding whether intent has the authority to become cons
 <a href="docs/ARCHITECTURE.md">Architecture</a>
 &nbsp; · &nbsp;
 <a href="docs/DEMOS.md">All demos</a>
+&nbsp; · &nbsp;
+<a href="docs/UNIVERSE.md">Universe map</a>
 </p>
 
 ---
@@ -98,7 +100,7 @@ HEIMEL now publishes curated Apache-2.0 reference packages while canonical runti
 - **[Function Fabric](packages/function-fabric)** — provider-neutral governed Function composition
 - **[REHT Standard](https://github.com/nsolland/reht-standard)** — fresh authority at consequence time
 - **[RACS](https://github.com/nsolland/Racs)** — deterministic decision/action binding
-- **[VALO Gateway](https://github.com/nsolland/valo-gateway)** — current public reference enforcement infrastructure; moving toward HEIMEL Gateway
+- **Gateway reference** — bounded enforcement reference; canonical runtime remains outside this distribution
 - **[Veritas](https://github.com/nsolland/Veritas)** — verifiable consequence evidence
 - **[Open Agent Contract](https://github.com/nsolland/open-agent-contract)** — portable governed action contracts
 
@@ -106,6 +108,11 @@ Adjacent public work remains separate from the HEIMEL runtime chain:
 
 - **[PEACE Protocol](https://github.com/nsolland/peace-protocol)** — keeps authority and authoritative state in the governed domain while models, agents, devices and providers remain replaceable
 - **[ACE economics](https://github.com/nsolland/opensource/blob/main/reports/01-the-ace-economy.md)** — measures scarce human evaluation and authority attention around governed completion; ACE is an economic model, not a protocol or source of authority
+
+The public universe is organized by category: orientation, seeds, principles,
+theses, claims and evidence, research, reports and books, protocols and
+standards, reference implementations, experiments, discussions and status.
+See the [universe map](docs/UNIVERSE.md).
 
 Current public layout:
 
