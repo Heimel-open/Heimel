@@ -114,6 +114,9 @@ theses, claims and evidence, research, reports and books, protocols and
 standards, reference implementations, experiments, discussions and status.
 See the [universe map](docs/UNIVERSE.md).
 
+Start with the [research briefs](research/README.md) for the current
+source-grounded research layer.
+
 Current public layout:
 
 ```text
