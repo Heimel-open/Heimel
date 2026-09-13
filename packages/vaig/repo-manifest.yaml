@@ -1,0 +1,21 @@
+name: valo-vaig
+version: 0.1.0
+layer: integrity-reference
+description: Portable VAIG levels, gate decisions, policy and receipt contracts
+license: Apache-2.0
+
+source:
+  repository: nsolland/VAIG
+  commit: 66e16a48a12ef24d65f3751f2b8055610ed37b72
+  paths:
+    - vaig_core/levels.py
+    - vaig_core/decisions.py
+    - vaig_core/policy.py
+    - vaig_core/receipt.py
+  status: rebuilt-reference-slice
+
+boundary:
+  model_runtime: false
+  deployment: false
+  persistence_implementation: false
+  grants_execution_authority: false

@@ -49,6 +49,13 @@ packages:
     tag: valo-c-mcp-v0.1.0
     publish_order: 5
 
+  - distribution: valo-vaig
+    import: valo_vaig
+    version: 0.1.0
+    path: packages/vaig
+    tag: valo-vaig-v0.1.0
+    publish_order: 6
+
 required_local_gates:
   - manifest versions match package metadata
   - package tests pass
@@ -70,6 +77,7 @@ publication:
     - valo-function-fabric
     - valo-mal
     - valo-c-mcp
+    - valo-vaig
   post_upload:
     - resolve exact versions from pypi
     - install exact versions into a clean virtual environment
