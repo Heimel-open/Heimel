@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/model-provider-receipt.schema.json",
+  "title": "Model Provider Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "endpoint_identity",
+    "model_id",
+    "request_digest",
+    "response_digest",
+    "http_status",
+    "started_at_ns",
+    "completed_at_ns",
+    "latency_ns"
+  ],
+  "properties": {
+    "contract": {"const": "valo.openai-compatible.chat.v1"},
+    "endpoint_identity": {"type": "string", "pattern": "^https?://"},
+    "model_id": {"type": "string", "minLength": 1},
+    "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "response_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "http_status": {"type": "integer", "minimum": 100, "maximum": 599},
+    "started_at_ns": {"type": "integer", "minimum": 0},
+    "completed_at_ns": {"type": "integer", "minimum": 0},
+    "latency_ns": {"type": "integer", "minimum": 0}
+  }
+}

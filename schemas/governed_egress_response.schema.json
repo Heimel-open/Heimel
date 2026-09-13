@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.example/schemas/governed_egress_response.schema.json",
+  "title": "VALO Governed Egress Response v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "request_id", "mission_id", "request_digest", "response"],
+  "properties": {
+    "contract": {"const": "valo.governed-egress.response.v1"},
+    "request_id": {"type": "string", "minLength": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status_code",
+        "header_names",
+        "body_sha256",
+        "body_size_bytes",
+        "body_sample_b64",
+        "sample_truncated"
+      ],
+      "properties": {
+        "status_code": {"type": "integer", "minimum": 100, "maximum": 599},
+        "header_names": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "body_size_bytes": {"type": "integer", "minimum": 0},
+        "content_type": {"type": ["string", "null"]},
+        "content_encoding": {"type": ["string", "null"]},
+        "body_sample_b64": {"type": "string", "contentEncoding": "base64"},
+        "sample_truncated": {"type": "boolean"}
+      }
+    }
+  }
+}

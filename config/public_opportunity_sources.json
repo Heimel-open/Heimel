@@ -1,0 +1,30 @@
+{
+  "sources": [
+    {
+      "name": "mercor-experts",
+      "lane": "ai_evals",
+      "url": "https://www.mercor.com/experts/",
+      "adapter": "mercor_public_html",
+      "credentials_required": false,
+      "mode": "read_only",
+      "enabled": true
+    },
+    {
+      "name": "whop-content-rewards",
+      "lane": "clipping",
+      "url": "https://whop.com/contentrewards/",
+      "adapter": "whop_content_rewards_public_html",
+      "credentials_required": false,
+      "mode": "read_only",
+      "enabled": true
+    }
+  ],
+  "network_boundary": "All HTTP retrieval must use the governed connector path; adapters parse supplied GET responses and do not open sockets themselves.",
+  "effect_boundary": {
+    "apply": false,
+    "publish": false,
+    "message": false,
+    "purchase": false,
+    "spend": false
+  }
+}

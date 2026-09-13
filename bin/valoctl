@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+"""valoctl — global factory control surface (human-in-command).
+
+Owns the single source of truth for factory mode:
+  NORMAL | MAINTENANCE | INCIDENT_HOLD
+
+Every write-capable agent action MUST re-check this token immediately before
+executing (not only at startup). Pausing a cron job is NOT enough — a stale,
+already-queued run can still mutate the primary tree. This token is the
+transactional fence.
+
+Exit codes:
+  0 = success
+  2 = operation refused (e.g. write attempted while not NORMAL)
+"""
+import argparse
+import json
+import sys
+import os
+from datetime import datetime, timedelta, timezone
+
+STATE_FILE = os.path.expanduser("~/.valo/state.json")
+PRIMARY_REPO = os.path.expanduser("~/valo-platform")
+
+# NORMAL: full autonomous write runs permitted.
+# MAINTENANCE: no new write runs; queued drained; active stopped at safe checkpoint.
+# INCIDENT_HOLD: same as MAINTENANCE + highest alert; human must release.
+# SHADOW: analyse/observe ONLY. May run QC, classify, simulate claims, create
+#         local isolated runs, produce recommendations. CANNOT push, open/close
+#         PRs, merge, change labels/assignees, or write remote state. Intermediate
+#         state between INCIDENT_HOLD and NORMAL for commissioning.
+VALID_MODES = ("NORMAL", "MAINTENANCE", "INCIDENT_HOLD", "SHADOW")
+
+
+def _now():
+    return datetime.now(timezone.utc).astimezone().isoformat()
+
+
+def read_state():
+    try:
+        with open(STATE_FILE) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        # Default safe: if no state file, treat as INCIDENT_HOLD so nothing
+        # autonomous can run until a human explicitly sets NORMAL.
+        return {"version": 1, "mode": "INCIDENT_HOLD", "set_at": _now(),
+                "set_by": "default", "reason": "no state file",
+                "cancel_queued": False, "drain_running": False}
+
+
+def write_state(state):
+    os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    with open(STATE_FILE, "w") as f:
+        json.dump(state, f, indent=2)
+
+
+def cmd_status(args):
+    s = read_state()
+    print(f"Mode: {s.get('mode')}")
+    print(f"Set at: {s.get('set_at')}")
+    print(f"By: {s.get('set_by')}")
+    print(f"Reason: {s.get('reason', '')}")
+    print(f"cancel_queued: {s.get('cancel_queued')}")
+    print(f"drain_running: {s.get('drain_running')}")
+    return 0
+
+
+def cmd_enter(args):
+    s = read_state()
+    if s.get("mode") != "NORMAL" and not args.force:
+        print(f"REFUSED: already in {s.get('mode')}. Use --force to override.",
+              file=sys.stderr)
+        return 2
+    s["version"] = 1
+    s["mode"] = args.mode
+    s["set_at"] = _now()
+    s["set_by"] = args.by or "pm-solland"
+    s["reason"] = args.reason or f"entered {args.mode} via valoctl"
+    s["cancel_queued"] = args.cancel_queued
+    s["drain_running"] = args.drain_running
+    write_state(s)
+    print(f"ENTERED {args.mode}. cancel_queued={args.cancel_queued} "
+          f"drain_running={args.drain_running}")
+    return 0
+
+
+def cmd_exit(args):
+    s = read_state()
+    s["mode"] = "NORMAL"
+    s["set_at"] = _now()
+    s["set_by"] = args.by or "pm-solland"
+    s["reason"] = args.reason or "exited maintenance/hold via valoctl"
+    s["cancel_queued"] = False
+    s["drain_running"] = False
+    write_state(s)
+    print("EXITED -> NORMAL. Factory may resume autonomous write runs.")
+    return 0
+
+
+def cmd_check(args):
+    """Used by agents immediately before a write action.
+    Returns 0 if write is permitted, 2 if refused.
+    Writes a machine-readable verdict to stdout.
+    Distinct flags for the four capabilities so each duty-separated agent
+    can gate on the precise authority it needs (not just a binary)."""
+    s = read_state()
+    mode = s.get("mode")
+    write_allowed = (mode == "NORMAL")
+    analysis_allowed = (mode in ("NORMAL", "SHADOW"))
+    remote_write_allowed = (mode == "NORMAL")
+    verdict = {
+        "mode": mode,
+        "write_allowed": write_allowed,
+        "analysis_allowed": analysis_allowed,
+        "remote_write_allowed": remote_write_allowed,
+        "checked_at": _now(),
+    }
+    print(json.dumps(verdict))
+    return 0 if write_allowed else 2
+
+
+def main():
+    p = argparse.ArgumentParser(prog="valoctl")
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    sp = sub.add_parser("status", help="show current factory mode")
+    sp.set_defaults(func=cmd_status)
+
+    ep = sub.add_parser("enter", help="enter MAINTENANCE or INCIDENT_HOLD")
+    ep.add_argument("mode", choices=VALID_MODES[1:])  # not NORMAL
+    ep.add_argument("--reason", default=None)
+    ep.add_argument("--by", default=None)
+    ep.add_argument("--cancel-queued", action="store_true", default=True)
+    ep.add_argument("--no-cancel-queued", dest="cancel_queued",
+                    action="store_false")
+    ep.add_argument("--drain-running", action="store_true", default=True)
+    ep.add_argument("--no-drain-running", dest="drain_running",
+                    action="store_false")
+    ep.add_argument("--force", action="store_true")
+    ep.set_defaults(func=cmd_enter)
+
+    xp = sub.add_parser("exit", help="return to NORMAL")
+    xp.add_argument("--reason", default=None)
+    xp.add_argument("--by", default=None)
+    xp.set_defaults(func=cmd_exit)
+
+    cp = sub.add_parser("check", help="agent pre-write gate (exit 0=allow,2=deny)")
+    cp.set_defaults(func=cmd_check)
+
+    args = p.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

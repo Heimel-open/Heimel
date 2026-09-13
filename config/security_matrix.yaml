@@ -1,0 +1,70 @@
+security_matrix_version: 1
+
+# External catalogs are evidence vocabularies. VALO components retain enforcement authority.
+catalogs:
+  - SAIL-2.0
+  - ISO-IEC-42001
+  - EU-AI-Act
+  - NIST-AI-RMF
+  - OWASP-Agentic
+  - DASF
+
+sensitive_paths:
+  authority:
+    - "**/reht/**"
+    - "**/racs/**"
+    - "**/vaig/**"
+    - "**/authority/**"
+    - "**/policy/**"
+  execution:
+    - "**/runtime/**"
+    - "**/executor/**"
+    - "**/sandbox/**"
+    - "**/tools/**"
+    - "**/mcp/**"
+  identity_and_secrets:
+    - "**/identity/**"
+    - "**/auth/**"
+    - "**/secrets/**"
+    - "**/*credential*"
+  memory_and_context:
+    - "**/memory/**"
+    - "**/rag/**"
+    - "**/prompts/**"
+  delivery:
+    - ".github/workflows/**"
+    - "**/deploy/**"
+    - "**/migration/**"
+
+required_evidence:
+  default:
+    - targeted_tests
+    - regression_tests
+  authority:
+    - authority_non_broadening
+    - delegation_narrowing
+    - action_reference_binding
+    - human_step_up_test
+  execution:
+    - per_action_authorization
+    - deny_and_halt_tests
+    - sandbox_escape_test
+    - execution_receipt_test
+  identity_and_secrets:
+    - workload_identity_test
+    - secret_scan
+    - least_privilege_test
+  memory_and_context:
+    - prompt_injection_test
+    - memory_poisoning_test
+    - provenance_test
+  delivery:
+    - workflow_permission_review
+    - rollback_test
+
+manifest:
+  path: security/evidence.yaml
+  required_for_sensitive_changes: true
+  allowed_statuses:
+    - PASS
+    - NOT_APPLICABLE

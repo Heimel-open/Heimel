@@ -1,0 +1,49 @@
+{
+  "schema": "valo.serena-semantic-adapter.v1",
+  "status": "canonical",
+  "provider": "oraios/serena",
+  "validated_release": "v1.7.0",
+  "validated_upstream_commit": "949a27ef1e5fda1a6e7b561e777bcece345c6ffd",
+  "role": "replaceable_semantic_code_intelligence",
+  "transport": "stdio",
+  "context": "ide",
+  "modes": ["no-memories"],
+  "dashboard": false,
+  "project_scope": "single_governed_workspace",
+  "sandbox": {
+    "required": true,
+    "preferred_provider": "CubeSandbox",
+    "attestation_env": "VALO_SANDBOX_ATTESTED"
+  },
+  "capabilities": {
+    "allowed": [
+      "symbol_retrieval",
+      "reference_lookup",
+      "diagnostics",
+      "symbolic_editing",
+      "symbol_rename",
+      "safe_delete",
+      "backend_specific_refactoring"
+    ],
+    "forbidden": [
+      "remote_http_server",
+      "machine_global_configuration",
+      "persistent_authoritative_memory",
+      "production_credentials",
+      "direct_external_effects",
+      "authority_decisions"
+    ]
+  },
+  "memory": {
+    "enabled": false,
+    "authoritative": false,
+    "rule": "Serena memory, cache and onboarding artifacts are context only and never governed state or authority."
+  },
+  "execution": {
+    "require_workspace_root": true,
+    "strip_ambient_credentials": true,
+    "external_effect_path": "independent_qc -> fresh_authority -> VAIG -> reht -> RACS -> PEP -> receipt",
+    "no_direct_effect_path": true
+  },
+  "replacement_rule": "Serena may be replaced without changing Factory governance or execution-authority contracts."
+}

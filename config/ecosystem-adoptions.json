@@ -1,0 +1,286 @@
+{
+  "schema": "valo.ecosystem-adoptions.v1",
+  "version": "1.5.0",
+  "status": "canonical",
+  "canonical_rule": "External products are replaceable capability providers or design signals. They never become authority sources and never redefine VALO layer ownership.",
+  "signals": [
+    {
+      "id": "meta-muse-code",
+      "source": "Meta Muse Code",
+      "source_url": "https://research.meta.ai/blog/introducing-muse-code-and-muse-spark-1-2",
+      "observed_capabilities": [
+        "terminal_native_worker",
+        "long_horizon_execution",
+        "parallel_subagents",
+        "persistent_activity_log",
+        "resume_after_failure"
+      ],
+      "adopt_as": "provider_neutral_execution_worker_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "isolated_worktree",
+        "bounded_mission",
+        "explicit_owned_files",
+        "append_only_activity_evidence",
+        "provider_receipt",
+        "independent_qc",
+        "no_self_attestation"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "optional_provider_after_conformance"
+    },
+    {
+      "id": "copilotkit-channels",
+      "source": "CopilotKit Channels SDK",
+      "source_url": "https://www.copilotkit.ai/channels",
+      "observed_capabilities": [
+        "channel_normalization",
+        "slack_adapter",
+        "teams_adapter",
+        "durable_thread_mapping",
+        "native_approval_ui"
+      ],
+      "adopt_as": "provider_neutral_channel_adapter_pattern",
+      "owner_repo": "nsolland/valo-gateway",
+      "requirements": [
+        "channel_identity_is_evidence_only",
+        "approval_ui_is_evidence_only",
+        "durable_thread_state_is_non_authoritative",
+        "consequence_bearing_actions_require_execution_context",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "pattern_adoption_no_required_sdk_dependency"
+    },
+    {
+      "id": "shieldstral",
+      "source": "Shieldstral",
+      "source_url": "https://arxiv.org/abs/2607.25857",
+      "observed_capabilities": [
+        "policy_adaptive_safety_classification",
+        "text_safety",
+        "multimodal_safety",
+        "small_specialized_classifier"
+      ],
+      "adopt_as": "policy_safety_instrument_pattern",
+      "owner_repo": "nsolland/VAIG",
+      "requirements": [
+        "classifier_output_is_measurement",
+        "missing_measurement_is_not_zero_risk",
+        "model_and_policy_identity_are_evidence",
+        "instrument_never_authorizes_execution",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "optional_instrument_adapter"
+    },
+    {
+      "id": "rippling-ai-spend-console",
+      "source": "Rippling AI Spend Console",
+      "source_url": "https://www.rippling.com/platform/ai/ai-spend-console",
+      "observed_capabilities": [
+        "cross_provider_ai_spend",
+        "team_and_role_attribution",
+        "business_metric_correlation",
+        "roi_observability"
+      ],
+      "adopt_as": "ace_economic_observability_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "measure_cost_of_cognition",
+        "measure_positive_time_value",
+        "measure_opportunity_cost",
+        "measure_rework_and_technical_debt",
+        "bind_cost_to_verified_business_outcome",
+        "economics_never_grants_authority"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "native_valo_telemetry_no_required_vendor_dependency"
+    },
+    {
+      "id": "annotate-screen-recording-prompts",
+      "source": "Annotate screen-recording-as-prompt pattern",
+      "source_url": "https://www.producthunt.com/",
+      "observed_capabilities": [
+        "screen_recording_intake",
+        "visual_context_capture",
+        "annotation",
+        "agent_prompt_handoff"
+      ],
+      "adopt_as": "multimodal_work_intake_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "capture_digest",
+        "expected_behavior",
+        "observed_behavior",
+        "timestamped_annotations",
+        "artifact_refs_in_work_contract",
+        "captured_media_is_evidence_not_authority"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "tool_agnostic_intake_contract"
+    },
+    {
+      "id": "bland-conversational-operations",
+      "source": "Bland AI",
+      "source_url": "https://www.bland.ai/product",
+      "observed_capabilities": [
+        "production_trace_triage",
+        "scenario_and_historical_regression",
+        "node_level_testbed",
+        "draft_version_release_separation",
+        "canary_and_rollback",
+        "agent_generated_fix_and_verify",
+        "outcome_classification",
+        "persistent_conversation_memory",
+        "omnichannel_agent_projection"
+      ],
+      "adopt_as": "governed_conversational_operations_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "production_failures_become_digest_bound_regression_fixtures",
+        "candidate_behavior_has_stable_version_before_evaluation",
+        "provider_test_pass_is_evidence_not_activation",
+        "canary_and_rollback_bind_exact_version_scope_and_receipts",
+        "fixing_worker_cannot_self_attest_success",
+        "independent_qc_required_before_promotion",
+        "provider_outcome_label_requires_independent_outcome_evidence_for_roi",
+        "persistent_memory_is_context_not_mandate",
+        "memory_never_revives_expired_authority",
+        "channel_projection_never_widens_authority"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "pattern_adoption_with_optional_bland_runtime_via_valo_gateway"
+    },
+    {
+      "id": "lifeos-work-os",
+      "source": "LifeOS",
+      "source_url": "https://github.com/danielmiessler/LifeOS",
+      "observed_capabilities": [
+        "current_state_to_ideal_state_hill_climbing",
+        "persistent_memory",
+        "skill_and_capability_routing",
+        "harness_agnostic_operation",
+        "self_improvement_loop",
+        "work_and_life_context",
+        "discovery_and_harvest_pattern"
+      ],
+      "adopt_as": "governed_work_os_convergence_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "current_state_and_ideal_state_are_explicit_artifacts",
+        "convergence_is_measured_not_assumed",
+        "persistent_memory_is_context_and_evidence_not_mandate",
+        "capability_routing_is_provider_neutral",
+        "high_impact_judgment_prefers_independent_provider",
+        "harvest_discovery_outputs_proposals_not_changes",
+        "verify_and_learn_require_observed_outcome",
+        "self_improvement_enters_factory_as_new_build_order_or_observation",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "pattern_adoption_no_required_lifeos_runtime_dependency"
+    },
+    {
+      "id": "sidekick-frontline-operations",
+      "source": "Sidekick (YC S26)",
+      "source_url": "https://www.ycombinator.com/companies/textsidekick",
+      "observed_capabilities": [
+        "zero_friction_frontline_text",
+        "photo_and_voice_intake",
+        "company_knowledge_answers",
+        "manager_escalation_and_learning",
+        "work_order_creation_and_routing",
+        "existing_system_read_write",
+        "industrial_plc_scada_integration",
+        "tribal_knowledge_capture"
+      ],
+      "adopt_as": "governed_frontline_work_os_pattern",
+      "owner_repo": "nsolland/valo-operator",
+      "requirements": [
+        "frontline_channel_identity_is_evidence_only",
+        "text_photo_voice_normalize_to_provider_neutral_intake",
+        "read_answers_require_provenance_and_freshness",
+        "insufficient_evidence_escalates_or_abstains",
+        "captured_human_answer_is_knowledge_candidate_not_truth",
+        "consequence_bearing_work_routes_to_registered_function",
+        "existing_system_credentials_are_transport_not_authority",
+        "plc_scada_write_requires_fresh_reht_or_micro_reht_at_execution_boundary",
+        "execution_success_requires_observed_postcondition_and_receipt",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "pattern_adoption_no_required_sidekick_runtime_dependency"
+    },
+    {
+      "id": "deja-vu-experience-memory",
+      "source": "deja-vu",
+      "source_url": "https://github.com/vshulcz/deja-vu",
+      "observed_capabilities": [
+        "retroactive_agent_session_indexing",
+        "cross_agent_mcp_recall",
+        "file_session_blame",
+        "cross_provider_handoff",
+        "local_first_memory",
+        "ingest_redaction",
+        "recall_audit_log"
+      ],
+      "adopt_as": "factory_experience_memory_retrieval_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "canonical_experience_record_is_provider_neutral",
+        "transcript_is_context_not_truth",
+        "bind_recall_to_sha_pr_test_receipt_or_decision_when_available",
+        "freshness_and_supersession_are_explicit",
+        "stale_or_superseded_memory_is_not_injected",
+        "cross_repo_memory_requires_independent_verification",
+        "raw_recall_content_is_not_persisted_in_valo_receipts",
+        "memory_never_creates_or_revives_authority",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "optional_local_adapter_no_required_deja_vu_runtime_dependency"
+    },
+    {
+      "id": "google-adk-long-horizon",
+      "source": "Google ADK Long Horizon Harness",
+      "source_url": "https://github.com/google/adk-samples/tree/main/core/python/long-horizon-harness",
+      "source_commit": "f9f7e2124b37426a104e54ec0ac93e83cdf3d9f5",
+      "observed_capabilities": [
+        "resumable_sessions",
+        "isolated_child_contexts",
+        "background_judge_fork",
+        "memory_compaction",
+        "sandbox_lifecycle",
+        "scheduled_long_horizon_execution"
+      ],
+      "adopt_as": "provider_neutral_long_horizon_harness_pattern",
+      "owner_repo": "nsolland/valo-factory",
+      "requirements": [
+        "checkpoint_before_boundary_crossing",
+        "completed_side_effects_never_replayed_automatically",
+        "ambiguous_prepared_actions_require_reconciliation",
+        "child_contexts_have_isolated_sandboxes_and_owned_files",
+        "judge_outputs_are_evidence_only",
+        "memory_compaction_preserves_evidence_refs",
+        "every_consequence_bearing_action_requires_fresh_vaig_reht_racs_binding",
+        "reht_remains_final_authorization_boundary"
+      ],
+      "authority_effect": "none",
+      "dependency_policy": "pattern_adoption_no_google_adk_or_vertex_dependency"
+    }
+  ],
+  "global_invariants": [
+    "No external provider or SDK creates authority.",
+    "A channel approval is input evidence and never an execution permit by itself.",
+    "A classifier score is evaluation evidence and never an authorization decision.",
+    "A screen recording or prompt artifact is work evidence and never authority.",
+    "Provider test, release, canary, outcome or memory state never grants execution authority.",
+    "Persistent Work OS memory, ideal-state definitions and self-improvement proposals never grant authority.",
+    "Frontline channel identity, captured tribal knowledge and provider credentials never grant authority.",
+    "Recalled agent transcripts are context/evidence only and must yield to current code, tests, policy, receipts, freshness and supersession state.",
+    "Provider-generated fixes require independent verification before promotion.",
+    "Provider swaps must not require governance-code changes.",
+    "REHT remains the sole final authorization boundary for consequence-bearing execution."
+  ]
+}

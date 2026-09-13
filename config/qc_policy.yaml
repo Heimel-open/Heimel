@@ -1,0 +1,80 @@
+# qc_policy.yaml — versioned, machine-readable QC policy (qc-v2)
+# QC-agent runs these ports and returns a head-SHA-bound signed attestation.
+qc_policy_version: 2
+
+ports:
+  bounded_diff:
+    forbid_deleted_files: true
+    max_deleted_lines: 20
+    forbid_force_push: true
+
+  canonical_integrity:
+    protected_symbols:
+      - RACSDecision
+      - CubeSandboxExecutionSubstrate
+      - ActionCaseRecord
+    forbid_symbol_removal: true
+    forbid_symbol_rename: true
+
+  overlap:
+    require_no_duplicate_implementation: true
+    forbid_reimplemented_existing_symbol: true
+
+  verification:
+    require_targeted_tests: true
+    require_regression_tests: true
+    require_compile: true
+
+  security_matrix:
+    enabled: true
+    policy: security-matrix-v1
+    fail_closed: true
+    require_evidence_for_sensitive_changes: true
+
+  authority:
+    forbid_authority_broadening: true
+    forbid_automatic_execution: true
+    forbid_merge_authority: true
+
+  claims:
+    forbid_claimed_json_diff: true
+    forbid_other_runtime_state_in_diff: true
+
+conflict_rules:
+  claimed.json:
+    resolution: use_main
+    reason: runtime coordination state must not be versioned
+  generated_files:
+    resolution: regenerate
+  canonical_exports:
+    resolution: human_required
+  governance_authority:
+    resolution: human_required
+
+risk_classes:
+  A_automatic:
+    criteria:
+      - documentation_only
+      - tests_only
+      - additive_in_isolated_namespace
+      - no_sensitive_files
+      - no_deletions
+  B_automatic_double_check:
+    criteria:
+      - limited_production_code
+      - new_provider_interface
+      - new_adapter
+      - not_authority_changing
+  C_requires_human:
+    triggers:
+      - modifies REHT/RACS/VAIG authority
+      - new execution paths
+      - secrets or credentials
+      - database/datamigration
+      - destructive deletions
+      - CI/workflow permissions
+      - branch protection
+      - canonical symbol replacement
+      - conflict without deterministic rule
+      - production deploy with consequence
+      - FAIL or unclear in any port

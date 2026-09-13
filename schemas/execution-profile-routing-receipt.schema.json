@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/execution-profile-routing-receipt.schema.json",
+  "title": "VALO Execution Profile Routing Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "task_class",
+    "request_digest",
+    "selector_id",
+    "selector_version",
+    "suggestions",
+    "authority_effect"
+  ],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "task_class": {"type": "string", "minLength": 1},
+    "request_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "selector_id": {"const": "valo.execution-profile-router"},
+    "selector_version": {"const": "1.0.0"},
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "profile",
+          "completion_score",
+          "verified_attempts",
+          "verified_completions",
+          "avg_latency_ms",
+          "avg_cost_microunits",
+          "evidence_digest",
+          "authority_effect"
+        ],
+        "properties": {
+          "profile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_id",
+              "handler",
+              "provider_id",
+              "harness_id",
+              "runtime_id",
+              "model_id",
+              "sandbox_id",
+              "quantization",
+              "cache_strategy",
+              "capabilities",
+              "metadata",
+              "authority_effect"
+            ],
+            "properties": {
+              "profile_id": {"type": "string", "minLength": 1},
+              "handler": {"type": "string", "minLength": 1},
+              "provider_id": {"type": "string", "minLength": 1},
+              "harness_id": {"type": "string", "minLength": 1},
+              "runtime_id": {"type": "string", "minLength": 1},
+              "model_id": {"type": "string", "minLength": 1},
+              "sandbox_id": {"type": "string", "minLength": 1},
+              "quantization": {"type": "string", "minLength": 1},
+              "cache_strategy": {"type": "string", "minLength": 1},
+              "capabilities": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "metadata": {"type": "object"},
+              "authority_effect": {"const": "none"}
+            }
+          },
+          "completion_score": {"type": "number", "minimum": 0, "maximum": 1},
+          "verified_attempts": {"type": "integer", "minimum": 0},
+          "verified_completions": {"type": "integer", "minimum": 0},
+          "avg_latency_ms": {"type": ["number", "null"], "minimum": 0},
+          "avg_cost_microunits": {"type": ["number", "null"], "minimum": 0},
+          "evidence_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+          "authority_effect": {"const": "none"}
+        }
+      }
+    },
+    "authority_effect": {
+      "const": "none",
+      "description": "Routing is advisory selection evidence only and never execution authority."
+    }
+  }
+}

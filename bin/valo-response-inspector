@@ -1,0 +1,242 @@
+#!/usr/bin/env python3
+"""Deterministic local response inspection for governed agent egress.
+
+The inspector receives a bounded response body sample as base64. It never calls a
+remote model. It returns ALLOW, REDACT or DENY and binds the result to the
+request and response digests.
+"""
+
+from __future__ import annotations
+
+import argparse
+import base64
+import hashlib
+import json
+import os
+import re
+import sys
+import time
+from typing import Any, Mapping
+
+RESPONSE_CONTRACT = "valo.governed-egress.response.v1"
+RESPONSE_DECISION_CONTRACT = "valo.governed-egress.response-decision.v1"
+HEX64 = re.compile(r"^[0-9a-f]{64}$")
+TEXT_TYPES = (
+    "text/",
+    "application/json",
+    "application/problem+json",
+    "application/xml",
+    "application/javascript",
+    "application/x-www-form-urlencoded",
+)
+
+PROMPT_INJECTION_PATTERNS = (
+    re.compile(r"\bignore\s+(all\s+)?(previous|prior|earlier)\s+instructions\b", re.I),
+    re.compile(r"\b(disregard|override)\s+(the\s+)?(system|developer|policy)\s+(message|instructions?)\b", re.I),
+    re.compile(r"\byou\s+are\s+now\s+(in\s+)?(developer|system|admin)\s+mode\b", re.I),
+    re.compile(r"\breveal\s+(your\s+)?(system\s+prompt|hidden\s+instructions?)\b", re.I),
+    re.compile(r"\b(exfiltrate|upload|send)\b.{0,80}\b(secret|credential|token|api[ -]?key|private key)\b", re.I | re.S),
+)
+
+SECRET_PATTERNS = (
+    ("PEM_PRIVATE_KEY", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----")),
+    ("AWS_ACCESS_KEY", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
+    ("GITHUB_TOKEN", re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b")),
+    ("SLACK_TOKEN", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
+    ("BEARER_TOKEN", re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]{16,}")),
+    ("GENERIC_API_KEY", re.compile(r"(?i)\b(api[_ -]?key|access[_ -]?token|client[_ -]?secret)\b\s*[:=]\s*[\"']?[A-Za-z0-9._~+/=-]{16,}")),
+)
+
+SENSITIVE_RESPONSE_HEADERS = {
+    "set-cookie",
+    "proxy-authenticate",
+    "www-authenticate",
+    "x-api-key",
+    "x-auth-token",
+}
+
+
+class InspectionError(ValueError):
+    pass
+
+
+def canonical_json(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+def sha256_hex_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def require_mapping(value: Any, name: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise InspectionError(f"{name} must be an object")
+    return value
+
+
+def require_string(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise InspectionError(f"{name} must be a non-empty string")
+    return value
+
+
+def require_digest(value: Any, name: str) -> str:
+    digest = require_string(value, name).lower()
+    if not HEX64.fullmatch(digest):
+        raise InspectionError(f"{name} must be lowercase SHA-256 hex")
+    return digest
+
+
+def is_textual(content_type: str | None) -> bool:
+    if not content_type:
+        return False
+    lowered = content_type.lower().split(";", 1)[0].strip()
+    return any(lowered.startswith(prefix) for prefix in TEXT_TYPES) or lowered.endswith("+json") or lowered.endswith("+xml")
+
+
+def redact_secrets(text: str) -> tuple[str, list[str]]:
+    redacted = text
+    reasons: list[str] = []
+    for name, pattern in SECRET_PATTERNS:
+        if pattern.search(redacted):
+            reasons.append(name)
+            redacted = pattern.sub(f"[REDACTED:{name}]", redacted)
+    return redacted, reasons
+
+
+def decision(payload: Mapping[str, Any], response_digest: str, result: str, reasons: list[str], **extra: Any) -> dict[str, Any]:
+    issued_at_ns = time.time_ns()
+    core = {
+        "contract": RESPONSE_DECISION_CONTRACT,
+        "request_id": payload.get("request_id"),
+        "mission_id": payload.get("mission_id"),
+        "request_digest": payload.get("request_digest"),
+        "response_digest": response_digest,
+        "decision": result,
+        "reason_codes": reasons,
+        "issued_at_ns": issued_at_ns,
+    }
+    output = dict(core)
+    output.update(extra)
+    output["receipt"] = {
+        "issued_at_ns": issued_at_ns,
+        "decision_digest": hashlib.sha256(canonical_json(core)).hexdigest(),
+    }
+    return output
+
+
+def inspect(payload: Mapping[str, Any]) -> dict[str, Any]:
+    require_mapping(payload, "payload")
+    if payload.get("contract") != RESPONSE_CONTRACT:
+        raise InspectionError(f"contract must be {RESPONSE_CONTRACT}")
+    for field in ("request_id", "mission_id"):
+        require_string(payload.get(field), field)
+    request_digest = require_digest(payload.get("request_digest"), "request_digest")
+
+    response = require_mapping(payload.get("response"), "response")
+    status_code = response.get("status_code")
+    if not isinstance(status_code, int) or isinstance(status_code, bool) or status_code < 100 or status_code > 599:
+        raise InspectionError("response.status_code must be an HTTP status code")
+
+    header_names_raw = response.get("header_names", [])
+    if not isinstance(header_names_raw, list) or not all(isinstance(v, str) and v.strip() for v in header_names_raw):
+        raise InspectionError("response.header_names must be a list of strings")
+    header_names = sorted({v.strip().lower() for v in header_names_raw})
+
+    content_type = response.get("content_type")
+    if content_type is not None and not isinstance(content_type, str):
+        raise InspectionError("response.content_type must be a string when present")
+    content_encoding = response.get("content_encoding")
+    if content_encoding is not None and not isinstance(content_encoding, str):
+        raise InspectionError("response.content_encoding must be a string when present")
+
+    body_size = response.get("body_size_bytes")
+    if not isinstance(body_size, int) or isinstance(body_size, bool) or body_size < 0:
+        raise InspectionError("response.body_size_bytes must be a non-negative integer")
+    expected_body_digest = require_digest(response.get("body_sha256"), "response.body_sha256")
+
+    truncated = response.get("sample_truncated", False)
+    if not isinstance(truncated, bool):
+        raise InspectionError("response.sample_truncated must be boolean")
+    sample_b64 = response.get("body_sample_b64", "")
+    if not isinstance(sample_b64, str):
+        raise InspectionError("response.body_sample_b64 must be a string")
+    try:
+        sample = base64.b64decode(sample_b64, validate=True)
+    except ValueError as exc:
+        raise InspectionError("response.body_sample_b64 is invalid base64") from exc
+
+    if not truncated:
+        if len(sample) != body_size:
+            raise InspectionError("complete response sample size does not match body_size_bytes")
+        if sha256_hex_bytes(sample) != expected_body_digest:
+            raise InspectionError("complete response sample digest does not match body_sha256")
+    elif len(sample) >= body_size:
+        raise InspectionError("truncated sample must be smaller than body_size_bytes")
+
+    normalized = {
+        "status_code": status_code,
+        "header_names": header_names,
+        "body_sha256": expected_body_digest,
+        "body_size_bytes": body_size,
+        "content_type": content_type,
+        "content_encoding": content_encoding,
+        "sample_sha256": sha256_hex_bytes(sample),
+        "sample_size_bytes": len(sample),
+        "sample_truncated": truncated,
+    }
+    response_digest = hashlib.sha256(canonical_json(normalized)).hexdigest()
+
+    strip_headers = sorted(set(header_names) & SENSITIVE_RESPONSE_HEADERS)
+
+    # Encoded text cannot be safely scanned unless the connector decoded it first.
+    if is_textual(content_type) and content_encoding and content_encoding.lower() not in {"", "identity"}:
+        return decision(payload, response_digest, "DENY", ["ENCODED_TEXT_UNINSPECTED"], strip_header_names=strip_headers)
+
+    if not is_textual(content_type):
+        if strip_headers:
+            return decision(payload, response_digest, "REDACT", ["SENSITIVE_RESPONSE_HEADERS"], strip_header_names=strip_headers)
+        return decision(payload, response_digest, "ALLOW", ["NON_TEXT_RESPONSE"], strip_header_names=[])
+
+    max_text_bytes = int(os.environ.get("VALO_RESPONSE_MAX_TEXT_BYTES", "1048576"))
+    if body_size > max_text_bytes or truncated:
+        return decision(payload, response_digest, "DENY", ["TEXT_RESPONSE_EXCEEDS_INSPECTION_BOUND"], strip_header_names=strip_headers)
+
+    text = sample.decode("utf-8", errors="replace")
+    for pattern in PROMPT_INJECTION_PATTERNS:
+        if pattern.search(text):
+            return decision(payload, response_digest, "DENY", ["PROMPT_INJECTION_PATTERN"], strip_header_names=strip_headers)
+
+    redacted, secret_reasons = redact_secrets(text)
+    if secret_reasons or strip_headers:
+        replacement = redacted.encode("utf-8")
+        return decision(
+            payload,
+            response_digest,
+            "REDACT",
+            secret_reasons + (["SENSITIVE_RESPONSE_HEADERS"] if strip_headers else []),
+            strip_header_names=strip_headers,
+            replacement_body_b64=base64.b64encode(replacement).decode("ascii"),
+            replacement_body_sha256=sha256_hex_bytes(replacement),
+            replacement_body_size_bytes=len(replacement),
+        )
+
+    return decision(payload, response_digest, "ALLOW", ["INSPECTION_CLEAR"], strip_header_names=[])
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--request", help="JSON request file; stdin when omitted")
+    args = parser.parse_args()
+    try:
+        with open(args.request, encoding="utf-8") if args.request else sys.stdin as handle:
+            payload = json.load(handle)
+        print(json.dumps(inspect(payload), sort_keys=True, ensure_ascii=False))
+        return 0
+    except (OSError, json.JSONDecodeError, InspectionError, ValueError) as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}), file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

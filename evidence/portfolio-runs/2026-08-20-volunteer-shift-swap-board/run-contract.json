@@ -1,0 +1,43 @@
+{
+  "schema_version": "portfolio-evidence-run.v1",
+  "run_id": "2026-08-20-volunteer-shift-swap-board",
+  "mission_id": "volunteer-shift-swap-board",
+  "source": {
+    "repo": "nsolland/idebank",
+    "path": "missions/seed.json",
+    "sha": "c76a11f66ca7384f4e3b89e1cae6aad1fe205dbd"
+  },
+  "upstream_evidence": {
+    "repo": "nsolland/research-factory",
+    "sha": "b216cd38c73b020c1824cab45454971dfa57ce4e",
+    "mission_state": "missions/volunteer-shift-swap-board/MISSION_STATE.json",
+    "verifier_report": "missions/volunteer-shift-swap-board/outcome/verifier-report.json",
+    "known_caveat": "The historical verifier was inline/reduced-independence. This run does not promote that evidence to independent QC."
+  },
+  "factory_lane": {
+    "factory_repo": "nsolland/valo-factory",
+    "factory_base_sha": "559ea445ea26c57e38a57f21f08779d6dd0d1747",
+    "profile": "community-utility",
+    "expected_path": [
+      "F0_COMPILE",
+      "F1_SCAFFOLD",
+      "SMOKE_VERIFY",
+      "EXACT_SHA_RELEASE_BIND"
+    ],
+    "authority_effect": "none"
+  },
+  "target_baseline": {
+    "repo": "nsolland/research-factory",
+    "sha": "b216cd38c73b020c1824cab45454971dfa57ce4e",
+    "note": "Existing mission workspace is used only as the exact baseline for candidate binding; this run does not merge, deploy or publish into that repository."
+  },
+  "claim_boundary": {
+    "proves": "A real current Idebank mission record can traverse the implemented Factory F0/F1 local release-candidate lane with exact source lineage and exact target-baseline binding.",
+    "does_not_prove": [
+      "independent QC",
+      "production deployment",
+      "public availability",
+      "customer adoption"
+    ]
+  }
+}

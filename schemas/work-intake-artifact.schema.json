@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/work-intake-artifact.schema.json",
+  "title": "VALO Work Intake Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "kind",
+    "digest_sha256",
+    "captured_at",
+    "expected_behavior",
+    "observed_behavior",
+    "authority_effect"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["screen_recording", "screenshot", "video", "annotation_bundle"]
+    },
+    "digest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_uri": {
+      "type": "string"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expected_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["timestamp_ms", "text"],
+        "properties": {
+          "timestamp_ms": {"type": "integer", "minimum": 0},
+          "text": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "authority_effect": {
+      "const": "none",
+      "description": "Captured media and annotations are evidence only and cannot grant authority."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@valo/ruvector-router-connector",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Replaceable semantic routing connector for VALO Factory",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@ruvector/router": "0.1.30"
+  }
+}

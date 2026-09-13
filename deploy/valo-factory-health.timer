@@ -1,0 +1,16 @@
+[Unit]
+Description=VALO Factory 24/7 health-check timer (shadow + watchdog)
+Documentation=https://github.com/nsolland/valo-factory/docs/operations.md
+
+[Timer]
+# Independent of the production tick. Runs a read-only shadow cycle + watchdog
+# every 5 minutes and delivers any exception-only findings. Safe to leave on.
+OnBootSec=60s
+OnUnitActiveSec=300s
+AccuracySec=10s
+RandomizedDelaySec=15
+Persistent=true
+Unit=valo-factory-health.service
+
+[Install]
+WantedBy=timers.target

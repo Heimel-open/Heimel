@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.example/schemas/governed_egress_decision.schema.json",
+  "title": "VALO Governed Egress Decision v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "request_id",
+    "mission_id",
+    "decision",
+    "reason_code",
+    "request_digest",
+    "evidence",
+    "transport_advisory",
+    "receipt"
+  ],
+  "properties": {
+    "contract": {"const": "valo.governed-egress.decision.v1"},
+    "request_id": {"type": "string", "minLength": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["ALLOW", "DENY", "MODIFY"]},
+    "reason_code": {"type": "string", "minLength": 1},
+    "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "replacement_request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "vaig_evaluation_id",
+        "reht_clearance_id",
+        "racs_decision_id",
+        "authority_grant_id"
+      ],
+      "properties": {
+        "vaig_evaluation_id": {"type": ["string", "null"]},
+        "reht_clearance_id": {"type": ["string", "null"]},
+        "racs_decision_id": {"type": ["string", "null"]},
+        "authority_grant_id": {"type": ["string", "null"]}
+      }
+    },
+    "transport_advisory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter", "static_rule_decision", "judge_decision"],
+      "properties": {
+        "adapter": {"type": ["string", "null"]},
+        "static_rule_decision": {"enum": ["ALLOW", "DENY", "NO_MATCH", null]},
+        "judge_decision": {"enum": ["ALLOW", "DENY", "UNKNOWN", null]}
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issued_at_ns", "decision_digest"],
+      "properties": {
+        "issued_at_ns": {"type": "integer", "minimum": 1},
+        "decision_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

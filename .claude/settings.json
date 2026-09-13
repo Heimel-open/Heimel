@@ -1,0 +1,34 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/authorize-tool.py"
+            ],
+            "timeout": 10,
+            "statusMessage": "Checking VALO execution authority"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/authorize-tool.py"
+            ],
+            "timeout": 10,
+            "statusMessage": "Checking VALO execution authority"
+          }
+        ]
+      }
+    ]
+  }
+}

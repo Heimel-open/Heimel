@@ -1,0 +1,278 @@
+#!/usr/bin/env python3
+"""valo-run — create an isolated, short-lived agent worktree.
+
+Each run gets a unique run_id and a worktree under /tmp/valo-runs/<run_id>/valo-platform.
+Records run metadata in ~/.valo/runs.db (SQLite). Agents MUST use valo-git
+inside the worktree (never the primary repo).
+
+Every run also receives WORK_BUDGET.json from the canonical tokenomics policy.
+Context, retries and autonomy are therefore explicit runtime resources rather
+than unbounded prompt state.
+
+Usage:
+  valo-run --issue 812 --agent codex --authority read_write \
+           --base origin/main [--branch codex/issue-812]
+
+Emits the worktree path + run_id to stdout (machine-readable JSON).
+"""
+import argparse
+import json
+import os
+import sqlite3
+import subprocess
+import sys
+import uuid
+from datetime import datetime, timezone
+from pathlib import Path
+
+VALO = os.path.expanduser("~/valo-platform")
+VALO_HOME = os.path.expanduser(os.environ.get("VALO_HOME", "~/.valo"))
+RUNS_ROOT = os.path.expanduser("/tmp/valo-runs")
+DB = os.path.expanduser("~/.valo/runs.db")
+TOKENOMICS_POLICY = os.environ.get(
+    "VALO_TOKENOMICS_POLICY",
+    os.path.join(VALO_HOME, "config", "tokenomics-policy.json"),
+)
+LEASE_SECONDS = 6 * 3600  # default 6h lease
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _policy_candidates():
+    return [
+        Path(TOKENOMICS_POLICY),
+        Path(__file__).resolve().parent.parent / "config" / "tokenomics-policy.json",
+    ]
+
+
+def _load_tokenomics_policy():
+    """Load and minimally validate the canonical cognition-budget policy."""
+    errors = []
+    for path in _policy_candidates():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            errors.append(f"missing:{path}")
+            continue
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"invalid:{path}:{exc}")
+            continue
+
+        required = {
+            "version",
+            "status",
+            "principle",
+            "rules",
+            "work_contract_defaults",
+            "cost_of_cognition",
+            "value_of_cognition",
+            "economic_observability",
+            "non_negotiables",
+        }
+        missing = sorted(required.difference(data))
+        if missing:
+            errors.append(f"missing_keys:{path}:{','.join(missing)}")
+            continue
+        if data.get("status") != "canonical":
+            errors.append(f"not_canonical:{path}")
+            continue
+        if len(data.get("rules", {})) != 11:
+            errors.append(f"rules_must_equal_11:{path}")
+            continue
+        return data, path
+
+    raise RuntimeError(
+        "tokenomics policy unavailable or invalid: " + "; ".join(errors)
+    )
+
+
+def _write_work_budget(wt, args, run_id, base_sha, branch, policy, policy_path):
+    """Materialize bounded cognition/context controls inside the worker tree."""
+    budget = {
+        "schema": "valo.work-budget.v1",
+        "policy_version": policy["version"],
+        "policy_ref": str(policy_path),
+        "principle": policy["principle"],
+        "issue_id": str(args.issue),
+        "run_id": run_id,
+        "base_sha": base_sha,
+        "branch": branch,
+        "context": {
+            "scope": [f"issue:{args.issue}"],
+            "owned_files": [],
+            "required_contracts": ["WORK_CONTRACT.json"],
+            "retrieval": "targeted_only",
+            "rule": "load only what is required for the active delivery",
+        },
+        "controls": policy["work_contract_defaults"],
+        "cost_of_cognition": policy["cost_of_cognition"],
+        "value_of_cognition": policy["value_of_cognition"],
+        "economic_observability": policy["economic_observability"],
+        "non_negotiables": policy["non_negotiables"],
+        "worker_obligations": [
+            "declare owned_files before widening edit scope",
+            "prefer deterministic tools for mechanical work",
+            "return result plus evidence, not full worker trajectory",
+            "revert or restart when the trajectory is stuck",
+            "stop when retry/autonomy budget is exhausted",
+        ],
+    }
+    path = Path(wt) / "WORK_BUDGET.json"
+    path.write_text(
+        json.dumps(budget, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def db():
+    os.makedirs(os.path.dirname(DB), exist_ok=True)
+    c = sqlite3.connect(DB)
+    c.execute("""CREATE TABLE IF NOT EXISTS runs (
+        run_id TEXT PRIMARY KEY,
+        issue_id TEXT,
+        agent_id TEXT,
+        base_sha TEXT,
+        branch TEXT,
+        worktree TEXT,
+        authority TEXT,
+        lease_expires TEXT,
+        state TEXT,
+        created_at TEXT
+    )""")
+    c.commit()
+    return c
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--issue", required=True)
+    p.add_argument("--agent", required=True)
+    p.add_argument("--authority", default="read_write")
+    p.add_argument("--base", default="origin/main")
+    p.add_argument("--branch", default=None)
+    p.add_argument(
+        "--dry",
+        action="store_true",
+        help="Plan mode: record run metadata + worktree path but do NOT "
+             "create a real worktree. For SHADOW-mode analysis.",
+    )
+    args = p.parse_args()
+
+    try:
+        policy, policy_path = _load_tokenomics_policy()
+    except RuntimeError as exc:
+        print(f"REFUSED: {exc}", file=sys.stderr)
+        return 2
+
+    run_id = uuid.uuid4().hex[:12]
+    branch = args.branch or f"{args.agent}/issue-{args.issue}"
+    wt = os.path.join(RUNS_ROOT, run_id, "valo-platform")
+
+    if args.dry:
+        # No worktree creation — local-only plan/state record.
+        base_sha = subprocess.run(
+            ["git", "-C", VALO, "rev-parse", args.base],
+            capture_output=True,
+            text=True,
+        ).stdout.strip() or "unknown"
+        c = db()
+        c.execute(
+            "INSERT INTO runs VALUES (?,?,?,?,?,?,?,?,?,?)",
+            (
+                run_id,
+                args.issue,
+                args.agent,
+                base_sha,
+                branch,
+                wt,
+                args.authority,
+                "dry-run",
+                "PLANNED",
+                _now(),
+            ),
+        )
+        c.commit()
+        c.close()
+        print(json.dumps({
+            "run_id": run_id,
+            "dry": True,
+            "worktree_planned": wt,
+            "tokenomics_policy_version": policy["version"],
+            "tokenomics_policy_ref": str(policy_path),
+            "note": "no worktree created (plan mode)",
+        }))
+        return 0
+
+    os.makedirs(os.path.dirname(wt), exist_ok=True)
+
+    # Fetch latest base
+    subprocess.run(["git", "-C", VALO, "fetch", "origin", "main"], check=False)
+
+    # Create worktree from base
+    try:
+        subprocess.run(
+            ["git", "-C", VALO, "worktree", "add", wt, "-b", branch, args.base],
+            check=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError:
+        # branch may exist already; try add without -b
+        subprocess.run(
+            ["git", "-C", VALO, "worktree", "add", wt, branch],
+            check=True,
+            capture_output=True,
+        )
+
+    base_sha = subprocess.check_output(
+        ["git", "-C", VALO, "rev-parse", args.base]
+    ).decode().strip()
+
+    budget_path = _write_work_budget(
+        wt, args, run_id, base_sha, branch, policy, policy_path
+    )
+
+    lease = datetime.now(timezone.utc).timestamp() + LEASE_SECONDS
+    lease_iso = datetime.fromtimestamp(lease, tz=timezone.utc).isoformat()
+
+    c = db()
+    c.execute(
+        "INSERT INTO runs VALUES (?,?,?,?,?,?,?,?,?,?)",
+        (
+            run_id,
+            args.issue,
+            args.agent,
+            base_sha,
+            branch,
+            wt,
+            args.authority,
+            lease_iso,
+            "IMPLEMENTING",
+            _now(),
+        ),
+    )
+    c.commit()
+    c.close()
+
+    out = {
+        "run_id": run_id,
+        "issue_id": args.issue,
+        "agent_id": args.agent,
+        "base_sha": base_sha,
+        "branch": branch,
+        "worktree": wt,
+        "authority": args.authority,
+        "lease_expires": lease_iso,
+        "state": "IMPLEMENTING",
+        "work_budget": str(budget_path),
+        "tokenomics_policy_version": policy["version"],
+        "note": "Use valo-git inside this worktree; never touch ~/valo-platform.",
+    }
+    print(json.dumps(out, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

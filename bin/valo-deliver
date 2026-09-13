@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""valo-deliver — exception-only alert delivery for VALO Factory.
+
+Reads a compact report (from valo-report / valo-watchdog) on stdin (or as a
+file argument) and delivers it ONLY when non-empty / non-green. Silent when
+the factory is green — this is the watchdog pattern, not a heartbeat.
+
+Delivery is configuration-driven. No secret is ever read from code; every
+credential comes from the environment, supplied by the human operator when
+24/7 alerting is commissioned. Default channel is a local append-only log
+plus stdout, which is always safe and requires no external wiring.
+
+Channels (mutually combinable via VALO_DELIVER_CHANNELS, comma-separated):
+  - log    : append to $VALO_HOME/alerts.log  (DEFAULT, always on unless disabled)
+  - stdout : print to stdout (useful for cron mail / container logs)
+  - telegram: requires VALO_TG_BOT_TOKEN + VALO_TG_CHAT_ID in the environment
+  - file:<path>: append to an explicit path
+
+Fails closed: if a configured channel errors (e.g. Telegram network down),
+we still write the local log and exit non-zero so the operator sees the gap.
+We NEVER suppress an alert because one channel failed.
+"""
+import argparse
+import os
+import sys
+from datetime import datetime, timezone
+
+VALO_HOME = os.path.expanduser(os.environ.get("VALO_HOME", "~/.valo"))
+DEFAULT_LOG = os.path.join(VALO_HOME, "alerts.log")
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def read_input(path):
+    if path:
+        with open(path) as f:
+            return f.read()
+    return sys.stdin.read()
+
+
+def is_silent(text):
+    """A report is 'green' (nothing to deliver) if it is empty/whitespace."""
+    return not text.strip()
+
+
+def deliver_log(text, path):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "a") as f:
+        f.write(f"{_now()}\n{text}\n{'=' * 60}\n")
+
+
+def deliver_telegram(text):
+    import urllib.request
+    token = os.environ.get("VALO_TG_BOT_TOKEN")
+    chat = os.environ.get("VALO_TG_CHAT_ID")
+    if not token or not chat:
+        raise RuntimeError("telegram channel requested but VALO_TG_BOT_TOKEN / "
+                           "VALO_TG_CHAT_ID not set")
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    data = urllib.parse.urlencode(
+        {"chat_id": chat, "text": f"VALO Factory alert\n\n{text}"}).encode()
+    req = urllib.request.Request(url, data=data, method="POST")
+    with urllib.request.urlopen(req, timeout=15) as r:
+        if r.status != 200:
+            raise RuntimeError(f"telegram HTTP {r.status}")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--file", help="read report from file instead of stdin")
+    ap.add_argument("--channels", default=None,
+                    help="override VALO_DELIVER_CHANNELS")
+    args = ap.parse_args()
+
+    text = read_input(args.file)
+    if is_silent(text):
+        # exception-only: emit nothing when green
+        return 0
+
+    channels = (args.channels or os.environ.get("VALO_DELIVER_CHANNELS", "log"))
+    channels = [c.strip() for c in channels.split(",") if c.strip()]
+
+    errors = []
+    # Local log is the failsafe: always written, even if all other channels
+    # fail. This guarantees an alert is never silently dropped.
+    deliver_log(text, DEFAULT_LOG)
+    if "stdout" in channels:
+        print(text)
+    for c in channels:
+        if c == "log" or c == "stdout":
+            continue
+        if c.startswith("file:"):
+            try:
+                deliver_log(text, c.split(":", 1)[1])
+            except Exception as e:
+                errors.append(f"file:{e}")
+        elif c == "telegram":
+            try:
+                deliver_telegram(text)
+            except Exception as e:
+                errors.append(f"telegram:{e}")
+        else:
+            errors.append(f"unknown-channel:{c}")
+
+    if errors:
+        # never swallow the alert: it is in the local log regardless
+        sys.stderr.write("DELIVERY ERRORS (alert still logged locally): "
+                         + "; ".join(errors) + "\n")
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

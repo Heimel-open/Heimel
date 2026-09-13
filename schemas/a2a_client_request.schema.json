@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/a2a_client_request.schema.json",
+  "title": "VALO Governed A2A Client Request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "request_id", "envelope", "a2a_payload"],
+  "properties": {
+    "contract": {"const": "valo.a2a.client-request.v1"},
+    "request_id": {"type": "string", "minLength": 1},
+    "envelope": {"$ref": "a2a_mandate_envelope.schema.json"},
+    "a2a_payload": {"type": "object"}
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/a2a_receipt.schema.json",
+  "title": "VALO Governed A2A Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "event_type", "timestamp_ns", "previous_chain_hash", "evidence", "chain_hash"],
+  "properties": {
+    "contract": {"const": "valo.a2a.receipt.v1"},
+    "event_type": {"type": "string", "minLength": 1},
+    "timestamp_ns": {"type": "integer", "minimum": 0},
+    "previous_chain_hash": {"$ref": "#/$defs/digest"},
+    "evidence": {"type": "object"},
+    "chain_hash": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

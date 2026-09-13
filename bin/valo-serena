@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""Governed launcher for the optional oraios/serena semantic MCP adapter."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+
+POLICY_SCHEMA = "valo.serena-semantic-adapter.v1"
+DEFAULT_POLICY = Path(__file__).resolve().parents[1] / "config" / "serena_adapter.json"
+SENSITIVE_ENV_KEYS = (
+    "GITHUB_TOKEN",
+    "GH_TOKEN",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_SESSION_TOKEN",
+    "AZURE_CLIENT_SECRET",
+    "GOOGLE_APPLICATION_CREDENTIALS",
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+)
+
+
+class SerenaBoundaryError(ValueError):
+    pass
+
+
+def _load_policy() -> dict:
+    path = Path(os.environ.get("VALO_SERENA_POLICY", str(DEFAULT_POLICY))).expanduser().resolve()
+    try:
+        policy = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SerenaBoundaryError(f"cannot load Serena policy: {exc}") from exc
+    if policy.get("schema") != POLICY_SCHEMA:
+        raise SerenaBoundaryError("unsupported Serena policy schema")
+    if policy.get("transport") != "stdio":
+        raise SerenaBoundaryError("Serena policy must use stdio transport")
+    if policy.get("memory", {}).get("enabled") is not False:
+        raise SerenaBoundaryError("Serena memory must remain disabled")
+    if policy.get("execution", {}).get("no_direct_effect_path") is not True:
+        raise SerenaBoundaryError("Serena policy must preserve NO_DIRECT_EFFECT_PATH")
+    return policy
+
+
+def _resolve_project(project_arg: str) -> tuple[Path, Path]:
+    project = Path(project_arg).expanduser().resolve()
+    if not project.is_dir():
+        raise SerenaBoundaryError(f"project does not exist: {project}")
+
+    workspace_env = os.environ.get("VALO_WORKSPACE_ROOT")
+    if not workspace_env:
+        raise SerenaBoundaryError("VALO_WORKSPACE_ROOT is required")
+    workspace = Path(workspace_env).expanduser().resolve()
+    if not workspace.is_dir():
+        raise SerenaBoundaryError(f"workspace root does not exist: {workspace}")
+    try:
+        project.relative_to(workspace)
+    except ValueError as exc:
+        raise SerenaBoundaryError("project must be inside VALO_WORKSPACE_ROOT") from exc
+    return project, workspace
+
+
+def _child_env() -> dict[str, str]:
+    if os.environ.get("VALO_SANDBOX_ATTESTED") != "1":
+        raise SerenaBoundaryError("Serena requires sandbox attestation (VALO_SANDBOX_ATTESTED=1)")
+
+    env = os.environ.copy()
+    for key in SENSITIVE_ENV_KEYS:
+        env.pop(key, None)
+
+    isolated_home = Path(tempfile.mkdtemp(prefix="valo-serena-home-"))
+    env["SERENA_HOME"] = str(isolated_home / "serena")
+    env["HOME"] = str(isolated_home)
+    env["USERPROFILE"] = str(isolated_home)
+    return env
+
+
+def _build_argv(binary: str, project: Path, policy: dict) -> list[str]:
+    modes = policy.get("modes") or []
+    if "no-memories" not in modes:
+        raise SerenaBoundaryError("Serena policy must enable no-memories mode")
+    argv = [
+        binary,
+        "start-mcp-server",
+        "--transport",
+        "stdio",
+        "--context",
+        str(policy.get("context", "ide")),
+        "--open-web-dashboard",
+        "false",
+        "--project",
+        str(project),
+    ]
+    for mode in modes:
+        argv.extend(["--mode", str(mode)])
+    return argv
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="valo-serena")
+    parser.add_argument("--project", default=".", help="project inside the governed workspace")
+    parser.add_argument("--dry-run", action="store_true", help="validate boundary and print launch contract")
+    ns = parser.parse_args()
+
+    try:
+        policy = _load_policy()
+        project, workspace = _resolve_project(ns.project)
+        env = _child_env()
+        binary_name = os.environ.get("VALO_SERENA_BIN", "serena")
+        binary = shutil.which(binary_name) if not os.path.isabs(binary_name) else binary_name
+        if not binary or not Path(binary).exists():
+            raise SerenaBoundaryError("Serena binary not found; install pinned external dependency before use")
+
+        argv = _build_argv(str(binary), project, policy)
+        if ns.dry_run:
+            print(json.dumps({
+                "ok": True,
+                "provider": policy.get("provider"),
+                "project": str(project),
+                "workspace": str(workspace),
+                "command": argv,
+                "memory": "disabled",
+                "sandbox_attested": True,
+                "credentials_stripped": True,
+            }, sort_keys=True))
+            return 0
+
+        return subprocess.run(argv, cwd=project, env=env, check=False).returncode
+    except SerenaBoundaryError as exc:
+        print(f"valo-serena: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,45 @@
+# valo-factory .gitignore — NEVER version secrets, runtime state, or evidence.
+# Control plane is reviewed; runtime is local + ephemeral.
+
+# Runtime state (NEVER in git)
+claims.db
+orchestrator.db
+runs.db
+state.json
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Active leases / mode / tokens / credentials
+active_leases.json
+mode-token
+tokens/
+.env
+.env.*
+credentials*
+*.pat
+*.pem
+*.key
+
+# Execution database + runtime logger
+execution.db
+runtime.log
+*.log
+
+# Local run worktrees
+/tmp/valo-runs/
+
+# Replaceable local code-context cache (Graft)
+graft/
+
+# Incident evidence with sensitive info
+incident-evidence/
+~/.hermes/evidence/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# OS noise
+.DS_Store

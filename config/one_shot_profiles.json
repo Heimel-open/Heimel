@@ -1,0 +1,142 @@
+{
+  "schema_version": "one-shot-profile-catalog.v1",
+  "updated": "2026-08-18",
+  "source_ref": "nsolland/Index:docs/product-surface-index-v1.md",
+  "principles": {
+    "profile_is_template_not_product": true,
+    "provider_is_replaceable": true,
+    "no_new_core": true,
+    "governance_only_at_consequence_boundary": true,
+    "local_first_when_reasonable": true
+  },
+  "profiles": {
+    "accessibility-utility": {
+      "mapped_records": 13,
+      "intent": "small assistive utility with simple interaction, explicit control and low-friction delivery",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "replaceable:local-session-or-oauth",
+        "scheduling_queues": "not-needed",
+        "storage_database": "replaceable:local-storage",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:privacy-safe-web-telemetry"
+      }
+    },
+    "ageing-utility": {
+      "mapped_records": 10,
+      "intent": "single-purpose utility optimized for clarity, large controls, resilience and optional assistance",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "replaceable:local-session-or-oauth",
+        "scheduling_queues": "replaceable:simple-reminder-scheduler",
+        "storage_database": "replaceable:local-storage",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:privacy-safe-web-telemetry"
+      }
+    },
+    "care-utility": {
+      "mapped_records": 2,
+      "intent": "bounded self-care or care-support utility with explicit limits and no autonomous clinical authority",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "replaceable:local-session-or-oauth",
+        "scheduling_queues": "replaceable:simple-reminder-scheduler",
+        "storage_database": "replaceable:local-storage",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:privacy-safe-web-telemetry"
+      }
+    },
+    "community-utility": {
+      "mapped_records": 11,
+      "intent": "small community coordination or information utility with optional shared state",
+      "surface": "thin-web-app",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "replaceable:oauth-or-magic-link",
+        "scheduling_queues": "replaceable:managed-job-queue",
+        "storage_database": "replaceable:managed-relational-store",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:serverless-or-static-host",
+        "observability": "replaceable:web-telemetry"
+      }
+    },
+    "general-utility": {
+      "mapped_records": 13,
+      "intent": "single-purpose web utility generated from a bounded acceptance contract",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "not-needed",
+        "scheduling_queues": "not-needed",
+        "storage_database": "replaceable:local-storage",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:web-telemetry"
+      }
+    },
+    "preservation-utility": {
+      "mapped_records": 7,
+      "intent": "local-first media or document preservation utility with provenance-preserving export",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "replaceable:media-processing-api-optional",
+        "auth_identity_transport": "not-needed",
+        "scheduling_queues": "not-needed",
+        "storage_database": "replaceable:local-file-and-metadata-store",
+        "connectors_api_clients": "replaceable:file-import-export",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:local-diagnostics"
+      }
+    },
+    "public-service-utility": {
+      "mapped_records": 10,
+      "intent": "focused public-service helper that explains or prepares a bounded process without creating legal authority",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "replaceable:local-session-or-public-idp",
+        "scheduling_queues": "not-needed",
+        "storage_database": "replaceable:local-storage",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:privacy-safe-web-telemetry"
+      }
+    },
+    "worker-utility": {
+      "mapped_records": 11,
+      "intent": "mobile-first worker utility for a bounded task, checklist, calculator, preparation or evidence flow",
+      "surface": "static-pwa",
+      "defaults": {
+        "model_inference": "replaceable:model-api-optional",
+        "rendering_media": "not-needed",
+        "auth_identity_transport": "replaceable:local-session-or-oauth",
+        "scheduling_queues": "not-needed",
+        "storage_database": "replaceable:local-storage",
+        "connectors_api_clients": "replaceable:http-client",
+        "ui_framework": "replaceable:static-web",
+        "deployment_runtime": "replaceable:static-host",
+        "observability": "replaceable:privacy-safe-web-telemetry"
+      }
+    }
+  }
+}

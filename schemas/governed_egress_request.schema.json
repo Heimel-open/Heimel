@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.example/schemas/governed_egress_request.schema.json",
+  "title": "VALO Governed Egress Request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "request_id",
+    "mission_id",
+    "principal_id",
+    "authority_grant_id",
+    "request",
+    "transport",
+    "governance"
+  ],
+  "properties": {
+    "contract": {"const": "valo.governed-egress.request.v1"},
+    "request_id": {"type": "string", "minLength": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "principal_id": {"type": "string", "minLength": 1},
+    "authority_grant_id": {"type": "string", "minLength": 1},
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "url",
+        "header_names",
+        "body_sha256",
+        "body_size_bytes",
+        "websocket"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE", "CONNECT"]
+        },
+        "url": {"type": "string", "pattern": "^https?://"},
+        "header_names": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "body_size_bytes": {"type": "integer", "minimum": 0},
+        "content_type": {"type": ["string", "null"]},
+        "websocket": {"type": "boolean"},
+        "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter", "static_rule_decision"],
+      "properties": {
+        "adapter": {"type": "string", "minLength": 1},
+        "static_rule_decision": {"enum": ["ALLOW", "DENY", "NO_MATCH"]},
+        "judge_decision": {"enum": ["ALLOW", "DENY", "UNKNOWN", null]}
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vaig": {"$ref": "#/$defs/vaig"},
+        "reht": {"$ref": "#/$defs/reht"},
+        "racs": {"$ref": "#/$defs/racs"}
+      }
+    }
+  },
+  "$defs": {
+    "boundArtifact": {
+      "type": "object",
+      "required": ["request_digest"],
+      "properties": {
+        "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "vaig": {
+      "allOf": [
+        {"$ref": "#/$defs/boundArtifact"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["evaluation_id", "request_digest", "status"],
+          "properties": {
+            "evaluation_id": {"type": "string", "minLength": 1},
+            "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "status": {"enum": ["PASS", "WARN", "FAIL"]}
+          }
+        }
+      ]
+    },
+    "reht": {
+      "allOf": [
+        {"$ref": "#/$defs/boundArtifact"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["clearance_id", "request_digest", "status"],
+          "properties": {
+            "clearance_id": {"type": "string", "minLength": 1},
+            "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "status": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "racs": {
+      "allOf": [
+        {"$ref": "#/$defs/boundArtifact"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["decision_id", "request_digest", "decision"],
+          "properties": {
+            "decision_id": {"type": "string", "minLength": 1},
+            "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "decision": {"enum": ["ALLOW", "MODIFY", "DEFER", "DENY", "STEP_UP", "HALT"]},
+            "replacement_request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        }
+      ]
+    }
+  }
+}

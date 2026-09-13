@@ -1,0 +1,79 @@
+{
+  "version": "1.1.0",
+  "status": "canonical",
+  "source": "https://cloud.google.com/blog/topics/developers-practitioners/guide-to-ai-tokenomics-eleven-principles-for-token-efficient-software-engineering",
+  "source_supplements": [
+    {
+      "name": "Rippling AI Spend Console",
+      "url": "https://www.rippling.com/platform/ai/ai-spend-console",
+      "adopted_pattern": "connect AI resource consumption to organizational and business outcomes"
+    }
+  ],
+  "principle": "Context is a budgeted runtime resource.",
+  "goal": "Minimize cost of cognition while maximizing verified business value without weakening correctness, authority, evidence, or verification.",
+  "rules": {
+    "model_escalation": "start_with_lowest_sufficient_capability_then_escalate",
+    "repeated_instructions": "encode_in_repository_rules_skills_scripts_or_contracts",
+    "mechanical_work": "prefer_deterministic_tools_over_model_reasoning",
+    "delegation": "return_results_not_worker_trajectories",
+    "analysis_execution": "separate_when_analysis_would_pollute_execution_context",
+    "verification": "run_cheap_deterministic_checks_early_and_expensive_e2e_checks_near_handoff",
+    "stuck_trajectory": "revert_or_restart_instead_of_accumulating_corrective_prompts",
+    "context_loading": "load_only_owned_files_required_contracts_dependencies_and_acceptance_evidence",
+    "repeat_correction": "after_two_same_corrections_change_the_rule_or_skill",
+    "autonomy": "every_loop_requires_budget_stop_condition_and_exception_path",
+    "session_boundary": "new_goal_new_session_same_goal_reuse_only_while_context_remains_relevant"
+  },
+  "work_contract_defaults": {
+    "context_scope_required": true,
+    "owned_files_required": true,
+    "required_contracts_required": true,
+    "acceptance_criteria_required": true,
+    "prefer_deterministic_tools": true,
+    "analysis_execution_separation": "when_useful",
+    "max_same_correction_count": 2,
+    "max_retry_cycles": 3,
+    "stuck_action": "revert_or_restart",
+    "worker_handoff": "result_summary_plus_evidence",
+    "session_reset_on_goal_change": true,
+    "cheap_checks_before_e2e": true
+  },
+  "cost_of_cognition": [
+    "tokens",
+    "model_cost",
+    "latency",
+    "human_attention",
+    "human_time",
+    "retries",
+    "context_reconstruction",
+    "verification",
+    "error_rework",
+    "technical_debt",
+    "cleanup_cost",
+    "agent_monitoring_cost",
+    "opportunity_cost",
+    "cancelled_opportunity_cost"
+  ],
+  "value_of_cognition": [
+    "time_saved",
+    "time_to_outcome_improvement",
+    "enabled_opportunity_value",
+    "verified_business_outcome"
+  ],
+  "economic_observability": {
+    "measure_resource_consumption": true,
+    "measure_human_cost": true,
+    "measure_rework_and_debt": true,
+    "measure_opportunity_cost": true,
+    "measure_positive_time_value": true,
+    "bind_cost_to_verified_outcome": true,
+    "rule": "AI spend without an outcome reference is cost telemetry, not ROI."
+  },
+  "non_negotiables": [
+    "Token efficiency never bypasses REHT or any authority boundary.",
+    "Token efficiency never weakens QC, deterministic verification, receipts, or evidence requirements.",
+    "Missing context is resolved by targeted retrieval, not broad repository dumping.",
+    "Budget exhaustion is a legitimate stop outcome, not permission to widen scope or authority.",
+    "Economic optimization never converts a business metric, cost threshold, or ROI estimate into execution authority."
+  ]
+}

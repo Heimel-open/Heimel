@@ -1,0 +1,47 @@
+{
+  "schema": "valo.executor-tool-fabric-adoption.v1",
+  "status": "canonical",
+  "source": {
+    "name": "Executor",
+    "repository": "https://github.com/UsefulSoftwareCo/executor"
+  },
+  "adopt_as": "provider_neutral_governed_tool_fabric_pattern",
+  "implementation_owner": "nsolland/valo-function-fabric",
+  "factory_owner": "nsolland/valo-factory",
+  "adopted_patterns": [
+    "single_tool_catalog_across_agent_providers",
+    "mcp_openapi_graphql_custom_function_normalization",
+    "central_connection_and_credential_references",
+    "provider_neutral_tool_discovery",
+    "local_self_hosted_and_service_runtime_projection",
+    "replaceable_protocol_adapters"
+  ],
+  "explicit_non_adoptions": [
+    "tool_level_allow_as_execution_authority",
+    "approval_ui_as_execution_authority",
+    "provider_policy_as_final_authorization",
+    "credentials_as_authority"
+  ],
+  "canonical_execution_chain": [
+    "agent_or_provider",
+    "tool_catalog_and_projection",
+    "VAIG",
+    "REHT",
+    "RACS",
+    "execution_gateway",
+    "external_tool_or_api",
+    "Veritas_receipt"
+  ],
+  "invariants": [
+    "Tool discovery and catalog membership are non-authoritative.",
+    "Credentials are secret-location references and never grant authority.",
+    "Surface allow, block or approval state may shape UX but never authorizes consequence-bearing execution.",
+    "Consequence-bearing tools declare required authority scope before projection.",
+    "Provider swaps must not require governance-code changes.",
+    "REHT remains the sole final authorization boundary for consequence-bearing execution.",
+    "Execution-time authorization must be fresh; prior approval does not substitute for REHT re-check.",
+    "External effects require downstream receipt/effect verification."
+  ],
+  "dependency_policy": "pattern_adoption_no_required_executor_runtime_dependency",
+  "authority_effect": "none"
+}
