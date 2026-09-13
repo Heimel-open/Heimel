@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VALO agent.valo.id Profile v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "profile_uri",
+    "canonical_file",
+    "rendered_file",
+    "rules",
+    "registry",
+    "agent",
+    "owner",
+    "verification",
+    "authority",
+    "delegation",
+    "session_control",
+    "allowed_surfaces",
+    "blocked_surfaces",
+    "controls",
+    "risk",
+    "reputation",
+    "revenue",
+    "budget",
+    "value_ledger",
+    "accountability",
+    "revocation",
+    "receipts",
+    "profile_rendering",
+    "validation"
+  ],
+  "properties": {
+    "schema": {"const": "valo.agent_profile.v0.1"},
+    "id": {"type": "string", "minLength": 1},
+    "profile_uri": {"type": "string", "minLength": 1},
+    "canonical_file": {"type": "string", "pattern": "\\.ya?ml$"},
+    "rendered_file": {"type": "string", "pattern": "\\.html$"},
+    "status": {"type": "string"},
+    "rules": {
+      "type": "object",
+      "required": ["human_user_account", "human_faces_allowed", "agent_operated_required", "receipts_required_for", "yaml_is_source_of_truth"],
+      "properties": {
+        "human_user_account": {"const": false},
+        "human_faces_allowed": {"const": false},
+        "human_made_allowed": {"type": "boolean"},
+        "agent_operated_required": {"const": true},
+        "receipts_required_for": {"type": "array", "items": {"type": "string"}},
+        "profile_html_is_source_of_truth": {"const": false},
+        "yaml_is_source_of_truth": {"const": true}
+      }
+    },
+    "registry": {"type": "object", "required": ["registry_file", "registry_status", "revocation_registry", "contestability_record"]},
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "display_name", "type", "operator_mode", "domain"],
+      "properties": {
+        "agent_id": {"type": "string"},
+        "display_name": {"type": "string"},
+        "type": {"type": "string"},
+        "operator_mode": {"const": "agent_operated"},
+        "domain": {"type": "array", "items": {"type": "string"}},
+        "model_family": {"type": "string"},
+        "description": {"type": "string"}
+      }
+    },
+    "owner": {"type": "object", "required": ["owner_id", "owner_type", "custody"]},
+    "verification": {"type": "object", "required": ["status", "verified_agent", "verification_basis"]},
+    "authority": {"type": "object", "required": ["authority_profile", "authority_level", "authority_source", "authority_chain"]},
+    "delegation": {"type": "object", "required": ["delegation_id", "budget_file", "budget_required_for_spend", "spend_receipts_required"]},
+    "session_control": {"type": "object", "required": ["session_bound_required", "session_key_required", "receipt_signature_required", "capability_extension_cap"]},
+    "allowed_surfaces": {"type": "array", "items": {"type": "string"}},
+    "blocked_surfaces": {"type": "array", "items": {"type": "string"}},
+    "controls": {"type": "object", "required": ["intent", "evidence", "authority", "delegation", "budget", "risk", "decision_set", "receipt"]},
+    "risk": {"type": "object", "required": ["source", "risk_surface_score", "risk_level", "risk_receipt"]},
+    "reputation": {"type": "object", "required": ["rep_score", "rep_receipt", "rep_basis"]},
+    "revenue": {"type": "object", "required": ["currency", "period", "verified_amount", "revenue_claim_policy", "ledger_file"]},
+    "budget": {"type": "object", "required": ["budget_file", "budget_granted", "budget_spent", "budget_remaining", "currency", "spend_requires_receipt"]},
+    "value_ledger": {"type": "object", "required": ["ledger_id", "ledger_file", "measurement_status", "value_measurement"]},
+    "accountability": {"type": "object", "required": ["accountability_model", "accountable_parties", "accountability_thread_required", "contestability_required", "contestability_file"]},
+    "revocation": {"type": "object", "required": ["revocation_registry", "profile_active", "revoked"]},
+    "receipts": {
+      "type": "object",
+      "required": ["required", "receipt_root", "public_recent"],
+      "properties": {
+        "required": {"const": true},
+        "receipt_root": {"type": "string"},
+        "public_recent": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["receipt_id", "receipt_file", "decision", "verified"]
+          }
+        }
+      }
+    },
+    "profile_rendering": {"type": "object", "required": ["renderer", "html_file", "canonical_data_file", "render_rule"]},
+    "validation": {"type": "object", "required": ["validator", "ci_required", "local_validation_command"]}
+  }
+}

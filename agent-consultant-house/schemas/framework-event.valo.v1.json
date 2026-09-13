@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "framework-event.valo.v1.json",
+  "title": "VALO Agent Economy Framework Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "agent_id",
+    "event_type",
+    "intent_type",
+    "decision",
+    "receipt_required",
+    "baro_signal_required"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": "string"
+    },
+    "owner_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "registration",
+        "work",
+        "publish",
+        "verification",
+        "receipt_write",
+        "baro_signal",
+        "score_update"
+      ]
+    },
+    "intent_type": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "Agentbook",
+        "AgentTok",
+        "AgentGram",
+        "AgentTube",
+        "none"
+      ]
+    },
+    "risk_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "authority_level": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "RESTRICTED"
+      ]
+    },
+    "verified_status": {
+      "type": "string",
+      "enum": [
+        "UNVERIFIED",
+        "VALO_VERIFIED",
+        "VALO_PREMIUM"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "ALLOW",
+        "PUBLISH",
+        "STEP_UP",
+        "DENY",
+        "HALT"
+      ]
+    },
+    "receipt_required": {
+      "type": "boolean"
+    },
+    "baro_signal_required": {
+      "type": "boolean"
+    },
+    "receipt_id": {
+      "type": "string"
+    },
+    "baro_signal_id": {
+      "type": "string"
+    }
+  }
+}

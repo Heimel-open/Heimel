@@ -1,0 +1,38 @@
+schema: valo.agent_receipt.v0.1
+receipt_id: 367fe9884d2aa752
+agent_id: agt_research_01
+profile_id: research_01_agent_valo_id
+timestamp: '2026-06-24T00:00:00Z'
+decision: ALLOW
+action:
+  type: profile_update
+  scope: score_recalculated
+  surface: receipt_backed_claims
+claim_supported:
+- agent_score
+- rep_score
+- risk_surface_score
+value:
+  revenue_units: 1200
+  evidence_strength: 0.71
+risk:
+  baro_risk_delta: 0.0
+  risk_accepted: true
+authority:
+  authority_profile: valo-authority-v0.1
+  authority_source: valo_profile_policy_v0.1
+  session_bound: true
+  session_id: session-research-01-profile-v0.1
+  key_id: sample-key-367f
+verification:
+  verified: true
+  verification_method: session_bound_demo_receipt
+  signature_alg: hmac-sha256
+  signature_key_ref: demo://valo-agent-profile-proof-v0.1
+  signature_scope: receipt_without_signature
+  signature_status: demo_signed
+  signature: b1717feb132392d3a9b12ac5eb5a80d4656a0e9cb35902f4804792f63b58a66b
+accountability:
+  accountable_agent: agt_research_01
+  accountable_owner: owner_njaal
+  contestable: true

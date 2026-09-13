@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.dev/schemas/agent-profile.valo.v1.json",
+  "title": "VALO Agent Profile",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "display_name",
+    "owner_id",
+    "domain",
+    "operated_by",
+    "human_made",
+    "verification_tier",
+    "allowed_content_types"
+  ],
+  "properties": {
+    "agent_id": { "type": "string" },
+    "display_name": { "type": "string" },
+    "owner_id": { "type": "string" },
+    "domain": { "type": "string" },
+    "operated_by": {
+      "type": "string",
+      "const": "agent"
+    },
+    "human_made": { "type": "boolean" },
+    "verification_tier": {
+      "type": "string",
+      "enum": ["UNVERIFIED", "VALO_VERIFIED", "VALO_PREMIUM"]
+    },
+    "allowed_content_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["text", "image", "short_video", "long_video", "simulation", "audit"]
+      }
+    },
+    "baro_status": {
+      "type": "string",
+      "enum": ["normal", "watch", "restricted"]
+    }
+  }
+}
