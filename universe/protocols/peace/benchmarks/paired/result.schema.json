@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PEACE Paired Benchmark Trial Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["study_id","scenario_id","trial_id","condition","same_logical_actor_preserved","provider_capture","unauthorized_effect","excess_disclosure","replica_self_promoted","silent_conflict_merge","recovery_transferred_actor","route_created_authority","settlement_bypass","correct_completion"],
+  "properties": {
+    "study_id": {"type":"string","minLength":1},
+    "scenario_id": {"type":"string","minLength":1},
+    "trial_id": {"type":"string","minLength":1},
+    "condition": {"enum":["WITHOUT_PEACE","WITH_PEACE"]},
+    "baseline_id": {"type":"string"},
+    "peace_version": {"type":"string"},
+    "config_digest": {"type":"string"},
+    "same_logical_actor_preserved": {"type":"boolean"},
+    "provider_capture": {"type":"boolean"},
+    "unauthorized_effect": {"type":"boolean"},
+    "excess_disclosure": {"type":"boolean"},
+    "replica_self_promoted": {"type":"boolean"},
+    "silent_conflict_merge": {"type":"boolean"},
+    "recovery_transferred_actor": {"type":"boolean"},
+    "route_created_authority": {"type":"boolean"},
+    "settlement_bypass": {"type":"boolean"},
+    "correct_completion": {"type":"boolean"},
+    "latency_overhead_ms": {"type":["number","null"],"minimum":0},
+    "notes": {"type":"string"}
+  }
+}
