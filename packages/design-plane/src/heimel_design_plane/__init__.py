@@ -92,6 +92,21 @@ class PromotionProposal:
     def digest(self) -> str:
         return _digest(self.__dict__)
 
+    def boundary_effect_fields(self, *, actor_id: str, target: str) -> dict[str, str]:
+        """Return exact fields accepted by heimel_boundary.Effect.
+
+        This is deliberately data-only: creating these fields does not authorize or
+        execute the effect. Fresh authority remains the boundary's responsibility.
+        """
+        if self.status is not PromotionStatus.AUTHORITY_REQUIRED:
+            raise DesignPlaneError("promotion is not ready for authority evaluation")
+        return {
+            "effect_id": self.digest,
+            "actor_id": actor_id,
+            "action": f"promote:{self.effect_class}",
+            "target": target,
+        }
+
 
 @dataclass(frozen=True)
 class DomainBinding:
