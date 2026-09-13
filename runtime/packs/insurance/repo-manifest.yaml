@@ -1,0 +1,42 @@
+schema_version: "1.0.0"
+repository:
+  id: valo.insurance-pack
+  name: "valo-insurance-pack"
+  canonical_name: valo-insurance-pack
+  url: https://github.com/nsolland/valo-insurance-pack
+  org: "nsolland"
+  owner: "Codex"
+  canonical_role: "insurance-product-layer"
+  classification: product-implementation
+  visibility: private
+  maturity: frozen-baseline-v0.1.0
+  product_baseline: v0.1.0
+  product_baseline_doc: PRODUCT_BASELINE.md
+  support: maintained
+  normative_status: implementation
+  license: proprietary-unless-file-states-otherwise
+
+purpose:
+  summary: Machine-underwritable assurance and claims evidence pack layer over REHT
+  owns:
+    - AssuranceProfileV1
+    - SourceAssuranceEvidenceV1
+    - CommitAssuranceEvaluationV1
+    - PolicyBindingV1
+    - ClaimsEvidencePackV1
+    - UnderwritingTelemetry
+
+dependencies:
+  - repo: nsolland/valo-reht
+    role: authorization-boundary
+    anchor_sha: ae4ee0e1c4e4801e6da53ae59d32b1c01089c127
+    anchor_ref: main
+  - repo: nsolland/Racs
+    role: action-control-standard
+    anchor_ref: main
+  - repo: nsolland/valo-gateway
+    role: execution-pep-gateway
+    anchor_ref: main
+  - repo: nsolland/Veritas
+    role: receipt-attestation-worm
+    anchor_ref: main
