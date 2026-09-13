@@ -1,0 +1,1 @@
+Authority Instrumentation™ remains Elsa's pre-existing IP. Aurora-Lens remains Margaret Stokes' pre-existing IP. VALO Research owns the adapter mapping and REHT integration code. Shared review does not reassign ownership.
