@@ -1,0 +1,17 @@
+name: valo-mal
+version: 0.1.0
+layer: model-admissibility
+description: Deterministic, authority-neutral MAL policy-federation reference surface
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-platform
+  commit: e535537c1f8dad164e832e41308a79a9bbc2c8da
+  paths:
+    - src/mal/policy_federation.py
+  status: extracted-reference-slice
+
+boundary:
+  grants_execution_authority: false
+  contains_private_runtime: false
+  dependencies: []
