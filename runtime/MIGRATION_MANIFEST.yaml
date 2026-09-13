@@ -91,10 +91,18 @@ components:
     path: runtime/pilots/valo-pilot
     source_repository: Valo-Pilot
     source_commit: 788f5db
-  - id: twin
-    path: runtime/pilots/valo-twin
-    source_repository: Valo-Twin
-    source_commit: deaa246
+  - id: factory
+    path: runtime/factory
+    source_repository: valo-factory
+    source_commit: 3acaa3e84a4f47ae5d974befe7e9328c7eaa8b35
+  - id: insurance-pilot
+    path: runtime/packs/insurance-pilot
+    source_repository: valo-insurance-pilot
+    source_commit: 7bc3a89b4107aa6942e05837266af24ba9503957
+  - id: personal-ai-application
+    path: universe/applications/personal-ai-os
+    source_repository: PersonalAI-OS
+    source_commit: da0307526685e82b22266fa9ac7bb29b42f70686
 
 excluded:
   - repository: Olav
