@@ -166,3 +166,8 @@ Identity can establish who an actor is. A model can propose what to do. A workfl
 ---
 
 <p align="center"><strong>HEIMEL</strong><br>Intent. Realized.</p>
+## Cognitive seeds
+
+The [cognitive seed catalogue](seeds/README.md) contains small, versioned
+hypotheses and reusable conceptual primitives intended for independent
+adoption. Seeds are not protocols, runtimes, products or sources of authority.

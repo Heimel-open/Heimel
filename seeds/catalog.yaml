@@ -1,0 +1,35 @@
+schema_version: 1
+catalog_id: cognitive-seeds
+orientation: seeds/ORIENTATION.md
+seeds:
+  - id: ace
+    version: "0.1"
+    title: Attentive Cognitive Evaluation
+    kind: research-hypothesis
+    report: reports/01-the-ace-economy.md
+    does_not_create: [authority, authorization, execution]
+  - id: gcu
+    version: "0.1"
+    title: Governed Completion Unit
+    kind: economic-operational-hypothesis
+    report: reports/02-from-jobs-to-governed-completion-units.md
+    does_not_create: [authority, payment, operative-state]
+  - id: outcome-first
+    version: "0.1"
+    title: Outcome-first measurement
+    kind: measurement-principle
+    report: reports/08-measuring-ai-by-completed-outcomes.md
+    does_not_create: [authorization, proof-from-activity]
+  - id: capability-commodity
+    version: "0.1"
+    title: Capability as commodity, outcome as moat
+    kind: strategic-hypothesis
+    report: reports/44-ai-capability-is-becoming-commodity.md
+    does_not_create: [market-certainty, execution-authority]
+  - id: infrastructure-scarcity
+    version: "0.1"
+    title: Compute abundance, infrastructure scarcity
+    kind: infrastructure-economic-hypothesis
+    report: reports/42-compute-abundance-infrastructure-scarcity.md
+    does_not_create: [investment-advice, market-certainty]
+
