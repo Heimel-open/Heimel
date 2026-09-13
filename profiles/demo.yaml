@@ -1,0 +1,30 @@
+# Demo profile — non-production showcase, synthetic data only, ephemeral.
+profile: demo
+description: "Showcase deployment. Synthetic/public-demo data only. No production secrets. Ephemeral state."
+resource_bounds:
+  cpu: "4"
+  memory: "8Gi"
+  storage: "40Gi"
+components:
+  - name: reht
+    required: true
+  - name: vaig
+    required: true
+  - name: veritas
+    required: true
+  - name: gateway
+    required: true
+config_contracts:
+  - reht: config/reht-demo.yaml
+  - gateway: config/gateway-demo.yaml
+adapters:
+  model_provider: stepfun
+  vector_store: local
+secrets_contract:
+  - name: GATEWAY_TOKEN
+    required: false
+    source: env
+    note: "demo-only, synthetic"
+demo_data_only: true
+packaging:
+  - compose

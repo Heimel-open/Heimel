@@ -1,0 +1,7 @@
+# Compose packaging stub — research profile.
+# Assembled by scripts/build-bundle from pinned components. No component
+# source here; images are referenced by pinned digest.
+version: "3.8"
+services: {}
+# Components are injected at deploy time from components.lock.yaml pins.
+# This file is a placeholder structure; build-bundle copies it per profile.

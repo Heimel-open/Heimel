@@ -1,0 +1,15 @@
+# systemd unit stub — edge profile (VALO appliance).
+# Real units are generated at deploy from pinned components + profile config.
+# Placeholder; build-bundle copies per profile.
+[Unit]
+Description=VALO edge appliance (pinned distribution)
+After=network.target
+
+[Service]
+Type=simple
+# ExecStart injected from components.lock.yaml pinned image at deploy time.
+ExecStart=/usr/bin/valo-edge
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

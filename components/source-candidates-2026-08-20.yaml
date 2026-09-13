@@ -1,0 +1,44 @@
+schema_version: "valo.distribution/source-candidates/v1"
+status: "NON_DEPLOYABLE_SOURCE_SNAPSHOT"
+observed_at: "2026-08-20"
+purpose: >-
+  Record exact canonical source commits observed while preparing the first deployable
+  Execution Assurance bundle. This file is not a distribution lock and MUST NOT be
+  consumed by build-bundle. Release tags, published images and immutable image digests
+  remain NOT_ESTABLISHED until independently observed.
+components:
+  - name: reht
+    repo: nsolland/valo-reht
+    source_sha: 4f2a1789dd46974f2e6a8b7da56cfff03bb2cf7d
+    observed_package_version: 1.1.0rc1
+    release_tag: NOT_ESTABLISHED
+    image: NOT_ESTABLISHED
+    image_digest: NOT_ESTABLISHED
+  - name: vaig
+    repo: nsolland/VAIG
+    source_sha: 2e33a47715084e2ce6b945584070a792cd84001f
+    release_tag: NOT_ESTABLISHED
+    image: NOT_ESTABLISHED
+    image_digest: NOT_ESTABLISHED
+  - name: veritas
+    repo: nsolland/Veritas
+    source_sha: abc6138e3f3d80fffdd95878f6ac0c1dd053ffa5
+    release_tag: NOT_ESTABLISHED
+    image: NOT_ESTABLISHED
+    image_digest: NOT_ESTABLISHED
+  - name: gateway
+    repo: nsolland/valo-gateway
+    source_sha: cfaf16bd96296bcbbd57cd8ad925cde3b5728f7e
+    release_tag: NOT_ESTABLISHED
+    image: NOT_ESTABLISHED
+    image_digest: NOT_ESTABLISHED
+  - name: racs
+    repo: nsolland/Racs
+    source_sha: 5d386df8bc48b8a2fcf4dfb9a70f59d5ecfdd651
+    release_tag: NOT_ESTABLISHED
+    image: NOT_ESTABLISHED
+    image_digest: NOT_ESTABLISHED
+promotion_rule: >-
+  A source candidate may be promoted into components.lock.yaml only after the canonical
+  component has a released tag bound to the exact source SHA and a published immutable
+  artifact/image digest. Missing evidence remains NOT_ESTABLISHED; never synthesize it.
