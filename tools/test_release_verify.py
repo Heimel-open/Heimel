@@ -54,6 +54,13 @@ class release_verify_tests(unittest.TestCase):
         with self.assertRaises(release_verify.verification_error):
             release_verify.verify_tag_targets(packages, "0" * 40)
 
+    def test_immutable_package_tags_may_precede_review_commit(self) -> None:
+        manifest = release_verify.parse_release()
+        packages = manifest["packages"]
+        self.assertIsInstance(packages, list)
+        commit = release_verify.run(["git", "rev-parse", "HEAD"])
+        release_verify.verify_tag_targets(packages, commit.strip())
+
 
 if __name__ == "__main__":
     unittest.main()

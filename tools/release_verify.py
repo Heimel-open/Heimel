@@ -233,10 +233,25 @@ def verify_tag_targets(packages: list[dict[str, str]], commit: str) -> None:
     for package in packages:
         tag = package["tag"]
         target = run(["git", "rev-list", "-1", f"{tag}^{{commit}}"] ).strip()
-        if target != commit:
+        if not target:
             raise verification_error(
-                f"tag {tag} must point to reviewed commit {commit}, got {target or 'missing'}"
+                f"tag {tag} is missing"
             )
+        ancestor = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", target, commit],
+            cwd=root,
+            check=False,
+        )
+        if ancestor.returncode:
+            raise verification_error(f"tag {tag} is not an ancestor of reviewed commit {commit}")
+        package_path = package["path"]
+        unchanged = subprocess.run(
+            ["git", "diff", "--quiet", f"{tag}^{{commit}}", commit, "--", package_path],
+            cwd=root,
+            check=False,
+        )
+        if unchanged.returncode:
+            raise verification_error(f"package path changed after immutable tag {tag}: {package_path}")
 
 
 def build_and_test(packages: list[dict[str, str]], timestamp: int) -> list[dict[str, object]]:
@@ -373,7 +388,10 @@ def verify(*, metadata_only: bool = False) -> dict[str, object]:
         "generated_at": int(time.time()),
         "github_actions": "absent",
         "publication_authority": False,
-        "tag_targets": {item["tag"]: sha for item in packages},
+        "tag_targets": {
+            item["tag"]: run(["git", "rev-list", "-1", f"{item['tag']}^{{commit}}"] ).strip()
+            for item in packages
+        },
         "packages": packages,
         "artifacts": artifacts,
     }
