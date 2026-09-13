@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "valo-gateway"
-version = "0.1.0"
+version = "0.1.1"
 description = "Vendor-neutral mechanical enforcement and reference gateway for governed actions."
 readme = "README.md"
 license = "Apache-2.0"

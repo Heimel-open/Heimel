@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "valo-sdk"
-version = "0.1.4"
+version = "0.1.5"
 description = "Portable Python SDK for public VALO reference contracts"
 license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = [
-    "valo-mal==0.1.2",
+    "valo-mal==0.1.3",
     "valo-c-mcp==0.1.1",
     "valo-vaig==0.1.1",
     "valo-conformance==0.1.1",
