@@ -1,0 +1,18 @@
+publiccodeYmlVersion: "0.2"
+name: "VALO-v5-Core"
+url: "https://github.com/nsolland/valo-v5-core"
+landingURL: "https://github.com/nsolland/valo-v5-core"
+softwareVersion: "5.0.0"
+releaseDate: "2026-08-02"
+platforms:
+  - "linux"
+categories:
+  - "execution-substrate"
+developmentStatus: "development"
+softwareType: "library"
+description:
+  en:
+    shortDescription: "Fail-closed execution substrate and single-use commit token kernel for VALO."
+    longDescription: "valo-v5-core is the low-level fail-closed execution substrate. It verifies single-use commit tokens and permits immediately before invoking effect-bound connectors."
+legal:
+  license: "MIT"

@@ -1,0 +1,22 @@
+schema_version: "1.0.0"
+repository:
+  id: "valo.v5-core"
+  name: "valo-v5-core"
+  org: "nsolland"
+  canonical_role: "fail_closed_execution_substrate"
+  normative_status: "normative_execution_substrate"
+  owner: "ANTIGRAVITY"
+
+capabilities:
+  - "permit_verification"
+  - "single_use_commit_token_consumption"
+  - "halt_enforcement"
+  - "bounded_connector_invocation"
+
+prohibitions:
+  - "does_not_evaluate_admissibility"
+  - "does_not_issue_governance_clearance"
+  - "does_not_permit_ungoverned_callable_execution"
+
+interfaces:
+  execution_kernel: "src/valo_v5_core/kernel.py"

@@ -1,0 +1,20 @@
+[package]
+name = "l1-guardian"
+version = "5.0.0"
+edition = "2021"
+
+[dependencies]
+hmac = "0.12"
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_jcs = "0.1"
+ed25519-dalek = "2"
+base64 = "0.22"
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+
+[features]
+simulation = []
+
+[profile.release]
+lto = false

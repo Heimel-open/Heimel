@@ -1,0 +1,11 @@
+[package]
+name = "ai-pls-golden-path"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+ai-pls-core = { path = "../ai-pls-core" }
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
