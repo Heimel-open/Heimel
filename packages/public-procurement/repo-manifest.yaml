@@ -1,0 +1,18 @@
+name: valo-public-procurement
+version: 0.1.0
+layer: domain-pack
+description: Immutable public procurement state, evidence and proposal contracts
+license: Apache-2.0
+
+source:
+  repository: nsolland/valo-platform
+  commit: e535537c1f8dad164e832e41308a79a9bbc2c8da
+  paths:
+    - src/valo_platform/public_procurement/contracts.py
+  status: rebuilt-domain-reference
+
+boundary:
+  evaluates_authority: false
+  executes_payments: false
+  grants_authority: false
+  owns_reht: false
