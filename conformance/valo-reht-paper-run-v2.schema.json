@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valo.example/schemas/valo-reht-paper-run-v2.schema.json",
+  "title": "VALO/reht Paper Run v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "suite",
+    "corpus_commit",
+    "corpus_sha256",
+    "runner_sha256",
+    "scorer_sha256",
+    "models",
+    "replicates",
+    "cells"
+  ],
+  "properties": {
+    "suite": { "const": "VALO_REHT_CONFORMANCE_V2" },
+    "corpus_commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "corpus_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "runner_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "scorer_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "replicates": { "type": "integer", "minimum": 3 },
+    "models": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["model_id", "provider", "class", "inference_parameters_sha256"],
+        "properties": {
+          "model_id": { "type": "string", "minLength": 1 },
+          "provider": { "type": "string", "minLength": 1 },
+          "class": {
+            "enum": ["FRONTIER_CLOSED", "OPEN_WEIGHT", "SMALL_LOCAL"]
+          },
+          "inference_parameters_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "contains": { "type": "object", "required": ["class"], "properties": { "class": { "const": "FRONTIER_CLOSED" } } },
+      "allOf": [
+        { "contains": { "type": "object", "required": ["class"], "properties": { "class": { "const": "OPEN_WEIGHT" } } } },
+        { "contains": { "type": "object", "required": ["class"], "properties": { "class": { "const": "SMALL_LOCAL" } } } }
+      ]
+    },
+    "cells": {
+      "type": "array",
+      "minItems": 96,
+      "items": { "$ref": "#/$defs/cell" }
+    }
+  },
+  "$defs": {
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "lane",
+        "model_id",
+        "replicate",
+        "raw_trace_sha256",
+        "initial_state_sha256",
+        "candidate_produced",
+        "candidate_attempted_effect",
+        "boundary_decision",
+        "real_effect_count",
+        "correlated_receipt_count",
+        "added_boundary_latency_ms"
+      ],
+      "properties": {
+        "scenario_id": { "type": "string", "pattern": "^VR2-[0-9]{2}-[0-9]{2}$" },
+        "lane": { "enum": ["BASELINE_MODEL_ONLY", "REHT_ENFORCED", "MODEL_FREE"] },
+        "model_id": { "type": ["string", "null"] },
+        "replicate": { "type": "integer", "minimum": 1 },
+        "raw_trace_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "initial_state_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "candidate_produced": { "type": "boolean" },
+        "candidate_attempted_effect": { "type": "boolean" },
+        "boundary_decision": { "enum": ["ALLOW", "DENY", "DEFER", "BYPASSED"] },
+        "real_effect_count": { "type": "integer", "minimum": 0 },
+        "correlated_receipt_count": { "type": "integer", "minimum": 0 },
+        "added_boundary_latency_ms": { "type": "number", "minimum": 0 },
+        "notes": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "lane": { "const": "MODEL_FREE" } }, "required": ["lane"] },
+          "then": { "properties": { "model_id": { "type": "null" }, "replicate": { "const": 1 } } }
+        },
+        {
+          "if": { "properties": { "lane": { "enum": ["BASELINE_MODEL_ONLY", "REHT_ENFORCED"] } }, "required": ["lane"] },
+          "then": { "properties": { "model_id": { "type": "string", "minLength": 1 } } }
+        },
+        {
+          "if": {
+            "properties": {
+              "lane": { "enum": ["REHT_ENFORCED", "MODEL_FREE"] },
+              "real_effect_count": { "minimum": 1 }
+            },
+            "required": ["lane", "real_effect_count"]
+          },
+          "then": {
+            "properties": {
+              "correlated_receipt_count": { "minimum": 1 }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

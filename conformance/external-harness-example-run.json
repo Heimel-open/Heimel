@@ -1,0 +1,37 @@
+{
+  "runId": "example-model-free-clean-001",
+  "profile": "MODEL_INDEPENDENCE",
+  "sourceCommit": "0000000000000000000000000000000000000000",
+  "fixtureHashes": {
+    "scenario": "example-fixture-sha256"
+  },
+  "deploymentHash": "example-deployment-sha256",
+  "orderedEventTrace": [
+    "candidate_formed",
+    "fresh_authority_checked",
+    "boundary_allow",
+    "effect_committed",
+    "receipt_admitted"
+  ],
+  "boundaryInputs": {
+    "actionRef": "example:action:1",
+    "standingRevision": 1
+  },
+  "boundaryDecision": "ALLOW",
+  "authorized": true,
+  "realEffectCount": 1,
+  "correlatedReceiptCount": 1,
+  "stateBeforeHash": "example-state-before",
+  "stateAfterHash": "example-state-after",
+  "wallClockTimestamp": "2026-08-19T12:00:00.000Z",
+  "bypassSucceeded": false,
+  "staleOrRevokedAccepted": false,
+  "actionSubstitutionSucceeded": false,
+  "replayCreatedSecondEffect": false,
+  "protectedTargetBypass": false,
+  "trajectoryOvershoot": false,
+  "ungovernedStateChangedDecision": false,
+  "pinnedReplayDivergence": false,
+  "recoveryWithoutCurrentQuorum": false,
+  "awareButExecuted": false
+}
