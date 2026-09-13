@@ -75,6 +75,18 @@ components:
     path: runtime/packs/retail
     source_repository: valo-retail-pack
     source_commit: c1ad658f5bfb3c648a193c4b9cd216db6118c957
+  - id: distribution
+    path: runtime/distribution
+    source_repository: valo-distribution
+    source_commit: aa67c9d8851633f390e69a561000f38a2acc7949
+  - id: validation
+    path: runtime/validation
+    source_repository: valo-validation
+    source_commit: d5a8c9d70430ff354e1b462dea06e709adcc392f
+  - id: extended-validation
+    path: runtime/validation-extended
+    source_repository: valo-validation-extended
+    source_commit: 1729c595ee8d29c17eda0ea21655b9d215f33c5e
 
 excluded:
   - repository: Olav
