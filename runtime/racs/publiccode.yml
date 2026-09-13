@@ -1,0 +1,18 @@
+publiccodeYmlVersion: "0.2"
+name: "RACS"
+url: "https://github.com/nsolland/Racs"
+landingURL: "https://github.com/nsolland/Racs"
+softwareVersion: "0.2.0"
+releaseDate: "2026-08-02"
+platforms:
+  - "linux"
+categories:
+  - "execution-governance"
+developmentStatus: "development"
+softwareType: "specification"
+description:
+  en:
+    shortDescription: "Runtime Agent Control Standard (RACS) decision binding and permit contract specification."
+    longDescription: "RACS defines deterministic decision binding, permit/commit token contracts, and receipt schemas for governed agent execution. It cannot expand authority beyond REHT clearance."
+legal:
+  license: "Apache-2.0"
