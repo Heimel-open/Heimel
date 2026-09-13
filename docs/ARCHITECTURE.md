@@ -85,6 +85,13 @@ The public repository contains curated Apache-2.0 packages:
 - `packages/kernel` — minimal operative-state, replay and admission core
 - `packages/workflow-isa` — typed deterministic workflow semantics
 - `packages/function-fabric` — provider-neutral governed Function composition
+- `packages/mal` — model-use admissibility reference contract
+- `packages/c-mcp` — governed MCP contract reference
+- `packages/vaig` — evaluation and evidence-assurance reference shapes
+- `packages/conformance` — read-only contract and boundary conformance
+- `packages/workspace` — authority-neutral workspace and state-admission contracts
+- `packages/public-procurement` — immutable procurement evidence/proposal records
+- `packages/sdk` — offline public contract SDK and CLI facade
 
 Canonical runtime ownership remains in `nsolland/valo-kernel`, `nsolland/valo-workflow-isa` and `nsolland/valo-function-fabric`. HEIMEL owns the public distribution, not a second runtime implementation.
 
@@ -104,8 +111,7 @@ Provider adapters, credentials, customer policy, calibration, deployment interna
 
 The reference packages are public and locally validated. The following are not yet claimed complete:
 
-- immutable version tags and published package artifacts;
-- SDK, CLI and standalone verifier;
+- registry publication and post-upload verification;
 - a coherent public end-to-end install and execution demo;
-- clean-room VAIG and MAL public reference surfaces;
+- clean-room integration surfaces beyond the curated contract references;
 - selected domain packs and integration examples after their own release gates.
