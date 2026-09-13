@@ -1,0 +1,3 @@
+# Public note
+
+Internal delivery claims, branch ownership, private dependency references, and operational work history are intentionally not published in this repository.
