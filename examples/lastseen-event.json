@@ -1,0 +1,12 @@
+{
+  "object_name": "keys",
+  "location": "kitchen counter, beside the coffee machine",
+  "image_ref": "crops/keys-kitchen.jpg",
+  "confidence": 0.98,
+  "observed_at_iso": "2026-08-04T08:42:00Z",
+  "metadata": {
+    "camera_id": "kitchen-01",
+    "zone_id": "counter-coffee-machine",
+    "detector": "local-replay"
+  }
+}
