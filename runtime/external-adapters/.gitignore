@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.ci-venv/
+dist/
+build/
+*.egg-info/
+
+.venv/
+venv/
+*.so
+*.rlib
+*.dylib
+*.dll
+*.exe

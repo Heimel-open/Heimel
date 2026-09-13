@@ -1,0 +1,25 @@
+# UHP worker adapter claim
+
+- repo: nsolland/valo-external-adapters
+- canonical base SHA: 42f2fee42eead777b18f4f48f0d4a9e2cfbdeeda
+- branch: feat/uhp-worker-adapter
+- draft PR: #2
+- owner: nsolland
+- active delivery: Unified Harness Protocol (UHP) external worker adapter
+- owned files:
+  - src/valo_external_adapters/uhp.py
+  - src/valo_external_adapters/__init__.py
+  - tests/test_uhp_adapter.py
+  - docs/uhp_adapter.md
+  - .github/workflows/ci.yml
+  - .github/work-anchors/2026-08-17-uhp-worker-adapter.md
+- dependencies: Pydantic v2 runtime contracts; UHP 2026-08-11 HTTP contract
+- invariants:
+  - harness/runtime is replaceable worker substrate, never an authority source
+  - no direct consequence-bearing effect path through UHP/HarnessRouter
+  - worker output is proposal/artifact evidence only until fresh VALO authority evaluation clears effect
+  - fail closed on protocol/version/identity/binding mismatch
+  - deterministic correlation from VALO action/execution refs to UHP request/session/response refs
+- concrete gate repair:
+  - CI must install the repository's existing Pydantic dependency
+  - pytest must resolve the repository's existing src-layout package
