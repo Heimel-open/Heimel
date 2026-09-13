@@ -28,6 +28,8 @@ Anything that forms intent → HEIMEL → Anything that causes effect
 
 Not every intent should become reality.
 
+When humans can no longer keep a finger on every button, authority, boundaries and accountability must follow the button itself.
+
 HEIMEL sits immediately before effect and answers one question:
 
 > **Does this intent have authority to become real — now?**
