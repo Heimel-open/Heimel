@@ -280,6 +280,8 @@ def build_and_test(packages: list[dict[str, str]], timestamp: int) -> list[dict[
                 "--disable-pip-version-check",
                 "pydantic>=2.6,<3",
                 "rfc8785>=0.1.4",
+                "cryptography>=41.0",
+                "jsoncanon>=0.2.3",
                 "hypothesis>=6.100",
             ]
         )
