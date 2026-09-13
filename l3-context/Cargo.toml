@@ -1,0 +1,21 @@
+[package]
+name = "l3-context"
+version = "5.0.0"
+edition = "2021"
+authors = ["VALO Team"]
+description = "VALO V5.0 L3 Context Engine - Dynamic Risk Management"
+
+[dependencies]
+# L3 kan senere bruke små biblioteker for JSON/HTTP-parsing
+
+[lib]
+name = "l3_context"
+path = "src/lib.rs"
+
+[[bin]]
+name = "l3-context"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true

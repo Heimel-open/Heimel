@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+states/
+
+# Repowise cache files (local only)
+.repowise/
+.claude/
+.vscode/
+.mcp.json
+.mcp/
+.repowise-workspace.yaml
+.repowise-settings.yaml
+
+# Rust build artifacts
+/target/
+**/target/
