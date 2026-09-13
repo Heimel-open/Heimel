@@ -1,0 +1,42 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440004",
+  "agent_id": "agent-planner-05",
+  "timestamp": "2026-06-16T12:00:00Z",
+  "intent": {
+    "action": "modify_document",
+    "target": "contract.pdf",
+    "scope": "paragraph_3"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:doc111",
+        "type": "document",
+        "verified": true
+      },
+      {
+        "hash": "sha256:pol222",
+        "type": "policy",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.0
+  },
+  "risk": {
+    "level": "low",
+    "categories": [
+      "legal"
+    ],
+    "blast_radius": "single_document"
+  },
+  "confidence": 0.75,
+  "policy": {
+    "required_signoff": false,
+    "max_risk_level": "medium",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU-GDPR"
+  },
+  "decision": "MODIFY",
+  "signature": "ed25519:placeholder"
+}

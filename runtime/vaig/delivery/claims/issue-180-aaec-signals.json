@@ -1,0 +1,23 @@
+{
+  "issue": 180,
+  "owner": "ChatGPT",
+  "base_sha": "57687cfd20b9dc6612f6e10ade18da3552ca7c64",
+  "branch": "feat/aaec-trajectory-signals",
+  "scope": "Deterministic VAIG evaluation of RACS AAEC trajectory evidence into typed signals and canonical recommendations without clearance or execution authority.",
+  "owned_paths": [
+    "delivery/claims/issue-180-aaec-signals.json",
+    "vaig/aaec_trajectory.py",
+    "tests/test_aaec_trajectory.py",
+    "docs/architecture/aaec-trajectory-evaluation.md"
+  ],
+  "dependencies": [
+    "nsolland/Racs#130",
+    "RACS AAECTrajectoryContext v0.3",
+    "canonical VAIG decision vocabulary"
+  ],
+  "local_verification": {
+    "tests/test_aaec_trajectory.py": "20 passed",
+    "authority_boundary": "execution_authority=NONE; can_issue_clearance=false"
+  },
+  "status": "implemented"
+}

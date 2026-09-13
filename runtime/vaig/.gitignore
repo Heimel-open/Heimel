@@ -1,0 +1,42 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.env
+*.jsonl
+!tests/fixtures/*.jsonl
+
+# Repowise + agent tool caches
+.claude/
+
+# Repowise + agent tool caches
+.vscode/
+
+# Repowise + agent tool caches
+.mcp.json
+
+# Repowise + agent tool caches
+.mcp/
+
+# Repowise + agent tool caches
+.repowise/
+
+# Repowise + agent tool caches
+.repowise-workspace.yaml
+
+# Repowise + agent tool caches
+.repowise-settings.yaml
+
+# Test artifact: some suites write audit logs to ":memory:"
+:memory:
+
+# Local learning-loop artifacts (per-environment, never committed)
+vaig_regression.jsonl
+vaig_audit.jsonl
+instrument_metrics.jsonl
+.venv/
+__pycache__/
+*.pyc

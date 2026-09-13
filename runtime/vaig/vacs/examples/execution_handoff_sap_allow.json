@@ -1,0 +1,61 @@
+{
+  "acs_version": "0.1",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440202",
+  "agent_id": "agent-procurement-01",
+  "timestamp": "2026-06-28T12:05:00Z",
+  "intent": {
+    "action": "create_purchase_requisition",
+    "target": "sap-pr-queue-norway",
+    "scope": "approved_low_value_procurement"
+  },
+  "evidence": {
+    "sources": [
+      {
+        "hash": "sha256:vendor-check-001",
+        "type": "document",
+        "verified": true
+      },
+      {
+        "hash": "sha256:procurement-policy-001",
+        "type": "policy",
+        "verified": true
+      }
+    ],
+    "evidence_gap": 0.0
+  },
+  "risk": {
+    "level": "low",
+    "categories": ["procurement"],
+    "blast_radius": "department"
+  },
+  "confidence": 0.97,
+  "policy": {
+    "policy_id": "procurement-low-value-policy-v1",
+    "policy_hash": "sha256:procurementlowvaluepolicyv10000000000000000000000000000000",
+    "required_signoff": false,
+    "max_risk_level": "medium",
+    "evidence_gap_threshold": 0.3,
+    "jurisdiction": "EU",
+    "override_allowed": false
+  },
+  "decision": "ALLOW",
+  "signature": "ed25519:placeholder",
+  "vacs_profile": "valo-authority-v0.1",
+  "principal": {
+    "who": "agent-procurement-01",
+    "whom": "procurement_operator_12",
+    "authority_source": "procurement-low-value-policy-v1",
+    "authority_reference": "policy://procurement/low-value/v1",
+    "human_signoff": {
+      "required": false
+    }
+  },
+  "boundary": {
+    "when": "business_hours",
+    "where": "procurement_workflow",
+    "resources": ["sap-pr-queue-norway"],
+    "forbidden_domains": ["payment_execution", "vendor_master_write"],
+    "execution_provider": "sap",
+    "execution_method": "sap:create_purchase_requisition"
+  }
+}

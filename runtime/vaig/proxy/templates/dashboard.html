@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VALO Proxy — Governance Dashboard</title>
+<style>
+  :root {
+    --bg: #0a0b0f; --card: #12141a; --brd: rgba(255,255,255,.07);
+    --dim: #8b95a8; --mut: #4a5568;
+    --pass: #22c55e; --degrade: #f59e0b; --halt: #ef4444;
+    --crystalline: #3b82f6; --fluid: #22c55e; --gaseous: #f59e0b; --plasma: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: #fff; font-family: system-ui,-apple-system,sans-serif; min-height: 100vh; }
+  header { border-bottom: 1px solid var(--brd); padding: 16px 32px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 15px; font-weight: 600; }
+  .hbadge { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,.15); color: #93c5fd; letter-spacing: .06em; }
+  .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+  /* VU METER */
+  .vu-wrap { display: flex; gap: 32px; align-items: flex-start; margin-bottom: 40px; }
+  .vu-meter { width: 180px; flex-shrink: 0; }
+  .vu-meter h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--mut); margin-bottom: 14px; }
+  .vu-gauge { position: relative; width: 180px; height: 100px; }
+  .vu-gauge svg { width: 100%; height: 100%; }
+  .vu-label { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 22px; font-weight: 700; }
+  .vu-sublabel { text-align: center; font-size: 11px; color: var(--mut); margin-top: 6px; }
+  .vu-legend { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+  .vu-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .vu-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* SUMMARY */
+  .summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 40px; }
+  .scard { background: var(--card); border: 1px solid var(--brd); border-radius: 10px; padding: 16px 18px; }
+  .scard-n { font-size: 28px; font-weight: 700; }
+  .scard-l { font-size: 12px; color: var(--dim); margin-top: 3px; }
+  .scard.pass .scard-n { color: var(--pass); }
+  .scard.degrade .scard-n { color: var(--degrade); }
+  .scard.halt .scard-n { color: var(--halt); }
+  .scard.defer .scard-n { color: #a78bfa; }
+
+  /* QUEUE */
+  .section-title { font-size: 13px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 16px; }
+  .item { background: var(--card); border: 1px solid var(--brd); border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; }
+  .item-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .item-id { font-size: 11px; font-family: monospace; color: var(--mut); }
+  .item-time { font-size: 11px; color: var(--mut); margin-left: auto; }
+  .badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 5px; text-transform: uppercase; letter-spacing: .06em; }
+  .badge-pass { background: rgba(34,197,94,.15); color: var(--pass); }
+  .badge-degrade { background: rgba(245,158,11,.15); color: var(--degrade); }
+  .badge-halt { background: rgba(239,68,68,.15); color: var(--halt); }
+  .preview-box { background: rgba(255,255,255,.03); border: 1px solid var(--brd); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: var(--dim); line-height: 1.6; margin-bottom: 14px; max-height: 120px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
+  .preview-label { font-size: 11px; color: var(--mut); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .reason { font-size: 13px; color: #e2e8f0; margin-bottom: 16px; padding: 12px 16px; background: rgba(245,158,11,.06); border-left: 3px solid var(--degrade); border-radius: 0 6px 6px 0; }
+  .reason.halt { background: rgba(239,68,68,.06); border-left-color: var(--halt); }
+  .actions { display: flex; gap: 10px; }
+  .btn { padding: 9px 20px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+  .btn-approve { background: var(--pass); color: #000; }
+  .btn-reject { background: rgba(239,68,68,.15); color: var(--halt); border: 1px solid rgba(239,68,68,.3); }
+  .btn:hover { opacity: .85; }
+  .details-toggle { font-size: 11px; color: var(--mut); cursor: pointer; text-decoration: underline; margin-top: 12px; display: inline-block; }
+  .details-panel { display: none; margin-top: 12px; background: rgba(255,255,255,.02); border: 1px solid var(--brd); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: var(--dim); line-height: 1.7; white-space: pre; overflow-x: auto; }
+  .empty { text-align: center; padding: 60px 20px; color: var(--mut); font-size: 14px; }
+
+  /* MINI VU BAR */
+  .vu-bar-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .vu-bar-label { font-size: 11px; color: var(--mut); width: 80px; }
+  .vu-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; }
+  .vu-bar-fill { height: 100%; border-radius: 4px; }
+  .vu-bar-score { font-size: 11px; color: var(--dim); width: 36px; text-align: right; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="width:28px;height:28px;background:linear-gradient(135deg,#3b82f6,#a78bfa);border-radius:7px;"></div>
+  <h1>VALO Proxy — Governance Dashboard</h1>
+  <span class="hbadge">LIM · Law of Identity Maintenance</span>
+  <span style="margin-left:auto;font-size:12px;color:var(--mut);">WORM: <span id="worm-path">—</span></span>
+</header>
+
+<div class="main">
+  <div class="vu-wrap">
+    <div class="vu-meter">
+      <h2>Gate Status</h2>
+      <div class="vu-gauge">
+        <svg viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 20 90 A 70 70 0 0 1 55 27" stroke="#ef444433" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path d="M 55 27 A 70 70 0 0 1 90 20" stroke="#f59e0b33" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path d="M 90 20 A 70 70 0 0 1 125 27" stroke="#22c55e33" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path d="M 125 27 A 70 70 0 0 1 160 90" stroke="#3b82f633" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path id="vu-arc" d="M 20 90 A 70 70 0 0 1 90 20" stroke="#22c55e" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <line id="vu-needle" x1="90" y1="90" x2="90" y2="25" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="90" cy="90" r="5" fill="#fff"/>
+        </svg>
+        <div class="vu-label" id="vu-status-label">—</div>
+      </div>
+      <div class="vu-sublabel" id="vu-score-label">Coherence: —</div>
+      <div class="vu-legend">
+        <div class="vu-legend-item"><div class="vu-dot" style="background:var(--halt)"></div><span style="color:var(--dim);">HALT — blocked</span></div>
+        <div class="vu-legend-item"><div class="vu-dot" style="background:var(--degrade)"></div><span style="color:var(--dim);">DEGRADE — flagged</span></div>
+        <div class="vu-legend-item"><div class="vu-dot" style="background:var(--fluid)"></div><span style="color:var(--dim);">PASS — clear</span></div>
+        <div class="vu-legend-item"><div class="vu-dot" style="background:var(--crystalline)"></div><span style="color:var(--dim);">CRYSTALLINE — locked</span></div>
+      </div>
+    </div>
+    <div style="flex:1;">
+      <div class="summary">
+        <div class="scard pass"><div class="scard-n" id="cnt-pass">—</div><div class="scard-l">PASS</div></div>
+        <div class="scard degrade"><div class="scard-n" id="cnt-degrade">—</div><div class="scard-l">DEGRADE</div></div>
+        <div class="scard halt"><div class="scard-n" id="cnt-halt">—</div><div class="scard-l">HALT</div></div>
+        <div class="scard defer"><div class="scard-n" id="cnt-defer">—</div><div class="scard-l">Awaiting review</div></div>
+      </div>
+      <div style="color:var(--dim);font-size:13px;line-height:1.7;max-width:480px;">
+        Items marked <strong style="color:#f59e0b;">DEGRADE</strong> were forwarded but flagged — approve or reject below.<br><br>
+        Items marked <strong style="color:#ef4444;">HALT</strong> were blocked. No restart needed — send the request again.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Pending review (<span id="pending-count">0</span>)</div>
+  <div id="pending-list"><div class="empty">No items pending review.</div></div>
+
+  <div class="section-title" style="margin-top:40px;">Recent decisions</div>
+  <div id="recent-list"><div class="empty">No recent decisions.</div></div>
+</div>
+
+<script>
+const COLOR = {
+  PASS:'#22c55e', DEGRADE:'#f59e0b', HALT:'#ef4444',
+  CRYSTALLINE:'#3b82f6', FLUID:'#22c55e', GASEOUS:'#f59e0b', PLASMA:'#ef4444'
+};
+function relTime(ts) {
+  const d = Math.floor(Date.now()/1000 - ts);
+  if (d < 60) return d+'s ago'; if (d < 3600) return Math.floor(d/60)+'m ago';
+  return Math.floor(d/3600)+'h ago';
+}
+function statusBadge(s) {
+  const cls = {PASS:'pass',DEGRADE:'degrade',HALT:'halt'}[s]||'degrade';
+  return `<span class="badge badge-${cls}">${s}</span>`;
+}
+function plainReason(item) {
+  const g = item.gate||{}, s = item.scout||{};
+  const score = g.coherence ? (g.coherence/100).toFixed(0) : '?';
+  const combined = g.combined_status||g.status||'?';
+  const tav = g.tav_regime||s.tav_regime||null;
+  if (combined==='HALT') {
+    if (tav==='PLASMA') return 'The prompt triggered an adversarial pattern. The request was blocked before the AI processed it.';
+    return `AI response coherence was too low (${score}%). The request was blocked.`;
+  }
+  if (combined==='DEGRADE') {
+    if (tav==='GASEOUS') return `The prompt showed signs of instability. The response was flagged (score ${score}%).`;
+    return `AI confidence was below the normal threshold (${score}%). Approve to deliver, or reject to block.`;
+  }
+  return `Score: ${score}%`;
+}
+function miniVU(item) {
+  const g = item.gate||{}, s = item.scout||{};
+  const c = g.coherence||0, pct = Math.min(100,(c/10000)*100).toFixed(0);
+  const col = COLOR[g.combined_status]||'#22c55e';
+  const tav = g.tav_regime||s.tav_regime||'—';
+  return `<div class="vu-bar-wrap"><div class="vu-bar-label">Coherence</div><div class="vu-bar-track"><div class="vu-bar-fill" style="width:${pct}%;background:${col};"></div></div><div class="vu-bar-score">${pct}%</div></div><div class="vu-bar-wrap"><div class="vu-bar-label">TAV regime</div><div style="flex:1;font-size:12px;color:${COLOR[tav]||'var(--dim)'}">${tav}</div></div>`;
+}
+function renderItem(item, pending) {
+  const g = item.gate||{}, combined = g.combined_status||g.status||'PASS';
+  const rClass = combined==='HALT'?'reason halt':'reason';
+  const details = JSON.stringify({scout:item.scout,gate:item.gate},null,2);
+  const actions = pending
+    ? `<div class="actions"><button class="btn btn-approve" onclick="decide('${item.id}','approved')">Approve — deliver response</button><button class="btn btn-reject" onclick="decide('${item.id}','rejected')">Reject — block response</button></div>`
+    : `<div style="font-size:12px;color:var(--mut);">Decision: <strong style="color:${item.decision==='approved'?'var(--pass)':'var(--halt)'}">${item.decision||'—'}</strong></div>`;
+  return `<div class="item" id="item-${item.id}"><div class="item-header">${statusBadge(combined)}<span class="item-id">#${item.id}</span><code style="font-size:11px;color:var(--mut);">${item.path||''}</code><span class="item-time">${relTime(item.ts)}</span></div>${miniVU(item)}${item.input_preview?`<div class="preview-label">Prompt</div><div class="preview-box">${esc(item.input_preview)}</div>`:''}<div class="${rClass}">${plainReason(item)}</div>${actions}<span class="details-toggle" onclick="toggleDetails('${item.id}')">Show technical details</span><div class="details-panel" id="det-${item.id}">${esc(details)}</div></div>`;
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toggleDetails(id) { const el=document.getElementById('det-'+id); el.style.display=el.style.display==='block'?'none':'block'; }
+async function decide(id, decision) {
+  await fetch(`/v5/proxy/defer/${id}/decide`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({decision})});
+  refresh();
+}
+function updateNeedle(coherence, status) {
+  const ratio = Math.min(1, coherence/10000);
+  const angle = -80 + ratio*160;
+  const rad = (angle-90)*Math.PI/180;
+  const x2=(90+65*Math.cos(rad)).toFixed(1), y2=(90+65*Math.sin(rad)).toFixed(1);
+  document.getElementById('vu-needle').setAttribute('x2',x2);
+  document.getElementById('vu-needle').setAttribute('y2',y2);
+  const col = COLOR[status]||'#fff';
+  document.getElementById('vu-arc').setAttribute('stroke',col);
+  const lbl = document.getElementById('vu-status-label');
+  lbl.textContent = status; lbl.style.color = col;
+  document.getElementById('vu-score-label').textContent = `Coherence: ${coherence?coherence.toFixed(0):'—'}`;
+}
+async function refresh() {
+  try {
+    const [pR,rR,wR] = await Promise.all([
+      fetch('/v5/proxy/defer/pending').then(r=>r.json()),
+      fetch('/v5/proxy/defer/recent').then(r=>r.json()),
+      fetch('/v5/proxy/worm/tail?n=1').then(r=>r.json()),
+    ]);
+    if (wR.path) document.getElementById('worm-path').textContent = wR.path;
+    const all = [...(pR.items||[]),...(rR.items||[])];
+    let cP=0,cD=0,cH=0;
+    all.forEach(i=>{const s=(i.gate||{}).combined_status||'';if(s==='PASS')cP++;else if(s==='DEGRADE')cD++;else if(s==='HALT')cH++;});
+    document.getElementById('cnt-pass').textContent=cP;
+    document.getElementById('cnt-degrade').textContent=cD;
+    document.getElementById('cnt-halt').textContent=cH;
+    document.getElementById('cnt-defer').textContent=(pR.items||[]).length;
+    document.getElementById('pending-count').textContent=(pR.items||[]).length;
+    const newest=all[0];
+    if(newest){const g=newest.gate||{};updateNeedle(g.coherence||0,g.combined_status||'PASS');}
+    const pL=document.getElementById('pending-list');
+    pL.innerHTML=(pR.items||[]).length?pR.items.map(i=>renderItem(i,true)).join(''):'<div class="empty">No items pending review. All clear.</div>';
+    const rL=document.getElementById('recent-list');
+    rL.innerHTML=(rR.items||[]).length?rR.items.map(i=>renderItem(i,false)).join(''):'<div class="empty">No recent decisions.</div>';
+  } catch(e){console.error(e);}
+}
+refresh(); setInterval(refresh,3000);
+</script>
+</body>
+</html>

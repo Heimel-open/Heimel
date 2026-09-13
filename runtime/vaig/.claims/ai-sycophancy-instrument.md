@@ -1,0 +1,34 @@
+# Claim: AI sycophancy instrument
+
+- Date: 2026-08-16
+- Owner: ChatGPT for Njål Solland
+- Accountable owner candidate: Njål Solland (human PM; G4 not yet attested)
+- Repository: `nsolland/VAIG`
+- Canonical base SHA: `2e33a47715084e2ce6b945584070a792cd84001f`
+- Branch: `feat/ai-sycophancy-instrument`
+- Delivery: add a bounded VAIG instrument that turns externally measured AI-sycophancy indicators into runtime distrust evidence without creating authority or execution semantics.
+- Human-approved source: user instruction `Bygg legg inn` following review of Hagen et al., *Theoretical Foundations of AI-Sycophancy* (2026 preprint).
+- Risk class: `STANDARD` — runtime evaluation behavior changes, but authority, RACS, REHT and execution boundaries remain unchanged.
+- Approved method:
+  - represent conformity and flattery as approval-seeking indicators;
+  - require a separate governance-displacement signal so warmth/politeness alone does not become risk;
+  - consume provenance-bound external measurements rather than self-judge raw model text;
+  - feed the bounded score into existing VAIG aggregation only;
+  - fail closed when required native measurements are absent.
+- Owned files:
+  - `.claims/ai-sycophancy-instrument.md`
+  - `vaig/instruments/sycophancy_detector.py`
+  - `vaig/instruments/registry.py`
+  - `vaig/instruments/__init__.py`
+  - `tests/test_sycophancy_detector.py`
+- Dependencies: Python stdlib only; existing `InstrumentBase`, registry, ensemble and aggregation contracts.
+- Acceptance criteria:
+  - `sycophancy_detector` is registered and discoverable;
+  - pure warmth/flattery with no governance displacement does not raise distrust;
+  - conformity/flattery coupled to evidence, standing or decision displacement raises bounded distrust;
+  - malformed/unbound observations fail closed;
+  - missing required measurements remain typed unavailable state, never numeric zero-risk evidence;
+  - instrument output cannot authorize, clear or execute anything.
+- Non-goals: no REHT/RACS semantics change; no worker/model policy rewrite; no claim that sycophancy is fully solved; no inference of human intent.
+- Rollback/containment: remove the new slot/import/module/tests; existing aggregation and authority boundaries remain intact.
+- Peer review: G2/G3/G4 remain required before merge; producer does not self-attest merge readiness.

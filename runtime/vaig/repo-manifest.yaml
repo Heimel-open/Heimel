@@ -1,0 +1,23 @@
+schema_version: "1.0.0"
+repository:
+  id: "valo.vaig"
+  name: "VAIG"
+  org: "nsolland"
+  canonical_role: "runtime_evaluation_and_distrust"
+  normative_status: "normative_specification_and_evaluator"
+  owner: "ANTIGRAVITY"
+
+capabilities:
+  - "runtime_evaluation"
+  - "distrust_and_uncertainty"
+  - "evidence_adequacy"
+  - "evaluation_report_issuance"
+
+prohibitions:
+  - "does_not_issue_positive_clearance"
+  - "does_not_grant_execution_authority"
+  - "does_not_enforce_decisions"
+  - "does_not_execute_actions"
+
+interfaces:
+  evaluation_report: "src/vaig/models.py"
