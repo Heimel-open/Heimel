@@ -2,7 +2,7 @@ from subprocess import CompletedProcess
 
 import pytest
 
-from research.replayable_benchmark import (
+from tools.replayable_benchmark import (
     BenchmarkBoundaryError,
     ReplayCase,
     ReplayStep,
