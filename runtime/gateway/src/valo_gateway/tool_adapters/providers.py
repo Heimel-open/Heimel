@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import datetime
 from typing import Any
 
+from ..contracts import ActionEnvelope, AuthorityEnvelope, Clearance, ExecutionPermit
 from ..effect_contract import AdapterCapabilityManifest, ConsequenceOperation, EffectContract
 from .base import BoundaryProof, FunctionTool
 
@@ -11,7 +12,6 @@ from .base import BoundaryProof, FunctionTool
 ProviderDispatch = Callable[[str, dict[str, Any]], Any]
 EFFECT_CONTRACT_KEY = "__heimel_effect_contract__"
 CLAIM_STATUSES_KEY = "__heimel_claim_statuses__"
-AUTHORITY_EVIDENCE_REFS_KEY = "__heimel_authority_evidence_refs__"
 
 
 def _manifest(adapter_id: str, provider: str, *operations: ConsequenceOperation) -> AdapterCapabilityManifest:
@@ -47,14 +47,50 @@ class DomainEffectTool(ProviderEffectTool):
         resolved_provider = provider or f"domain:{domain}"
         super().__init__(resolved_provider, dispatch, manifest=_manifest(resolved_provider, resolved_provider, *operations))
 
-    def _invoke_from_boundary(self, arguments: dict[str, Any], proof: BoundaryProof) -> Any:
+    def _parse_effect_arguments(self, arguments: dict[str, Any]) -> tuple[EffectContract, dict[str, Any], dict[str, Any]]:
         payload = dict(arguments)
         contract_raw = payload.pop(EFFECT_CONTRACT_KEY, None)
         claim_statuses = payload.pop(CLAIM_STATUSES_KEY, {})
-        authority_evidence_refs = payload.pop(AUTHORITY_EVIDENCE_REFS_KEY, ())
         if contract_raw is None:
             raise PermissionError("HEIMEL_EFFECT_CONTRACT_REQUIRED: consequence domain effect is unbound")
+        if not isinstance(claim_statuses, dict):
+            raise PermissionError("claim status evidence must be an explicit mapping")
         contract = EffectContract.model_validate(contract_raw)
+        return contract, payload, claim_statuses
+
+    def _validate_governed_effect(
+        self,
+        arguments: dict[str, Any],
+        *,
+        authority: AuthorityEnvelope,
+        clearance: Clearance,
+        permit: ExecutionPermit,
+        action: ActionEnvelope,
+        now: datetime,
+    ) -> None:
+        del authority, permit
+        contract, payload, claim_statuses = self._parse_effect_arguments(arguments)
+        if contract.provider != self.provider:
+            raise PermissionError("effect contract provider does not match adapter provider")
+        operation = payload.get("operation")
+        if not isinstance(operation, str):
+            raise PermissionError("canonical consequence operation is required")
+        canonical = self.manifest.assert_operation(operation) if self.manifest is not None else ConsequenceOperation(operation)
+        if contract.operation is not canonical:
+            raise PermissionError("effect contract operation does not match adapter invocation")
+        if action.action_type != canonical.value:
+            raise PermissionError("action type is not the canonical consequence operation")
+        if action.target != contract.resource:
+            raise PermissionError("action target does not match effect contract resource")
+        provider_parameters = {key: value for key, value in payload.items() if key != "operation"}
+        contract.assert_parameters(provider_parameters)
+        contract.assert_fresh(now)
+        contract.authority_requirements.assert_satisfied(clearance.evidence_refs)
+        contract.assert_claim_statuses(claim_statuses)
+
+    def _invoke_from_boundary(self, arguments: dict[str, Any], proof: BoundaryProof) -> Any:
+        contract, payload, claim_statuses = self._parse_effect_arguments(arguments)
+        del claim_statuses
         if contract.provider != self.provider:
             raise PermissionError("effect contract provider does not match adapter provider")
         operation = payload.get("operation")
@@ -65,9 +101,6 @@ class DomainEffectTool(ProviderEffectTool):
             raise PermissionError("effect contract operation does not match adapter invocation")
         provider_parameters = {key: value for key, value in payload.items() if key != "operation"}
         contract.assert_parameters(provider_parameters)
-        contract.assert_fresh(datetime.now(UTC))
-        contract.authority_requirements.assert_satisfied(authority_evidence_refs)
-        contract.assert_claim_statuses(claim_statuses)
         return super()._invoke_from_boundary(payload, proof)
 
 
