@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimel.dev/schemas/consequence-risk-acceptance.schema.json",
+  "title": "Heimel Consequence Risk Acceptance Contract",
+  "description": "Pre-bound contract identifying who prices, accepts, limits, transfers, and ultimately bears residual economic risk for one governed consequence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "risk_acceptance_contract_id",
+    "consequence_id",
+    "risk_acceptor_id",
+    "risk_acceptor_role",
+    "risk_class",
+    "pricing_rule_version",
+    "accepted_limit",
+    "currency",
+    "tail_loss_bearer_id",
+    "authority_binding_hash",
+    "evidence_requirement_hash",
+    "effective_at",
+    "expires_at"
+  ],
+  "properties": {
+    "risk_acceptance_contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "consequence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_acceptor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_acceptor_role": {
+      "type": "string",
+      "enum": [
+        "BANK",
+        "INSURER",
+        "REINSURER",
+        "CAPITAL_PROVIDER",
+        "SELF_INSURED_PRINCIPAL",
+        "OTHER_REGULATED_ENTITY"
+      ]
+    },
+    "risk_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pricing_rule_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "premium_or_reserve": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+    },
+    "accepted_limit": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3
+    },
+    "deductible": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+    },
+    "excluded_risks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "transfer_chain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from_id", "to_id", "limit", "instrument_ref"],
+        "properties": {
+          "from_id": {"type": "string", "minLength": 1},
+          "to_id": {"type": "string", "minLength": 1},
+          "limit": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+          },
+          "instrument_ref": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "tail_loss_bearer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_binding_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_requirement_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "x-heimel-invariants": {
+    "risk_acceptance_precedes_effect": true,
+    "unknown_risk_acceptor": "DENY_OR_ESCALATE",
+    "expired_risk_acceptance": "DENY_OR_ESCALATE",
+    "accepted_limit_exceeded": "DENY_OR_ESCALATE",
+    "tail_loss_bearer_required": true,
+    "disclaimer_is_not_risk_transfer": true,
+    "bank_role_is_optional": true,
+    "required_chain": [
+      "AUTHORITY",
+      "RISK_ACCEPTANCE",
+      "EXECUTION",
+      "EVIDENCE",
+      "SETTLEMENT"
+    ]
+  }
+}
