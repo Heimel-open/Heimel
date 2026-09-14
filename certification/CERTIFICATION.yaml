@@ -1,0 +1,93 @@
+schema_version: 1
+program: Heimel Certified
+version: 0.1
+status: initial
+purpose: "Provide official, bounded attestation that an exact implementation/version/profile satisfied a named Heimel conformance suite under recorded conditions."
+
+scope:
+  certifies:
+    - exact_implementation_identity
+    - exact_version_or_commit
+    - named_conformance_profile
+    - named_conformance_suite_version
+    - recorded_positive_and_negative_cases
+    - recorded_evidence
+  does_not_certify:
+    - universal_security
+    - future_versions
+    - untested_deployments
+    - operator_competence
+    - partner_status
+    - legal_compliance_beyond_named_profile
+
+required_attestation_fields:
+  - attestation_id
+  - implementation_name
+  - implementation_identity
+  - version_or_commit
+  - profile
+  - conformance_suite_version
+  - required_negative_cases
+  - test_result
+  - evidence_hash
+  - issued_at
+  - expires_at
+  - issuer_identity
+  - status
+
+status_values:
+  - ACTIVE
+  - EXPIRED
+  - SUSPENDED
+  - REVOKED
+
+issuance_rules:
+  - "Certification binds only to the exact implementation identity and version/commit tested."
+  - "All mandatory tests in the named profile must pass."
+  - "Mandatory negative cases must pass; omission is not equivalent to pass."
+  - "Evidence used for issuance must be retained and hash-addressable."
+  - "The attestation must have a finite validity period."
+  - "A material implementation change requires re-attestation before the certification mark is used for the changed implementation."
+
+mandatory_core_negative_cases:
+  - direct_effect_path_attempt_rejected
+  - stale_authority_rejected
+  - exact_effect_binding_mismatch_rejected
+  - permit_replay_rejected
+  - missing_required_evidence_fails_closed
+  - failed_or_unverified_effect_not_admitted_as_verified_consequence
+
+mark_policy:
+  official_mark: "Heimel Certified"
+  use_requires:
+    - ACTIVE_attestation
+    - exact_scope_match
+    - visible_attestation_id_or_verification_reference
+  forbidden_claims:
+    - "Heimel Certified" without an ACTIVE matching attestation
+    - implication_that_open_conformance_pass_equals_official_certification
+    - implication_that_certification_applies_to_unscoped_versions_or_deployments
+
+invalidating_events:
+  - attestation_expiry
+  - material_change_to_certified_implementation
+  - evidence_tampering_or_unavailability
+  - discovered_false_or_misleading_certification_claim
+  - certification_profile_or_suite_withdrawal_when_explicitly_required
+  - issuer_revocation_for_recorded_cause
+
+verification:
+  rule: "A certification claim must be independently checkable against an attestation record and its evidence hash."
+  minimum_public_fields:
+    - attestation_id
+    - implementation_name
+    - version_or_commit
+    - profile
+    - conformance_suite_version
+    - issued_at
+    - expires_at
+    - status
+
+partner_program:
+  included_in_v0_1: false
+  rule: "Partner status is not implied by certification and must be defined separately if introduced later."

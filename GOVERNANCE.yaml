@@ -62,15 +62,25 @@ conformance:
 
 certification:
   service: Heimel Certified
+  canonical_policy: certification/CERTIFICATION.yaml
+  attestation_schema: certification/attestation.schema.json
+  program_version: 0.1
   separate_from_open_conformance: true
+  partner_status_included: false
   attestation_must_bind:
+    - attestation_id
     - implementation_identity
-    - tested_version_or_profile
+    - version_or_commit
+    - profile
     - conformance_suite_version
-    - result
+    - required_negative_cases
+    - test_result
+    - evidence_hash
     - issuance_time
-    - validity
-    - attestation_identity
+    - validity_or_expiry
+    - issuer_identity
+    - status
+  rule: "The Heimel Certified mark may be used only for the exact scope covered by an ACTIVE official attestation."
 
 evidence_policy:
   canonical_surface: EVIDENCE.yaml
