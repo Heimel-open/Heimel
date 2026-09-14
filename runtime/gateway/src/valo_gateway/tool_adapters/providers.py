@@ -233,17 +233,3 @@ class CommunicationsEffectTool(DomainEffectTool):
 class CommercialCRMEffectTool(DomainEffectTool):
     def __init__(self, dispatch: ProviderDispatch) -> None:
         super().__init__("commercial-crm", dispatch)
-
-
-class DefenceEffectTool(DomainEffectTool):
-    """Governed defence consequence boundary; no weapon-specific semantics."""
-
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("defence", dispatch)
-
-
-class DroneEffectTool(DomainEffectTool):
-    """Governed unmanned-system boundary for tasking, movement and actuators."""
-
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("drone-unmanned-system", dispatch)
