@@ -1,0 +1,64 @@
+Kort vurderingsrapport – Heimel og mulig dual use
+Dato: 2026-09-14
+
+Klassifisering
+
+Primær klassifisering: Sivil teknologi
+Teknologitype: Generell, domeneagnostisk kontrollinfrastruktur
+Forsvarsteknologi: Nei
+Våpenteknologi: Nei
+Identifisert dual-use-potensial: Ja
+
+Formål
+
+Denne vurderingen beskriver Heimels teknologiske karakter og vurderer mulig dual-use-relevans.
+
+Teknologisk utgangspunkt
+
+Heimel er utviklet som sivil, generell infrastruktur for å kontrollere overgangen fra intensjon til faktisk konsekvens.
+
+Kjernen håndhever at en foreslått handling bare kan gjennomføres dersom nødvendig myndighet fortsatt er gyldig på handlingstidspunktet, at tillatelsen gjelder den konkrete handlingen, og at gjennomført effekt etterlater etterprøvbart bevis.
+
+Grunnmodell:
+
+Intent → Authority Check → Governed Effect → Evidence
+
+Primært formål
+
+Heimel er ikke utviklet som våpenteknologi, militært kommando- og kontrollsystem, etterretningsplattform eller overvåkningssystem.
+
+Teknologien er domeneagnostisk og er relevant for sivile områder som finans, helse, industri, offentlig sektor, kritisk infrastruktur og autonome programvaresystemer.
+
+Vurdering av mulig dual use
+
+Det er identifisert et mulig dual-use-potensial.
+
+Mekanismer for håndheving av delegert myndighet, kontroll av autonome handlinger, begrensning av effekt og dokumentasjon av konsekvenser kan også ha relevans innen forsvar, sikkerhet, politi og etterretning.
+
+Denne mulige anvendelsen følger av teknologiens generelle egenskaper. Den innebærer ikke at Heimel er utviklet som forsvars- eller militærteknologi.
+
+Avgrensning
+
+Canonical Heimel skal forbli sivil og domeneagnostisk.
+
+Militær-, våpen-, targeting-, overvåknings- eller etterretningsspesifikk funksjonalitet inngår ikke i Heimel-kjernen.
+
+Lisens og ansvar
+
+Heimel Open er offentlig tilgjengelig under Apache License 2.0. Lisensen begrenser ikke bestemte lovlige bruksområder.
+
+Den enkelte bruker, integrator eller operatør er selv ansvarlig for at konkret bruk følger gjeldende lovgivning, eksportkontroll, regulatoriske krav og nødvendige autorisasjoner.
+
+Repo
+
+https://github.com/Heimel-open/Heimel
+
+Myndighetsorientering
+
+Som føre-var-tiltak ble denne vurderingen 2026-09-14 sendt som orientering til Direktoratet for eksportkontroll og sanksjoner (DEKSA) og Nasjonal sikkerhetsmyndighet (NSM).
+
+Konklusjon
+
+Heimel vurderes som sivil, generell kontrollinfrastruktur for autorisert og verifiserbar handling.
+
+Det er identifisert et mulig dual-use-potensial, men dette endrer ikke teknologiens sivile utgangspunkt, formål eller domeneagnostiske kjerne.
