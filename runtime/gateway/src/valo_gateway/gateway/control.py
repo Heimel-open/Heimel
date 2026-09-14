@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from contextlib import contextmanager
 from enum import Enum
+from threading import RLock
+from typing import Iterator
 
 from pydantic import BaseModel, ConfigDict
 
@@ -33,36 +36,78 @@ class RuntimeControlPlane:
         self._revoked_actors: set[str] = set()
         self._halted_scopes: set[str] = set()
         self._global_halt = False
+        self._consequence_lock = RLock()
 
     def apply(self, event: ControlEvent) -> None:
-        if event.event_type == ControlEventType.REVOKE_AUTHORITY:
-            if not event.authority_envelope_id:
-                raise ValueError("authority_envelope_id is required")
-            self._revoked_authorities.add(event.authority_envelope_id)
-        elif event.event_type == ControlEventType.REVOKE_PRINCIPAL:
-            if not event.principal_id:
-                raise ValueError("principal_id is required")
-            self._revoked_principals.add(event.principal_id)
-        elif event.event_type == ControlEventType.REVOKE_ACTOR:
-            if not event.actor_id:
-                raise ValueError("actor_id is required")
-            self._revoked_actors.add(event.actor_id)
-        elif event.event_type == ControlEventType.HALT_GLOBAL:
-            self._global_halt = True
-        elif event.event_type == ControlEventType.RESUME_GLOBAL:
-            self._global_halt = False
-        elif event.event_type == ControlEventType.HALT_SCOPE:
-            if not event.scope:
-                raise ValueError("scope is required")
-            self._halted_scopes.add(event.scope)
-        elif event.event_type == ControlEventType.RESUME_SCOPE:
-            if not event.scope:
-                raise ValueError("scope is required")
-            self._halted_scopes.discard(event.scope)
+        with self._consequence_lock:
+            if event.event_type == ControlEventType.REVOKE_AUTHORITY:
+                if not event.authority_envelope_id:
+                    raise ValueError("authority_envelope_id is required")
+                self._revoked_authorities.add(event.authority_envelope_id)
+            elif event.event_type == ControlEventType.REVOKE_PRINCIPAL:
+                if not event.principal_id:
+                    raise ValueError("principal_id is required")
+                self._revoked_principals.add(event.principal_id)
+            elif event.event_type == ControlEventType.REVOKE_ACTOR:
+                if not event.actor_id:
+                    raise ValueError("actor_id is required")
+                self._revoked_actors.add(event.actor_id)
+            elif event.event_type == ControlEventType.HALT_GLOBAL:
+                self._global_halt = True
+            elif event.event_type == ControlEventType.RESUME_GLOBAL:
+                self._global_halt = False
+            elif event.event_type == ControlEventType.HALT_SCOPE:
+                if not event.scope:
+                    raise ValueError("scope is required")
+                self._halted_scopes.add(event.scope)
+            elif event.event_type == ControlEventType.RESUME_SCOPE:
+                if not event.scope:
+                    raise ValueError("scope is required")
+                self._halted_scopes.discard(event.scope)
 
-    def assert_execution_allowed(self, *, authority_envelope_id: str,
-                                 principal_id: str, actor_id: str,
-                                 scopes: list[str] | None = None) -> None:
+    def assert_execution_allowed(
+        self,
+        *,
+        authority_envelope_id: str,
+        principal_id: str,
+        actor_id: str,
+        scopes: list[str] | None = None,
+    ) -> None:
+        with self._consequence_lock:
+            self._assert_execution_allowed_unlocked(
+                authority_envelope_id=authority_envelope_id,
+                principal_id=principal_id,
+                actor_id=actor_id,
+                scopes=scopes,
+            )
+
+    @contextmanager
+    def consequence_guard(
+        self,
+        *,
+        authority_envelope_id: str,
+        principal_id: str,
+        actor_id: str,
+        scopes: list[str] | None = None,
+    ) -> Iterator[None]:
+        """Serialize the final authority decision with the consequence commit."""
+        with self._consequence_lock:
+            self._assert_execution_allowed_unlocked(
+                authority_envelope_id=authority_envelope_id,
+                principal_id=principal_id,
+                actor_id=actor_id,
+                scopes=scopes,
+            )
+            yield
+
+    def _assert_execution_allowed_unlocked(
+        self,
+        *,
+        authority_envelope_id: str,
+        principal_id: str,
+        actor_id: str,
+        scopes: list[str] | None = None,
+    ) -> None:
         blocked = (
             self._global_halt
             or authority_envelope_id in self._revoked_authorities
