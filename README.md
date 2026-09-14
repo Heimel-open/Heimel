@@ -105,7 +105,15 @@ Open Heimel has these hard guarantees:
 
 The repository contains the migrated runtime universe under `runtime/`, including Kernel, REHT, Gateway, Veritas, RACS, workflow/runtime components, adapters, packs, distribution and validation. `runtime/MIGRATION_MANIFEST.yaml` records source lineage.
 
-Apache-2.0 remains the repository default license unless a component explicitly states otherwise.
+## License and commercial boundary
+
+The repository default is **Apache License 2.0** unless a component explicitly states otherwise.
+
+Open Heimel may be used, modified, redistributed and operated commercially under Apache-2.0. The open mechanism is not crippleware and does not become chargeable merely because it is used in production.
+
+Enterprise is a separate software/service and organizational-governance layer around the open mechanism. Commercial value must not depend on withholding the local governed-execution path behind a license server or mandatory vendor connection.
+
+The Apache-2.0 license does not grant a right to represent an implementation as officially **Heimel Certified**. Official conformance/compatibility attestation remains a separate commercial act governed by Heimel's certification policy.
 
 ## Evidence and maturity
 
@@ -137,13 +145,31 @@ Managed deployment forms may include Heimel Cloud, Private Cloud, Sovereign and 
 
 The canonical product boundary is machine-readable in `docs/open-enterprise-contract.yaml`.
 
-## Pricing principle
+## Pricing and settlement
 
-The primary commercial unit is not a human seat. Revenue should scale with governed machine activity.
+The primary commercial unit is not a human seat and not an internal runtime tick.
 
-The canonical metering concept is a `governed_consequence_event`: an exact consequence-path event with decision, enforcement state and recorded outcome/evidence state.
+```text
+governed ticks → verified consequence → certification → settlement
+```
 
-A DENY is not treated as a successfully executed consequence unless a commercial contract explicitly meters decision events separately.
+**Meter internally by tick. Price and settle by verified consequence.**
+
+Ticks may be used for observability, capacity, cost attribution, replay and audit. They are not the default customer billing object.
+
+For Enterprise settlement, price and funding terms are bound before execution. A verified governed consequence may settle automatically against a prepaid balance, escrow or bounded payment allowance. Settlement is idempotent and at-most-once for the bound consequence.
+
+By default:
+
+- VERIFIED completed consequence → eligible for settlement
+- DENY → no consequence charge
+- ESCALATE → no consequence charge
+- failed effect → no consequence charge
+- unverified outcome → no consequence charge
+
+A contract may define the price for a consequence class, but the protocol does not hard-code a universal dollar price.
+
+Open Heimel remains free to run locally. Enterprise pricing applies to the separate organizational/commercial governance layer and its contracted settlement semantics.
 
 > We do not charge to make governed execution possible. We charge to make governed execution governable at organizational scale.
 
