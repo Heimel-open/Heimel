@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import nullcontext
 from datetime import datetime
 from typing import Any, Protocol
 
@@ -130,6 +131,13 @@ class ValoGateway:
             else authority.resource_scope
         )
 
+        consumed_resources: tuple[ConsumedResourceReservation, ...] = ()
+        with active.consequence_guard(
+            authority_envelope_id=authority.envelope_id,
+            principal_id=authority.principal_id,
+            actor_id=authority.actor_id,
+            scopes=scopes,
+        ):
         consumed_resources: tuple[ConsumedResourceReservation, ...] = ()
         with active.consequence_guard(
             authority_envelope_id=authority.envelope_id,

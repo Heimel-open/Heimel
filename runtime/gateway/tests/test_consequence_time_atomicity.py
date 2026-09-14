@@ -13,6 +13,8 @@ from valo_gateway.tool_adapters import FunctionTool
 
 
 class PausingPermitConsumptionStore:
+    """Pause inside the real one-shot path without changing permit semantics."""
+
     def __init__(self, delegate: SQLitePermitConsumptionStore) -> None:
         self._delegate = delegate
         self.consume_reached = Event()
@@ -52,7 +54,10 @@ def test_revocation_before_consequence_blocks_effect(tmp_path):
             permit=permit,
             action=action,
             executor_id="revocation-wins",
-            tool=FunctionTool("effect", lambda: effects.append("EFFECT_OCCURRED")),
+            tool=FunctionTool(
+                "effect",
+                lambda: effects.append("EFFECT_OCCURRED"),
+            ),
             now=now,
         )
 
@@ -81,7 +86,10 @@ def test_revocation_cannot_apply_inside_consequence_commit(tmp_path):
                 permit=permit,
                 action=action,
                 executor_id="consequence-wins",
-                tool=FunctionTool("effect", lambda: effects.append("EFFECT_OCCURRED")),
+                tool=FunctionTool(
+                    "effect",
+                    lambda: effects.append("EFFECT_OCCURRED"),
+                ),
                 now=now,
             )
         except BaseException as exc:
@@ -103,6 +111,8 @@ def test_revocation_cannot_apply_inside_consequence_commit(tmp_path):
     revoker.start()
     assert revocation_started.wait(timeout=5)
 
+    # The consequence guard already owns the authority/effect commit boundary.
+    # Revocation must not become operative while execution is paused inside it.
     assert not revocation_applied.wait(timeout=0.1)
 
     pausing_store.release_consume.set()

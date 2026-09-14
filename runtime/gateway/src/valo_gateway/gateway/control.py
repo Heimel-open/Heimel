@@ -90,7 +90,12 @@ class RuntimeControlPlane:
         actor_id: str,
         scopes: list[str] | None = None,
     ) -> Iterator[None]:
-        """Serialize the final authority decision with the consequence commit."""
+        """Serialize the final authority decision with the consequence commit.
+
+        Control mutations use the same lock. Once this guard admits execution,
+        revocation or HALT cannot become operative between the final authority
+        check and the governed effect invocation.
+        """
         with self._consequence_lock:
             self._assert_execution_allowed_unlocked(
                 authority_envelope_id=authority_envelope_id,
