@@ -16,7 +16,23 @@ from .agent_profile import (
     build_session_descriptor,
     load_profile,
 )
+from .cleanroom_conformance import (
+    CleanRoomConformanceError,
+    CleanRoomConformanceResult,
+    InternalTransfer,
+    TransferKind,
+    require_clean_room_transfers,
+    verify_clean_room_transfers,
+)
 from .contracts import *
+from .deployment_conformance import (
+    DeploymentConformanceError,
+    DeploymentConformanceResult,
+    EffectGrant,
+    GrantKind,
+    require_no_direct_effect_path,
+    verify_no_direct_effect_path,
+)
 from .gateway import *
 from .integrations import (
     ActionFactory,
