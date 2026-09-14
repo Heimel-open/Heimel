@@ -1,10 +1,12 @@
 from copy import deepcopy
+from dataclasses import replace
 from decimal import Decimal
 
 import pytest
 
 from heimel_settlement import (
     ConsequenceSettler,
+    SQLiteSettlementReceiptStore,
     SettlementContract,
     SettlementError,
     SettlementState,
@@ -19,6 +21,19 @@ class Rail:
     def capture(self, **kwargs):
         self.calls += 1
         return self.result
+
+
+class SequenceRail:
+    def __init__(self, outcomes):
+        self.outcomes = list(outcomes)
+        self.calls = 0
+
+    def capture(self, **kwargs):
+        self.calls += 1
+        outcome = self.outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
 
 
 class Veritas:
@@ -136,6 +151,23 @@ def test_replay_returns_same_receipt_without_double_charge():
     assert rail.calls == 1
 
 
+def test_durable_store_survives_settler_restart_without_double_charge(tmp_path):
+    path = tmp_path / "settlement.sqlite3"
+    rail = Rail()
+    veritas = Veritas(evidence_entries())
+
+    first = ConsequenceSettler(SQLiteSettlementReceiptStore(path)).settle(
+        contract(), veritas, rail
+    )
+    second = ConsequenceSettler(SQLiteSettlementReceiptStore(path)).settle(
+        contract(), veritas, rail
+    )
+
+    assert first == second
+    assert first.state is SettlementState.SETTLED
+    assert rail.calls == 1
+
+
 def test_invalid_veritas_chain_fails_closed():
     rail = Rail()
     with pytest.raises(SettlementError, match="chain verification failed"):
@@ -197,9 +229,47 @@ def test_missing_bound_veritas_record_fails_closed():
     assert rail.calls == 0
 
 
-def test_insufficient_funds_fails_closed_without_charge():
-    rail = Rail(result=False)
-    receipt = ConsequenceSettler().settle(contract(), Veritas(evidence_entries()), rail)
-    assert receipt.state is SettlementState.INSUFFICIENT_FUNDS
-    assert receipt.amount == Decimal("0")
+def test_insufficient_funds_is_retryable_after_topup():
+    rail = SequenceRail([False, True])
+    settler = ConsequenceSettler()
+    veritas = Veritas(evidence_entries())
+
+    first = settler.settle(contract(), veritas, rail)
+    second = settler.settle(contract(), veritas, rail)
+
+    assert first.state is SettlementState.INSUFFICIENT_FUNDS
+    assert first.amount == Decimal("0")
+    assert second.state is SettlementState.SETTLED
+    assert second.amount == Decimal("0.10")
+    assert rail.calls == 2
+
+
+def test_transient_payment_failure_is_retryable_with_same_idempotency_key():
+    rail = SequenceRail([RuntimeError("timeout"), True])
+    settler = ConsequenceSettler()
+    veritas = Veritas(evidence_entries())
+
+    first = settler.settle(contract(), veritas, rail)
+    second = settler.settle(contract(), veritas, rail)
+
+    assert first.state is SettlementState.SETTLEMENT_FAILED
+    assert first.amount == Decimal("0")
+    assert second.state is SettlementState.SETTLED
+    assert rail.calls == 2
+
+
+def test_replay_key_cannot_be_rebound_to_different_contract():
+    rail = Rail()
+    settler = ConsequenceSettler()
+    veritas = Veritas(evidence_entries())
+    settler.settle(contract(), veritas, rail)
+
+    rebound = replace(contract(), settlement_contract_id="sc-other")
+    with pytest.raises(SettlementError, match="another settlement_contract_id"):
+        settler.settle(rebound, veritas, rail)
     assert rail.calls == 1
+
+
+def test_unit_price_precision_matches_schema_limit():
+    with pytest.raises(SettlementError, match="at most 6 decimal places"):
+        contract("0.0000001")
