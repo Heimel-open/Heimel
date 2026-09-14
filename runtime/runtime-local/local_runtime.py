@@ -67,6 +67,10 @@ class ConsequenceRejected(RuntimeError):
     """Raised when Gateway-style enforcement rejects a permit or effect."""
 
 
+class EvidenceRecordingFailed(RuntimeError):
+    """Raised when effect evidence cannot be durably admitted locally."""
+
+
 class LocalRuntime(RuntimeInterface):
     """Offline reference runtime enforcing the Heimel consequence invariants."""
 
@@ -137,24 +141,19 @@ class LocalRuntime(RuntimeInterface):
         self._emit(aid, "RESTARTED", {"from": checkpoint_id})
         return aid
 
-    # --- Local authority state / REHT role ---
-
     def grant(self, action_id: str) -> None:
-        """Grant authority for the exact submitted effect in the local authority state."""
         record = self._require_action(action_id)
         self._authorized_effects.add(record["effect_digest"])
         self._authority_revision += 1
         self._emit(action_id, "AUTHORITY_CHANGED", {"revision": self._authority_revision, "status": "GRANTED"})
 
     def revoke(self, action_id: str) -> None:
-        """Revoke authority and advance operative authority revision."""
         record = self._require_action(action_id)
         self._authorized_effects.discard(record["effect_digest"])
         self._authority_revision += 1
         self._emit(action_id, "AUTHORITY_CHANGED", {"revision": self._authority_revision, "status": "REVOKED"})
 
     def authorize(self, action_id: str, *, now: Optional[datetime] = None, ttl_seconds: int = 30) -> LocalPermit:
-        """Perform a fresh authorization check and bind a one-shot exact-effect permit."""
         record = self._require_action(action_id)
         now = now or _utc_now()
         if now.tzinfo is None:
@@ -201,8 +200,6 @@ class LocalRuntime(RuntimeInterface):
         })
         return permit
 
-    # --- Gateway + effect + Veritas roles ---
-
     def execute(
         self,
         action_id: str,
@@ -211,7 +208,6 @@ class LocalRuntime(RuntimeInterface):
         now: Optional[datetime] = None,
         effect: Optional[Dict[str, Any]] = None,
     ) -> Result:
-        """Consume one exact permit, perform the local effect, and record evidence."""
         record = self._require_action(action_id)
         now = now or _utc_now()
         if now.tzinfo is None:
@@ -220,7 +216,6 @@ class LocalRuntime(RuntimeInterface):
         proposed_effect = dict(record["action"] if effect is None else effect)
         effect_digest = _digest(proposed_effect)
 
-        # Mechanical Gateway checks. No policy judgement occurs here.
         if permit.permit_id in self._consumed_permits:
             raise ConsequenceRejected("one-shot permit already consumed")
         if permit.action_id != action_id:
@@ -237,9 +232,9 @@ class LocalRuntime(RuntimeInterface):
         self._consumed_permits.add(permit.permit_id)
         self._emit(action_id, "PERMIT_CONSUMED", {"permit_id": permit.permit_id, "racs_ref": permit.racs_ref})
 
-        # Local effect adapter: deterministic and side-effect free outside this process.
         outcome_payload = {"executed_by": "local-runtime", "effect": proposed_effect}
         outcome_digest = _digest(outcome_payload)
+        record["state"] = "EFFECT_OCCURRED_UNATTESTED"
         self._emit(action_id, "EFFECT_EXECUTED", {"effect_digest": effect_digest, "outcome_digest": outcome_digest})
 
         receipt_body = {
@@ -266,9 +261,14 @@ class LocalRuntime(RuntimeInterface):
             outcome_digest=outcome_digest,
             recorded_at=now,
         )
-        self._receipts[action_id] = receipt
-        self._emit(action_id, "EVIDENCE_RECORDED", {"veritas_ref": receipt_ref, "outcome_digest": outcome_digest})
 
+        try:
+            self._record_receipt(action_id, receipt)
+        except Exception as exc:
+            self._emit(action_id, "EVIDENCE_FAILED", {"error": type(exc).__name__})
+            raise EvidenceRecordingFailed("effect occurred but evidence was not admitted") from exc
+
+        self._emit(action_id, "EVIDENCE_RECORDED", {"veritas_ref": receipt_ref, "outcome_digest": outcome_digest})
         result = Result(
             action_id=action_id,
             status="SUCCESS",
@@ -280,8 +280,10 @@ class LocalRuntime(RuntimeInterface):
         record["receipt_ref"] = receipt_ref
         return result
 
+    def _record_receipt(self, action_id: str, receipt: LocalReceipt) -> None:
+        self._receipts[action_id] = receipt
+
     def result(self, action_id):
-        """Return SUCCESS only after governed execution and evidence recording."""
         record = self._require_action(action_id)
         result = record.get("result")
         if isinstance(result, Result):
@@ -298,15 +300,13 @@ class LocalRuntime(RuntimeInterface):
         return self._receipts.get(action_id)
 
     def replay(self, action_id: str) -> Dict[str, Any]:
-        """Return the local evidence chain required to replay a governed consequence."""
         record = self._require_action(action_id)
-        receipt = self._receipts.get(action_id)
         return {
             "action_id": action_id,
             "effect_digest": record.get("effect_digest"),
             "state": record.get("state"),
             "events": self.stream(action_id),
-            "receipt": receipt,
+            "receipt": self._receipts.get(action_id),
         }
 
     def _require_action(self, action_id: str) -> Dict[str, Any]:
