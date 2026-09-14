@@ -1,0 +1,47 @@
+schema_version: 1
+adapter: heimel-settlement-stripe
+provider: Stripe
+status: reference
+role: funding_only
+
+boundary:
+  stripe_moves_money_into_balance: true
+  stripe_settles_each_consequence: false
+  heimel_owns_consequence_ledger: true
+  heimel_owns_chargeability_decision: true
+  heimel_owns_consequence_receipt: true
+
+flow:
+  - customer_top_up
+  - stripe_checkout_session
+  - provider_payment_confirmation
+  - signature_verified_webhook
+  - exact_funding_binding_check
+  - heimel_ledger_credit
+  - governed_consequence
+  - verified_consequence
+  - heimel_internal_atomic_debit
+
+invariants:
+  - no_stripe_charge_per_governed_consequence
+  - no_credit_before_verified_provider_payment
+  - funding_event_must_bind_funding_id_and_ledger_account
+  - duplicate_funding_event_must_not_double_credit
+  - provider_failure_must_fail_closed
+  - open_heimel_must_not_require_stripe
+
+stripe:
+  mode: payment
+  integration_identifier: heimel_settlement_qtmrjvka
+  default_minimum_topup_minor: 500
+  reference_currency: USD
+  customer_initiated_topup: checkout_session
+  future_optional:
+    - saved_payment_method
+    - off_session_auto_topup
+
+security:
+  api_key_source: environment_or_secret_manager
+  recommended_key_type: restricted_api_key
+  webhook_signature_verification: required_at_http_boundary
+  secrets_in_repository: forbidden
