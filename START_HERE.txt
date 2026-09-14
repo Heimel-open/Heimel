@@ -1,0 +1,29 @@
+HEIMEL
+
+Open infrastructure for the transition from intent to consequence.
+
+If an agent can cause a real-world effect, route that effect through Heimel before it happens.
+
+5-minute challenge
+
+1. Clone this repository.
+2. Run the stale-authority consequence demo.
+3. Try to bypass the governed consequence boundary.
+4. If you break an invariant, open an issue with the smallest reproducible case.
+5. If it holds, wire one real effect path through Heimel and send a PR or integration note.
+
+What to attack
+
+- stale authority accepted at consequence time
+- direct effect path around the governed boundary
+- caller-controlled consequence classification
+- replay or reuse of one-shot authorization
+- state/effect binding mismatch
+- unknown external mapping accepted instead of failing closed
+- missing or unverifiable effect evidence
+
+Success condition
+
+Intent becomes consequence only through a fresh authority decision, exact state/effect binding, one governed effect path, and verifiable evidence.
+
+Repository: https://github.com/Heimel-open/Heimel
