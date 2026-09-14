@@ -4,7 +4,9 @@ import argparse
 import json
 from pathlib import Path
 
-from .pipeline import SourcePolicy, default_fetch, deduplicate, ingest, parse_feed
+from .git_publish import publish
+from .pipeline import SourcePolicy
+from .runner import EvidenceStore, collect_once, watch
 
 
 def load_policies(path: Path) -> list[SourcePolicy]:
@@ -21,37 +23,62 @@ def load_policies(path: Path) -> list[SourcePolicy]:
     ]
 
 
-def run(config: Path, output: Path, threshold: int) -> int:
-    records = []
-    for policy in load_policies(config):
-        try:
-            feed, _, _ = default_fetch(policy.feed_url)
-            candidates = parse_feed(feed, policy.source_id)
-        except Exception as exc:
-            records.append({"source_id": policy.source_id, "candidate_url": policy.feed_url, "disposition": "SOURCE_ERROR", "error": str(exc)})
-            continue
-        for candidate in candidates:
-            try:
-                records.append(ingest(candidate, policy, threshold=threshold))
-            except Exception as exc:
-                records.append({"source_id": policy.source_id, "candidate_url": candidate.url, "disposition": "ERROR", "error": str(exc)})
-    normalized = []
-    evidence = deduplicate(r for r in records if not isinstance(r, dict))
-    normalized.extend(json.loads(r.to_json()) for r in evidence)
-    normalized.extend(r for r in records if isinstance(r, dict))
-    normalized.sort(key=lambda r: (r.get("disposition", ""), r.get("source_id", ""), r.get("canonical_url", r.get("candidate_url", ""))))
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps({"records": normalized}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    return 0
+def _print_result(result) -> None:
+    print(json.dumps({
+        "accepted": result.accepted,
+        "duplicates": result.duplicates,
+        "dropped": result.dropped,
+        "errors": result.errors,
+        "written": [str(p) for p in result.written],
+    }, sort_keys=True))
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(prog="heimel-research-intelligence")
     parser.add_argument("--config", type=Path, required=True)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--repo-root", type=Path, default=Path.cwd())
+    parser.add_argument("--store", type=Path, default=Path("research/evidence"))
     parser.add_argument("--threshold", type=int, default=12)
+
+    sub = parser.add_subparsers(dest="command", required=True)
+    collect = sub.add_parser("collect")
+    collect.add_argument("--git-commit", action="store_true")
+    collect.add_argument("--git-push", action="store_true")
+
+    watcher = sub.add_parser("watch")
+    watcher.add_argument("--interval-seconds", type=int, default=3600)
+    watcher.add_argument("--git-commit", action="store_true")
+    watcher.add_argument("--git-push", action="store_true")
+
     args = parser.parse_args()
-    return run(args.config, args.output, args.threshold)
+    repo_root = args.repo_root.resolve()
+    store_path = args.store if args.store.is_absolute() else repo_root / args.store
+    store = EvidenceStore(store_path)
+    policies = load_policies(args.config)
+
+    def finish(result) -> None:
+        _print_result(result)
+        if args.git_commit or args.git_push:
+            paths = list(result.written)
+            if result.written:
+                paths.append(store.index_path)
+            sha = publish(repo_root, paths, push=args.git_push)
+            if sha:
+                print(json.dumps({"git_commit": sha}, sort_keys=True))
+
+    if args.command == "collect":
+        result = collect_once(policies, store, threshold=args.threshold)
+        finish(result)
+        return 0
+
+    watch(
+        policies,
+        store,
+        threshold=args.threshold,
+        interval_seconds=args.interval_seconds,
+        on_run=finish,
+    )
+    return 0
 
 
 if __name__ == "__main__":
