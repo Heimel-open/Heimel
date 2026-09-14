@@ -1,5 +1,10 @@
 """Veritas — VALO receipt layer (LA6)."""
 
+from veritas.consequence import (
+    ConsequenceOutcomeObservationError,
+    ConsequenceOutcomeObservationV1,
+    consequence_outcome_digest,
+)
 from veritas.contracts import (
     BoundaryNegativeEvidenceV1,
     CompletedEvidencePackageV1,
@@ -37,6 +42,8 @@ __all__ = [
     "BoundaryNegativeEvidenceV1",
     "CompletedEvidencePackageV1",
     "ConfidentialExecutionEvidenceV1",
+    "ConsequenceOutcomeObservationError",
+    "ConsequenceOutcomeObservationV1",
     "EffectBoundaryExecutionObservationV1",
     "EffectBoundaryObservationError",
     "FinalEvidenceBindingV1",
@@ -54,6 +61,7 @@ __all__ = [
     "WORMLog",
     "add_warranty_end",
     "canonical_digest",
+    "consequence_outcome_digest",
     "extract_receipt_fields",
     "stable_json",
 ]
