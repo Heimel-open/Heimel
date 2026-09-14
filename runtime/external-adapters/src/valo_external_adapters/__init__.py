@@ -31,6 +31,21 @@ from .payments import (
     record_provider_evidence,
     seal_external_execution_binding,
 )
+from .qwenpaw import (
+    AdapterDecision,
+    AuthoritySnapshot,
+    ConsequenceBinding,
+    HeimelQwenPawAdapter,
+    InMemoryVeritasChain,
+    OneShotPermit,
+    PermitRejected,
+    QwenPawAdapterError,
+    QwenPawEffectMetadata,
+    QwenPawEffectRegistry,
+    QwenPawMissionEffect,
+    UnknownEffect,
+    VeritasReceipt,
+)
 from .uhp import (
     UHP_ADAPTER_MANIFEST,
     UHP_PROTOCOL_VERSION,
@@ -54,6 +69,9 @@ from .uhp import (
 )
 
 __all__ = [
+    "AdapterDecision",
+    "AuthoritySnapshot",
+    "ConsequenceBinding",
     "ECOSYSTEM_MANIFESTS",
     "FORBIDDEN_PROVIDER_OVERRIDE_KEYS",
     "PROVIDER_MANIFESTS",
@@ -69,7 +87,15 @@ __all__ = [
     "ExternalProviderRequest",
     "ExternalStateClass",
     "ExternalStateObservation",
+    "HeimelQwenPawAdapter",
+    "InMemoryVeritasChain",
+    "OneShotPermit",
+    "PermitRejected",
     "ProviderOutcomeDisposition",
+    "QwenPawAdapterError",
+    "QwenPawEffectMetadata",
+    "QwenPawEffectRegistry",
+    "QwenPawMissionEffect",
     "UHPAdapterManifest",
     "UHPArtifactReference",
     "UHPConformanceClass",
@@ -79,6 +105,8 @@ __all__ = [
     "UHPTaskStatus",
     "UHPWorkerResultEvidence",
     "UHPWorkerTaskBinding",
+    "UnknownEffect",
+    "VeritasReceipt",
     "build_circle_usdc_request",
     "build_coinbase_x402_request",
     "build_kyriba_state_observation",
