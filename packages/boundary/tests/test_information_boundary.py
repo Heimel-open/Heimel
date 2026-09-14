@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -64,6 +65,7 @@ def test_exact_object_actor_purpose_and_tool_are_bound_before_admission():
     assert receipt.object_digest == information.digest
 
     other = InformationObject.from_payload("other", "org:acme", {"x": 1})
+    boundary.register(other)
     with pytest.raises(InformationBoundaryError, match="exact information object"):
         boundary.admit(
             session,
@@ -209,7 +211,7 @@ def test_revocation_and_expiry_fail_closed():
         )
 
 
-def test_unrelated_derivative_cannot_cross_or_enter_state():
+def test_unrelated_or_unregistered_information_cannot_cross():
     boundary = InformationBoundary()
     information = source()
     issued = grant(boundary, information, allow_state_admission=True)
@@ -220,11 +222,39 @@ def test_unrelated_derivative_cannot_cross_or_enter_state():
         {"summary": "not derived from granted source"},
     )
 
+    with pytest.raises(InformationBoundaryError, match="unregistered"):
+        boundary.egress(
+            session,
+            issued,
+            unrelated,
+            actor_id="actor:cole",
+            purpose="account-analysis",
+            tool_id="model:external",
+            now=NOW,
+        )
+
+    boundary.register(unrelated)
     with pytest.raises(InformationBoundaryError, match="outside granted lineage"):
         boundary.egress(
             session,
             issued,
             unrelated,
+            actor_id="actor:cole",
+            purpose="account-analysis",
+            tool_id="model:external",
+            now=NOW,
+        )
+
+
+def test_grant_permissions_cannot_be_tampered_after_issue():
+    boundary = InformationBoundary()
+    information = source()
+    issued = grant(boundary, information, allow_state_admission=False)
+    forged = replace(issued, allow_state_admission=True)
+
+    with pytest.raises(InformationBoundaryError, match="does not match issued grant"):
+        boundary.open_session(
+            forged,
             actor_id="actor:cole",
             purpose="account-analysis",
             tool_id="model:external",
