@@ -287,6 +287,9 @@ class InformationBoundary:
             raise InformationBoundaryError("unregistered information object")
 
     def _assert_in_lineage(self, grant: InformationGrant, information: InformationObject) -> None:
+        root = self._known_objects.get(grant.object_digest)
+        if root is None:
+            raise InformationBoundaryError("grant root is not registered")
         if information.digest == grant.object_digest:
             return
         seen: set[str] = set()
@@ -298,9 +301,17 @@ class InformationBoundary:
             seen.add(current.digest)
             for parent_digest in current.parent_digests:
                 if parent_digest == grant.object_digest:
+                    if current.authority_id != root.authority_id:
+                        raise InformationBoundaryError(
+                            "information authority changed in lineage"
+                        )
                     return
                 parent = self._known_objects.get(parent_digest)
                 if parent is not None:
+                    if current.authority_id != root.authority_id:
+                        raise InformationBoundaryError(
+                            "information authority changed in lineage"
+                        )
                     stack.append(parent)
         raise InformationBoundaryError("information is outside granted lineage")
 

@@ -124,6 +124,31 @@ def test_derivative_keeps_authority_and_source_lineage():
     assert egress.event == "EGRESS"
 
 
+def test_lineage_cannot_smuggle_in_a_different_authority():
+    boundary = InformationBoundary()
+    information = source()
+    issued = grant(boundary, information)
+    session = open_session(boundary, issued)
+    forged = InformationObject.from_payload(
+        "forged-summary",
+        "org:attacker",
+        {"summary": "not governed by the source authority"},
+        parent_digests=(information.digest,),
+    )
+    boundary.register(forged)
+
+    with pytest.raises(InformationBoundaryError, match="authority changed"):
+        boundary.egress(
+            session,
+            issued,
+            forged,
+            actor_id="actor:cole",
+            purpose="account-analysis",
+            tool_id="model:external",
+            now=NOW,
+        )
+
+
 def test_state_admission_is_separate_from_egress():
     boundary = InformationBoundary()
     information = source()
