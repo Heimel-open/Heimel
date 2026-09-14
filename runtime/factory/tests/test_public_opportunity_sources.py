@@ -9,6 +9,7 @@ from lib.public_opportunity_sources import (
     WhopContentRewardsSource,
     public_sources,
 )
+from lib.public_opportunity_sources import _clean_text
 
 
 MERCOR_HTML = """
@@ -28,6 +29,11 @@ OBN JAY Clipping Campaign Budget: $1,000 CPM: $1 per 1,000 views Platforms: TikT
 
 
 class PublicOpportunitySourceTests(unittest.TestCase):
+    def test_html_filter_handles_malformed_script_end_tags(self):
+        text = _clean_text('<p>visible</p><script foo="bar">alert(1)</script foo><p>after</p>')
+        self.assertIn("visible", text)
+        self.assertNotIn("alert", text)
+
     def test_mercor_public_page_maps_rates_to_eval_opportunities(self):
         source = MercorExpertsSource(lambda url: MERCOR_HTML)
         found = source.discover()
