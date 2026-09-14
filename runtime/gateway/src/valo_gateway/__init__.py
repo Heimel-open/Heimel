@@ -17,6 +17,7 @@ from .agent_profile import (
     load_profile,
 )
 from .contracts import *
+from .effect_contract import *
 from .gateway import *
 from .integrations import (
     ActionFactory,
@@ -25,6 +26,7 @@ from .integrations import (
     CrewAIGatewayAdapter,
     FrameworkToolCall,
     FreshAuthorizer,
+    GateResult,
     GatewayBindingResolver,
     GoogleADKGatewayAdapter,
     GovernedFrameworkAdapter,
@@ -35,6 +37,9 @@ from .integrations import (
     MCPGatewayAdapter,
     OpenAIGatewayAdapter,
     SemanticKernelGatewayAdapter,
+    Status,
+    VerificationResult,
+    verify_claim,
 )
 from .message_security import (
     AcceptedMessageReceipt,
