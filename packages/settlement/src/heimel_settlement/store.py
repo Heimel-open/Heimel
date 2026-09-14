@@ -11,12 +11,7 @@ if TYPE_CHECKING:
 
 
 class SettlementReceiptStore(Protocol):
-    """Idempotency surface for terminal settlement receipts.
-
-    Production implementations MUST make ``put_if_absent`` atomic across
-    processes. Only terminal receipts belong in this store; retryable states
-    such as insufficient funds or transient rail failure must not be persisted.
-    """
+    """Idempotency surface for terminal settlement receipts."""
 
     def get(self, idempotency_key: str) -> SettlementReceipt | None: ...
 
@@ -44,12 +39,7 @@ class InMemorySettlementReceiptStore:
 
 
 class SQLiteSettlementReceiptStore:
-    """Durable local receipt store with atomic idempotency insertion.
-
-    SQLite's PRIMARY KEY on ``idempotency_key`` provides process-safe
-    compare-and-set semantics for a local deployment. Distributed deployments
-    can implement the same protocol on their transactional datastore.
-    """
+    """Durable local receipt store with atomic idempotency insertion."""
 
     def __init__(self, path: str | Path) -> None:
         self.path = str(path)
@@ -72,25 +62,39 @@ class SQLiteSettlementReceiptStore:
                     amount TEXT NOT NULL,
                     currency TEXT NOT NULL,
                     funding_reference TEXT NOT NULL,
-                    evidence_reference TEXT
+                    evidence_reference TEXT,
+                    contract_digest TEXT
                 )
                 """
             )
+            columns = {
+                row[1]
+                for row in connection.execute(
+                    "PRAGMA table_info(settlement_receipts)"
+                ).fetchall()
+            }
+            if "contract_digest" not in columns:
+                connection.execute(
+                    "ALTER TABLE settlement_receipts ADD COLUMN contract_digest TEXT"
+                )
 
     @staticmethod
-    def _from_row(row: tuple[str, ...]) -> SettlementReceipt:
-        # Local import avoids a package initialization cycle.
+    def _from_row(row: tuple[object, ...]) -> SettlementReceipt:
         from . import SettlementReceipt, SettlementState
 
+        contract_digest = row[8]
+        if not isinstance(contract_digest, str) or not contract_digest:
+            raise RuntimeError("stored settlement receipt lacks contract digest")
         return SettlementReceipt(
-            idempotency_key=row[0],
-            settlement_contract_id=row[1],
-            consequence_id=row[2],
-            state=SettlementState(row[3]),
-            amount=Decimal(row[4]),
-            currency=row[5],
-            funding_reference=row[6],
-            evidence_reference=row[7],
+            idempotency_key=str(row[0]),
+            settlement_contract_id=str(row[1]),
+            consequence_id=str(row[2]),
+            state=SettlementState(str(row[3])),
+            amount=Decimal(str(row[4])),
+            currency=str(row[5]),
+            funding_reference=str(row[6]),
+            evidence_reference=None if row[7] is None else str(row[7]),
+            contract_digest=contract_digest,
         )
 
     def get(self, idempotency_key: str) -> SettlementReceipt | None:
@@ -98,7 +102,8 @@ class SQLiteSettlementReceiptStore:
             row = connection.execute(
                 """
                 SELECT idempotency_key, settlement_contract_id, consequence_id,
-                       state, amount, currency, funding_reference, evidence_reference
+                       state, amount, currency, funding_reference,
+                       evidence_reference, contract_digest
                 FROM settlement_receipts
                 WHERE idempotency_key = ?
                 """,
@@ -113,8 +118,9 @@ class SQLiteSettlementReceiptStore:
                 """
                 INSERT OR IGNORE INTO settlement_receipts (
                     idempotency_key, settlement_contract_id, consequence_id,
-                    state, amount, currency, funding_reference, evidence_reference
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    state, amount, currency, funding_reference,
+                    evidence_reference, contract_digest
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     receipt.idempotency_key,
@@ -125,12 +131,14 @@ class SQLiteSettlementReceiptStore:
                     receipt.currency,
                     receipt.funding_reference,
                     receipt.evidence_reference,
+                    receipt.contract_digest,
                 ),
             )
             row = connection.execute(
                 """
                 SELECT idempotency_key, settlement_contract_id, consequence_id,
-                       state, amount, currency, funding_reference, evidence_reference
+                       state, amount, currency, funding_reference,
+                       evidence_reference, contract_digest
                 FROM settlement_receipts
                 WHERE idempotency_key = ?
                 """,
