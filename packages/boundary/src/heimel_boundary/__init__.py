@@ -1,4 +1,4 @@
-"""Small, local-only reference for Heimel's consequence boundary."""
+"""Small, local-only reference for Heimel's governed boundaries."""
 
 from __future__ import annotations
 
@@ -7,6 +7,15 @@ from datetime import datetime, timedelta
 import hashlib
 import json
 from typing import Callable
+
+from .information import (
+    InformationBoundary,
+    InformationBoundaryError,
+    InformationGrant,
+    InformationObject,
+    InformationReceipt,
+    InformationSession,
+)
 
 
 class BoundaryError(RuntimeError):
@@ -108,4 +117,16 @@ class ReferenceBoundary:
         )
 
 
-__all__ = ["BoundaryError", "Effect", "Permit", "Receipt", "ReferenceBoundary"]
+__all__ = [
+    "BoundaryError",
+    "Effect",
+    "InformationBoundary",
+    "InformationBoundaryError",
+    "InformationGrant",
+    "InformationObject",
+    "InformationReceipt",
+    "InformationSession",
+    "Permit",
+    "Receipt",
+    "ReferenceBoundary",
+]
