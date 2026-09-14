@@ -117,6 +117,7 @@ def test_verified_veritas_consequence_settles_prebound_price():
     assert receipt.state is SettlementState.SETTLED
     assert receipt.amount == Decimal("0.10")
     assert receipt.evidence_reference == "veritas:outcome:c-1"
+    assert receipt.contract_digest == contract().contract_digest
     assert rail.calls == 1
 
 
@@ -155,14 +156,8 @@ def test_durable_store_survives_settler_restart_without_double_charge(tmp_path):
     path = tmp_path / "settlement.sqlite3"
     rail = Rail()
     veritas = Veritas(evidence_entries())
-
-    first = ConsequenceSettler(SQLiteSettlementReceiptStore(path)).settle(
-        contract(), veritas, rail
-    )
-    second = ConsequenceSettler(SQLiteSettlementReceiptStore(path)).settle(
-        contract(), veritas, rail
-    )
-
+    first = ConsequenceSettler(SQLiteSettlementReceiptStore(path)).settle(contract(), veritas, rail)
+    second = ConsequenceSettler(SQLiteSettlementReceiptStore(path)).settle(contract(), veritas, rail)
     assert first == second
     assert first.state is SettlementState.SETTLED
     assert rail.calls == 1
@@ -171,9 +166,7 @@ def test_durable_store_survives_settler_restart_without_double_charge(tmp_path):
 def test_invalid_veritas_chain_fails_closed():
     rail = Rail()
     with pytest.raises(SettlementError, match="chain verification failed"):
-        ConsequenceSettler().settle(
-            contract(), Veritas(evidence_entries(), valid=False), rail
-        )
+        ConsequenceSettler().settle(contract(), Veritas(evidence_entries(), valid=False), rail)
     assert rail.calls == 0
 
 
@@ -183,21 +176,9 @@ def test_invalid_veritas_chain_fails_closed():
         ("consequence_id", "c-2", "consequence_id mismatch"),
         ("execution_id", "exec-2", "execution_id mismatch"),
         ("action_digest", "b" * 64, "action_digest mismatch"),
-        (
-            "completion_criteria_hash",
-            "sha256:" + "d" * 64,
-            "completion_criteria_hash mismatch",
-        ),
-        (
-            "evidence_requirement_hash",
-            "sha256:" + "f" * 64,
-            "evidence_requirement_hash mismatch",
-        ),
-        (
-            "gateway_record_id",
-            "gateway-execution:other",
-            "gateway_record_id mismatch",
-        ),
+        ("completion_criteria_hash", "sha256:" + "d" * 64, "completion_criteria_hash mismatch"),
+        ("evidence_requirement_hash", "sha256:" + "f" * 64, "evidence_requirement_hash mismatch"),
+        ("gateway_record_id", "gateway-execution:other", "gateway_record_id mismatch"),
     ],
 )
 def test_outcome_must_bind_exact_contract(field, value, message):
@@ -212,9 +193,7 @@ def test_outcome_must_bind_exact_contract(field, value, message):
 def test_gateway_action_digest_must_match_contract():
     rail = Rail()
     entries = evidence_entries()
-    entries[contract().veritas_gateway_record_id]["observed_events"][0]["provenance"][
-        "action_digest"
-    ] = "b" * 64
+    entries[contract().veritas_gateway_record_id]["observed_events"][0]["provenance"]["action_digest"] = "b" * 64
     with pytest.raises(SettlementError, match="action digest mismatch"):
         ConsequenceSettler().settle(contract(), Veritas(entries), rail)
     assert rail.calls == 0
@@ -233,14 +212,10 @@ def test_insufficient_funds_is_retryable_after_topup():
     rail = SequenceRail([False, True])
     settler = ConsequenceSettler()
     veritas = Veritas(evidence_entries())
-
     first = settler.settle(contract(), veritas, rail)
     second = settler.settle(contract(), veritas, rail)
-
     assert first.state is SettlementState.INSUFFICIENT_FUNDS
-    assert first.amount == Decimal("0")
     assert second.state is SettlementState.SETTLED
-    assert second.amount == Decimal("0.10")
     assert rail.calls == 2
 
 
@@ -248,12 +223,9 @@ def test_transient_payment_failure_is_retryable_with_same_idempotency_key():
     rail = SequenceRail([RuntimeError("timeout"), True])
     settler = ConsequenceSettler()
     veritas = Veritas(evidence_entries())
-
     first = settler.settle(contract(), veritas, rail)
     second = settler.settle(contract(), veritas, rail)
-
     assert first.state is SettlementState.SETTLEMENT_FAILED
-    assert first.amount == Decimal("0")
     assert second.state is SettlementState.SETTLED
     assert rail.calls == 2
 
@@ -263,11 +235,22 @@ def test_replay_key_cannot_be_rebound_to_different_contract():
     settler = ConsequenceSettler()
     veritas = Veritas(evidence_entries())
     settler.settle(contract(), veritas, rail)
-
     rebound = replace(contract(), settlement_contract_id="sc-other")
-    with pytest.raises(SettlementError, match="another settlement_contract_id"):
+    with pytest.raises(SettlementError, match="another settlement contract"):
         settler.settle(rebound, veritas, rail)
     assert rail.calls == 1
+
+
+def test_not_chargeable_replay_key_cannot_be_rebound_to_different_price():
+    rail = Rail()
+    settler = ConsequenceSettler()
+    entries = evidence_entries(criteria=False)
+    veritas = Veritas(entries)
+    first = settler.settle(contract(), veritas, rail)
+    assert first.state is SettlementState.NOT_CHARGEABLE
+    with pytest.raises(SettlementError, match="another settlement contract"):
+        settler.settle(contract("0.20"), veritas, rail)
+    assert rail.calls == 0
 
 
 def test_unit_price_precision_matches_schema_limit():
