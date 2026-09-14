@@ -81,17 +81,16 @@ class ValoGateway:
             raise ValueError("governed execution requires one effector path")
         if tool is not None and registry_path:
             raise ValueError("governed execution permits exactly one effector path")
-        if registry_path and (
-            effector_registry is None or effector_handle is None
-        ):
+        if registry_path and (effector_registry is None or effector_handle is None):
             raise ValueError("effector registry and handle must be bound together")
-        if tool is not None and not callable(
-            getattr(tool, "_invoke_from_boundary", None)
-        ):
-            raise PermissionError(
-                "NO_DIRECT_EFFECT_PATH: effector lacks boundary-only dispatch"
-            )
+        if tool is not None and not callable(getattr(tool, "_invoke_from_boundary", None)):
+            raise PermissionError("NO_DIRECT_EFFECT_PATH: effector lacks boundary-only dispatch")
+
         self._validate_binding(authority, clearance, permit, action, now)
+        resolved_arguments = dict(action.parameters if arguments is None else arguments)
+        if canonical_digest(resolved_arguments) != canonical_digest(action.parameters):
+            raise ValueError("runtime arguments do not match exact authorized action parameters")
+
         replay_input = boundary_replay or BoundaryReplayInput.capture(
             authority=authority,
             clearance=clearance,
@@ -108,26 +107,38 @@ class ValoGateway:
             action=action,
         )
         if not replay_result.effect_allowed:
-            raise ValueError(
-                "structural coupling blocked effect: " + replay_result.reason
-            )
+            raise ValueError("structural coupling blocked effect: " + replay_result.reason)
+
+        preflight_context = {
+            "authority": authority,
+            "clearance": clearance,
+            "permit": permit,
+            "action": action,
+            "now": now,
+        }
         if effector_registry is not None and effector_handle is not None:
             effector_registry.assert_effect_binding(
                 effector_handle,
                 action_type=action.action_type,
                 target=action.target,
             )
+            effector_registry._validate_governed_effect(
+                effector_handle,
+                resolved_arguments,
+                **preflight_context,
+            )
+        else:
+            validate_effect = getattr(tool, "_validate_governed_effect", None)
+            if callable(validate_effect):
+                validate_effect(resolved_arguments, **preflight_context)
+
         active = control_plane or self._control_plane
         if active:
             active.assert_execution_allowed(
                 authority_envelope_id=authority.envelope_id,
                 principal_id=authority.principal_id,
                 actor_id=authority.actor_id,
-                scopes=(
-                    control_scopes
-                    if control_scopes is not None
-                    else authority.resource_scope
-                ),
+                scopes=(control_scopes if control_scopes is not None else authority.resource_scope),
             )
 
         required_budget_ids = required_resource_budget_ids(action)
@@ -154,17 +165,13 @@ class ValoGateway:
             if effector_registry is not None and effector_handle is not None:
                 response = effector_registry._invoke_from_boundary(
                     effector_handle,
-                    arguments or {},
+                    resolved_arguments,
                     replay_result,
                     action_type=action.action_type,
                     target=action.target,
                 )
             else:
-                response = _invoke_tool_from_boundary(
-                    tool,
-                    arguments or {},
-                    replay_result,
-                )
+                response = _invoke_tool_from_boundary(tool, resolved_arguments, replay_result)
             receipt = ExecutionReceipt(
                 permit_id=consumed.permit_id,
                 clearance_id=clearance.clearance_id,
@@ -198,9 +205,7 @@ class ValoGateway:
                 started_at=now,
                 completed_at=utcnow(),
                 status=ExecutionStatus.FAILED,
-                response_digest=canonical_digest(
-                    {"error_type": type(exc).__name__, "error": str(exc)}
-                ),
+                response_digest=canonical_digest({"error_type": type(exc).__name__, "error": str(exc)}),
                 previous_receipt_hash=previous_receipt_hash,
                 skill_binding_digest=consumed.skill_binding_digest,
                 workspace_binding_digest=consumed.workspace_binding_digest,
@@ -226,30 +231,16 @@ class ValoGateway:
         now: datetime,
     ) -> None:
         if not authority.is_active(now):
-            raise ValueError(
-                "authority envelope is inactive or revoked at execution time"
-            )
+            raise ValueError("authority envelope is inactive or revoked at execution time")
         if not clearance.authorizes_permit(now):
             raise ValueError("clearance is no longer valid at execution time")
-        if (
-            action.workspace_binding is not None
-            and not action.workspace_binding.is_active(now)
-        ):
+        if action.workspace_binding is not None and not action.workspace_binding.is_active(now):
             raise ValueError("governed workspace is expired at execution time")
-        substrate = (
-            action.workspace_binding.execution_substrate_binding
-            if action.workspace_binding is not None
-            else None
-        )
+        substrate = action.workspace_binding.execution_substrate_binding if action.workspace_binding is not None else None
         if substrate is not None and not substrate.is_fresh(now):
-            raise ValueError(
-                "confidential execution substrate is stale, expired, or unverified "
-                "at execution time"
-            )
+            raise ValueError("confidential execution substrate is stale, expired, or unverified at execution time")
         if not permit.is_usable(now):
-            raise ValueError(
-                "execution permit is expired, not yet active, or already consumed"
-            )
+            raise ValueError("execution permit is expired, not yet active, or already consumed")
         if action.authority_envelope_id != authority.envelope_id:
             raise ValueError("action authority binding mismatch")
         if action.action_type not in authority.capability_grants:
@@ -280,8 +271,6 @@ class ValoGateway:
             raise ValueError("permit execution substrate binding mismatch")
         expected_clearance_digest = None
         if action.workspace_binding is not None:
-            expected_clearance_digest = canonical_digest(
-                clearance.model_dump(mode="json")
-            )
+            expected_clearance_digest = canonical_digest(clearance.model_dump(mode="json"))
         if permit.clearance_digest != expected_clearance_digest:
             raise ValueError("permit clearance digest mismatch")
