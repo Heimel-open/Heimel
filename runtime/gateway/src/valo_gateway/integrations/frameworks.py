@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 
 from valo_gateway.contracts import ActionEnvelope, Decision
@@ -250,6 +251,107 @@ class AutoGenGatewayAdapter(GovernedFrameworkAdapter):
             name=payload.get("name"),
             arguments=payload.get("arguments", {}),
         )
+
+
+class AutoGenGuardrailDecision(str, Enum):
+    """Dependency-free mirror of the GuardrailProvider decision contract."""
+
+    ALLOW = "allow"
+    DENY = "deny"
+    MODIFY = "modify"
+
+
+@dataclass(frozen=True)
+class AutoGenGuardrailResult:
+    """Admission result returned by :class:`AutoGenGuardrailProviderAdapter`.
+
+    ``ALLOW`` is deliberately only an admission result.  It is not an
+    execution permit and must not be used to call an AutoGen tool directly.
+    The effect must be submitted through ``execute`` so HEIMEL can resolve
+    authority again at consequence time.
+    """
+
+    decision: AutoGenGuardrailDecision
+    reason: str | None = None
+    modified_args: Mapping[str, Any] | None = None
+    metadata: dict[str, Any] | None = None
+
+
+class AutoGenGuardrailProviderAdapter:
+    """Adapt AutoGen's proposed ``GuardrailProvider`` hook to HEIMEL.
+
+    The adapter intentionally does not import AutoGen.  Its ``evaluate``
+    method has the proposed keyword-only shape, so it can be passed to
+    AutoGen when that protocol lands, while remaining usable by current
+    AutoGen versions and tests.
+
+    A guardrail approval is only a pre-execution admission decision.  Calling
+    ``execute`` performs the normal AutoGen gateway flow, including a fresh
+    authority/control-plane check immediately before the effect.
+    """
+
+    def __init__(self, gateway_adapter: AutoGenGatewayAdapter) -> None:
+        self._gateway_adapter = gateway_adapter
+
+    async def evaluate(
+        self,
+        *,
+        tool_name: str,
+        args: Mapping[str, Any],
+        agent_name: str | None = None,
+        call_id: str | None = None,
+        cancellation_token: Any | None = None,
+    ) -> AutoGenGuardrailResult:
+        del cancellation_token
+        if not isinstance(tool_name, str) or not tool_name:
+            raise ValueError("AutoGen tool_name must be explicit")
+
+        payload = {"id": call_id, "name": tool_name, "arguments": dict(args)}
+        call = self._gateway_adapter.decode(payload)
+        action = self._gateway_adapter._action_factory(call)
+        authorization = self._gateway_adapter._authorizer.authorize(action=action)
+        self._gateway_adapter._assert_authorization_binding(action, authorization)
+
+        decision = authorization.decision
+        if decision is Decision.ALLOW:
+            result_decision = AutoGenGuardrailDecision.ALLOW
+            reason = None
+        elif decision is Decision.MODIFY:
+            # HEIMEL never silently invents replacement arguments.  A caller
+            # that needs modification must provide a separate, explicit
+            # transformation before proposing the governed action.
+            result_decision = AutoGenGuardrailDecision.DENY
+            reason = "HEIMEL MODIFY requires an explicit re-proposed action"
+        else:
+            result_decision = AutoGenGuardrailDecision.DENY
+            reason = f"HEIMEL authority decision: {decision.value}"
+
+        return AutoGenGuardrailResult(
+            decision=result_decision,
+            reason=reason,
+            metadata={
+                "provider": "autogen",
+                "agent_name": agent_name,
+                "call_id": call_id,
+                "action_digest": action.digest,
+                "authority_decision": decision.value,
+            },
+        )
+
+    def execute(
+        self,
+        *,
+        tool_name: str,
+        args: Mapping[str, Any],
+        call_id: str | None = None,
+        admission: AutoGenGuardrailResult | None = None,
+    ) -> GovernedFrameworkResult:
+        """Execute one admitted call through the fresh consequence boundary."""
+
+        if admission is not None and admission.decision is not AutoGenGuardrailDecision.ALLOW:
+            raise PermissionError(admission.reason or "AutoGen guardrail denied tool call")
+        payload = {"id": call_id, "name": tool_name, "arguments": dict(args)}
+        return self._gateway_adapter.execute(payload)
 
 
 class HTTPWebhookGatewayAdapter(GovernedFrameworkAdapter):
