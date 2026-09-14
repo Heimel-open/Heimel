@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "mode": "fail_closed",
+  "purpose": "Prevent private, internal, confidential, unpublished, and research material from entering the public Heimel repository by default.",
+  "forbidden_path_segments": [
+    ".private",
+    "private",
+    "internal",
+    "confidential",
+    "unpublished",
+    "research",
+    "private-research",
+    "research-private",
+    "scratch"
+  ],
+  "forbidden_filename_fragments": [
+    ".private.",
+    ".internal.",
+    ".confidential.",
+    ".unpublished."
+  ],
+  "forbidden_content_markers": [
+    "HEIMEL_PRIVATE",
+    "PRIVATE_RESEARCH",
+    "CONFIDENTIAL_DO_NOT_PUBLISH",
+    "DO_NOT_PUBLISH",
+    "INTERNAL_ONLY",
+    "NOT_FOR_PUBLIC_RELEASE"
+  ],
+  "content_scan_exempt_paths": [
+    "PUBLIC_BOUNDARY.json",
+    "tools/public_boundary_check.py"
+  ]
+}
