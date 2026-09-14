@@ -1,29 +1,91 @@
-HEIMEL
+HEIMEL — PUBLIC KILLER TRIAL
 
-Open infrastructure for the transition from intent to consequence.
+This is not a launch.
+This is not a product announcement.
+This is a public attempt to kill the core claim.
 
-If an agent can cause a real-world effect, route that effect through Heimel before it happens.
+The claim
 
-5-minute challenge
+An agent may be wrong, compromised, stale, confused, delegated too far, or operating from outdated approval.
+That is not the boundary Heimel trusts.
 
-1. Clone this repository.
-2. Run the stale-authority consequence demo.
-3. Try to bypass the governed consequence boundary.
-4. If you break an invariant, open an issue with the smallest reproducible case.
-5. If it holds, wire one real effect path through Heimel and send a PR or integration note.
+The boundary is the exact moment intent becomes consequence.
 
-What to attack
+For a consequence to occur, Heimel claims all of this must still hold at consequence time:
 
-- stale authority accepted at consequence time
-- direct effect path around the governed boundary
-- caller-controlled consequence classification
-- replay or reuse of one-shot authorization
-- state/effect binding mismatch
-- unknown external mapping accepted instead of failing closed
-- missing or unverifiable effect evidence
+- authority is resolved fresh
+- the exact current state is bound
+- the exact proposed effect is bound
+- the effect can travel through only one governed path
+- authorization cannot be replayed as a reusable ticket
+- unknown external mappings fail closed
+- the resulting effect is attributable through verifiable evidence
 
-Success condition
+Your job
 
-Intent becomes consequence only through a fresh authority decision, exact state/effect binding, one governed effect path, and verifiable evidence.
+Kill one of those claims.
 
-Repository: https://github.com/Heimel-open/Heimel
+Do not review the architecture politely.
+Do not tell us you like the idea.
+Do not test whether the demo page loads.
+
+Put pressure on the consequence boundary.
+
+Killer trial
+
+1. Clone the repository.
+2. Choose a real or simulated consequence-bearing action.
+3. Establish authority for that action.
+4. Change, revoke, narrow, expire, substitute, or otherwise invalidate something material before execution.
+5. Attempt the consequence anyway.
+6. Try every route you can find around the governed path.
+7. Try to reuse authorization, mutate the effect after authorization, spoof classification, introduce an unmapped external field, or produce an effect without valid evidence.
+8. Record exact commit SHA, inputs, state transition, attempted effect, observed result, and smallest reproduction.
+
+A real break
+
+A break is not a theoretical objection.
+A break is a reproducible path where a forbidden consequence occurs or where Heimel claims a stronger guarantee than the executable evidence supports.
+
+Examples:
+
+- stale authority produces a real effect
+- revoked authority still executes
+- a direct effect path bypasses Gateway
+- caller-controlled consequence classification weakens enforcement
+- one-shot authorization is replayed or reused
+- state/effect binding changes after authorization
+- unknown external mapping reaches consequence instead of failing closed
+- an effect occurs without attributable evidence
+- replay cannot reconstruct the operative decision/effect relation
+
+If you break it
+
+Open a Boundary Break issue with the smallest reproducible case.
+Do not soften it. We want the failure.
+
+If it holds
+
+Route one real framework/tool/runtime effect through Heimel.
+Then open an integration issue or PR showing the actual governed path.
+
+Pass/fail
+
+PASS does not mean Heimel is proven safe.
+It means the tested attack failed to kill the bounded claim.
+
+FAIL means the claim is broken, narrowed, or the implementation must change.
+
+That public record is the point of the trial.
+
+Attack surface:
+https://github.com/Heimel-open/Heimel/issues/37
+
+Live stale-authority demo:
+https://reht.valoresearch.org/demos/executable-authority/
+
+Public evidence surface:
+https://github.com/Heimel-open/Heimel/blob/main/EVIDENCE.yaml
+
+Repository:
+https://github.com/Heimel-open/Heimel
