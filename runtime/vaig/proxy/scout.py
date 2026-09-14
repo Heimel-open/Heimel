@@ -10,7 +10,7 @@ import functools
 import math
 import re
 
-from proxy.gate import _tav_regime, _combined_status, _COHERENCE_THRESHOLD
+from proxy.gate import _tav_regime, _combined_status, coherence_threshold
 
 _INJECTION_PATTERNS = [
     r"ignore\s+(all\s+)?previous\s+instructions?",
@@ -59,7 +59,7 @@ def evaluate_ingress(text: str, l_scalar_override: float = None,
     confidence = confidence_override if confidence_override is not None else 0.9
     coherence = confidence * 10000.0
 
-    if coherence >= _COHERENCE_THRESHOLD:
+    if coherence >= coherence_threshold():
         status = "PASS"
     elif coherence > 0.0:
         status = "DEGRADE"

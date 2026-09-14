@@ -12,7 +12,8 @@ from vaig.instruments.result import InstrumentResult, InstrumentStatus
 
 
 def _logpath():
-    return tempfile.mktemp(suffix=".jsonl")
+    with tempfile.NamedTemporaryFile(suffix=".jsonl", delete=False) as handle:
+        return handle.name
 
 
 def _cleanup(path):

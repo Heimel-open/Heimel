@@ -3,13 +3,13 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from hashlib import sha256
-from html import unescape
 from typing import Callable, Iterable
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 import json
 import re
 import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 
 TRACKING_PARAMS = {"fbclid", "gclid", "mc_cid", "mc_eid"}
 HEIMEL_TERMS = {
@@ -98,13 +98,39 @@ def _domain_allowed(url: str, domains: tuple[str, ...]) -> bool:
     return any(host == d or host.endswith("." + d) for d in domains)
 
 
+class _VisibleTextParser(HTMLParser):
+    """Extract visible text without relying on regex HTML parsing."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._hidden_depth = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() in {"script", "style"}:
+            self._hidden_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() in {"script", "style"} and self._hidden_depth:
+            self._hidden_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self._hidden_depth:
+            self.parts.append(data)
+
+
+def _visible_html_text(document: str) -> str:
+    parser = _VisibleTextParser()
+    parser.feed(document)
+    parser.close()
+    return " ".join(parser.parts)
+
+
 def extract_text(content: bytes, media_type: str) -> str:
     media_type = media_type.lower().split(";", 1)[0].strip()
     if media_type in {"text/html", "application/xhtml+xml"}:
         raw = content.decode("utf-8", errors="replace")
-        raw = re.sub(r"<script\b[^>]*>.*?</script>", " ", raw, flags=re.I | re.S)
-        raw = re.sub(r"<style\b[^>]*>.*?</style>", " ", raw, flags=re.I | re.S)
-        return unescape(re.sub(r"<[^>]+>", " ", raw))
+        return _visible_html_text(raw)
     if media_type.startswith("text/") or media_type in {"application/json", "application/xml"}:
         return content.decode("utf-8", errors="replace")
     return ""

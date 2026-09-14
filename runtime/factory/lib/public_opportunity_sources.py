@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import hashlib
-import html
 import re
 from dataclasses import dataclass
+from html.parser import HTMLParser
 from typing import Callable
 
 from lib.opportunity_factory import RawOpportunity, RevenueLane
@@ -12,12 +12,32 @@ from lib.opportunity_factory import RawOpportunity, RevenueLane
 TextFetcher = Callable[[str], str]
 
 
+class _VisibleTextParser(HTMLParser):
+    """Extract visible text without relying on regex HTML parsing."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._hidden_depth = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() in {"script", "style"}:
+            self._hidden_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() in {"script", "style"} and self._hidden_depth:
+            self._hidden_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self._hidden_depth:
+            self.parts.append(data)
+
+
 def _clean_text(document: str) -> str:
-    text = re.sub(r"<script\b[^>]*>.*?</script>", " ", document, flags=re.I | re.S)
-    text = re.sub(r"<style\b[^>]*>.*?</style>", " ", text, flags=re.I | re.S)
-    text = re.sub(r"<[^>]+>", " ", text)
-    text = html.unescape(text)
-    return re.sub(r"\s+", " ", text).strip()
+    parser = _VisibleTextParser()
+    parser.feed(document)
+    parser.close()
+    return re.sub(r"\s+", " ", " ".join(parser.parts)).strip()
 
 
 def _stable_id(prefix: str, value: str) -> str:

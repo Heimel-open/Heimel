@@ -127,7 +127,8 @@ def evaluate():
     try:
         result = gate_evaluate(score, tav)
     except ValueError as exc:
-        return jsonify({"error": str(exc)}), 400
+        logger.warning("gate evaluation rejected input: %s", exc)
+        return jsonify({"error": "invalid gate input"}), 400
     worm.append({"type": "evaluate", "score": score, "tav_l_scalar": tav, "gate": result})
     return jsonify(result)
 

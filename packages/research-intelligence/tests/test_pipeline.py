@@ -1,6 +1,6 @@
 import unittest
 
-from heimel_research_intelligence import Candidate, ResearchIntelligenceError, SourcePolicy, canonicalize_url, deduplicate, ingest, parse_feed
+from heimel_research_intelligence import Candidate, ResearchIntelligenceError, SourcePolicy, canonicalize_url, deduplicate, extract_text, ingest, parse_feed
 from heimel_research_intelligence.cli import run
 
 
@@ -31,6 +31,14 @@ class PipelineTests(unittest.TestCase):
         a = ingest(Candidate("eu", "https://commission.europa.eu/a"), self.policy, fetch=lambda u: (body, "text/plain", u), threshold=1)
         b = ingest(Candidate("eu", "https://commission.europa.eu/b"), self.policy, fetch=lambda u: (body, "text/plain", u), threshold=1)
         self.assertEqual(len(deduplicate([a, b])), 1)
+
+    def test_html_filter_handles_malformed_script_end_tags(self):
+        text = extract_text(
+            b'<p>visible</p><script foo="bar">alert(1)</script foo><p>after</p>',
+            "text/html",
+        )
+        self.assertIn("visible", text)
+        self.assertNotIn("alert", text)
 
     def test_bad_feed_does_not_abort_other_sources(self):
         import json

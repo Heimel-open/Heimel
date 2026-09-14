@@ -25,15 +25,19 @@ def _combined_status(tav_regime: str, valo_status: str) -> str:
     return valo_status
 
 
+def coherence_threshold() -> float:
+    raw = os.environ.get("VALO_COHERENCE_THRESHOLD")
+    if not raw:
+        raise RuntimeError("VALO_COHERENCE_THRESHOLD environment variable is required")
+    return float(raw)
+
+
 def evaluate(confidence_score: float, tav_l_scalar: float = None) -> dict:
     """Run the two-stage TAV_ONE → VALO V5 gate. Raises ValueError on invalid input."""
     if not (0.0 <= confidence_score <= 1.0):
         raise ValueError("confidence_score must be in [0.0, 1.0]")
 
-    raw = os.environ.get("VALO_COHERENCE_THRESHOLD")
-    if not raw:
-        raise RuntimeError("VALO_COHERENCE_THRESHOLD environment variable is required")
-    coherence_threshold = float(raw)
+    threshold = coherence_threshold()
 
     tav_regime = None
     if tav_l_scalar is not None:
@@ -43,7 +47,7 @@ def evaluate(confidence_score: float, tav_l_scalar: float = None) -> dict:
 
     coherence = confidence_score * 10000.0
 
-    if coherence >= coherence_threshold:
+    if coherence >= threshold:
         status = "PASS"
     elif coherence > 0.0:
         status = "DEGRADE"

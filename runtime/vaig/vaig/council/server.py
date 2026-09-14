@@ -6,6 +6,7 @@ Run standalone:
 
 import os
 import time
+import logging
 
 from flask import Flask, jsonify, request
 
@@ -14,6 +15,7 @@ from vaig.council.queue import CouncilQueue
 app = Flask(__name__)
 _queue = CouncilQueue()
 _API_KEY = os.environ.get("COUNCIL_API_KEY", "")
+_logger = logging.getLogger(__name__)
 
 
 def _check_auth():
@@ -58,7 +60,8 @@ def verdict(item_id: str):
     try:
         ok = _queue.verdict(item_id, decision)
     except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+        _logger.warning("invalid council verdict for item %s: %s", item_id, e)
+        return jsonify({"error": "invalid verdict"}), 400
     if not ok:
         return jsonify({"error": "item not found"}), 404
     return jsonify({"id": item_id, "verdict": decision, "ts": time.time()})
