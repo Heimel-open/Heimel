@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from collections.abc import Mapping
 from dataclasses import dataclass
 from decimal import Decimal
@@ -38,6 +40,8 @@ class SettlementContract:
     def __post_init__(self) -> None:
         if self.currency != "USD":
             raise SettlementError("reference contract currently requires USD")
+        if not self.unit_price.is_finite():
+            raise SettlementError("unit_price must be finite")
         if self.unit_price < 0:
             raise SettlementError("unit_price must be non-negative")
         if self.unit_price.as_tuple().exponent < -6:
@@ -59,6 +63,29 @@ class SettlementContract:
             if not getattr(self, field_name):
                 raise SettlementError(f"{field_name} is required")
 
+    @property
+    def contract_digest(self) -> str:
+        payload = {
+            "settlement_contract_id": self.settlement_contract_id,
+            "consequence_id": self.consequence_id,
+            "payer_account": self.payer_account,
+            "currency": self.currency,
+            "unit_price": str(self.unit_price),
+            "funding_reference": self.funding_reference,
+            "price_rule_version": self.price_rule_version,
+            "completion_criteria_hash": self.completion_criteria_hash,
+            "evidence_requirement_hash": self.evidence_requirement_hash,
+            "idempotency_key": self.idempotency_key,
+            "veritas_execution_id": self.veritas_execution_id,
+            "veritas_gateway_record_id": self.veritas_gateway_record_id,
+            "veritas_outcome_record_id": self.veritas_outcome_record_id,
+            "expected_action_digest": self.expected_action_digest,
+        }
+        encoded = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ).encode("utf-8")
+        return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
 
 @dataclass(frozen=True)
 class SettlementReceipt:
@@ -70,6 +97,7 @@ class SettlementReceipt:
     funding_reference: str
     evidence_reference: str | None
     idempotency_key: str
+    contract_digest: str
 
 
 class PaymentRail(Protocol):
@@ -135,10 +163,7 @@ def _observed_events(entry: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     raw = entry.get("observed_events")
     if not isinstance(raw, list) or not raw:
         raise SettlementError("Veritas record has no observed events")
-    events: list[Mapping[str, Any]] = []
-    for item in raw:
-        events.append(_require_mapping("Veritas observed event", item))
-    return events
+    return [_require_mapping("Veritas observed event", item) for item in raw]
 
 
 def _event_by_type(entry: Mapping[str, Any], event_type: str) -> Mapping[str, Any]:
@@ -222,40 +247,19 @@ def _verify_veritas_evidence(
         consequence_id=contract.consequence_id,
         completion_criteria_hash=contract.completion_criteria_hash,
         evidence_requirement_hash=contract.evidence_requirement_hash,
-        governed_effect_completed=outcome_provenance.get("governed_effect_completed")
-        is True,
-        completion_criteria_satisfied=outcome_provenance.get(
-            "completion_criteria_satisfied"
-        )
-        is True,
-        required_evidence_verified=outcome_provenance.get(
-            "required_evidence_verified"
-        )
-        is True,
+        governed_effect_completed=outcome_provenance.get("governed_effect_completed") is True,
+        completion_criteria_satisfied=outcome_provenance.get("completion_criteria_satisfied") is True,
+        required_evidence_verified=outcome_provenance.get("required_evidence_verified") is True,
     )
 
 
 def _assert_replay_binding(
     contract: SettlementContract, receipt: SettlementReceipt
 ) -> None:
-    expected = {
-        "settlement_contract_id": contract.settlement_contract_id,
-        "consequence_id": contract.consequence_id,
-        "currency": contract.currency,
-        "funding_reference": contract.funding_reference,
-        "idempotency_key": contract.idempotency_key,
-    }
-    for field_name, value in expected.items():
-        if getattr(receipt, field_name) != value:
-            raise SettlementError(
-                f"idempotency key is already bound to another {field_name}"
-            )
-    if receipt.state is SettlementState.SETTLED and receipt.amount != contract.unit_price:
-        raise SettlementError("idempotency key is already bound to another unit_price")
+    if receipt.contract_digest != contract.contract_digest:
+        raise SettlementError("idempotency key is already bound to another settlement contract")
 
 
-# Imported after SettlementReceipt is defined so store.py can type-reference it
-# without creating a package initialization cycle.
 from .store import (  # noqa: E402
     InMemorySettlementReceiptStore,
     SQLiteSettlementReceiptStore,
@@ -264,20 +268,29 @@ from .store import (  # noqa: E402
 
 
 class ConsequenceSettler:
-    """Settlement gate backed by Veritas evidence and an idempotency store.
-
-    A caller cannot make a consequence chargeable by supplying booleans.
-    Chargeability is derived only from exact, hash-chained Veritas records
-    bound in the settlement contract before execution.
-
-    Only terminal outcomes (SETTLED and NOT_CHARGEABLE) are persisted.
-    INSUFFICIENT_FUNDS and SETTLEMENT_FAILED are retryable. Safety across a
-    crash after provider capture but before receipt persistence depends on the
-    PaymentRail honoring the same idempotency key on every retry.
-    """
+    """Settlement gate backed by Veritas evidence and an idempotency store."""
 
     def __init__(self, receipt_store: SettlementReceiptStore | None = None) -> None:
         self._receipt_store = receipt_store or InMemorySettlementReceiptStore()
+
+    def _receipt(
+        self,
+        contract: SettlementContract,
+        evidence: _VerifiedConsequenceEvidence,
+        state: SettlementState,
+        amount: Decimal,
+    ) -> SettlementReceipt:
+        return SettlementReceipt(
+            settlement_contract_id=contract.settlement_contract_id,
+            consequence_id=contract.consequence_id,
+            state=state,
+            amount=amount,
+            currency=contract.currency,
+            funding_reference=contract.funding_reference,
+            evidence_reference=evidence.evidence_reference,
+            idempotency_key=contract.idempotency_key,
+            contract_digest=contract.contract_digest,
+        )
 
     def settle(
         self,
@@ -293,15 +306,8 @@ class ConsequenceSettler:
         evidence = _verify_veritas_evidence(contract, veritas)
 
         if not evidence.chargeable:
-            receipt = SettlementReceipt(
-                settlement_contract_id=contract.settlement_contract_id,
-                consequence_id=contract.consequence_id,
-                state=SettlementState.NOT_CHARGEABLE,
-                amount=Decimal("0"),
-                currency=contract.currency,
-                funding_reference=contract.funding_reference,
-                evidence_reference=evidence.evidence_reference,
-                idempotency_key=contract.idempotency_key,
+            receipt = self._receipt(
+                contract, evidence, SettlementState.NOT_CHARGEABLE, Decimal("0")
             )
             persisted = self._receipt_store.put_if_absent(receipt)
             _assert_replay_binding(contract, persisted)
@@ -316,38 +322,17 @@ class ConsequenceSettler:
                 idempotency_key=contract.idempotency_key,
             )
         except Exception:
-            return SettlementReceipt(
-                settlement_contract_id=contract.settlement_contract_id,
-                consequence_id=contract.consequence_id,
-                state=SettlementState.SETTLEMENT_FAILED,
-                amount=Decimal("0"),
-                currency=contract.currency,
-                funding_reference=contract.funding_reference,
-                evidence_reference=evidence.evidence_reference,
-                idempotency_key=contract.idempotency_key,
+            return self._receipt(
+                contract, evidence, SettlementState.SETTLEMENT_FAILED, Decimal("0")
             )
 
         if not captured:
-            return SettlementReceipt(
-                settlement_contract_id=contract.settlement_contract_id,
-                consequence_id=contract.consequence_id,
-                state=SettlementState.INSUFFICIENT_FUNDS,
-                amount=Decimal("0"),
-                currency=contract.currency,
-                funding_reference=contract.funding_reference,
-                evidence_reference=evidence.evidence_reference,
-                idempotency_key=contract.idempotency_key,
+            return self._receipt(
+                contract, evidence, SettlementState.INSUFFICIENT_FUNDS, Decimal("0")
             )
 
-        receipt = SettlementReceipt(
-            settlement_contract_id=contract.settlement_contract_id,
-            consequence_id=contract.consequence_id,
-            state=SettlementState.SETTLED,
-            amount=contract.unit_price,
-            currency=contract.currency,
-            funding_reference=contract.funding_reference,
-            evidence_reference=evidence.evidence_reference,
-            idempotency_key=contract.idempotency_key,
+        receipt = self._receipt(
+            contract, evidence, SettlementState.SETTLED, contract.unit_price
         )
         persisted = self._receipt_store.put_if_absent(receipt)
         _assert_replay_binding(contract, persisted)
