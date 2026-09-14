@@ -54,6 +54,9 @@ mandatory_core_negative_cases:
   - deployment_side_effect_bypass_rejected
   - implicit_capability_transfer_rejected
   - ungoverned_cross_workspace_path_rejected
+  - ungoverned_harness_transition_rejected
+  - unknown_internal_harness_not_overridden_by_external_harness
+  - residual_pre_induction_out_of_bound_rejected
   - stale_authority_rejected
   - exact_effect_binding_mismatch_rejected
   - permit_replay_rejected
