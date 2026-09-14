@@ -15,7 +15,7 @@ Open infrastructure for deciding whether intent has the authority to become cons
 &nbsp; · &nbsp;
 <a href="docs/DEMOS.md">All demos</a>
 &nbsp; · &nbsp;
-<a href="docs/UNIVERSE.md">Universe map</a>
+<a href="docs/open-enterprise-contract.yaml">Open / Enterprise contract</a>
 </p>
 
 ---
@@ -44,8 +44,6 @@ Intent → Authority → Decision → Consequence → Evidence
 
 **[Run the live authority demo →](https://reht.valoresearch.org/demos/executable-authority/)**
 
-Observe authority being resolved at the moment an action is about to become real — including what happens when authority changes after intent was formed.
-
 ```text
 08:00   mandate                    $50,000
 09:00   authority changes          $25,000
@@ -62,11 +60,7 @@ Observe authority being resolved at the moment an action is about to become real
 
 **[Run the replay demo →](https://reht.valoresearch.org/demos/eroc-replay/)**
 
-Inspect the evidence path by replaying a governed execution from its recorded artifacts.
-
 ## How HEIMEL works
-
-The minimum consequence path contains only the properties that cannot be removed:
 
 ```text
 Kernel operative state + exact proposed effect
@@ -81,77 +75,87 @@ RACS is the deterministic contract binding the decision, exact effect, permit an
 
 | Component | Role |
 |---|---|
-| **Kernel** | Owns admitted operative state, deterministic replay and state admission; it does not authorize or execute |
+| **Kernel** | Owns admitted operative state, deterministic replay and state admission |
 | **REHT** | Authorizes or refuses the exact effect against fresh operative state |
-| **RACS** | Binds decision, effect, permit and receipt as a deterministic contract |
-| **Gateway** | Validates and consumes the one-shot permit on the only governed effect path |
-| **Veritas** | Preserves attributable effect and outcome evidence for later state admission |
+| **RACS** | Binds decision, effect, permit and receipt |
+| **Gateway** | Enforces the only governed effect path |
+| **Veritas** | Preserves attributable effect and outcome evidence |
 
 Workflow ISA and Function Fabric are conditional process/capability layers. VAIG is a conditional evaluator. None creates execution authority.
 
 [Read the architecture →](docs/ARCHITECTURE.md)
 
-## Open standards and infrastructure
+## Open Heimel
 
-The standards and reference contracts are open and vendor-neutral. Models, agents, workflows and applications can change without moving the consequence boundary.
+Everything required to understand, build, integrate, test and locally operate governed execution is open.
 
-HEIMEL now publishes curated Apache-2.0 reference packages while canonical runtime ownership remains in the source repositories:
+A developer must be able to clone Heimel, run the governed consequence path locally, observe ALLOW / DENY / ESCALATE, revoke authority, perform a fresh consequence-time check, replay the decision and inspect evidence without contacting Heimel.
 
-- **[Kernel reference core](packages/kernel)** — operative state, admission and deterministic replay
-- **[Workflow ISA](packages/workflow-isa)** — typed deterministic process semantics
-- **[Function Fabric](packages/function-fabric)** — provider-neutral governed Function composition
-- **[REHT Standard](https://github.com/nsolland/reht-standard)** — fresh authority at consequence time
-- **[RACS](https://github.com/nsolland/Racs)** — deterministic decision/action binding
-- **Gateway reference** — bounded enforcement reference; canonical runtime remains outside this distribution
-- **[Veritas](https://github.com/nsolland/Veritas)** — verifiable consequence evidence
-- **[Open Agent Contract](https://github.com/nsolland/open-agent-contract)** — portable governed action contracts
+Open Heimel therefore has these hard guarantees:
 
-Adjacent public work remains separate from the HEIMEL runtime chain:
+- no phone-home requirement
+- no license server
+- no required Heimel cloud account
+- no artificial disablement of local governed execution
+- local authorization, enforcement, replay and evidence remain usable without a commercial entitlement
 
-- **[PEACE Protocol](https://github.com/nsolland/peace-protocol)** — keeps authority and authoritative state in the governed domain while models, agents, devices and providers remain replaceable
-- **[ACE economics](https://github.com/nsolland/opensource/blob/main/reports/01-the-ace-economy.md)** — measures scarce human evaluation and authority attention around governed completion; ACE is an economic model, not a protocol or source of authority
+The repository contains the migrated runtime universe under `runtime/`, including Kernel, REHT, Gateway, Veritas, RACS, workflow/runtime components, adapters, packs, distribution and validation. `runtime/MIGRATION_MANIFEST.yaml` records the source lineage.
 
-The public universe is organized by category: orientation, seeds, principles,
-theses, claims and evidence, research, reports and books, protocols and
-standards, reference implementations, experiments, discussions and status.
-See the [universe map](docs/UNIVERSE.md).
+Apache-2.0 remains the repository default license unless a component explicitly states otherwise.
 
-Start with the [research briefs](research/README.md) for the current
-source-grounded research layer.
+## Heimel Enterprise
 
-Current public layout:
+Enterprise is separate governance infrastructure around the open governed-execution mechanism. It is not a license lock around local execution.
+
+Enterprise exists for organization-level control: identity federation, SSO/SCIM, IAM integration, authority administration, separation of duties, approval flows, policy lifecycle, versioning and rollback, organization boundaries, delegated administration, multi-tenant isolation, secrets, deployment governance, HA/DR, retention, immutable evidence operations, observability, SLA and support.
 
 ```text
-Heimel-open/Heimel
-└── packages/
-    ├── kernel
-    ├── workflow-isa
-    ├── function-fabric
-    ├── boundary
-    ├── mal
-    ├── c-mcp
-    ├── vaig
-    ├── conformance
-    ├── workspace
-    ├── public-procurement
-    └── sdk
+Heimel Open       → defines and implements governed execution
+Heimel Enterprise → administers governed execution across an organization
+Heimel Gateway    → sits on the consequence path
+Veritas           → preserves attributable evidence
+Heimel Certified  → provides official conformance / compatibility attestation
 ```
 
-The selective public-reference track now includes MAL, c-MCP, VAIG,
-conformance, procurement and a contract SDK/CLI. Registry artifacts and a
-coherent public installation path remain owner-controlled release gates.
-Private production control-plane code is not implied by this roadmap.
+Managed deployment forms may include Heimel Cloud, Private Cloud, Sovereign and Air-gapped. These are deployment forms of the same governance semantics, not divergent products.
+
+The canonical product boundary is machine-readable in `docs/open-enterprise-contract.yaml`.
+
+## Pricing principle
+
+The primary commercial unit is not a human seat. Revenue should scale with governed machine activity.
+
+The canonical metering concept is a `governed_consequence_event`: an exact consequence-path event with decision, enforcement state and recorded outcome/evidence state.
+
+A DENY is not treated as a successfully executed consequence unless a commercial contract explicitly meters decision events separately.
+
+The commercial thesis is simple:
+
+> We do not charge to make governed execution possible. We charge to make governed execution governable at organizational scale.
+
+## Heimel Certified
+
+The conformance suite is open. Official certification is separate.
+
+An official Heimel attestation must bind at least implementation identity, conformance-suite version, tested profile, result, issuance time and validity.
+
+Passing the open conformance suite does not by itself imply official Heimel certification.
+
+## Provider independence
+
+HEIMEL does not depend on who forms intent. Models, agents, humans, workflows, enterprise systems, robots, IoT and payment systems can all sit upstream.
+
+HEIMEL governs the transition:
+
+```text
+intention → authorized consequence
+```
 
 ## Design principles
 
-**No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence**
+**No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence · No mandatory phone-home**
 
-## Verify the public packages locally
-
-The repository includes a fail-closed release verifier. It builds every package,
-runs the package test suites, checks wheel and source-distribution metadata,
-installs the wheels in the declared publish order, and runs import smoke tests.
-It never publishes and does not grant publication authority.
+## Verify locally
 
 ```bash
 python3 tools/release_verify.py
@@ -163,10 +167,7 @@ The public contract SDK also includes an offline end-to-end demonstration:
 valo-contracts demo
 ```
 
-The measured receipt is written to `release-receipt.json` and the build outputs
-to `dist/`; both are intentionally ignored by git. Use
-[`release.yaml`](release.yaml) as the source of truth for package versions,
-tags and release gates.
+Use `release.yaml` as the source of truth for package versions, tags and release gates.
 
 ## What HEIMEL is not
 

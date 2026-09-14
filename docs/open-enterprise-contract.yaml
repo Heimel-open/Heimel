@@ -1,0 +1,130 @@
+schema_version: 1
+product: Heimel
+status: canonical
+
+principle:
+  open: "Everything required to understand, build, integrate, test and locally operate governed execution is open."
+  commercial: "Everything required to govern governed execution authoritatively across an organization is commercial infrastructure."
+
+open_heimel:
+  guarantees:
+    - complete_local_execution
+    - no_phone_home
+    - no_license_server
+    - no_required_cloud_account
+    - no_artificial_feature_disablement
+    - local_allow_deny_escalate
+    - revocation_and_fresh_authority_checks
+    - deterministic_replay
+    - local_receipts_and_evidence
+  includes:
+    - kernel
+    - reht
+    - racs
+    - gateway_reference_and_runtime_surface
+    - veritas_reference_and_runtime_surface
+    - vaig
+    - mal
+    - workflow_isa
+    - function_fabric
+    - standard_functions
+    - domain_packs
+    - schemas
+    - authority_contracts
+    - provenance_envelope
+    - conformance_suite
+    - demonstrators
+    - sdks
+    - adapters
+    - documentation
+  invariant: "A user must be able to execute and prove the governed consequence path locally without contacting Heimel or obtaining a commercial entitlement."
+
+enterprise:
+  purpose: "Provide authoritative organization-level governance of governed execution."
+  capabilities:
+    - identity_federation
+    - sso
+    - scim
+    - iam_integration
+    - authority_administration
+    - separation_of_duties
+    - approval_flows
+    - policy_lifecycle
+    - policy_versioning
+    - rollback
+    - organization_boundaries
+    - delegated_administration
+    - multi_tenant_isolation
+    - secrets_management
+    - deployment_governance
+    - high_availability
+    - disaster_recovery
+    - retention
+    - immutable_evidence_operations
+    - observability
+    - enterprise_support
+    - sla
+  rule: "Enterprise must remain separable from the open governed-execution mechanism; it must not be a license lock around the same local capability."
+
+product_layers:
+  heimel_open: "Defines and implements governed execution."
+  heimel_enterprise: "Administers governed execution across an organization."
+  heimel_gateway: "Enforces the exclusive consequence path."
+  veritas: "Preserves attributable effect and outcome evidence."
+  heimel_certified: "Provides official conformance and compatibility attestation."
+  managed:
+    - Heimel Cloud
+    - Heimel Private Cloud
+    - Heimel Sovereign
+    - Heimel Air-gapped
+
+certification:
+  conformance_suite: open
+  official_attestation: commercial
+  attestation_must_bind:
+    - implementation_identity
+    - conformance_suite_version
+    - tested_profile
+    - test_result
+    - issuance_time
+    - validity_or_expiry
+  rule: "Passing the open suite does not imply an official Heimel certification unless an attestation has been issued."
+
+metering:
+  primary_unit: governed_consequence_event
+  definition: "A consequence-path event with an exact effect identity, decision, permit/enforcement state and recorded outcome/evidence state."
+  required_dimensions:
+    - tenant_or_organization
+    - effect_type
+    - decision
+    - enforcement_result
+    - outcome_state
+    - evidence_reference
+    - timestamp
+  pricing_rule: "Commercial pricing may use committed governed-consequence volume. A DENY is not treated as a successfully executed consequence unless a contract explicitly meters decision events separately."
+  forbidden_default: seat_based_primary_pricing
+
+licensing:
+  repository_default: Apache-2.0
+  standard_surfaces: permissive_open_source
+  enterprise: separate_software_or_service
+  rule: "Do not describe source-available or commercial-use-restricted code as open source."
+
+deployment:
+  semantic_equivalence_rule: "Cloud, Private Cloud, Sovereign and Air-gapped are deployment forms of the same governance system, not divergent product semantics."
+
+provider_independence:
+  rule: "Heimel does not depend on who forms intent; it governs the transition from intention to authorized consequence."
+  examples:
+    - models
+    - agents
+    - humans
+    - workflows
+    - enterprise_software
+    - robots
+    - iot
+    - payment_systems
+
+commercial_thesis:
+  rule: "Revenue should scale with governed machine activity rather than human seat count."
+  statement: "We do not charge to make governed execution possible; we charge to make governed execution governable at organizational scale."
