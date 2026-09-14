@@ -19,6 +19,7 @@ normative_properties:
   - NO_DIRECT_EFFECT_PATH
   - NO_IMPLICIT_CAPABILITY_TRANSFER
   - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
+  - NO_UNGOVERNED_HARNESS_TRANSITION
   - FRESH_AUTHORITY_AT_CONSEQUENCE_TIME
   - EXACT_DECISION_EFFECT_BINDING
   - FAIL_CLOSED_ON_MISSING_STALE_OR_MISMATCHED_STATE
@@ -29,13 +30,21 @@ normative_properties:
 
 clean_room_model:
   canonical_description: docs/architecture/clean-room-model.md
-  rule: "Heimel governs admission, internal capability/communication boundaries, and consequence-time check-out; it does not require governance of every internal reasoning step."
+  rule: "Heimel governs admission, harness transition, internal capability/communication boundaries, and consequence-time check-out; it does not require governance of every internal reasoning step."
   boundaries:
     check_in:
       - identity
       - provenance
       - admissibility
       - authority_context
+    harness_airlock:
+      - incoming_harness_identity_version_and_provenance
+      - external_harness_identity_version_and_config_digest
+      - pre_induction_assessment
+      - controlled_regrounding
+      - residual_induction_measurement
+      - bounded_equivalence_scope
+      - evidence_reference
     bounded_workspace:
       - role
       - purpose
@@ -45,6 +54,7 @@ clean_room_model:
     internal_invariants:
       - NO_IMPLICIT_CAPABILITY_TRANSFER
       - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
+      - NO_UNGOVERNED_HARNESS_TRANSITION
     check_out:
       - exact_proposed_consequence
       - fresh_authority
@@ -52,6 +62,7 @@ clean_room_model:
       - exact_effect_binding
       - exclusive_gateway_enforcement
       - verifiable_outcome_evidence
+  harness_rule: "An external harness MUST NOT be presumed to override, erase or dominate an incoming/internal harness. Unknown or unmeasured residual inducement remains UNKNOWN and cannot be promoted into consequence-bearing work."
 
 change_control:
   normative_change_definition: "A change is normative if a conforming implementation could behave differently because of it."
