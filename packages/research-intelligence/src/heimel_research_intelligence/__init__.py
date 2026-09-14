@@ -9,6 +9,15 @@ from .pipeline import (
     parse_feed,
     score_relevance,
 )
+from .sequential_eval import (
+    Exposure,
+    Observation,
+    SequentialEvaluationError,
+    SequentialEvaluationResult,
+    bounded_append,
+    compare_reruns,
+    run_sequential_evaluation,
+)
 
 __all__ = [
     "Candidate",
@@ -20,4 +29,11 @@ __all__ = [
     "ingest",
     "parse_feed",
     "score_relevance",
+    "Exposure",
+    "Observation",
+    "SequentialEvaluationError",
+    "SequentialEvaluationResult",
+    "bounded_append",
+    "compare_reruns",
+    "run_sequential_evaluation",
 ]
