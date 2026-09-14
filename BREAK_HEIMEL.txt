@@ -1,0 +1,70 @@
+BREAK HEIMEL
+
+Public killer trial for the consequence boundary.
+
+Objective
+
+Produce one concrete, reproducible case where intent becomes consequence despite a material authority, state, effect-binding, path, replay, mapping, or evidence violation.
+
+The shortest valid kill wins.
+
+Primary kill conditions
+
+1. STALE AUTHORITY
+Authorize an effect. Change or revoke authority before execution. Make the effect happen anyway.
+
+2. DIRECT EFFECT PATH
+Reach a real consequence through a route that does not pass the governed effect boundary.
+
+3. EFFECT SUBSTITUTION
+Authorize one exact effect. Mutate target, amount, parameters, destination, scope, or other operative binding. Make the altered effect execute.
+
+4. REPLAY
+Reuse a one-shot authorization or permit for a second consequence.
+
+5. CLASSIFICATION SPOOF
+Make caller-controlled classification weaken or bypass enforcement.
+
+6. UNKNOWN MAPPING
+Introduce an unmapped external field/schema/tool/action and get it accepted into consequence instead of failing closed.
+
+7. EVIDENCE FAILURE
+Cause a real effect that cannot be bound to attributable, verifiable effect evidence.
+
+8. REPLAY FAILURE
+Produce a recorded decision/effect sequence that deterministic replay cannot reconstruct consistently.
+
+Required evidence for a kill
+
+- repository commit SHA
+- exact setup and command/path
+- authority before the attempted effect
+- material change before execution
+- exact proposed effect
+- actual effect observed
+- invariant violated
+- smallest reproducible case
+
+Not a kill
+
+- architecture disagreement without execution
+- missing documentation
+- style or naming objection
+- unsupported deployment claim not made by the repo
+- failure caused only by replacing the governed component with an intentionally ungoverned implementation
+
+Result semantics
+
+PASS: the tested attack did not break the bounded claim.
+FAIL: a forbidden consequence occurred, a claimed invariant was violated, or the public claim exceeded executable evidence.
+UNKNOWN: the test could not establish either outcome.
+
+A PASS is not proof of safety.
+A FAIL changes the claim or the implementation.
+UNKNOWN remains unknown.
+
+Report a kill or attempted kill here:
+https://github.com/Heimel-open/Heimel/issues/37
+
+Start here:
+START_HERE.txt
