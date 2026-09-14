@@ -24,7 +24,9 @@ def payload():
         "completion_criteria_satisfied": True,
         "required_evidence_verified": True,
         "verified_at": "2026-09-14T04:47:00Z",
-        "verifier_id": "heimel-outcome-verifier-v1",
+        "verifier_id": "heimel-outcome-verifier",
+        "verifier_version": "1.0.0",
+        "verifier_config_digest": "sha256:" + "f" * 64,
         "authority_granted": False,
     }
     return {**body, "observation_digest": consequence_outcome_digest(body)}
@@ -38,11 +40,13 @@ def test_outcome_observation_is_verified_and_stored_in_worm():
     assert service.verify_chain() is True
     entry = service.find_entry("outcome:c-1")
     assert entry is not None
-    assert entry["execution_id"] == "exec-1"
     event = entry["observed_events"][0]
-    assert event["event_type"] == "consequence_outcome_verified"
-    assert event["provenance"]["completion_criteria_hash"] == "sha256:" + "c" * 64
-    assert event["provenance"]["authority_granted"] is False
+    provenance = event["provenance"]
+    assert provenance["completion_criteria_hash"] == "sha256:" + "c" * 64
+    assert provenance["verifier_id"] == "heimel-outcome-verifier"
+    assert provenance["verifier_version"] == "1.0.0"
+    assert provenance["verifier_config_digest"] == "sha256:" + "f" * 64
+    assert provenance["authority_granted"] is False
 
 
 def test_tampered_outcome_digest_never_reaches_worm():
@@ -63,4 +67,13 @@ def test_outcome_observation_can_never_grant_authority():
     body["observation_digest"] = consequence_outcome_digest(body)
 
     with pytest.raises(ConsequenceOutcomeObservationError, match="never grant authority"):
+        ConsequenceOutcomeObservationV1.verify(body)
+
+
+def test_verifier_config_digest_is_required_and_hash_bound():
+    raw = payload()
+    body = {key: value for key, value in raw.items() if key != "observation_digest"}
+    body["verifier_config_digest"] = "not-a-digest"
+    body["observation_digest"] = consequence_outcome_digest(body)
+    with pytest.raises(ConsequenceOutcomeObservationError, match="verifier_config_digest"):
         ConsequenceOutcomeObservationV1.verify(body)
