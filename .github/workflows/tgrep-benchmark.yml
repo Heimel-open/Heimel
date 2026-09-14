@@ -1,0 +1,41 @@
+name: tgrep benchmark
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install ripgrep
+        run: sudo apt-get update -qq && sudo apt-get install -y ripgrep
+
+      - name: Install tgrep
+        run: |
+          cargo install --git https://github.com/microsoft/tgrep tgrep-cli --locked
+          tgrep --version
+
+      - name: Benchmark
+        run: |
+          python3 tools/bench_tgrep_vs_rg.py | tee /tmp/tgrep-benchmark.txt
+
+      - name: Publish benchmark summary
+        if: always()
+        run: |
+          if [ -f /tmp/tgrep-benchmark.txt ]; then
+            {
+              echo '```text'
+              cat /tmp/tgrep-benchmark.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
