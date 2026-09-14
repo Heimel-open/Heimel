@@ -137,9 +137,7 @@ class AdapterCapabilityManifest(BaseModel):
         except ValueError as exc:
             raise PermissionError(f"unknown consequence operation: {operation}") from exc
         if canonical not in self.operations:
-            raise PermissionError(
-                f"operation {canonical.value} is not declared by adapter {self.adapter_id}"
-            )
+            raise PermissionError(f"operation {canonical.value} is not declared by adapter {self.adapter_id}")
         return canonical
 
 
@@ -147,6 +145,42 @@ class ClaimRequirement(BaseModel):
     claim_id: str = Field(min_length=1)
     required_status: Status = Status.SUPPORTED
     model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class IdempotencyBinding(BaseModel):
+    effect_id: str = Field(min_length=1)
+    provider: str = Field(min_length=1)
+    idempotency_key: str = Field(min_length=1)
+    parameters_digest: str = Field(pattern=r"^sha256:[0-9a-f]{64}$")
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    def assert_same_effect(self, other: IdempotencyBinding) -> None:
+        if self.idempotency_key != other.idempotency_key:
+            return
+        if self != other:
+            raise PermissionError("idempotency key reuse conflicts with an existing effect")
+
+
+class ProviderCallbackEvidence(BaseModel):
+    provider: str = Field(min_length=1)
+    correlation_id: str = Field(min_length=1)
+    event_digest: str = Field(pattern=r"^sha256:[0-9a-f]{64}$")
+    signature_ref: str = Field(min_length=1)
+    verified: bool
+    observed_at: datetime
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    @model_validator(mode="after")
+    def validate_time(self) -> ProviderCallbackEvidence:
+        if self.observed_at.utcoffset() is None:
+            raise ValueError("callback observed_at must be timezone-aware")
+        return self
+
+    def assert_verified(self, *, provider: str, correlation_id: str) -> None:
+        if not self.verified:
+            raise PermissionError("provider callback signature is not verified")
+        if self.provider != provider or self.correlation_id != correlation_id:
+            raise PermissionError("provider callback does not bind the expected effect")
 
 
 class EffectContract(BaseModel):
@@ -182,13 +216,7 @@ class EffectContract(BaseModel):
 
     @property
     def target_binding(self) -> EffectTargetBinding:
-        return EffectTargetBinding(
-            provider=self.provider,
-            tenant=self.tenant,
-            environment=self.environment,
-            resource=self.resource,
-            credential_authority_ref=self.credential_authority_ref,
-        )
+        return EffectTargetBinding(provider=self.provider, tenant=self.tenant, environment=self.environment, resource=self.resource, credential_authority_ref=self.credential_authority_ref)
 
     @property
     def digest(self) -> str:
@@ -206,15 +234,19 @@ class EffectContract(BaseModel):
             provenance.assert_usable(now)
 
     def assert_claims(self, claims: Mapping[str, VerificationResult]) -> None:
+        self.assert_claim_statuses({key: value.status for key, value in claims.items()})
+
+    def assert_claim_statuses(self, claims: Mapping[str, Status | str]) -> None:
         for requirement in self.claim_requirements:
-            result = claims.get(requirement.claim_id)
-            if result is None:
+            raw = claims.get(requirement.claim_id)
+            if raw is None:
                 raise PermissionError(f"missing required claim evidence: {requirement.claim_id}")
-            if result.status is not requirement.required_status:
-                raise PermissionError(
-                    f"claim {requirement.claim_id} is {result.status.value}; "
-                    f"required {requirement.required_status.value}"
-                )
+            try:
+                status = raw if isinstance(raw, Status) else Status(raw)
+            except ValueError as exc:
+                raise PermissionError(f"invalid claim status for {requirement.claim_id}") from exc
+            if status is not requirement.required_status:
+                raise PermissionError(f"claim {requirement.claim_id} is {status.value}; required {requirement.required_status.value}")
 
     def assert_target(self, target: EffectTargetBinding) -> None:
         if target != self.target_binding:
@@ -229,12 +261,7 @@ class AsyncEffectRecord(BaseModel):
     provider_receipt_ref: str | None = None
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    def transition(
-        self,
-        state: EffectLifecycleState,
-        *,
-        provider_receipt_ref: str | None = None,
-    ) -> AsyncEffectRecord:
+    def transition(self, state: EffectLifecycleState, *, provider_receipt_ref: str | None = None, callback: ProviderCallbackEvidence | None = None, provider: str | None = None) -> AsyncEffectRecord:
         allowed = {
             EffectLifecycleState.REQUESTED: {EffectLifecycleState.ACCEPTED, EffectLifecycleState.FAILED},
             EffectLifecycleState.ACCEPTED: {EffectLifecycleState.PROCESSING, EffectLifecycleState.COMPLETED, EffectLifecycleState.FAILED},
@@ -245,14 +272,14 @@ class AsyncEffectRecord(BaseModel):
         }
         if state not in allowed[self.state]:
             raise ValueError(f"invalid async effect transition: {self.state.value} -> {state.value}")
-        if state in {EffectLifecycleState.COMPLETED, EffectLifecycleState.COMPENSATED} and not provider_receipt_ref:
+        if callback is not None:
+            if provider is None:
+                raise ValueError("provider is required when callback evidence is supplied")
+            callback.assert_verified(provider=provider, correlation_id=self.correlation_id)
+        if state in {EffectLifecycleState.COMPLETED, EffectLifecycleState.COMPENSATED} and not (provider_receipt_ref or callback):
             raise ValueError("terminal successful transition requires provider receipt evidence")
-        return self.model_copy(
-            update={
-                "state": state,
-                "provider_receipt_ref": provider_receipt_ref or self.provider_receipt_ref,
-            }
-        )
+        receipt_ref = provider_receipt_ref or (callback.signature_ref if callback else None) or self.provider_receipt_ref
+        return self.model_copy(update={"state": state, "provider_receipt_ref": receipt_ref})
 
 
 def parameters_digest(parameters: Mapping[str, Any]) -> str:
@@ -270,6 +297,8 @@ __all__ = [
     "EffectContract",
     "EffectLifecycleState",
     "EffectTargetBinding",
+    "IdempotencyBinding",
+    "ProviderCallbackEvidence",
     "ReadProvenance",
     "RepresentationIntegrity",
     "parameters_digest",
