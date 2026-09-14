@@ -77,3 +77,43 @@ class AzureEffectTool(ProviderEffectTool):
 class GCPEffectTool(ProviderEffectTool):
     def __init__(self, dispatch: ProviderDispatch) -> None:
         super().__init__("gcp", dispatch)
+
+
+class OpenRouterEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("openrouter", dispatch)
+
+
+class BedrockEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("aws-bedrock", dispatch)
+
+
+class AzureOpenAIEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("azure-openai", dispatch)
+
+
+class VertexAIEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("vertex-ai", dispatch)
+
+
+class TogetherEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("together", dispatch)
+
+
+class GroqEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("groq", dispatch)
+
+
+class HuggingFaceEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("huggingface", dispatch)
+
+
+class OllamaEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("ollama", dispatch)
