@@ -72,6 +72,11 @@
       "UNVERIFIED_OUTCOME",
       "DUPLICATE"
     ],
+    "terminal_receipt_states": ["SETTLED", "NOT_CHARGEABLE"],
+    "retryable_states": ["INSUFFICIENT_FUNDS", "SETTLEMENT_FAILED"],
+    "receipt_persistence": "ATOMIC_PUT_IF_ABSENT_BY_IDEMPOTENCY_KEY",
+    "payment_rail_requirement": "IDEMPOTENT_CAPTURE_BY_IDEMPOTENCY_KEY",
+    "crash_recovery": "RETRY_SAME_PREBOUND_IDEMPOTENCY_KEY",
     "settlement": "AT_MOST_ONCE",
     "retrospective_invoice_required": false,
     "caller_asserted_verification_sufficient": false
