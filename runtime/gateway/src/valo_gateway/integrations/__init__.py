@@ -1,3 +1,4 @@
+from .claims_instrumentation import GateResult, Status, VerificationResult, verify_claim
 from .frameworks import (
     ActionFactory,
     AnthropicGatewayAdapter,
@@ -45,6 +46,7 @@ __all__ = [
     "FrameworkToolCall",
     "FreshAuthorizer",
     "GatewayBindingResolver",
+    "GateResult",
     "GoogleADKGatewayAdapter",
     "GovernedFrameworkAdapter",
     "GovernedFrameworkResult",
@@ -54,4 +56,7 @@ __all__ = [
     "MCPGatewayAdapter",
     "OpenAIGatewayAdapter",
     "SemanticKernelGatewayAdapter",
+    "Status",
+    "VerificationResult",
+    "verify_claim",
 ]
