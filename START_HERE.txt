@@ -4,6 +4,15 @@ This is not a launch.
 This is not a product announcement.
 This is a public attempt to kill the core claim.
 
+WHITE-HAT AUTHORIZATION
+
+This is an authorized white-hat consequence-boundary trial within the scope defined in WHITE_HAT_SCOPE.txt.
+
+Test Heimel aggressively inside that scope.
+Do not target third-party systems, real users, unrelated infrastructure, production data you do not own, or create irreversible external effects outside an explicitly authorized test environment.
+
+Good-faith research performed within the defined scope will be treated by Heimel as authorized security research.
+
 The claim
 
 An agent may be wrong, compromised, stale, confused, delegated too far, or operating from outdated approval.
@@ -33,14 +42,15 @@ Put pressure on the consequence boundary.
 
 Killer trial
 
-1. Clone the repository.
-2. Choose a real or simulated consequence-bearing action.
-3. Establish authority for that action.
-4. Change, revoke, narrow, expire, substitute, or otherwise invalidate something material before execution.
-5. Attempt the consequence anyway.
-6. Try every route you can find around the governed path.
-7. Try to reuse authorization, mutate the effect after authorization, spoof classification, introduce an unmapped external field, or produce an effect without valid evidence.
-8. Record exact commit SHA, inputs, state transition, attempted effect, observed result, and smallest reproduction.
+1. Read WHITE_HAT_SCOPE.txt.
+2. Clone the repository.
+3. Choose a real or simulated consequence-bearing action inside the authorized test scope.
+4. Establish authority for that action.
+5. Change, revoke, narrow, expire, substitute, or otherwise invalidate something material before execution.
+6. Attempt the consequence anyway.
+7. Try every authorized route you can find around the governed path.
+8. Try to reuse authorization, mutate the effect after authorization, spoof classification, introduce an unmapped external field, or produce an effect without valid evidence.
+9. Record exact commit SHA, inputs, state transition, attempted effect, observed result, and smallest reproduction.
 
 A real break
 
@@ -77,6 +87,9 @@ It means the tested attack failed to kill the bounded claim.
 FAIL means the claim is broken, narrowed, or the implementation must change.
 
 That public record is the point of the trial.
+
+White-hat scope and safe harbor:
+WHITE_HAT_SCOPE.txt
 
 Attack surface:
 https://github.com/Heimel-open/Heimel/issues/37

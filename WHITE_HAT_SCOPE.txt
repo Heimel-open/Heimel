@@ -1,0 +1,88 @@
+HEIMEL WHITE-HAT CONSEQUENCE-BOUNDARY TRIAL
+
+Purpose
+
+This program authorizes good-faith security research against Heimel's consequence boundary within the scope below.
+
+The objective is to find a concrete, reproducible path where a forbidden consequence occurs despite Heimel's stated authority, state-binding, effect-binding, path, replay, mapping, or evidence guarantees.
+
+SAFE HARBOR
+
+Research performed in good faith and within this scope will be treated by Heimel as authorized security research.
+
+Good-faith research means:
+
+- you stay within the defined in-scope systems and test environments
+- you avoid harm to real users, third parties, production data, and unrelated infrastructure
+- you do not intentionally create irreversible real-world effects outside an explicitly authorized test environment
+- you stop and report if a test unexpectedly reaches sensitive data, unrelated systems, or a harmful external consequence
+- you provide a reproducible report rather than using the finding for extortion, disruption, persistence, or unrelated access
+
+This safe-harbor statement applies only to systems and assets Heimel is authorized to permit testing against. It cannot grant permission for third-party systems, services, accounts, networks, or data.
+
+IN SCOPE
+
+- the public Heimel repository and code at an exact commit SHA
+- local/self-hosted Heimel runtime deployments you control
+- Heimel-provided public test or demo surfaces explicitly presented for this trial
+- consequence-time authority checks
+- exact state/effect binding
+- one-shot permits and replay behavior
+- Gateway/governed effect-path enforcement
+- adapters and explicit external mapping behavior
+- caller-controlled classification resistance
+- Veritas/effect evidence binding
+- deterministic replay of the decision/effect relation
+
+OUT OF SCOPE
+
+- attacks on unrelated third-party systems, vendors, APIs, clouds, accounts, networks, or users
+- social engineering, phishing, credential theft, or impersonation
+- denial-of-service, resource exhaustion, destructive load testing, or availability attacks
+- accessing, modifying, deleting, or exfiltrating real production data that you do not own or have explicit permission to test
+- real financial transfers, irreversible external actions, physical-world effects, or production mutations unless the environment explicitly authorizes them for testing
+- persistence, lateral movement, or privilege expansion beyond what is strictly necessary to demonstrate the scoped Heimel failure
+- malware deployment or supply-chain compromise
+
+STOP CONDITIONS
+
+Stop the test and report immediately if you encounter:
+
+- credentials or secrets belonging to another person or organization
+- personal, confidential, regulated, or production data outside your authorized test set
+- an unintended effect on a third-party system
+- a credible risk of physical, financial, operational, or data harm
+
+WHAT COUNTS AS A VALID KILL
+
+A theoretical objection is not enough.
+
+A valid kill is a minimal, reproducible case showing a forbidden consequence or a public Heimel claim exceeding its executable evidence.
+
+Include:
+
+- exact commit SHA
+- exact setup and execution path
+- authority and operative state before the effect
+- material state/authority change before execution
+- exact proposed effect
+- actual observed effect
+- invariant violated
+- smallest reproducible case
+
+REPORTING
+
+Primary public trial issue:
+https://github.com/Heimel-open/Heimel/issues/37
+
+If a finding would expose sensitive exploit details, secrets, third-party data, or create immediate real-world risk, do not publish those details publicly. Report only the minimum public claim and request a private coordination path.
+
+PASS / FAIL / UNKNOWN
+
+PASS: the tested attack did not break the bounded claim.
+FAIL: a forbidden consequence occurred, a claimed invariant was violated, or the public claim exceeded executable evidence.
+UNKNOWN: the test could not establish either outcome.
+
+A PASS is not proof of safety.
+A FAIL changes the claim or implementation.
+UNKNOWN remains unknown.
