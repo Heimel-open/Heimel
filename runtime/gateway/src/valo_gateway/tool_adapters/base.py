@@ -47,7 +47,10 @@ class FunctionTool:
         proof: BoundaryProof,
     ) -> Any:
         _validate_boundary_proof(proof)
-        return self._function(**arguments)
+        _assert_carrier_data(arguments, direction="input")
+        response = self._function(**arguments)
+        _assert_carrier_data(response, direction="output")
+        return response
 
 
 class ToolRegistry:
@@ -137,12 +140,31 @@ def _invoke_tool_from_boundary(
     proof: BoundaryProof,
 ) -> Any:
     _validate_boundary_proof(proof)
+    _assert_carrier_data(arguments, direction="input")
     invoke = getattr(tool, "_invoke_from_boundary", None)
     if not callable(invoke):
         raise PermissionError(
             "NO_DIRECT_EFFECT_PATH: effector lacks boundary-only dispatch"
         )
-    return invoke(arguments, proof)
+    response = invoke(arguments, proof)
+    _assert_carrier_data(response, direction="output")
+    return response
+
+
+def _assert_carrier_data(value: Any, *, direction: str) -> None:
+    """Keep Heimel-owned control state out of interchangeable carrier payloads."""
+    if isinstance(value, dict):
+        if "_heimel" in value:
+            raise PermissionError(
+                "CARRIER_CONTROL_NAMESPACE_FORBIDDEN: "
+                f"carrier {direction} cannot supply Heimel control state"
+            )
+        for child in value.values():
+            _assert_carrier_data(child, direction=direction)
+        return
+    if isinstance(value, (list, tuple, set, frozenset)):
+        for child in value:
+            _assert_carrier_data(child, direction=direction)
 
 
 def _validate_boundary_proof(proof: BoundaryProof) -> None:
