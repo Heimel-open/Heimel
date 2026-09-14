@@ -203,6 +203,8 @@ class LocalRuntime(RuntimeInterface):
         effect_digest = _digest(proposed_effect)
 
         with self._permit_lock:
+            if not isinstance(permit, LocalPermit):
+                raise ConsequenceRejected("execution permit binding is missing")
             issued = self._issued_permits.get(permit.permit_id)
             if issued is None:
                 raise ConsequenceRejected("permit was not issued by this runtime")

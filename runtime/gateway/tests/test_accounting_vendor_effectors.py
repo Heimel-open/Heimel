@@ -16,8 +16,8 @@ from valo_gateway.tool_adapters import (
     PowerOfficeGoEffectTool,
     QuickBooksOnlineEffectTool,
     RampEffectTool,
-    SAPS4HANAEffectTool,
     SageEffectTool,
+    SAPS4HANAEffectTool,
     TipaltiEffectTool,
     TripletexEffectTool,
     TwentyFourSevenOfficeEffectTool,
@@ -27,7 +27,6 @@ from valo_gateway.tool_adapters import (
     XeroEffectTool,
     ZohoBooksEffectTool,
 )
-
 
 TOOLS = [
     TripletexEffectTool,

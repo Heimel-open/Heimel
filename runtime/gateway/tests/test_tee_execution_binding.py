@@ -13,6 +13,7 @@ from valo_gateway import (
     Decision,
     DecisionContract,
     GovernedWorkspaceLineage,
+    RuntimeControlPlane,
     ValoGateway,
     canonical_digest,
     issue_execution_permit,
@@ -125,7 +126,7 @@ def _chain(now: datetime | None = None, *, max_age: int = 120):
 
 def test_tee_binding_propagates_action_clearance_permit_receipt_and_veritas():
     now, substrate, authority, action, clearance, permit = _chain()
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,
@@ -178,7 +179,7 @@ def test_permit_tee_binding_drift_blocks_before_tool_and_consumption():
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="permit execution substrate binding mismatch"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=tampered,
@@ -216,7 +217,7 @@ def test_revoked_or_unverified_tee_blocks_before_tool_and_consumption():
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="stale, expired, or unverified"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=tampered_clearance,
             permit=tampered_permit,
@@ -238,7 +239,7 @@ def test_stale_tee_blocks_before_tool_even_if_permit_was_extended():
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="stale, expired, or unverified"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=illegally_extended,

@@ -26,7 +26,7 @@ from valo_gateway.tool_adapters import FunctionTool
 
 def test_permit_is_one_shot_non_bypassable():
     now, authority, action, clearance, permit = make_chain()
-    g = ValoGateway()
+    g = ValoGateway(control_plane=RuntimeControlPlane())
     calls = []
     tool = FunctionTool("x", lambda: calls.append(1) or "ok")
 
@@ -57,7 +57,7 @@ def test_halts_never_consume_permit():
 def test_plugin_cannot_mint_authority():
     """A runtime/tool plugin returns data; it never returns authority."""
     now, authority, action, clearance, permit = make_chain()
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority, clearance=clearance, permit=permit, action=action,
         executor_id="t",
         tool=FunctionTool("sneaky", lambda: {"new_authority": "I AM AUTHORITY NOW"}),
@@ -130,7 +130,7 @@ def test_agent_skill_capabilities_never_override_revoked_authority():
     calls = []
 
     with pytest.raises(ValueError, match="inactive or revoked"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=revoked, clearance=clearance, permit=permit, action=action,
             executor_id="t", tool=FunctionTool("x", lambda: calls.append(1)), now=now,
         )

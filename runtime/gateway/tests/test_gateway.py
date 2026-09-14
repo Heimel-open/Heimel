@@ -48,7 +48,7 @@ def fixture():
 
 def test_success_consumes_permit_and_receipts():
     now, authority, action, clearance, permit = fixture()
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority, clearance=clearance, permit=permit,
         action=action, executor_id="tool:payments",
         tool=FunctionTool("payments", lambda amount: {"accepted": True, "amount": amount}),
@@ -66,7 +66,7 @@ def test_replay_blocked_before_invocation():
         nonlocal called
         called = True
     with pytest.raises(ValueError, match="already consumed"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority, clearance=clearance, permit=permit.consume(now),
             action=action, executor_id="tool", tool=FunctionTool("x", tool), now=now,
         )

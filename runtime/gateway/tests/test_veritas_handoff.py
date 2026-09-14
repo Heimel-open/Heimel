@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from tests.conftest import make_chain
-from valo_gateway import ValoGateway
+from valo_gateway import RuntimeControlPlane, ValoGateway
 from valo_gateway.tool_adapters import FunctionTool
 from valo_gateway.veritas_handoff import build_veritas_execution_observation
 
 
 def _result():
     now, authority, action, clearance, permit = make_chain()
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,

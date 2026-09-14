@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from typing import Any, Callable, Mapping, Protocol
+from typing import Any, Protocol
 
 from valo_gateway.contracts import (
     ActionEnvelope,
@@ -11,7 +12,6 @@ from valo_gateway.contracts import (
     ExecutionPermit,
 )
 from valo_gateway.gateway import ToolExecutionResult, ValoGateway
-
 
 PROPOSED_EFFECT_KEY = "proposed_effect"
 EFFECT_DIGEST_KEY = "effect_digest"

@@ -8,9 +8,9 @@ from valo_gateway.tool_adapters import (
     CommercialCRMEffectTool,
     CommunicationsEffectTool,
     FinancialRailsEffectTool,
-    HRPayrollEffectTool,
     HealthcareClaimsEffectTool,
     HealthcareEffectTool,
+    HRPayrollEffectTool,
     IdentityAccessEffectTool,
     InsuranceEffectTool,
     LegalContractEffectTool,
@@ -22,7 +22,6 @@ from valo_gateway.tool_adapters import (
     PublicSectorEffectTool,
     UnderwritingEffectTool,
 )
-
 
 DOMAIN_TOOLS = [
     FinancialRailsEffectTool,

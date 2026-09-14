@@ -15,4 +15,9 @@ class GatewaySDK:
     @classmethod
     def compose(cls, *, ingress: IngressNormalizer, harness: HarnessRouter,
                 tools: ToolRegistry, control_plane: RuntimeControlPlane | None = None) -> "GatewaySDK":
-        return cls(ingress, harness, tools, ValoGateway(control_plane))
+        return cls(
+            ingress,
+            harness,
+            tools,
+            ValoGateway(control_plane or RuntimeControlPlane()),
+        )

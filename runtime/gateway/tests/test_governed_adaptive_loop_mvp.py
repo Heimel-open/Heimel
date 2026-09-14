@@ -14,10 +14,9 @@ from examples.governed_adaptive_loop.app import (
     run_demo,
     run_revoked_flow,
 )
-from valo_gateway import ValoGateway
+from valo_gateway import RuntimeControlPlane, ValoGateway
 from valo_gateway.tool_adapters import FunctionTool
 from valo_gateway.veritas_handoff import build_veritas_execution_observation
-
 
 NOW = datetime(2026, 8, 29, 12, 0, tzinfo=UTC)
 
@@ -90,7 +89,7 @@ def test_receipt_observation_is_idempotent_for_guidance_renewal():
 
     ledger = ResolutionLedger()
     registry, handle = _registry_for(ledger, target=action.target)
-    result = ValoGateway(permit_store=InMemoryPermitStore()).execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,

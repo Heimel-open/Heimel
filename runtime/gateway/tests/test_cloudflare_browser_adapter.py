@@ -9,6 +9,7 @@ from valo_gateway import (
     Clearance,
     Decision,
     DecisionContract,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -137,7 +138,7 @@ def test_cloudflare_operational_state_is_non_authoritative():
 def test_gateway_remains_the_execution_gate_for_cloudflare():
     now, authority, action, clearance, permit = governed_fixture()
     seen = []
-    gateway = ValoGateway()
+    gateway = ValoGateway(control_plane=RuntimeControlPlane())
     adapter = CloudflareBrowserRunAdapter(
         context=CloudflareBrowserContext(account_ref="cloudflare-account:primary"),
         execution_context_hash="sha256:browser-context",

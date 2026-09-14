@@ -31,7 +31,7 @@ class SQLitePermitConsumptionStore:
         self._initialize()
 
     @classmethod
-    def default(cls) -> "SQLitePermitConsumptionStore":
+    def default(cls) -> SQLitePermitConsumptionStore:
         configured = os.environ.get(cls.ENV_PATH)
         if configured:
             return cls(configured)

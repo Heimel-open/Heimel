@@ -14,6 +14,7 @@ from valo_gateway import (
     DecisionContract,
     ExecutionPermit,
     GovernedWorkspaceLineage,
+    RuntimeControlPlane,
     ValoGateway,
     canonical_digest,
     issue_execution_permit,
@@ -101,7 +102,7 @@ def _governed_chain(now: datetime | None = None):
 
 def test_governed_workspace_lineage_propagates_to_receipt_and_veritas_handoff():
     now, authority, action, clearance, permit = _governed_chain()
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,
@@ -193,7 +194,7 @@ def test_permit_workspace_drift_fails_before_invoke_or_consumption():
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="permit workspace binding mismatch"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=tampered,
@@ -212,7 +213,7 @@ def test_permit_clearance_digest_drift_fails_before_invoke_or_consumption():
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="permit clearance digest mismatch"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=tampered,
@@ -248,7 +249,7 @@ def test_expired_workspace_fails_before_invoke_or_consumption():
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="workspace is expired"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=expired_clearance,
             permit=expired_permit,
@@ -263,7 +264,7 @@ def test_expired_workspace_fails_before_invoke_or_consumption():
 
 def test_veritas_handoff_rejects_workspace_binding_drift():
     now, authority, action, clearance, permit = _governed_chain()
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,

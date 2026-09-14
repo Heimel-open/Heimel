@@ -21,16 +21,16 @@ def harness(name: str, *, state: HarnessState = HarnessState.KNOWN):
 
 
 def evidence(**overrides):
-    values = dict(
-        incoming_harness=harness("incoming"),
-        external_harness=harness("external"),
-        pre_induction_assessed=True,
-        controlled_regrounding_applied=True,
-        residual_induction_measured=True,
-        residual_induction_within_bound=True,
-        equivalence_scope="bounded-task-profile-v1",
-        evidence_ref="veritas:harness-admission-1",
-    )
+    values = {
+        "incoming_harness": harness("incoming"),
+        "external_harness": harness("external"),
+        "pre_induction_assessed": True,
+        "controlled_regrounding_applied": True,
+        "residual_induction_measured": True,
+        "residual_induction_within_bound": True,
+        "equivalence_scope": "bounded-task-profile-v1",
+        "evidence_ref": "veritas:harness-admission-1",
+    }
     values.update(overrides)
     return HarnessAdmissionEvidence(**values)
 

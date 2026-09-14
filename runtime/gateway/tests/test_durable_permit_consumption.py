@@ -9,6 +9,7 @@ from valo_gateway import (
     Clearance,
     Decision,
     DecisionContract,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -82,10 +83,10 @@ def test_consumption_survives_gateway_restart(tmp_path):
     db = tmp_path / "permits.sqlite3"
     calls = []
 
-    first = ValoGateway(permit_store=SQLitePermitConsumptionStore(db))
+    first = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=SQLitePermitConsumptionStore(db))
     _execute(first, chain, calls)
 
-    restarted = ValoGateway(permit_store=SQLitePermitConsumptionStore(db))
+    restarted = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=SQLitePermitConsumptionStore(db))
     with pytest.raises(ValueError, match="already consumed"):
         _execute(restarted, chain, calls)
 
@@ -97,8 +98,8 @@ def test_two_gateway_instances_share_atomic_consumption(tmp_path):
     db = tmp_path / "permits.sqlite3"
     calls = []
 
-    gateway_a = ValoGateway(permit_store=SQLitePermitConsumptionStore(db))
-    gateway_b = ValoGateway(permit_store=SQLitePermitConsumptionStore(db))
+    gateway_a = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=SQLitePermitConsumptionStore(db))
+    gateway_b = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=SQLitePermitConsumptionStore(db))
 
     _execute(gateway_a, chain, calls)
     with pytest.raises(ValueError, match="already consumed"):

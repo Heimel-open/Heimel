@@ -36,7 +36,15 @@ class FunctionTool:
         self.capabilities = list(capabilities or [])
         self._function = function
 
-    def invoke(self, arguments: dict[str, Any]) -> Any:
+    def invoke(
+        self,
+        arguments: dict[str, Any] | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        # Accept both the historical keyword-shaped call form and the current
+        # mapping-shaped form so direct calls fail at the governance boundary,
+        # rather than at Python argument binding.
+        del arguments, kwargs
         raise PermissionError(
             "NO_DIRECT_EFFECT_PATH: use ValoGateway governed enforcement"
         )

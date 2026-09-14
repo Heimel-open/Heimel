@@ -9,6 +9,7 @@ from valo_gateway import (
     Clearance,
     Decision,
     DecisionContract,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -24,7 +25,6 @@ from valo_gateway.integrations.frameworks import (
 )
 from valo_gateway.integrations.langgraph import LangGraphAuthorization
 from valo_gateway.tool_adapters import GitHubEffectTool
-
 
 NOW = datetime(2026, 9, 14, 4, 30, tzinfo=UTC)
 
@@ -118,7 +118,7 @@ def test_framework_decoders_are_dependency_free(adapter_type, payload, expected)
     authorizer = Authorizer()
     adapter = adapter_type(
         authorizer=authorizer,
-        gateway=ValoGateway(permit_store=InMemoryPermitStore()),
+        gateway=ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore()),
         action_factory=_action_factory(authorizer.authority),
         binding_resolver=lambda action: {},
     )
@@ -133,7 +133,7 @@ def test_openai_effect_executes_only_through_gateway():
     )
     adapter = OpenAIGatewayAdapter(
         authorizer=authorizer,
-        gateway=ValoGateway(permit_store=InMemoryPermitStore()),
+        gateway=ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore()),
         action_factory=_action_factory(authorizer.authority),
         binding_resolver=lambda action: {"executor_id": "provider:github", "tool": tool, "now": NOW},
     )
@@ -156,7 +156,7 @@ def test_deny_has_null_effect():
     tool = GitHubEffectTool(lambda operation, parameters: calls.append((operation, parameters)))
     adapter = OpenAIGatewayAdapter(
         authorizer=authorizer,
-        gateway=ValoGateway(permit_store=InMemoryPermitStore()),
+        gateway=ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore()),
         action_factory=_action_factory(authorizer.authority),
         binding_resolver=lambda action: {"executor_id": "provider:github", "tool": tool, "now": NOW},
     )

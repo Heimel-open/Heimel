@@ -28,6 +28,7 @@ def canonical_digest(value: Any) -> str:
 class Decision(str, Enum):
     ALLOW = "ALLOW"
     MODIFY = "MODIFY"
+    ESCALATE = "ESCALATE"
     DEFER = "DEFER"
     DENY = "DENY"
     STEP_UP = "STEP_UP"

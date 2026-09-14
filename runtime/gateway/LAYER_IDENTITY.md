@@ -1,6 +1,7 @@
 # Public boundary identity
 
 `valo-gateway` is mechanical enforcement infrastructure. It is not an evaluator, authority source, policy engine, or independent decision maker.
+It has no LA identity and does not create or inherit authority from the systems it serves.
 
 ## Public role boundaries
 

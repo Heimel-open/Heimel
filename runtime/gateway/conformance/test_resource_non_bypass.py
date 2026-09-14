@@ -13,6 +13,7 @@ from valo_gateway import (
     DecisionContract,
     ResourceBudget,
     ResourceBudgetLedger,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -92,7 +93,7 @@ def test_exact_resource_reservation_is_consumed_before_single_effect() -> None:
         permit=permit,
     )
     calls: list[int] = []
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,
@@ -114,7 +115,7 @@ def test_required_resource_without_ledger_blocks_before_permit_and_tool() -> Non
     now, authority, action, clearance, permit = _resource_chain("tool_calls")
     calls: list[int] = []
     with pytest.raises(ValueError, match="resource ledger is required"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -142,7 +143,7 @@ def test_missing_one_of_multiple_resource_reservations_blocks_atomically() -> No
     )
     calls: list[int] = []
     with pytest.raises(ValueError, match="does not match permit requirements"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -172,7 +173,7 @@ def test_reservation_bound_to_other_permit_cannot_authorize_effect() -> None:
     )
     calls: list[int] = []
     with pytest.raises(ValueError, match="permit binding mismatch"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -195,7 +196,7 @@ def test_resource_requirement_cannot_be_removed_after_permit_issuance() -> None:
     mutated_action = action.model_copy(update={"parameters": mutated_parameters})
     calls: list[int] = []
     with pytest.raises(ValueError, match="action binding mismatch"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -223,7 +224,7 @@ def test_failed_external_call_still_consumes_resource_and_permit() -> None:
     def fail() -> None:
         raise RuntimeError("provider failed")
 
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,
@@ -253,7 +254,7 @@ def test_unrequired_reservation_cannot_be_smuggled_into_action() -> None:
     )
     calls: list[int] = []
     with pytest.raises(ValueError, match="does not authorize resource reservations"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
