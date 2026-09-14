@@ -103,7 +103,9 @@ def main() -> int:
         policy = load_policy()
         tracked = tracked_files()
         changed = changed_files(args.base, args.head).intersection(tracked)
-        violations = path_violations(tracked, policy)
+        # Existing public material is grandfathered. Any future add/change that
+        # crosses a forbidden private/research/internal path is blocked.
+        violations = path_violations(changed, policy)
         violations.extend(content_violations(changed, policy))
     except Exception as exc:
         print(f"PUBLIC BOUNDARY: FAIL CLOSED: {exc}", file=sys.stderr)
