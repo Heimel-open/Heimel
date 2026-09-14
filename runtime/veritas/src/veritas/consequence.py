@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import hashlib
-import json
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
 from veritas.contracts import ObservationPackageV1, ObservedEventV1
+from veritas.digest import canonical_digest
 
 _SCHEMA = "heimel.consequence.outcome-observation.v1"
 _ALLOWED_FIELDS = frozenset(
@@ -33,17 +32,6 @@ _HEX = set("0123456789abcdef")
 
 class ConsequenceOutcomeObservationError(ValueError):
     pass
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    raw = json.dumps(
-        dict(value),
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-        default=str,
-    ).encode("utf-8")
-    return "sha256:" + hashlib.sha256(raw).hexdigest()
 
 
 def _require_text(name: str, value: Any) -> str:
@@ -125,7 +113,7 @@ class ConsequenceOutcomeObservationV1:
         _require_digest("observation_digest", data.get("observation_digest"))
 
         claimed = data.pop("observation_digest")
-        if claimed != _digest(data):
+        if claimed != canonical_digest(data):
             raise ConsequenceOutcomeObservationError(
                 "consequence outcome observation digest mismatch"
             )
@@ -180,8 +168,8 @@ class ConsequenceOutcomeObservationV1:
 
 
 def consequence_outcome_digest(payload_without_digest: Mapping[str, Any]) -> str:
-    """Return the canonical schema digest expected by verify()."""
-    return _digest(payload_without_digest)
+    """Return the canonical Veritas digest expected by verify()."""
+    return canonical_digest(dict(payload_without_digest))
 
 
 __all__ = [
