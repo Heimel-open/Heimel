@@ -40,6 +40,8 @@ class SettlementContract:
             raise SettlementError("reference contract currently requires USD")
         if self.unit_price < 0:
             raise SettlementError("unit_price must be non-negative")
+        if self.unit_price.as_tuple().exponent < -6:
+            raise SettlementError("unit_price supports at most 6 decimal places")
         for field_name in (
             "settlement_contract_id",
             "consequence_id",
@@ -71,6 +73,13 @@ class SettlementReceipt:
 
 
 class PaymentRail(Protocol):
+    """Idempotent consequence capture boundary.
+
+    Implementations MUST treat ``idempotency_key`` as an at-most-once capture
+    key. Retrying the same key after a timeout or process crash must not create
+    a second economic debit.
+    """
+
     def capture(
         self,
         *,
@@ -226,16 +235,49 @@ def _verify_veritas_evidence(
     )
 
 
+def _assert_replay_binding(
+    contract: SettlementContract, receipt: SettlementReceipt
+) -> None:
+    expected = {
+        "settlement_contract_id": contract.settlement_contract_id,
+        "consequence_id": contract.consequence_id,
+        "currency": contract.currency,
+        "funding_reference": contract.funding_reference,
+        "idempotency_key": contract.idempotency_key,
+    }
+    for field_name, value in expected.items():
+        if getattr(receipt, field_name) != value:
+            raise SettlementError(
+                f"idempotency key is already bound to another {field_name}"
+            )
+    if receipt.state is SettlementState.SETTLED and receipt.amount != contract.unit_price:
+        raise SettlementError("idempotency key is already bound to another unit_price")
+
+
+# Imported after SettlementReceipt is defined so store.py can type-reference it
+# without creating a package initialization cycle.
+from .store import (  # noqa: E402
+    InMemorySettlementReceiptStore,
+    SQLiteSettlementReceiptStore,
+    SettlementReceiptStore,
+)
+
+
 class ConsequenceSettler:
-    """Settlement gate backed by Veritas evidence.
+    """Settlement gate backed by Veritas evidence and an idempotency store.
 
     A caller cannot make a consequence chargeable by supplying booleans.
     Chargeability is derived only from exact, hash-chained Veritas records
     bound in the settlement contract before execution.
+
+    Only terminal outcomes (SETTLED and NOT_CHARGEABLE) are persisted.
+    INSUFFICIENT_FUNDS and SETTLEMENT_FAILED are retryable. Safety across a
+    crash after provider capture but before receipt persistence depends on the
+    PaymentRail honoring the same idempotency key on every retry.
     """
 
-    def __init__(self) -> None:
-        self._receipts: dict[str, SettlementReceipt] = {}
+    def __init__(self, receipt_store: SettlementReceiptStore | None = None) -> None:
+        self._receipt_store = receipt_store or InMemorySettlementReceiptStore()
 
     def settle(
         self,
@@ -243,8 +285,9 @@ class ConsequenceSettler:
         veritas: VeritasEvidenceLedger,
         payment_rail: PaymentRail,
     ) -> SettlementReceipt:
-        previous = self._receipts.get(contract.idempotency_key)
+        previous = self._receipt_store.get(contract.idempotency_key)
         if previous is not None:
+            _assert_replay_binding(contract, previous)
             return previous
 
         evidence = _verify_veritas_evidence(contract, veritas)
@@ -260,8 +303,9 @@ class ConsequenceSettler:
                 evidence_reference=evidence.evidence_reference,
                 idempotency_key=contract.idempotency_key,
             )
-            self._receipts[contract.idempotency_key] = receipt
-            return receipt
+            persisted = self._receipt_store.put_if_absent(receipt)
+            _assert_replay_binding(contract, persisted)
+            return persisted
 
         try:
             captured = payment_rail.capture(
@@ -271,34 +315,54 @@ class ConsequenceSettler:
                 currency=contract.currency,
                 idempotency_key=contract.idempotency_key,
             )
-        except Exception as exc:  # provider boundary: fail closed
-            raise SettlementError("payment rail failed closed") from exc
+        except Exception:
+            return SettlementReceipt(
+                settlement_contract_id=contract.settlement_contract_id,
+                consequence_id=contract.consequence_id,
+                state=SettlementState.SETTLEMENT_FAILED,
+                amount=Decimal("0"),
+                currency=contract.currency,
+                funding_reference=contract.funding_reference,
+                evidence_reference=evidence.evidence_reference,
+                idempotency_key=contract.idempotency_key,
+            )
 
-        state = (
-            SettlementState.SETTLED
-            if captured
-            else SettlementState.INSUFFICIENT_FUNDS
-        )
+        if not captured:
+            return SettlementReceipt(
+                settlement_contract_id=contract.settlement_contract_id,
+                consequence_id=contract.consequence_id,
+                state=SettlementState.INSUFFICIENT_FUNDS,
+                amount=Decimal("0"),
+                currency=contract.currency,
+                funding_reference=contract.funding_reference,
+                evidence_reference=evidence.evidence_reference,
+                idempotency_key=contract.idempotency_key,
+            )
+
         receipt = SettlementReceipt(
             settlement_contract_id=contract.settlement_contract_id,
             consequence_id=contract.consequence_id,
-            state=state,
-            amount=contract.unit_price if captured else Decimal("0"),
+            state=SettlementState.SETTLED,
+            amount=contract.unit_price,
             currency=contract.currency,
             funding_reference=contract.funding_reference,
             evidence_reference=evidence.evidence_reference,
             idempotency_key=contract.idempotency_key,
         )
-        self._receipts[contract.idempotency_key] = receipt
-        return receipt
+        persisted = self._receipt_store.put_if_absent(receipt)
+        _assert_replay_binding(contract, persisted)
+        return persisted
 
 
 __all__ = [
     "ConsequenceSettler",
+    "InMemorySettlementReceiptStore",
     "PaymentRail",
+    "SQLiteSettlementReceiptStore",
     "SettlementContract",
     "SettlementError",
     "SettlementReceipt",
+    "SettlementReceiptStore",
     "SettlementState",
     "VeritasEvidenceLedger",
 ]
