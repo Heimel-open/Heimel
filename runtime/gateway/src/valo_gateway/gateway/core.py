@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import nullcontext
 from datetime import datetime
 from typing import Any, Protocol
 
@@ -91,6 +92,7 @@ class ValoGateway:
             raise PermissionError(
                 "NO_DIRECT_EFFECT_PATH: effector lacks boundary-only dispatch"
             )
+
         self._validate_binding(authority, clearance, permit, action, now)
         replay_input = boundary_replay or BoundaryReplayInput.capture(
             authority=authority,
@@ -117,105 +119,112 @@ class ValoGateway:
                 action_type=action.action_type,
                 target=action.target,
             )
+
         active = control_plane or self._control_plane
-        if active:
-            active.assert_execution_allowed(
+        scopes = (
+            control_scopes
+            if control_scopes is not None
+            else authority.resource_scope
+        )
+        guard = (
+            active.consequence_guard(
                 authority_envelope_id=authority.envelope_id,
                 principal_id=authority.principal_id,
                 actor_id=authority.actor_id,
-                scopes=(
-                    control_scopes
-                    if control_scopes is not None
-                    else authority.resource_scope
-                ),
+                scopes=scopes,
             )
+            if active is not None
+            else nullcontext()
+        )
 
-        required_budget_ids = required_resource_budget_ids(action)
         consumed_resources: tuple[ConsumedResourceReservation, ...] = ()
-        if required_budget_ids:
-            if resource_ledger is None:
-                raise ValueError("resource ledger is required by the exact action")
-            consumed_resources = resource_ledger.consume_many(
-                reservations=resource_reservations,
-                expected_budget_ids=required_budget_ids,
-                action_digest=action.digest,
-                clearance_id=clearance.clearance_id,
-                permit_id=permit.permit_id,
-                now=now,
-            )
-        elif resource_reservations:
-            raise ValueError("action does not authorize resource reservations")
-
-        if not self._permit_store.consume_once(permit.permit_id, now):
-            raise ValueError("execution permit is already consumed")
-
-        consumed = permit.consume(now)
-        try:
-            if effector_registry is not None and effector_handle is not None:
-                response = effector_registry._invoke_from_boundary(
-                    effector_handle,
-                    arguments or {},
-                    replay_result,
-                    action_type=action.action_type,
-                    target=action.target,
+        with guard:
+            required_budget_ids = required_resource_budget_ids(action)
+            if required_budget_ids:
+                if resource_ledger is None:
+                    raise ValueError("resource ledger is required by the exact action")
+                consumed_resources = resource_ledger.consume_many(
+                    reservations=resource_reservations,
+                    expected_budget_ids=required_budget_ids,
+                    action_digest=action.digest,
+                    clearance_id=clearance.clearance_id,
+                    permit_id=permit.permit_id,
+                    now=now,
                 )
-            else:
-                response = _invoke_tool_from_boundary(
-                    tool,
-                    arguments or {},
-                    replay_result,
+            elif resource_reservations:
+                raise ValueError("action does not authorize resource reservations")
+
+            if not self._permit_store.consume_once(permit.permit_id, now):
+                raise ValueError("execution permit is already consumed")
+
+            consumed = permit.consume(now)
+            try:
+                if effector_registry is not None and effector_handle is not None:
+                    response = effector_registry._invoke_from_boundary(
+                        effector_handle,
+                        arguments or {},
+                        replay_result,
+                        action_type=action.action_type,
+                        target=action.target,
+                    )
+                else:
+                    response = _invoke_tool_from_boundary(
+                        tool,
+                        arguments or {},
+                        replay_result,
+                    )
+            except Exception as exc:
+                receipt = ExecutionReceipt(
+                    permit_id=consumed.permit_id,
+                    clearance_id=clearance.clearance_id,
+                    action_digest=action.digest,
+                    executor_id=executor_id,
+                    started_at=now,
+                    completed_at=utcnow(),
+                    status=ExecutionStatus.FAILED,
+                    response_digest=canonical_digest(
+                        {"error_type": type(exc).__name__, "error": str(exc)}
+                    ),
+                    previous_receipt_hash=previous_receipt_hash,
+                    skill_binding_digest=consumed.skill_binding_digest,
+                    workspace_binding_digest=consumed.workspace_binding_digest,
+                    kernel_context_digest=consumed.kernel_context_digest,
+                    execution_substrate_digest=consumed.execution_substrate_digest,
+                    clearance_digest=consumed.clearance_digest,
+                    boundary_replay_digest=replay_result.result_digest,
                 )
-            receipt = ExecutionReceipt(
-                permit_id=consumed.permit_id,
-                clearance_id=clearance.clearance_id,
-                action_digest=action.digest,
-                executor_id=executor_id,
-                started_at=now,
-                completed_at=utcnow(),
-                status=ExecutionStatus.SUCCEEDED,
-                response_digest=canonical_digest(response),
-                previous_receipt_hash=previous_receipt_hash,
-                skill_binding_digest=consumed.skill_binding_digest,
-                workspace_binding_digest=consumed.workspace_binding_digest,
-                kernel_context_digest=consumed.kernel_context_digest,
-                execution_substrate_digest=consumed.execution_substrate_digest,
-                clearance_digest=consumed.clearance_digest,
-                boundary_replay_digest=replay_result.result_digest,
-            )
-            return ToolExecutionResult(
-                consumed_permit=consumed,
-                receipt=receipt,
-                boundary_replay=replay_result,
-                consumed_resources=consumed_resources,
-                response=response,
-            )
-        except Exception as exc:
-            receipt = ExecutionReceipt(
-                permit_id=consumed.permit_id,
-                clearance_id=clearance.clearance_id,
-                action_digest=action.digest,
-                executor_id=executor_id,
-                started_at=now,
-                completed_at=utcnow(),
-                status=ExecutionStatus.FAILED,
-                response_digest=canonical_digest(
-                    {"error_type": type(exc).__name__, "error": str(exc)}
-                ),
-                previous_receipt_hash=previous_receipt_hash,
-                skill_binding_digest=consumed.skill_binding_digest,
-                workspace_binding_digest=consumed.workspace_binding_digest,
-                kernel_context_digest=consumed.kernel_context_digest,
-                execution_substrate_digest=consumed.execution_substrate_digest,
-                clearance_digest=consumed.clearance_digest,
-                boundary_replay_digest=replay_result.result_digest,
-            )
-            return ToolExecutionResult(
-                consumed_permit=consumed,
-                receipt=receipt,
-                boundary_replay=replay_result,
-                consumed_resources=consumed_resources,
-                error=f"{type(exc).__name__}: {exc}",
-            )
+                return ToolExecutionResult(
+                    consumed_permit=consumed,
+                    receipt=receipt,
+                    boundary_replay=replay_result,
+                    consumed_resources=consumed_resources,
+                    error=f"{type(exc).__name__}: {exc}",
+                )
+
+        receipt = ExecutionReceipt(
+            permit_id=consumed.permit_id,
+            clearance_id=clearance.clearance_id,
+            action_digest=action.digest,
+            executor_id=executor_id,
+            started_at=now,
+            completed_at=utcnow(),
+            status=ExecutionStatus.SUCCEEDED,
+            response_digest=canonical_digest(response),
+            previous_receipt_hash=previous_receipt_hash,
+            skill_binding_digest=consumed.skill_binding_digest,
+            workspace_binding_digest=consumed.workspace_binding_digest,
+            kernel_context_digest=consumed.kernel_context_digest,
+            execution_substrate_digest=consumed.execution_substrate_digest,
+            clearance_digest=consumed.clearance_digest,
+            boundary_replay_digest=replay_result.result_digest,
+        )
+        return ToolExecutionResult(
+            consumed_permit=consumed,
+            receipt=receipt,
+            boundary_replay=replay_result,
+            consumed_resources=consumed_resources,
+            response=response,
+        )
 
     @staticmethod
     def _validate_binding(
