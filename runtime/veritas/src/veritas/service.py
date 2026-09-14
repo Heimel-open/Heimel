@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
+from veritas.consequence import ConsequenceOutcomeObservationV1
 from veritas.contracts import (
     BoundaryNegativeEvidenceV1,
     CompletedEvidencePackageV1,
@@ -50,6 +51,18 @@ class VeritasChainService:
     ) -> str:
         """Verify Gateway execution evidence, package it, and append it to WORM."""
         observation = GatewayExecutionObservationV1.verify(payload)
+        package = observation.to_observation_package(tenant_id=tenant_id)
+        return self.store_observation_package(package)
+
+    def store_consequence_outcome_observation(
+        self, payload: Mapping[str, Any], *, tenant_id: str
+    ) -> str:
+        """Verify consequence-verifier output and append its exact bindings to WORM.
+
+        Veritas preserves the verifier's result; it does not itself decide
+        whether completion criteria or evidence requirements are satisfied.
+        """
+        observation = ConsequenceOutcomeObservationV1.verify(payload)
         package = observation.to_observation_package(tenant_id=tenant_id)
         return self.store_observation_package(package)
 

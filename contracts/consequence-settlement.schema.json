@@ -15,29 +15,18 @@
     "price_rule_version",
     "completion_criteria_hash",
     "evidence_requirement_hash",
-    "idempotency_key"
+    "idempotency_key",
+    "veritas_execution_id",
+    "veritas_gateway_record_id",
+    "veritas_outcome_record_id",
+    "expected_action_digest"
   ],
   "properties": {
-    "settlement_contract_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "consequence_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "payer_account": {
-      "type": "string",
-      "minLength": 1
-    },
-    "currency": {
-      "type": "string",
-      "const": "USD"
-    },
-    "unit_price": {
-      "type": "string",
-      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
-    },
+    "settlement_contract_id": {"type": "string", "minLength": 1},
+    "consequence_id": {"type": "string", "minLength": 1},
+    "payer_account": {"type": "string", "minLength": 1},
+    "currency": {"type": "string", "const": "USD"},
+    "unit_price": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"},
     "funding": {
       "type": "object",
       "additionalProperties": false,
@@ -47,40 +36,31 @@
           "type": "string",
           "enum": ["PREPAID_BALANCE", "ESCROW", "BOUNDED_PAYMENT_ALLOWANCE"]
         },
-        "reference": {
-          "type": "string",
-          "minLength": 1
-        },
-        "max_amount": {
-          "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
-        }
+        "reference": {"type": "string", "minLength": 1},
+        "max_amount": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"}
       }
     },
-    "price_rule_version": {
-      "type": "string",
-      "minLength": 1
-    },
-    "completion_criteria_hash": {
-      "type": "string",
-      "minLength": 1
-    },
-    "evidence_requirement_hash": {
-      "type": "string",
-      "minLength": 1
-    },
-    "idempotency_key": {
-      "type": "string",
-      "minLength": 1
-    },
-    "metadata": {
-      "type": "object"
-    }
+    "price_rule_version": {"type": "string", "minLength": 1},
+    "completion_criteria_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "evidence_requirement_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "idempotency_key": {"type": "string", "minLength": 1},
+    "veritas_execution_id": {"type": "string", "minLength": 1},
+    "veritas_gateway_record_id": {"type": "string", "minLength": 1},
+    "veritas_outcome_record_id": {"type": "string", "minLength": 1},
+    "expected_action_digest": {"type": "string", "pattern": "^(sha256:)?[0-9a-f]{64}$"},
+    "metadata": {"type": "object"}
   },
   "x-heimel-invariants": {
     "billing_unit": "VERIFIED_GOVERNED_CONSEQUENCE",
     "internal_metering_unit": "GOVERNED_TICK",
+    "authoritative_evidence_source": "VERITAS_WORM",
     "chargeable_only_when": [
+      "veritas_chain_valid",
+      "bound_gateway_execution_succeeded",
+      "exact_action_digest_match",
+      "exact_consequence_id_match",
+      "exact_completion_criteria_hash_match",
+      "exact_evidence_requirement_hash_match",
       "governed_effect_completed",
       "completion_criteria_satisfied",
       "required_evidence_verified"
@@ -93,6 +73,7 @@
       "DUPLICATE"
     ],
     "settlement": "AT_MOST_ONCE",
-    "retrospective_invoice_required": false
+    "retrospective_invoice_required": false,
+    "caller_asserted_verification_sufficient": false
   }
 }

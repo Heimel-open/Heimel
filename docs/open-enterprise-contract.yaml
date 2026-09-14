@@ -126,14 +126,17 @@ metering:
 
 settlement:
   model: prepaid_or_preauthorized_atomic_settlement
-  principle: "Settlement follows verified consequence evidence and does not require retrospective invoicing."
+  principle: "Settlement follows verified consequence evidence preserved in Veritas and does not require retrospective invoicing."
   sequence:
     - funding_or_allowance_bound
     - proposed_consequence
     - fresh_authority_check
     - permit_issue_and_binding
     - governed_effect
+    - veritas_gateway_execution_record
     - outcome_verification
+    - veritas_outcome_record
+    - veritas_worm_chain_verification
     - consequence_receipt
     - atomic_settlement
   funding_modes:
@@ -141,12 +144,21 @@ settlement:
     - escrow
     - bounded_payment_allowance
   invariants:
-    - "No settlement before verified consequence evidence."
+    - "No settlement before a valid bound Veritas Gateway record and Veritas outcome record exist."
+    - "Caller-asserted booleans are never sufficient to make a consequence chargeable."
+    - "The Veritas WORM chain must verify before settlement eligibility is evaluated."
+    - "Gateway execution_id and action_digest must match the settlement contract exactly."
+    - "Outcome consequence_id, execution_id, action_digest, completion_criteria_hash and evidence_requirement_hash must match the settlement contract exactly."
     - "DENY, ESCALATE, failed effects and unverified outcomes do not settle."
     - "A consequence_id may settle at most once."
     - "Settlement must bind to the exact consequence contract, price rule and evidence reference."
     - "Replay must reproduce settlement eligibility without causing a second charge."
     - "Open Heimel operation remains possible without any commercial settlement mechanism."
+  veritas_evidence:
+    gateway_event_type: execution_result_observed
+    outcome_event_type: consequence_outcome_verified
+    authority_granted: false
+    rule: "Veritas preserves and attests verifier output; Veritas does not itself grant authority or decide whether completion criteria are satisfied."
   price_contract:
     currency: USD
     reference_rates:
@@ -166,6 +178,10 @@ settlement:
       - completion_criteria_hash
       - evidence_requirement_hash
       - idempotency_key
+      - veritas_execution_id
+      - veritas_gateway_record_id
+      - veritas_outcome_record_id
+      - expected_action_digest
     terminal_states:
       - SETTLED
       - NOT_CHARGEABLE
