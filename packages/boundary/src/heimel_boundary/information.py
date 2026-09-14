@@ -1,12 +1,8 @@
 """Governed information lifecycle before consequence-time authorization.
 
-The information boundary governs what may enter a model/tool context, how it may
-be used, what derivatives may be created, what may leave, what may become
-institutional state, and what must end when the bounded job closes.
-
-It is deliberately separate from Heimel's consequence boundary: custody and
-representation controls do not replace fresh authority, exact effect binding,
-one-shot permits, or no-direct-effect-path enforcement.
+This boundary governs admission, bounded use, derivative lineage, controlled
+egress, state admission, and explicit closure. It does not replace Heimel's
+fresh-authority and exact-effect consequence boundary.
 """
 
 from __future__ import annotations
@@ -99,7 +95,7 @@ class InformationReceipt:
 
 
 class InformationBoundary:
-    """Local reference implementation of the governed information lifecycle."""
+    """Local reference implementation of a fail-closed information boundary."""
 
     def __init__(self) -> None:
         self.state_revision = 1
@@ -110,7 +106,7 @@ class InformationBoundary:
         self._known_objects: dict[str, InformationObject] = {}
 
     def register(self, information: InformationObject) -> None:
-        """Register an information object without storing its raw content."""
+        """Register only the object's governed envelope, never its raw content."""
         self._known_objects[information.digest] = information
 
     def issue_grant(
@@ -128,16 +124,23 @@ class InformationBoundary:
     ) -> InformationGrant:
         if now.tzinfo is None:
             raise InformationBoundaryError("timezone-aware time required")
+        if ttl_seconds <= 0:
+            raise InformationBoundaryError("ttl_seconds must be positive")
         tools = tuple(sorted(set(allowed_tools)))
         if not tools:
             raise InformationBoundaryError("at least one allowed tool is required")
         self.register(information)
+        expires_at = now + timedelta(seconds=ttl_seconds)
         body = {
             "object": information.digest,
             "actor": actor_id,
             "purpose": purpose,
             "tools": tools,
             "revision": self.state_revision,
+            "expires_at": expires_at.isoformat(),
+            "allow_derivation": allow_derivation,
+            "allow_egress": allow_egress,
+            "allow_state_admission": allow_state_admission,
         }
         grant = InformationGrant(
             grant_id=_digest(body),
@@ -146,7 +149,7 @@ class InformationBoundary:
             purpose=purpose,
             allowed_tools=tools,
             issued_revision=self.state_revision,
-            expires_at=now + timedelta(seconds=ttl_seconds),
+            expires_at=expires_at,
             allow_derivation=allow_derivation,
             allow_egress=allow_egress,
             allow_state_admission=allow_state_admission,
@@ -169,7 +172,7 @@ class InformationBoundary:
         tool_id: str,
         now: datetime,
     ) -> InformationSession:
-        self._validate_grant(grant, actor_id=actor_id, purpose=purpose, tool_id=tool_id, now=now)
+        self._validate_grant(grant, actor_id, purpose, tool_id, now)
         session = InformationSession(
             session_id=_digest(
                 {
@@ -183,88 +186,66 @@ class InformationBoundary:
             grant_id=grant.grant_id,
             opened_revision=self.state_revision,
         )
+        if session.session_id in self._closed_sessions:
+            raise InformationBoundaryError("grant session already closed")
         self._sessions[session.session_id] = session
         return session
 
-    def admit(
-        self,
-        session: InformationSession,
-        grant: InformationGrant,
-        information: InformationObject,
-        *,
-        actor_id: str,
-        purpose: str,
-        tool_id: str,
-        now: datetime,
-    ) -> InformationReceipt:
-        self._validate_session(session, grant, actor_id=actor_id, purpose=purpose, tool_id=tool_id, now=now)
+    def admit(self, session, grant, information, *, actor_id, purpose, tool_id, now):
+        self._validate_session(session, grant, actor_id, purpose, tool_id, now)
+        self._assert_known(information)
         if information.digest != grant.object_digest:
             raise InformationBoundaryError("grant is not bound to exact information object")
         return self._receipt("ADMIT", grant, session, information.digest)
 
     def derive(
         self,
-        session: InformationSession,
-        grant: InformationGrant,
-        source: InformationObject,
+        session,
+        grant,
+        source,
         *,
-        derived_object_id: str,
-        derived_payload: object,
-        actor_id: str,
-        purpose: str,
-        tool_id: str,
-        now: datetime,
-    ) -> tuple[InformationObject, InformationReceipt]:
-        self._validate_session(session, grant, actor_id=actor_id, purpose=purpose, tool_id=tool_id, now=now)
+        derived_object_id,
+        derived_payload,
+        actor_id,
+        purpose,
+        tool_id,
+        now,
+    ):
+        self._validate_session(session, grant, actor_id, purpose, tool_id, now)
+        self._assert_known(source)
         self._assert_in_lineage(grant, source)
         if not grant.allow_derivation:
             raise InformationBoundaryError("derivation not allowed")
+        root = self._known_objects[grant.object_digest]
         derived = InformationObject.from_payload(
             derived_object_id,
-            source.authority_id,
+            root.authority_id,
             derived_payload,
-            classification=source.classification,
+            classification=root.classification,
             parent_digests=(source.digest,),
         )
         self.register(derived)
         return derived, self._receipt("DERIVE", grant, session, source.digest, derived.digest)
 
-    def egress(
-        self,
-        session: InformationSession,
-        grant: InformationGrant,
-        information: InformationObject,
-        *,
-        actor_id: str,
-        purpose: str,
-        tool_id: str,
-        now: datetime,
-    ) -> InformationReceipt:
-        self._validate_session(session, grant, actor_id=actor_id, purpose=purpose, tool_id=tool_id, now=now)
+    def egress(self, session, grant, information, *, actor_id, purpose, tool_id, now):
+        self._validate_session(session, grant, actor_id, purpose, tool_id, now)
+        self._assert_known(information)
         self._assert_in_lineage(grant, information)
         if not grant.allow_egress:
             raise InformationBoundaryError("egress not allowed")
         return self._receipt("EGRESS", grant, session, information.digest)
 
-    def admit_state(
-        self,
-        session: InformationSession,
-        grant: InformationGrant,
-        information: InformationObject,
-        *,
-        actor_id: str,
-        purpose: str,
-        tool_id: str,
-        now: datetime,
-    ) -> InformationReceipt:
-        self._validate_session(session, grant, actor_id=actor_id, purpose=purpose, tool_id=tool_id, now=now)
+    def admit_state(self, session, grant, information, *, actor_id, purpose, tool_id, now):
+        self._validate_session(session, grant, actor_id, purpose, tool_id, now)
+        self._assert_known(information)
         self._assert_in_lineage(grant, information)
         if not grant.allow_state_admission:
             raise InformationBoundaryError("state admission not allowed")
         return self._receipt("STATE_ADMIT", grant, session, information.digest)
 
     def close_session(self, session: InformationSession) -> InformationReceipt:
-        if session.session_id not in self._sessions:
+        known = self._sessions.get(session.session_id)
+        if known != session:
             raise InformationBoundaryError("unknown session")
         if session.session_id in self._closed_sessions:
             raise InformationBoundaryError("session already closed")
@@ -273,19 +254,14 @@ class InformationBoundary:
         grant = self._grants[session.grant_id]
         return self._receipt("CLOSE", grant, session, grant.object_digest)
 
-    def _validate_grant(
-        self,
-        grant: InformationGrant,
-        *,
-        actor_id: str,
-        purpose: str,
-        tool_id: str,
-        now: datetime,
-    ) -> None:
+    def _validate_grant(self, grant, actor_id, purpose, tool_id, now) -> None:
         if now.tzinfo is None:
             raise InformationBoundaryError("timezone-aware time required")
-        if grant.grant_id not in self._grants:
+        canonical = self._grants.get(grant.grant_id)
+        if canonical is None:
             raise InformationBoundaryError("unknown grant")
+        if canonical != grant:
+            raise InformationBoundaryError("grant does not match issued grant")
         if grant.grant_id in self._revoked_grants:
             raise InformationBoundaryError("grant revoked")
         if now >= grant.expires_at:
@@ -297,22 +273,17 @@ class InformationBoundary:
         if tool_id not in grant.allowed_tools:
             raise InformationBoundaryError("tool not allowed")
 
-    def _validate_session(
-        self,
-        session: InformationSession,
-        grant: InformationGrant,
-        *,
-        actor_id: str,
-        purpose: str,
-        tool_id: str,
-        now: datetime,
-    ) -> None:
-        self._validate_grant(grant, actor_id=actor_id, purpose=purpose, tool_id=tool_id, now=now)
+    def _validate_session(self, session, grant, actor_id, purpose, tool_id, now) -> None:
+        self._validate_grant(grant, actor_id, purpose, tool_id, now)
         known = self._sessions.get(session.session_id)
         if known != session or session.grant_id != grant.grant_id:
             raise InformationBoundaryError("session is not bound to grant")
         if session.session_id in self._closed_sessions:
             raise InformationBoundaryError("session closed")
+
+    def _assert_known(self, information: InformationObject) -> None:
+        if self._known_objects.get(information.digest) != information:
+            raise InformationBoundaryError("unregistered information object")
 
     def _assert_in_lineage(self, grant: InformationGrant, information: InformationObject) -> None:
         if information.digest == grant.object_digest:
@@ -324,22 +295,15 @@ class InformationBoundary:
             if current.digest in seen:
                 continue
             seen.add(current.digest)
-            if grant.object_digest in current.parent_digests:
-                return
             for parent_digest in current.parent_digests:
+                if parent_digest == grant.object_digest:
+                    return
                 parent = self._known_objects.get(parent_digest)
                 if parent is not None:
                     stack.append(parent)
         raise InformationBoundaryError("information is outside granted lineage")
 
-    def _receipt(
-        self,
-        event: str,
-        grant: InformationGrant,
-        session: InformationSession,
-        object_digest: str,
-        result_digest: str | None = None,
-    ) -> InformationReceipt:
+    def _receipt(self, event, grant, session, object_digest, result_digest=None):
         body = {
             "event": event,
             "grant_id": grant.grant_id,
