@@ -37,7 +37,7 @@ def _optional(path: str, token: str) -> tuple[Any | None, str | None]:
         return None, exc.__class__.__name__
 
 
-def collect(repo: str, token: str) -> dict[str, Any]:
+def collect(repo: str, token: str, internal_author: str = "nsolland") -> dict[str, Any]:
     owner, name = repo.split("/", 1)
     repo_data = _get(f"/repos/{owner}/{name}", token)
 
@@ -46,7 +46,7 @@ def collect(repo: str, token: str) -> dict[str, Any]:
     referrers, referrers_error = _optional(f"/repos/{owner}/{name}/traffic/popular/referrers", token)
     paths, paths_error = _optional(f"/repos/{owner}/{name}/traffic/popular/paths", token)
 
-    query = urllib.parse.quote(f"repo:{repo} is:open author:!{owner}")
+    query = urllib.parse.quote(f"repo:{repo} is:open -author:{internal_author}")
     external_open, external_open_error = _optional(f"/search/issues?q={query}", token)
 
     traffic_errors = {
@@ -87,6 +87,7 @@ def append_snapshot(path: Path, snapshot: dict[str, Any]) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Capture permanent Heimel GitHub traction snapshots.")
     parser.add_argument("--repo", default=os.getenv("GITHUB_REPOSITORY", "Heimel-open/Heimel"))
+    parser.add_argument("--internal-author", default=os.getenv("HEIMEL_INTERNAL_AUTHOR", "nsolland"))
     parser.add_argument("--output", type=Path, default=Path("telemetry/repo_traction.jsonl"))
     args = parser.parse_args(argv)
 
@@ -96,7 +97,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
-        snapshot = collect(args.repo, token)
+        snapshot = collect(args.repo, token, args.internal_author)
     except (ValueError, urllib.error.HTTPError, OSError) as exc:
         print(f"traction collection failed: {exc}", file=sys.stderr)
         return 1
