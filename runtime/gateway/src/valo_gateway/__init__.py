@@ -19,10 +19,22 @@ from .agent_profile import (
 from .contracts import *
 from .gateway import *
 from .integrations import (
+    ActionFactory,
+    AnthropicGatewayAdapter,
+    AutoGenGatewayAdapter,
+    CrewAIGatewayAdapter,
+    FrameworkToolCall,
     FreshAuthorizer,
     GatewayBindingResolver,
+    GoogleADKGatewayAdapter,
+    GovernedFrameworkAdapter,
+    GovernedFrameworkResult,
+    HTTPWebhookGatewayAdapter,
     LangGraphAuthorization,
     LangGraphGatewayAdapter,
+    MCPGatewayAdapter,
+    OpenAIGatewayAdapter,
+    SemanticKernelGatewayAdapter,
 )
 from .message_security import (
     AcceptedMessageReceipt,
