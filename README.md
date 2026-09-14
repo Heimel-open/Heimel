@@ -36,6 +36,49 @@ HEIMEL sits immediately before effect and answers one question:
 
 The first-level model does not depend on a model vendor, agent framework, workflow engine or enterprise system.
 
+## The clean-room model
+
+HEIMEL can be understood as a governed clean room around consequence-bearing execution.
+
+```text
+WORLD
+  ↓
+DOOR       identity • provenance • admissibility • authority context
+  ↓
+UNIFORM    bounded role • workspace • capabilities • purpose
+  ↓
+SCRUB      reject or normalize unsafe, stale or untrusted state
+  ↓
+GATE       admit into governed workspace
+  ↓
+CLEAN HOUSE
+           reasoning • planning • simulation • memory • collaboration
+           internally free, while preserving:
+           - NO_DIRECT_EFFECT_PATH
+           - NO_IMPLICIT_CAPABILITY_TRANSFER
+           - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
+  ↓
+CHECK-OUT  exact proposed consequence
+           → fresh authority
+           → current constraints
+           → exact effect binding
+           → Gateway
+           → real-world effect
+           → Veritas
+           → state admission / settlement
+```
+
+HEIMEL does **not** require approval of every internal thought, token, plan revision or simulation. Inside the governed workspace, reasoning can remain comparatively free.
+
+The hard boundaries are admission, capability propagation, workspace relations and real-world consequence:
+
+- **No hidden door out.** No API credential, database write, IAM grant, network route, service account, tool adapter or human administrative path may provide a real-world effect path outside Gateway.
+- **No implicit transfer inside.** Communication does not transfer authority, tools, credentials, secrets or consequence-bearing capabilities. Capability-bearing transfer requires explicit authorization and a mediated path.
+- **No ungoverned cross-workspace path.** Communication or state movement across workspace boundaries must remain mediated and attributable.
+- **Check-out is always fresh.** Admission-time authority is not a reusable execution ticket. Every attempted real-world consequence is checked again against current authority and current constraints.
+
+Canonical detail: [Heimel clean-room model →](docs/architecture/clean-room-model.md)
+
 ## Run it
 
 ### Executable Authority
@@ -193,7 +236,7 @@ intention → authorized consequence
 
 ## Design principles
 
-**No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence · No mandatory phone-home**
+**No direct effect path · No implicit capability transfer · No ungoverned cross-workspace path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence · No mandatory phone-home**
 
 ## Verify packages locally
 
