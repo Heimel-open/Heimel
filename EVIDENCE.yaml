@@ -1,0 +1,91 @@
+schema_version: 1
+product: HEIMEL
+status: public-evidence-surface
+generated_from_revision: 736ffbca94a28dfa46698e82ff2798cef6ef6420
+
+claim_policy:
+  allowed_statuses:
+    - measured
+    - claimed
+    - synthetic
+    - unknown
+  rule: "No maturity claim may be stronger than the evidence identified here."
+
+surfaces:
+  local_governed_consequence_path:
+    claim: "The local runtime fails closed and cannot report SUCCESS without governed execution and recorded evidence."
+    status: measured
+    implementation:
+      - runtime/runtime-local/local_runtime.py
+    tests:
+      path: runtime/runtime-local/tests
+      measured_test_functions: 14
+      critical_cases:
+        - pending_action_cannot_report_success
+        - deny_cannot_become_effect
+        - allow_requires_permit_and_records_evidence
+        - revocation_after_authorization_stops_effect
+        - expired_permit_stops_effect
+        - exact_effect_mismatch_stops_effect
+        - permit_replay_stops_second_effect
+        - replay_binds_effect_decision_enforcement_and_evidence
+        - evidence_failure_does_not_admit_success
+    bounded_claim: "This establishes the local reference consequence path only. It is not a claim of enterprise HA, production hardening or certification."
+
+  boundary_reference:
+    claim: "The reference boundary enforces fresh authority revision, exact effect binding, one-shot permit use and expiry."
+    status: measured
+    implementation:
+      - packages/boundary/src/heimel_boundary/__init__.py
+    tests:
+      path: packages/boundary/tests/test_boundary.py
+      measured_test_functions: 4
+      cases:
+        - fresh_authority_exact_binding_and_receipt
+        - changed_authority_denies_stale_permit_before_effect
+        - permit_cannot_be_replayed_or_retargeted
+        - expired_permit_fails_closed
+    bounded_claim: "This is an in-memory local reference and does not call an external system."
+
+  conformance_surface:
+    claim: "The open conformance package detects selected boundary violations without creating execution authority."
+    status: measured
+    implementation:
+      - packages/conformance/src/valo_conformance
+    tests:
+      path: packages/conformance/tests/test_conformance.py
+      measured_test_functions: 3
+      cases:
+        - read_only_projection_passes_and_digest_is_bound
+        - inference_and_external_evidence_cannot_be_confirmed
+        - boundary_violations_are_reported_without_granting_authority
+    bounded_claim: "Passing these tests is not equivalent to Heimel Certified and is not a general security certification."
+
+  release_verification:
+    claim: "The repository defines local release gates for package metadata, tests, build artifacts, clean installation, import smoke tests and artifact digests."
+    status: claimed
+    evidence:
+      - release.yaml
+      - tools/release_verify.py
+    bounded_claim: "The existence of release gates is established here. A particular release is measured only when its versioned release receipt records the completed run and artifact digests."
+
+  open_enterprise_boundary:
+    claim: "Open Heimel is defined to operate locally without mandatory phone-home, license server or Heimel cloud account; Enterprise is separate organizational governance infrastructure."
+    status: measured
+    evidence:
+      - docs/open-enterprise-contract.yaml
+      - docs/ARCHITECTURE.md
+      - GOVERNANCE.yaml
+    bounded_claim: "This is a product and architecture boundary, not evidence that every planned Enterprise capability is implemented."
+
+not_established:
+  - production_sla
+  - multi_region_high_availability
+  - disaster_recovery_rto_rpo
+  - formal_security_certification
+  - regulated_domain_approval
+  - complete_enterprise_control_plane
+  - official_heimel_certification_program_in_operation
+
+interpretation:
+  maturity_statement: "HEIMEL has executable local governed-execution, boundary and conformance evidence. Production-enterprise maturity must be assessed separately against deployment-specific evidence."

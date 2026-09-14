@@ -11,11 +11,11 @@ Open infrastructure for deciding whether intent has the authority to become cons
 <p align="center">
 <a href="https://reht.valoresearch.org/demos/executable-authority/"><strong>Run the demo</strong></a>
 &nbsp; · &nbsp;
-<a href="docs/ARCHITECTURE.md">Architecture</a>
+<a href="EVIDENCE.yaml">Evidence</a>
 &nbsp; · &nbsp;
-<a href="docs/DEMOS.md">All demos</a>
+<a href="GOVERNANCE.yaml">Governance</a>
 &nbsp; · &nbsp;
-<a href="docs/open-enterprise-contract.yaml">Open / Enterprise contract</a>
+<a href="docs/open-enterprise-contract.yaml">Open / Enterprise</a>
 </p>
 
 ---
@@ -23,7 +23,7 @@ Open infrastructure for deciding whether intent has the authority to become cons
 ## The boundary
 
 ```text
-Anything that forms intent → HEIMEL → Anything that causes effect
+Intent → HEIMEL → Consequence → Evidence
 ```
 
 Not every intent should become reality.
@@ -34,9 +34,7 @@ HEIMEL sits immediately before effect and answers one question:
 
 > **Does this intent have authority to become real — now?**
 
-```text
-Intent → Authority → Decision → Consequence → Evidence
-```
+The first-level model does not depend on a model vendor, agent framework, workflow engine or enterprise system.
 
 ## Run it
 
@@ -60,7 +58,7 @@ Intent → Authority → Decision → Consequence → Evidence
 
 **[Run the replay demo →](https://reht.valoresearch.org/demos/eroc-replay/)**
 
-## How HEIMEL works
+## Minimum consequence chain
 
 ```text
 Kernel operative state + exact proposed effect
@@ -85,13 +83,19 @@ Workflow ISA and Function Fabric are conditional process/capability layers. VAIG
 
 [Read the architecture →](docs/ARCHITECTURE.md)
 
-## Open Heimel
+## What can I deploy myself?
 
-Everything required to understand, build, integrate, test and locally operate governed execution is open.
+Open Heimel is intended to be independently runnable. A developer must be able to clone the repository, run the local governed consequence path, observe ALLOW / DENY, revoke authority, perform a fresh consequence-time check, replay the decision and inspect evidence without contacting Heimel.
 
-A developer must be able to clone Heimel, run the governed consequence path locally, observe ALLOW / DENY / ESCALATE, revoke authority, perform a fresh consequence-time check, replay the decision and inspect evidence without contacting Heimel.
+The local reference runtime is under `runtime/runtime-local/`.
 
-Open Heimel therefore has these hard guarantees:
+Run its contract and consequence-path tests with:
+
+```bash
+python -m pytest runtime/runtime-local/tests -q
+```
+
+Open Heimel has these hard guarantees:
 
 - no phone-home requirement
 - no license server
@@ -99,9 +103,21 @@ Open Heimel therefore has these hard guarantees:
 - no artificial disablement of local governed execution
 - local authorization, enforcement, replay and evidence remain usable without a commercial entitlement
 
-The repository contains the migrated runtime universe under `runtime/`, including Kernel, REHT, Gateway, Veritas, RACS, workflow/runtime components, adapters, packs, distribution and validation. `runtime/MIGRATION_MANIFEST.yaml` records the source lineage.
+The repository contains the migrated runtime universe under `runtime/`, including Kernel, REHT, Gateway, Veritas, RACS, workflow/runtime components, adapters, packs, distribution and validation. `runtime/MIGRATION_MANIFEST.yaml` records source lineage.
 
 Apache-2.0 remains the repository default license unless a component explicitly states otherwise.
+
+## Evidence and maturity
+
+`EVIDENCE.yaml` is the bounded public evidence surface. It identifies measured test counts, critical negative cases, conformance evidence, release evidence and what is explicitly not established.
+
+Current bounded statement: HEIMEL has executable local governed-execution, boundary and conformance evidence. Production-enterprise maturity must be assessed separately against deployment-specific evidence.
+
+## Who controls HEIMEL?
+
+`GOVERNANCE.yaml` defines current editorial/release authority, normative invariants, compatibility classes, change-control gates, conformance semantics and the boundary between open conformance and Heimel Certified.
+
+A self-hosted Open Heimel deployment does not require Heimel or VALO Research as an online trusted party for local authorization, execution, replay or verification.
 
 ## Heimel Enterprise
 
@@ -129,8 +145,6 @@ The canonical metering concept is a `governed_consequence_event`: an exact conse
 
 A DENY is not treated as a successfully executed consequence unless a commercial contract explicitly meters decision events separately.
 
-The commercial thesis is simple:
-
 > We do not charge to make governed execution possible. We charge to make governed execution governable at organizational scale.
 
 ## Heimel Certified
@@ -155,13 +169,13 @@ intention → authorized consequence
 
 **No direct effect path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence · No mandatory phone-home**
 
-## Verify locally
+## Verify packages locally
 
 ```bash
 python3 tools/release_verify.py
 ```
 
-The public contract SDK also includes an offline end-to-end demonstration:
+The contract SDK also includes an offline contract demonstration. It does not itself claim to execute the complete governed consequence path:
 
 ```bash
 valo-contracts demo
