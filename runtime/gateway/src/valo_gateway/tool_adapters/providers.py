@@ -35,6 +35,22 @@ class ProviderEffectTool(FunctionTool):
         return self._dispatch_provider(operation, dict(parameters))
 
 
+class DomainEffectTool(ProviderEffectTool):
+    """Boundary-only effector for a consequence domain."""
+
+    def __init__(
+        self,
+        domain: str,
+        dispatch: ProviderDispatch,
+        *,
+        capabilities: list[str] | None = None,
+    ) -> None:
+        if not domain:
+            raise ValueError("domain must be explicit")
+        self.domain = domain
+        super().__init__(f"domain:{domain}", dispatch, capabilities=capabilities)
+
+
 class GitHubEffectTool(ProviderEffectTool):
     def __init__(self, dispatch: ProviderDispatch) -> None:
         super().__init__("github", dispatch)
@@ -117,3 +133,103 @@ class HuggingFaceEffectTool(ProviderEffectTool):
 class OllamaEffectTool(ProviderEffectTool):
     def __init__(self, dispatch: ProviderDispatch) -> None:
         super().__init__("ollama", dispatch)
+
+
+class FinancialRailsEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("financial-rails", dispatch)
+
+
+class LendingEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("lending", dispatch)
+
+
+class UnderwritingEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("underwriting", dispatch)
+
+
+class InsuranceEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("insurance", dispatch)
+
+
+class CapitalMarketsEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("capital-markets", dispatch)
+
+
+class AccountingEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("accounting-finance-ops", dispatch)
+
+
+class ProcurementEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("procurement-supply-chain", dispatch)
+
+
+class LegalContractEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("legal-contract", dispatch)
+
+
+class IdentityAccessEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("identity-access", dispatch)
+
+
+class HRPayrollEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("hr-payroll", dispatch)
+
+
+class HealthcareEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("healthcare", dispatch)
+
+
+class ClinicalOrderEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("healthcare:clinical-order", dispatch)
+
+
+class MedicationEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("healthcare:medication", dispatch)
+
+
+class HealthcareClaimsEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("healthcare:claims", dispatch)
+
+
+class ClinicalRecordWriteEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("healthcare:record-write", dispatch)
+
+
+class MedicalDeviceEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("healthcare:medical-device", dispatch)
+
+
+class PublicSectorEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("public-sector", dispatch)
+
+
+class PhysicalWorldEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("physical-world", dispatch)
+
+
+class CommunicationsEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("communications-representation", dispatch)
+
+
+class CommercialCRMEffectTool(DomainEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("commercial-crm", dispatch)
