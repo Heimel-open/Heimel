@@ -1,6 +1,7 @@
 import unittest
 
 from heimel_research_intelligence import Candidate, ResearchIntelligenceError, SourcePolicy, canonicalize_url, deduplicate, ingest, parse_feed
+from heimel_research_intelligence.cli import run
 
 
 class PipelineTests(unittest.TestCase):
@@ -30,6 +31,21 @@ class PipelineTests(unittest.TestCase):
         a = ingest(Candidate("eu", "https://commission.europa.eu/a"), self.policy, fetch=lambda u: (body, "text/plain", u), threshold=1)
         b = ingest(Candidate("eu", "https://commission.europa.eu/b"), self.policy, fetch=lambda u: (body, "text/plain", u), threshold=1)
         self.assertEqual(len(deduplicate([a, b])), 1)
+
+    def test_bad_feed_does_not_abort_other_sources(self):
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+
+        with tempfile.TemporaryDirectory() as td:
+            config = Path(td) / "sources.json"
+            output = Path(td) / "out.json"
+            config.write_text(json.dumps({"sources": [{"source_id": "bad", "feed_url": "https://commission.europa.eu/not-feed", "allowed_domains": ["commission.europa.eu"]}]}))
+            with patch("heimel_research_intelligence.cli.default_fetch", return_value=(b"<html>", "text/html", "https://commission.europa.eu/not-feed")):
+                self.assertEqual(run(config, output, 12), 0)
+            records = json.loads(output.read_text())["records"]
+            self.assertEqual(records[0]["disposition"], "SOURCE_ERROR")
 
     def test_rss_and_atom_are_supported(self):
         rss = b"<rss><channel><item><title>A</title><link>https://commission.europa.eu/a</link></item></channel></rss>"
