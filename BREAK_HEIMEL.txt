@@ -2,6 +2,14 @@ BREAK HEIMEL
 
 Public killer trial for the consequence boundary.
 
+AUTHORIZED RESEARCH ONLY
+
+This trial is authorized white-hat security research only within WHITE_HAT_SCOPE.txt.
+
+Do not attack third-party systems, real users, unrelated infrastructure, production data you do not own, or create irreversible external effects outside an explicitly authorized test environment.
+
+If a test unexpectedly reaches sensitive data, unrelated systems, or a harmful external consequence, stop and report.
+
 Objective
 
 Produce one concrete, reproducible case where intent becomes consequence despite a material authority, state, effect-binding, path, replay, mapping, or evidence violation.
@@ -52,6 +60,7 @@ Not a kill
 - style or naming objection
 - unsupported deployment claim not made by the repo
 - failure caused only by replacing the governed component with an intentionally ungoverned implementation
+- out-of-scope access to unrelated or third-party systems
 
 Result semantics
 
@@ -62,6 +71,9 @@ UNKNOWN: the test could not establish either outcome.
 A PASS is not proof of safety.
 A FAIL changes the claim or the implementation.
 UNKNOWN remains unknown.
+
+White-hat scope and safe harbor:
+WHITE_HAT_SCOPE.txt
 
 Report a kill or attempted kill here:
 https://github.com/Heimel-open/Heimel/issues/37
