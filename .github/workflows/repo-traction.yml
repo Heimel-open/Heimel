@@ -1,0 +1,42 @@
+name: Repository traction snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 2 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-traction
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Capture traction
+        env:
+          HEIMEL_TRAFFIC_TOKEN: ${{ secrets.HEIMEL_TRAFFIC_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/repo_traction.py
+
+      - name: Commit snapshot
+        run: |
+          if git diff --quiet -- telemetry/repo_traction.jsonl; then
+            exit 0
+          fi
+          git config user.name "heimel-traction-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add telemetry/repo_traction.jsonl
+          git commit -m "Record repository traction snapshot"
+          git push
