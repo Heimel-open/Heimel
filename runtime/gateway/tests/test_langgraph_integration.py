@@ -41,19 +41,19 @@ class TestAuthorizer:
     def __init__(self, *, escalate_without_evidence: bool = False) -> None:
         self.escalate_without_evidence = escalate_without_evidence
         self.calls: list[object] = []
-
-    def authorize(self, *, action: ActionEnvelope, evidence=None):
-        self.calls.append(evidence)
-        authority = AuthorityEnvelope(
+        self.authority = AuthorityEnvelope(
             principal_id="human:owner",
             actor_id="agent:langgraph",
             source=AuthoritySource.INTERNAL,
             issuer="heimel-test",
             issued_at=NOW,
             valid_until=NOW + timedelta(minutes=5),
-            capability_grants=[action.action_type],
-            resource_scope=[action.target],
+            capability_grants=["transfer_funds"],
+            resource_scope=["acct:xyz"],
         )
+
+    def authorize(self, *, action: ActionEnvelope, evidence=None):
+        self.calls.append(evidence)
         decision = (
             Decision.ESCALATE
             if self.escalate_without_evidence and evidence is None
@@ -61,11 +61,11 @@ class TestAuthorizer:
         )
         clearance = Clearance(
             action_digest=action.digest,
-            authority_envelope_id=authority.envelope_id,
+            authority_envelope_id=self.authority.envelope_id,
             decision_contract=DecisionContract(
                 decision=decision,
-                principal_id=authority.principal_id,
-                actor_id=authority.actor_id,
+                principal_id=self.authority.principal_id,
+                actor_id=self.authority.actor_id,
                 action_type=action.action_type,
                 target=action.target,
             ),
@@ -77,27 +77,27 @@ class TestAuthorizer:
         if decision is Decision.ALLOW:
             permit = issue_execution_permit(
                 clearance=clearance,
-                authority=authority,
+                authority=self.authority,
                 action=action,
                 expires_at=NOW + timedelta(seconds=10),
                 now=NOW,
             )
         return LangGraphAuthorization(
             decision=decision,
-            authority=authority,
+            authority=self.authority,
             clearance=clearance,
             permit=permit,
         )
 
 
-def _action(amount: int = 45_000) -> ActionEnvelope:
+def _action(authority_id: str, amount: int = 45_000) -> ActionEnvelope:
     return ActionEnvelope(
         action_type="transfer_funds",
         target="acct:xyz",
         parameters={"amount": amount, "purpose": "vendor_payment"},
         context_digest="langgraph:thread:42",
         policy_digest="policy:payments:v1",
-        authority_envelope_id="pending:fresh-authority",
+        authority_envelope_id=authority_id,
     )
 
 
@@ -119,8 +119,9 @@ def _adapter(authorizer: TestAuthorizer, calls: list[tuple[int, str]]):
 
 def test_langgraph_adapter_authorizes_and_executes_only_through_gateway():
     calls = []
-    adapter = _adapter(TestAuthorizer(), calls)
-    state = adapter.proposal_update(_action())
+    authorizer = TestAuthorizer()
+    adapter = _adapter(authorizer, calls)
+    state = adapter.proposal_update(_action(authorizer.authority.envelope_id))
     state.update(adapter.authorization_node(state))
 
     assert adapter.route_after_authorization(state) == "ALLOW"
@@ -133,9 +134,10 @@ def test_langgraph_adapter_authorizes_and_executes_only_through_gateway():
 
 def test_mutating_effect_after_proposal_binding_fails_before_authorization():
     calls = []
-    adapter = _adapter(TestAuthorizer(), calls)
-    state = adapter.proposal_update(_action())
-    state["proposed_effect"] = _action(amount=50_000)
+    authorizer = TestAuthorizer()
+    adapter = _adapter(authorizer, calls)
+    state = adapter.proposal_update(_action(authorizer.authority.envelope_id))
+    state["proposed_effect"] = _action(authorizer.authority.envelope_id, amount=50_000)
 
     with pytest.raises(ValueError, match="changed after graph binding"):
         adapter.authorization_node(state)
@@ -147,18 +149,19 @@ def test_human_approval_is_evidence_and_forces_fresh_reauthorization():
     calls = []
     authorizer = TestAuthorizer(escalate_without_evidence=True)
     adapter = _adapter(authorizer, calls)
-    state = adapter.proposal_update(_action())
+    state = adapter.proposal_update(_action(authorizer.authority.envelope_id))
     state.update(adapter.authorization_node(state))
 
     assert state[AUTHORITY_DECISION_KEY] == "ESCALATE"
     assert state[PERMIT_KEY] is None
 
-    state.update(adapter.human_evidence_update({"approved": True, "actor": "human:owner"}))
+    evidence = {"approved": True, "actor": "human:owner"}
+    state.update(adapter.human_evidence_update(evidence))
     assert state[AUTHORITY_DECISION_KEY] is None
     state.update(adapter.authorization_node(state))
 
     assert state[AUTHORITY_DECISION_KEY] == "ALLOW"
-    assert authorizer.calls == [None, {"approved": True, "actor": "human:owner"}]
+    assert authorizer.calls == [None, evidence]
     state.update(adapter.gateway_node(state))
     assert calls == [(45_000, "vendor_payment")]
 
@@ -180,7 +183,7 @@ def test_checkpointed_allow_cannot_replay_consumed_permit():
             "now": NOW,
         },
     )
-    state = adapter.proposal_update(_action())
+    state = adapter.proposal_update(_action(authorizer.authority.envelope_id))
     state.update(adapter.authorization_node(state))
     checkpoint = dict(state)
 
@@ -201,7 +204,7 @@ def test_binding_resolver_cannot_override_governed_objects():
             "permit": "forged",
         },
     )
-    state = adapter.proposal_update(_action())
+    state = adapter.proposal_update(_action(authorizer.authority.envelope_id))
     state.update(adapter.authorization_node(state))
 
     with pytest.raises(ValueError, match="cannot override governed bindings"):
