@@ -8,6 +8,7 @@
   "required": [
     "settlement_contract_id",
     "consequence_id",
+    "risk_acceptance_contract_id",
     "payer_account",
     "currency",
     "unit_price",
@@ -23,6 +24,10 @@
       "minLength": 1
     },
     "consequence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_acceptance_contract_id": {
       "type": "string",
       "minLength": 1
     },
@@ -80,17 +85,20 @@
   "x-heimel-invariants": {
     "billing_unit": "VERIFIED_GOVERNED_CONSEQUENCE",
     "internal_metering_unit": "GOVERNED_TICK",
+    "risk_acceptance_required_before_settlement": true,
     "chargeable_only_when": [
       "governed_effect_completed",
       "completion_criteria_satisfied",
-      "required_evidence_verified"
+      "required_evidence_verified",
+      "risk_acceptance_contract_bound"
     ],
     "not_chargeable_when": [
       "DENY",
       "ESCALATE",
       "FAILED_EFFECT",
       "UNVERIFIED_OUTCOME",
-      "DUPLICATE"
+      "DUPLICATE",
+      "MISSING_RISK_ACCEPTANCE"
     ],
     "settlement": "AT_MOST_ONCE",
     "retrospective_invoice_required": false
