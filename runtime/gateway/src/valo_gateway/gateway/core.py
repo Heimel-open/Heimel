@@ -138,13 +138,6 @@ class ValoGateway:
             actor_id=authority.actor_id,
             scopes=scopes,
         ):
-        consumed_resources: tuple[ConsumedResourceReservation, ...] = ()
-        with active.consequence_guard(
-            authority_envelope_id=authority.envelope_id,
-            principal_id=authority.principal_id,
-            actor_id=authority.actor_id,
-            scopes=scopes,
-        ):
             required_budget_ids = required_resource_budget_ids(action)
             if required_budget_ids:
                 if resource_ledger is None:
