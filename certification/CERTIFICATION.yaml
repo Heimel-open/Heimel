@@ -51,6 +51,9 @@ issuance_rules:
 
 mandatory_core_negative_cases:
   - direct_effect_path_attempt_rejected
+  - deployment_side_effect_bypass_rejected
+  - implicit_capability_transfer_rejected
+  - ungoverned_cross_workspace_path_rejected
   - stale_authority_rejected
   - exact_effect_binding_mismatch_rejected
   - permit_replay_rejected
