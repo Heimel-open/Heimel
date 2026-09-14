@@ -105,6 +105,19 @@ def test_effect_mismatch_stops_effect():
     assert runtime.receipt(aid) is None
 
 
+def test_missing_permit_binding_stops_effect():
+    runtime = LocalRuntime()
+    aid = runtime.submit(action())
+    calls = [event.kind for event in runtime.stream(aid)]
+
+    with pytest.raises(ConsequenceRejected, match="permit binding is missing"):
+        runtime.execute(aid, None)
+
+    assert runtime.receipt(aid) is None
+    assert "EFFECT_EXECUTED" not in [event.kind for event in runtime.stream(aid)]
+    assert calls == ["ACTION_REQUESTED"]
+
+
 def test_permit_replay_stops_second_effect():
     runtime = LocalRuntime()
     aid = runtime.submit(action())

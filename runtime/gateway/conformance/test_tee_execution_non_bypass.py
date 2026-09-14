@@ -13,6 +13,7 @@ from valo_gateway import (
     Decision,
     DecisionContract,
     GovernedWorkspaceLineage,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -112,7 +113,7 @@ def test_confidential_effect_has_no_path_when_attestation_binding_is_invalid():
     )
 
     with pytest.raises(ValueError, match="execution substrate binding mismatch"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=invalid,

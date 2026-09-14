@@ -15,6 +15,7 @@ from valo_gateway import (
     Decision,
     DecisionContract,
     ExecutionStatus,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -234,7 +235,7 @@ def run_allowed_flow(*, now: datetime) -> dict[str, Any]:
 
     ledger = ResolutionLedger()
     registry, handle = _registry_for(ledger, target=action.target)
-    gateway = ValoGateway(permit_store=InMemoryPermitStore())
+    gateway = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore())
     result = gateway.execute(
         authority=authority,
         clearance=clearance,
@@ -295,7 +296,7 @@ def run_revoked_flow(*, now: datetime) -> dict[str, Any]:
 
     ledger = ResolutionLedger()
     registry, handle = _registry_for(ledger, target=action.target)
-    gateway = ValoGateway(permit_store=InMemoryPermitStore())
+    gateway = ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore())
 
     blocked_reason = ""
     try:

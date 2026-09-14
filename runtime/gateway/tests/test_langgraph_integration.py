@@ -9,6 +9,7 @@ from valo_gateway import (
     Clearance,
     Decision,
     DecisionContract,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -20,7 +21,6 @@ from valo_gateway.integrations.langgraph import (
     LangGraphGatewayAdapter,
 )
 from valo_gateway.tool_adapters import FunctionTool
-
 
 NOW = datetime(2026, 9, 14, 4, 0, tzinfo=UTC)
 
@@ -108,7 +108,7 @@ def _adapter(authorizer: TestAuthorizer, calls: list[tuple[int, str]]):
     )
     return LangGraphGatewayAdapter(
         authorizer=authorizer,
-        gateway=ValoGateway(permit_store=InMemoryPermitStore()),
+        gateway=ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore()),
         binding_resolver=lambda action: {
             "executor_id": "tool:bank-transfer",
             "tool": tool,
@@ -176,7 +176,7 @@ def test_checkpointed_allow_cannot_replay_consumed_permit():
     )
     adapter = LangGraphGatewayAdapter(
         authorizer=authorizer,
-        gateway=ValoGateway(permit_store=permit_store),
+        gateway=ValoGateway(control_plane=RuntimeControlPlane(), permit_store=permit_store),
         binding_resolver=lambda action: {
             "executor_id": "tool:bank-transfer",
             "tool": tool,
@@ -198,7 +198,7 @@ def test_binding_resolver_cannot_override_governed_objects():
     authorizer = TestAuthorizer()
     adapter = LangGraphGatewayAdapter(
         authorizer=authorizer,
-        gateway=ValoGateway(permit_store=InMemoryPermitStore()),
+        gateway=ValoGateway(control_plane=RuntimeControlPlane(), permit_store=InMemoryPermitStore()),
         binding_resolver=lambda action: {
             "executor_id": "tool:x",
             "permit": "forged",

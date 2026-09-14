@@ -5,7 +5,6 @@ from typing import Any
 
 from .base import FunctionTool
 
-
 ProviderDispatch = Callable[[str, dict[str, Any]], Any]
 
 

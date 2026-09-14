@@ -9,6 +9,7 @@ from valo_gateway import (
     Clearance,
     Decision,
     DecisionContract,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
 )
@@ -119,7 +120,7 @@ def test_gateway_remains_the_only_execution_gate():
         ),
         dispatcher=lambda invocation: seen.append(invocation) or {"accepted": True},
     )
-    gateway = ValoGateway()
+    gateway = ValoGateway(control_plane=RuntimeControlPlane())
 
     result = gateway.execute(
         authority=authority,

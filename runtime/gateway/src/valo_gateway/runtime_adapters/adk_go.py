@@ -12,7 +12,7 @@ from valo_gateway.contracts import (
     Clearance,
     ExecutionPermit,
 )
-from valo_gateway.gateway import ToolExecutionResult, ValoGateway
+from valo_gateway.gateway import RuntimeControlPlane, ToolExecutionResult, ValoGateway
 from valo_gateway.harness import BaseRuntimeAdapter
 
 _FORBIDDEN_AUTHORITY_KEYS = {
@@ -138,7 +138,7 @@ def validate_task_fanout(bindings: Sequence[ADKTaskBinding]) -> tuple[ADKTaskBin
 
 class ADKTaskRunnerGate:
     def __init__(self, gateway: ValoGateway | None = None) -> None:
-        self._gateway = gateway or ValoGateway()
+        self._gateway = gateway or ValoGateway(control_plane=RuntimeControlPlane())
 
     def execute_authorized(
         self,

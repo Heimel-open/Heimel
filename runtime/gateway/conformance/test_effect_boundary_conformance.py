@@ -12,6 +12,7 @@ from valo_gateway import (
     Decision,
     ExecutionPermit,
     GovernanceBasisState,
+    RuntimeControlPlane,
     ValoGateway,
     issue_execution_permit,
     replay_effect_boundary,
@@ -100,7 +101,7 @@ def test_null_effect_on_non_allow_decisions(decision: Decision) -> None:
 
     calls: list[int] = []
     with pytest.raises(ValueError, match="clearance is no longer valid"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -143,7 +144,7 @@ def test_structural_coupling_blocks_non_current_governance_basis(
     calls: list[int] = []
 
     with pytest.raises(ValueError, match=f"GOVERNANCE_BASIS_{basis_state.value}"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -257,7 +258,7 @@ def test_effector_credentials_and_capability_exist_only_behind_boundary() -> Non
         tool.invoke({"amount": 1250})
     assert calls == []
 
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,
@@ -288,7 +289,7 @@ def test_negative_bypass_forged_effector_handle_fails_before_effect() -> None:
     forged: EffectorHandle = replace(handle, target="invoice:other")
 
     with pytest.raises(PermissionError, match="not owned|exact action"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -323,7 +324,7 @@ def test_negative_bypass_public_only_effector_is_rejected_before_consumption() -
             calls.append(1)
 
     with pytest.raises(PermissionError, match="NO_DIRECT_EFFECT_PATH"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=authority,
             clearance=clearance,
             permit=permit,
@@ -356,7 +357,7 @@ def test_decision_relevant_memory_write_uses_the_same_governed_path() -> None:
         tool.invoke({"value": "candidate"})
     assert writes == []
 
-    result = ValoGateway().execute(
+    result = ValoGateway(control_plane=RuntimeControlPlane()).execute(
         authority=authority,
         clearance=clearance,
         permit=permit,
@@ -388,7 +389,7 @@ def test_decision_relevant_memory_write_requires_exact_current_authority(
     calls: list[int] = []
 
     with pytest.raises(ValueError, match="outside authority"):
-        ValoGateway().execute(
+        ValoGateway(control_plane=RuntimeControlPlane()).execute(
             authority=narrowed,
             clearance=clearance,
             permit=permit,
