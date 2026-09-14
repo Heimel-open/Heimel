@@ -1,0 +1,82 @@
+HEIMEL — COGNITIVE AUTHORITY THREAT MODEL
+
+Status: normative threat-model extension
+Effective date: 2026-09-14
+
+Purpose
+
+Heimel assumes that cognition upstream of a real-world consequence may be wrong, manipulated, stale, poisoned, simulated, induced or otherwise compromised.
+
+This includes humans, models, agents, collectives, memories, contexts, messages, inferred state, behavioral models, digital twins and digital avatars.
+
+Core assumption
+
+COGNITIVE_COMPROMISE_ASSUMPTION
+
+Any model, agent, human, collective, memory, context, message, inference or upstream decision process may be cognitively compromised.
+
+Cognitive confidence MUST NOT confer effect authority.
+
+Normative invariant
+
+NO_INFERRED_AUTHORITY
+
+No digital twin, digital avatar, behavioral model, inferred preference, predicted decision, simulated consent, cognitive representation, probabilistic user model or collective model may create, extend, transfer or substitute effect authority.
+
+The following are explicitly non-authoritative:
+
+- predicted consent
+- inferred intent
+- simulated preference
+- behavioral similarity
+- model confidence
+- predicted future approval
+- reconstructed historical approval
+- cognitive or relational representation
+- outputs from a digital twin or digital avatar
+
+Permitted uses
+
+A twin, avatar or behavioral model MAY be used for:
+
+- simulation
+- recommendation
+- forecasting
+- counterfactual analysis
+- decision support
+- risk analysis
+
+These uses do not create authority.
+
+Consequence boundary rule
+
+For a real effect, authority MUST resolve from an explicit admissible authority source and MUST be freshly validated at consequence time against the exact actor, object, action, state, constraints and effect binding.
+
+Predicted consent is not consent.
+Inferred intent is not authority.
+Simulated preference is not mandate.
+
+Threat pattern
+
+An attacker may construct or influence a digital representation of a person, agent or collective, then use that representation to optimize interventions or predict likely approvals and actions.
+
+A sufficiently accurate model may predict what a person would probably authorize. That prediction still MUST NOT become the authorization itself.
+
+Heimel therefore separates:
+
+1. cognitive integrity — what the system believes
+2. decision integrity — how it reaches a proposed action
+3. authority integrity — who is actually entitled to authorize it
+4. consequence integrity — whether the proposed effect is mechanically allowed to occur
+
+Heimel does not require perfect cognitive integrity before every action. It requires that cognitive uncertainty or compromise cannot silently become effect authority.
+
+Security consequence
+
+Even if an upstream model, agent collective, digital twin or human decision process converges on the wrong state of the world, the consequence boundary must still enforce fresh authority, current constraints, exact decision-effect binding, a governed effect path and attributable evidence.
+
+Design principle
+
+The better a system becomes at predicting what a person would do, the more important it becomes to preserve the distinction between predicting that person's choice and having the right to act for that person.
+
+Never trust cognition with consequence authority.
