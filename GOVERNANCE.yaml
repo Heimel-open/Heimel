@@ -17,6 +17,8 @@ trusted_party_boundary:
 
 normative_properties:
   - NO_DIRECT_EFFECT_PATH
+  - NO_IMPLICIT_CAPABILITY_TRANSFER
+  - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
   - FRESH_AUTHORITY_AT_CONSEQUENCE_TIME
   - EXACT_DECISION_EFFECT_BINDING
   - FAIL_CLOSED_ON_MISSING_STALE_OR_MISMATCHED_STATE
@@ -24,6 +26,32 @@ normative_properties:
   - ATTRIBUTABLE_CONSEQUENCE_EVIDENCE
   - EVIDENCE_BACKED_STATE_ADMISSION
   - NO_MANDATORY_PHONE_HOME
+
+clean_room_model:
+  canonical_description: docs/architecture/clean-room-model.md
+  rule: "Heimel governs admission, internal capability/communication boundaries, and consequence-time check-out; it does not require governance of every internal reasoning step."
+  boundaries:
+    check_in:
+      - identity
+      - provenance
+      - admissibility
+      - authority_context
+    bounded_workspace:
+      - role
+      - purpose
+      - tools
+      - capabilities
+      - communication_paths
+    internal_invariants:
+      - NO_IMPLICIT_CAPABILITY_TRANSFER
+      - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
+    check_out:
+      - exact_proposed_consequence
+      - fresh_authority
+      - current_constraints
+      - exact_effect_binding
+      - exclusive_gateway_enforcement
+      - verifiable_outcome_evidence
 
 change_control:
   normative_change_definition: "A change is normative if a conforming implementation could behave differently because of it."
