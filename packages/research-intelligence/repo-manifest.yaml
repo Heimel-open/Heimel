@@ -1,0 +1,13 @@
+name: heimel-research-intelligence
+kind: package
+language: python
+purpose: deterministic research discovery, source verification, hashing, deduplication, and Heimel relevance triage
+entrypoint: heimel-research-intelligence
+owned_paths:
+  - packages/research-intelligence
+invariants:
+  - ORIGINAL_SOURCE_IS_CANONICAL
+  - REDIRECTS_MUST_REMAIN_IN_ALLOWED_DOMAIN_SET
+  - EVIDENCE_CONTENT_IS_SHA256_BOUND
+  - DUPLICATES_ARE_CONTENT_HASH_DEDUPED
+  - LOW_RELEVANCE_DOES_NOT_PROMOTE_ITSELF
