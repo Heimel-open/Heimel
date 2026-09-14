@@ -21,11 +21,7 @@ from valo_gateway.effect_contract import (
 )
 from valo_gateway.integrations.claims_instrumentation import Status, verify_claim
 from valo_gateway.tool_adapters import TripletexEffectTool
-from valo_gateway.tool_adapters.providers import (
-    AUTHORITY_EVIDENCE_REFS_KEY,
-    CLAIM_STATUSES_KEY,
-    EFFECT_CONTRACT_KEY,
-)
+from valo_gateway.tool_adapters.providers import CLAIM_STATUSES_KEY, EFFECT_CONTRACT_KEY
 
 
 def _now():
@@ -83,6 +79,19 @@ def _proof():
         input_digest="input",
         result_digest="sealed",
         computed_digest="sealed",
+    )
+
+
+def _governed_context(evidence_refs):
+    return dict(
+        authority=SimpleNamespace(),
+        clearance=SimpleNamespace(evidence_refs=list(evidence_refs)),
+        permit=SimpleNamespace(),
+        action=SimpleNamespace(
+            action_type="PAYMENT_RELEASE",
+            target="invoice:inv-1",
+        ),
+        now=_now(),
     )
 
 
@@ -169,10 +178,19 @@ def test_tripletex_manifest_and_boundary_require_exact_effect_contract():
         **params,
         EFFECT_CONTRACT_KEY: contract.model_dump(mode="json"),
         CLAIM_STATUSES_KEY: {"invoice-valid": "SUPPORTED"},
-        AUTHORITY_EVIDENCE_REFS_KEY: ["ev:mandate", "ev:sod", "ev:funding"],
     }
+    tool._validate_governed_effect(
+        arguments,
+        **_governed_context(("ev:mandate", "ev:sod", "ev:funding")),
+    )
     tool._invoke_from_boundary(arguments, _proof())
     assert calls == [("PAYMENT_RELEASE", params)]
+
+    with pytest.raises(PermissionError, match="authority"):
+        tool._validate_governed_effect(
+            arguments,
+            **_governed_context(("ev:mandate", "ev:sod")),
+        )
 
     wrong_provider = contract.model_copy(update={"provider": "accounting:xero"})
     arguments[EFFECT_CONTRACT_KEY] = wrong_provider.model_dump(mode="json")
@@ -187,8 +205,7 @@ def test_idempotency_key_cannot_be_reused_for_different_effect():
         idempotency_key="idem-1",
         parameters_digest="sha256:" + "1" * 64,
     )
-    same = first.model_copy()
-    first.assert_same_effect(same)
+    first.assert_same_effect(first.model_copy())
 
     conflict = first.model_copy(update={"effect_id": "effect-2"})
     with pytest.raises(PermissionError, match="idempotency"):
