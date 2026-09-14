@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 product: Heimel
 status: canonical
 
@@ -91,18 +91,86 @@ certification:
   rule: "Passing the open suite does not imply an official Heimel certification unless an attestation has been issued."
 
 metering:
-  primary_unit: governed_consequence_event
-  definition: "A consequence-path event with an exact effect identity, decision, permit/enforcement state and recorded outcome/evidence state."
+  internal_unit: governed_tick
+  billing_unit: verified_governed_consequence
+  rule: "Governed ticks are internal observability and cost-accounting events. They are not the default customer billing unit."
+  governed_tick_uses:
+    - cost_accounting
+    - observability
+    - capacity_planning
+    - audit
+    - replay
+  consequence_definition: "A contract-bound consequence whose governed effect completed and whose required evidence satisfies the consequence contract."
   required_dimensions:
     - tenant_or_organization
+    - consequence_id
     - effect_type
     - decision
     - enforcement_result
     - outcome_state
     - evidence_reference
     - timestamp
-  pricing_rule: "Commercial pricing may use committed governed-consequence volume. A DENY is not treated as a successfully executed consequence unless a contract explicitly meters decision events separately."
-  forbidden_default: seat_based_primary_pricing
+  no_charge_states:
+    - DENY
+    - ESCALATE
+    - FAILED_EFFECT
+    - UNVERIFIED_OUTCOME
+    - DUPLICATE
+  pricing_rule: "Enterprise pricing is consequence-based. Internal governance work may be metered by tick but customer settlement occurs only for a verified governed consequence."
+  forbidden_default:
+    - seat_based_primary_pricing
+    - governed_tick_billing
+    - charge_on_deny
+    - charge_on_escalate
+    - retrospective_invoice_required
+
+settlement:
+  model: prepaid_or_preauthorized_atomic_settlement
+  principle: "Settlement follows verified consequence evidence and does not require retrospective invoicing."
+  sequence:
+    - funding_or_allowance_bound
+    - proposed_consequence
+    - fresh_authority_check
+    - permit_issue_and_binding
+    - governed_effect
+    - outcome_verification
+    - consequence_receipt
+    - atomic_settlement
+  funding_modes:
+    - prepaid_balance
+    - escrow
+    - bounded_payment_allowance
+  invariants:
+    - "No settlement before verified consequence evidence."
+    - "DENY, ESCALATE, failed effects and unverified outcomes do not settle."
+    - "A consequence_id may settle at most once."
+    - "Settlement must bind to the exact consequence contract, price rule and evidence reference."
+    - "Replay must reproduce settlement eligibility without causing a second charge."
+    - "Open Heimel operation remains possible without any commercial settlement mechanism."
+  price_contract:
+    currency: USD
+    reference_rates:
+      micro: "0.001"
+      standard_floor: "0.01"
+      typical: "0.10"
+    rule: "The operative rate is contract-bound before execution. Reference rates are defaults, not immutable protocol constants."
+  smart_contract_semantics:
+    required_fields:
+      - settlement_contract_id
+      - consequence_id
+      - payer_account
+      - currency
+      - unit_price
+      - funding_reference
+      - price_rule_version
+      - completion_criteria_hash
+      - evidence_requirement_hash
+      - idempotency_key
+    terminal_states:
+      - SETTLED
+      - NOT_CHARGEABLE
+      - INSUFFICIENT_FUNDS
+      - SETTLEMENT_FAILED
 
 licensing:
   repository_default: Apache-2.0
@@ -126,5 +194,6 @@ provider_independence:
     - payment_systems
 
 commercial_thesis:
-  rule: "Revenue should scale with governed machine activity rather than human seat count."
-  statement: "We do not charge to make governed execution possible; we charge to make governed execution governable at organizational scale."
+  rule: "Revenue should scale with verified governed consequences rather than human seat count or internal governance-event volume."
+  statement: "Open execution is free. Enterprise pays when a governed consequence is completed and verified."
+  settlement_statement: "Meter by tick internally; price and settle by consequence."

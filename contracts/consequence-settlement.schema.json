@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimel.dev/schemas/consequence-settlement.schema.json",
+  "title": "Heimel Consequence Settlement Contract",
+  "description": "Pre-bound settlement contract for one verified governed consequence. Internal governed ticks are not customer billing units.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "settlement_contract_id",
+    "consequence_id",
+    "payer_account",
+    "currency",
+    "unit_price",
+    "funding",
+    "price_rule_version",
+    "completion_criteria_hash",
+    "evidence_requirement_hash",
+    "idempotency_key"
+  ],
+  "properties": {
+    "settlement_contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "consequence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payer_account": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currency": {
+      "type": "string",
+      "const": "USD"
+    },
+    "unit_price": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+    },
+    "funding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "reference"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["PREPAID_BALANCE", "ESCROW", "BOUNDED_PAYMENT_ALLOWANCE"]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+        }
+      }
+    },
+    "price_rule_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "completion_criteria_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_requirement_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "x-heimel-invariants": {
+    "billing_unit": "VERIFIED_GOVERNED_CONSEQUENCE",
+    "internal_metering_unit": "GOVERNED_TICK",
+    "chargeable_only_when": [
+      "governed_effect_completed",
+      "completion_criteria_satisfied",
+      "required_evidence_verified"
+    ],
+    "not_chargeable_when": [
+      "DENY",
+      "ESCALATE",
+      "FAILED_EFFECT",
+      "UNVERIFIED_OUTCOME",
+      "DUPLICATE"
+    ],
+    "settlement": "AT_MOST_ONCE",
+    "retrospective_invoice_required": false
+  }
+}
