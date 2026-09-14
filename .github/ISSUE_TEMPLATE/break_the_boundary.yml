@@ -1,0 +1,49 @@
+name: Break the consequence boundary
+description: Report the smallest reproducible case that violates a Heimel invariant.
+title: "[BOUNDARY BREAK] "
+labels: ["security", "boundary-break"]
+body:
+  - type: dropdown
+    id: invariant
+    attributes:
+      label: Invariant attacked
+      options:
+        - Fresh authority at consequence time
+        - No direct effect path
+        - Exact state/effect binding
+        - One-shot authorization / replay resistance
+        - Governed consequence classification
+        - Fail-closed external mapping
+        - Verifiable effect evidence
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Exact commands, input, state and expected versus observed effect.
+    validations:
+      required: true
+  - type: textarea
+    id: consequence
+    attributes:
+      label: Why this matters
+      description: Describe the consequence that became possible or incorrectly blocked.
+    validations:
+      required: true
+  - type: input
+    id: sha
+    attributes:
+      label: Heimel commit SHA
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope confirmation
+      options:
+        - label: I tested against the current public Heimel code path.
+          required: true
+        - label: I removed secrets, personal data and unsafe payloads from this report.
+          required: true
