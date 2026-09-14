@@ -1,16 +1,8 @@
 """Local Heimel runtime with an executable governed consequence path.
 
-The local runtime is intentionally self-contained and has no vendor or network
-requirements. Submission never executes. A successful result is possible only
-through the local consequence path:
-
-proposed action -> fresh authority check (REHT role)
--> exact decision/effect binding (RACS role)
--> one-shot enforcement (Gateway role)
--> local effect
--> attributable receipt (Veritas role)
-
-This is a local reference implementation, not an enterprise control plane.
+Submission never executes. A successful consequence requires fresh authority,
+exact effect binding, a positively issued one-shot permit, execution, and
+attributable evidence.
 """
 from __future__ import annotations
 
@@ -18,6 +10,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 import hashlib
 import json
+import threading
 import time
 import uuid
 from typing import Any, Dict, Optional
@@ -60,27 +53,27 @@ class LocalReceipt:
 
 
 class ConsequenceDenied(RuntimeError):
-    """Raised when a proposed consequence is not currently authorized."""
+    pass
 
 
 class ConsequenceRejected(RuntimeError):
-    """Raised when Gateway-style enforcement rejects a permit or effect."""
+    pass
 
 
 class EvidenceRecordingFailed(RuntimeError):
-    """Raised when effect evidence cannot be durably admitted locally."""
+    pass
 
 
 class LocalRuntime(RuntimeInterface):
-    """Offline reference runtime enforcing the Heimel consequence invariants."""
-
     def __init__(self):
         self._actions: Dict[str, Dict[str, Any]] = {}
         self._events: Dict[str, list[Event]] = {}
         self._checkpoints: Dict[str, Checkpoint] = {}
         self._authority_revision = 1
         self._authorized_effects: set[str] = set()
+        self._issued_permits: Dict[str, LocalPermit] = {}
         self._consumed_permits: set[str] = set()
+        self._permit_lock = threading.Lock()
         self._receipts: Dict[str, LocalReceipt] = {}
 
     def submit(self, action):
@@ -131,12 +124,7 @@ class LocalRuntime(RuntimeInterface):
         if checkpoint_id not in self._checkpoints:
             raise KeyError(checkpoint_id)
         aid = "act-" + uuid.uuid4().hex[:12]
-        self._actions[aid] = {
-            "state": "RESTARTED",
-            "from": checkpoint_id,
-            "result": None,
-            "receipt_ref": None,
-        }
+        self._actions[aid] = {"state": "RESTARTED", "from": checkpoint_id, "result": None, "receipt_ref": None}
         self._events[aid] = []
         self._emit(aid, "RESTARTED", {"from": checkpoint_id})
         return aid
@@ -176,11 +164,8 @@ class LocalRuntime(RuntimeInterface):
             "effect_digest": effect_digest,
             "authority_revision": self._authority_revision,
         })
-        permit_id = _digest({
-            "racs_ref": racs_ref,
-            "action_id": action_id,
-            "expires_at": (now + timedelta(seconds=ttl_seconds)).isoformat(),
-        })
+        expires_at = now + timedelta(seconds=ttl_seconds)
+        permit_id = _digest({"racs_ref": racs_ref, "action_id": action_id, "expires_at": expires_at.isoformat()})
         permit = LocalPermit(
             permit_id=permit_id,
             action_id=action_id,
@@ -188,8 +173,9 @@ class LocalRuntime(RuntimeInterface):
             authority_revision=self._authority_revision,
             reht_ref=reht_ref,
             racs_ref=racs_ref,
-            expires_at=now + timedelta(seconds=ttl_seconds),
+            expires_at=expires_at,
         )
+        self._issued_permits[permit_id] = permit
         record["state"] = "AUTHORIZED"
         self._emit(action_id, "DECISION", {
             "decision": Decision.ALLOW.value,
@@ -216,22 +202,27 @@ class LocalRuntime(RuntimeInterface):
         proposed_effect = dict(record["action"] if effect is None else effect)
         effect_digest = _digest(proposed_effect)
 
-        if permit.permit_id in self._consumed_permits:
-            raise ConsequenceRejected("one-shot permit already consumed")
-        if permit.action_id != action_id:
-            raise ConsequenceRejected("permit action mismatch")
-        if permit.effect_digest != effect_digest or effect_digest != record["effect_digest"]:
-            raise ConsequenceRejected("permit is not bound to exact effect")
-        if permit.authority_revision != self._authority_revision:
-            raise ConsequenceRejected("authority state changed after authorization")
-        if now >= permit.expires_at:
-            raise ConsequenceRejected("permit expired")
-        if effect_digest not in self._authorized_effects:
-            raise ConsequenceRejected("authority no longer current")
+        with self._permit_lock:
+            issued = self._issued_permits.get(permit.permit_id)
+            if issued is None:
+                raise ConsequenceRejected("permit was not issued by this runtime")
+            if issued != permit:
+                raise ConsequenceRejected("permit does not match issued authorization")
+            if permit.permit_id in self._consumed_permits:
+                raise ConsequenceRejected("one-shot permit already consumed")
+            if permit.action_id != action_id:
+                raise ConsequenceRejected("permit action mismatch")
+            if permit.effect_digest != effect_digest or effect_digest != record["effect_digest"]:
+                raise ConsequenceRejected("permit is not bound to exact effect")
+            if permit.authority_revision != self._authority_revision:
+                raise ConsequenceRejected("authority state changed after authorization")
+            if now >= permit.expires_at:
+                raise ConsequenceRejected("permit expired")
+            if effect_digest not in self._authorized_effects:
+                raise ConsequenceRejected("authority no longer current")
+            self._consumed_permits.add(permit.permit_id)
 
-        self._consumed_permits.add(permit.permit_id)
         self._emit(action_id, "PERMIT_CONSUMED", {"permit_id": permit.permit_id, "racs_ref": permit.racs_ref})
-
         outcome_payload = {"executed_by": "local-runtime", "effect": proposed_effect}
         outcome_digest = _digest(outcome_payload)
         record["state"] = "EFFECT_OCCURRED_UNATTESTED"
@@ -261,7 +252,6 @@ class LocalRuntime(RuntimeInterface):
             outcome_digest=outcome_digest,
             recorded_at=now,
         )
-
         try:
             self._record_receipt(action_id, receipt)
         except Exception as exc:
@@ -269,12 +259,7 @@ class LocalRuntime(RuntimeInterface):
             raise EvidenceRecordingFailed("effect occurred but evidence was not admitted") from exc
 
         self._emit(action_id, "EVIDENCE_RECORDED", {"veritas_ref": receipt_ref, "outcome_digest": outcome_digest})
-        result = Result(
-            action_id=action_id,
-            status="SUCCESS",
-            outputs=outcome_payload,
-            receipt_ref=receipt_ref,
-        )
+        result = Result(action_id=action_id, status="SUCCESS", outputs=outcome_payload, receipt_ref=receipt_ref)
         record["state"] = "EXECUTED"
         record["result"] = result
         record["receipt_ref"] = receipt_ref
