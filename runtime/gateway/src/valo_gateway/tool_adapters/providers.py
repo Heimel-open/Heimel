@@ -57,3 +57,23 @@ class GoogleWorkspaceEffectTool(ProviderEffectTool):
 
 class GmailEffectTool(GoogleWorkspaceEffectTool):
     """Explicit Gmail alias while keeping one Workspace provider boundary."""
+
+
+class DatabaseEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("database", dispatch)
+
+
+class AWSEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("aws", dispatch)
+
+
+class AzureEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("azure", dispatch)
+
+
+class GCPEffectTool(ProviderEffectTool):
+    def __init__(self, dispatch: ProviderDispatch) -> None:
+        super().__init__("gcp", dispatch)
