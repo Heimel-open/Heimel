@@ -1,0 +1,30 @@
+HEIMEL OPEN — CIVILIAN TECHNOLOGY AND USE NOTICE
+
+Heimel is developed and published as civilian, general-purpose software infrastructure for governing the transition from intent to consequence.
+
+Heimel is not designed or supplied as:
+- a weapon or weapon component;
+- military command-and-control software;
+- targeting, fire-control, weapons-delivery or combat-management software;
+- intelligence collection or espionage software; or
+- a surveillance system.
+
+The Heimel core is domain-agnostic. Its purpose is to enforce current authority, exact-action boundaries, exclusive governed effect paths, fail-closed behavior and verifiable evidence across civilian software and autonomous systems.
+
+DEFENCE AND MILITARY USE
+
+Defence, military, intelligence, targeting, weapons, combat and offensive-security use are not intended or supported use cases of Heimel Open.
+
+IMPORTANT LICENSING CLARIFICATION
+
+The versions of Heimel Open that have been released under the Apache License 2.0 remain governed by that license. Apache-2.0 does not contain a field-of-use restriction, and this notice does not modify, narrow or revoke rights already granted under Apache-2.0.
+
+A prohibition on defence or military use cannot be imposed while describing the same license grant as OSI-conformant open source, because open-source licenses may not discriminate against a field of endeavor.
+
+Accordingly, if Heimel adopts a binding no-defence-use condition for future releases, that condition must be implemented through a separate licence for those future releases. Such a licence would be source-available or otherwise restricted software, not OSI-defined open source. Any such future licence change would not retroactively alter rights already granted for versions previously released under Apache-2.0.
+
+No statement in this notice overrides applicable export-control, sanctions, national-security, procurement or other law. Users are responsible for determining whether a particular deployment, integration, transfer or use is lawful in the relevant jurisdiction.
+
+PRODUCT POSITION
+
+Heimel is civilian technology. Defence and military systems are not part of the canonical Heimel product identity or core design target.
