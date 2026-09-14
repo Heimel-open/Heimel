@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Any
 
-from ..effect_contract import AdapterCapabilityManifest, ConsequenceOperation
-from .base import FunctionTool
+from ..effect_contract import AdapterCapabilityManifest, ConsequenceOperation, EffectContract
+from .base import BoundaryProof, FunctionTool
 
 
 ProviderDispatch = Callable[[str, dict[str, Any]], Any]
+EFFECT_CONTRACT_KEY = "__heimel_effect_contract__"
+CLAIM_STATUSES_KEY = "__heimel_claim_statuses__"
+AUTHORITY_EVIDENCE_REFS_KEY = "__heimel_authority_evidence_refs__"
 
 
 def _manifest(adapter_id: str, provider: str, *operations: ConsequenceOperation) -> AdapterCapabilityManifest:
@@ -42,6 +46,29 @@ class DomainEffectTool(ProviderEffectTool):
         self.domain = domain
         resolved_provider = provider or f"domain:{domain}"
         super().__init__(resolved_provider, dispatch, manifest=_manifest(resolved_provider, resolved_provider, *operations))
+
+    def _invoke_from_boundary(self, arguments: dict[str, Any], proof: BoundaryProof) -> Any:
+        payload = dict(arguments)
+        contract_raw = payload.pop(EFFECT_CONTRACT_KEY, None)
+        claim_statuses = payload.pop(CLAIM_STATUSES_KEY, {})
+        authority_evidence_refs = payload.pop(AUTHORITY_EVIDENCE_REFS_KEY, ())
+        if contract_raw is None:
+            raise PermissionError("HEIMEL_EFFECT_CONTRACT_REQUIRED: consequence domain effect is unbound")
+        contract = EffectContract.model_validate(contract_raw)
+        if contract.provider != self.provider:
+            raise PermissionError("effect contract provider does not match adapter provider")
+        operation = payload.get("operation")
+        if not isinstance(operation, str):
+            raise PermissionError("canonical consequence operation is required")
+        canonical = self.manifest.assert_operation(operation) if self.manifest is not None else ConsequenceOperation(operation)
+        if contract.operation is not canonical:
+            raise PermissionError("effect contract operation does not match adapter invocation")
+        provider_parameters = {key: value for key, value in payload.items() if key != "operation"}
+        contract.assert_parameters(provider_parameters)
+        contract.assert_fresh(datetime.now(UTC))
+        contract.authority_requirements.assert_satisfied(authority_evidence_refs)
+        contract.assert_claim_statuses(claim_statuses)
+        return super()._invoke_from_boundary(payload, proof)
 
 
 class GitHubEffectTool(ProviderEffectTool):
