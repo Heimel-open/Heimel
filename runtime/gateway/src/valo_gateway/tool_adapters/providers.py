@@ -11,24 +11,13 @@ ProviderDispatch = Callable[[str, dict[str, Any]], Any]
 
 
 def _manifest(adapter_id: str, provider: str, *operations: ConsequenceOperation) -> AdapterCapabilityManifest:
-    return AdapterCapabilityManifest(
-        adapter_id=adapter_id,
-        provider=provider,
-        operations=frozenset(operations),
-    )
+    return AdapterCapabilityManifest(adapter_id=adapter_id, provider=provider, operations=frozenset(operations))
 
 
 class ProviderEffectTool(FunctionTool):
     """Boundary-only provider effector. A manifest makes operation dispatch fail-closed."""
 
-    def __init__(
-        self,
-        provider: str,
-        dispatch: ProviderDispatch,
-        *,
-        capabilities: list[str] | None = None,
-        manifest: AdapterCapabilityManifest | None = None,
-    ) -> None:
+    def __init__(self, provider: str, dispatch: ProviderDispatch, *, capabilities: list[str] | None = None, manifest: AdapterCapabilityManifest | None = None) -> None:
         if not provider:
             raise ValueError("provider must be explicit")
         if manifest is not None and manifest.provider != provider:
@@ -47,22 +36,12 @@ class ProviderEffectTool(FunctionTool):
 
 
 class DomainEffectTool(ProviderEffectTool):
-    def __init__(
-        self,
-        domain: str,
-        dispatch: ProviderDispatch,
-        *,
-        operations: tuple[ConsequenceOperation, ...],
-    ) -> None:
+    def __init__(self, domain: str, dispatch: ProviderDispatch, *, operations: tuple[ConsequenceOperation, ...], provider: str | None = None) -> None:
         if not domain:
             raise ValueError("domain must be explicit")
         self.domain = domain
-        provider = f"domain:{domain}"
-        super().__init__(
-            provider,
-            dispatch,
-            manifest=_manifest(provider, provider, *operations),
-        )
+        resolved_provider = provider or f"domain:{domain}"
+        super().__init__(resolved_provider, dispatch, manifest=_manifest(resolved_provider, resolved_provider, *operations))
 
 
 class GitHubEffectTool(ProviderEffectTool):
@@ -102,70 +81,43 @@ class OllamaEffectTool(ProviderEffectTool):
 
 
 class FinancialRailsEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("financial-rails", dispatch, operations=(ConsequenceOperation.PAYMENT_RELEASE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("financial-rails", dispatch, operations=(ConsequenceOperation.PAYMENT_RELEASE,))
 class LendingEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("lending", dispatch, operations=(ConsequenceOperation.CREDIT_APPROVE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("lending", dispatch, operations=(ConsequenceOperation.CREDIT_APPROVE,))
 class UnderwritingEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("underwriting", dispatch, operations=(ConsequenceOperation.INSURANCE_BIND, ConsequenceOperation.CREDIT_APPROVE))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("underwriting", dispatch, operations=(ConsequenceOperation.INSURANCE_BIND, ConsequenceOperation.CREDIT_APPROVE))
 class InsuranceEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("insurance", dispatch, operations=(ConsequenceOperation.INSURANCE_BIND, ConsequenceOperation.INSURANCE_CLAIM_PAY))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("insurance", dispatch, operations=(ConsequenceOperation.INSURANCE_BIND, ConsequenceOperation.INSURANCE_CLAIM_PAY))
 class CapitalMarketsEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("capital-markets", dispatch, operations=(ConsequenceOperation.TRADE_SUBMIT, ConsequenceOperation.TRADE_CANCEL))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("capital-markets", dispatch, operations=(ConsequenceOperation.TRADE_SUBMIT, ConsequenceOperation.TRADE_CANCEL))
 class AccountingEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("accounting-finance-ops", dispatch, operations=(
-            ConsequenceOperation.PAYMENT_RELEASE,
-            ConsequenceOperation.VENDOR_BANK_CHANGE,
-            ConsequenceOperation.INVOICE_CREATE,
-            ConsequenceOperation.INVOICE_APPROVE,
-            ConsequenceOperation.JOURNAL_POST,
-            ConsequenceOperation.CREDIT_NOTE_ISSUE,
-            ConsequenceOperation.VENDOR_CREATE,
-        ))
+    def __init__(self, dispatch: ProviderDispatch, *, provider: str | None = None) -> None:
+        super().__init__("accounting-finance-ops", dispatch, provider=provider, operations=(ConsequenceOperation.PAYMENT_RELEASE, ConsequenceOperation.VENDOR_BANK_CHANGE, ConsequenceOperation.INVOICE_CREATE, ConsequenceOperation.INVOICE_APPROVE, ConsequenceOperation.JOURNAL_POST, ConsequenceOperation.CREDIT_NOTE_ISSUE, ConsequenceOperation.VENDOR_CREATE))
 class ProcurementEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("procurement-supply-chain", dispatch, operations=(ConsequenceOperation.INVOICE_APPROVE, ConsequenceOperation.VENDOR_CREATE, ConsequenceOperation.PAYMENT_RELEASE))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("procurement-supply-chain", dispatch, operations=(ConsequenceOperation.INVOICE_APPROVE, ConsequenceOperation.VENDOR_CREATE, ConsequenceOperation.PAYMENT_RELEASE))
 class LegalContractEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("legal-contract", dispatch, operations=(ConsequenceOperation.CONTRACT_SIGN, ConsequenceOperation.REGULATORY_FILE))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("legal-contract", dispatch, operations=(ConsequenceOperation.CONTRACT_SIGN, ConsequenceOperation.REGULATORY_FILE))
 class IdentityAccessEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("identity-access", dispatch, operations=(ConsequenceOperation.USER_PRIVILEGE_GRANT, ConsequenceOperation.USER_PRIVILEGE_REVOKE))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("identity-access", dispatch, operations=(ConsequenceOperation.USER_PRIVILEGE_GRANT, ConsequenceOperation.USER_PRIVILEGE_REVOKE))
 class HRPayrollEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("hr-payroll", dispatch, operations=(ConsequenceOperation.PAYMENT_RELEASE, ConsequenceOperation.USER_PRIVILEGE_GRANT, ConsequenceOperation.USER_PRIVILEGE_REVOKE))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("hr-payroll", dispatch, operations=(ConsequenceOperation.PAYMENT_RELEASE, ConsequenceOperation.USER_PRIVILEGE_GRANT, ConsequenceOperation.USER_PRIVILEGE_REVOKE))
 class HealthcareEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("healthcare", dispatch, operations=(ConsequenceOperation.CLINICAL_ORDER_CREATE, ConsequenceOperation.MEDICATION_PRESCRIBE, ConsequenceOperation.CLINICAL_RECORD_WRITE, ConsequenceOperation.HEALTHCARE_CLAIM_SUBMIT))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("healthcare", dispatch, operations=(ConsequenceOperation.CLINICAL_ORDER_CREATE, ConsequenceOperation.MEDICATION_PRESCRIBE, ConsequenceOperation.CLINICAL_RECORD_WRITE, ConsequenceOperation.HEALTHCARE_CLAIM_SUBMIT))
 class ClinicalOrderEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("healthcare:clinical-order", dispatch, operations=(ConsequenceOperation.CLINICAL_ORDER_CREATE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("healthcare:clinical-order", dispatch, operations=(ConsequenceOperation.CLINICAL_ORDER_CREATE,))
 class MedicationEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("healthcare:medication", dispatch, operations=(ConsequenceOperation.MEDICATION_PRESCRIBE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("healthcare:medication", dispatch, operations=(ConsequenceOperation.MEDICATION_PRESCRIBE,))
 class HealthcareClaimsEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("healthcare:claims", dispatch, operations=(ConsequenceOperation.HEALTHCARE_CLAIM_SUBMIT,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("healthcare:claims", dispatch, operations=(ConsequenceOperation.HEALTHCARE_CLAIM_SUBMIT,))
 class ClinicalRecordWriteEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("healthcare:record-write", dispatch, operations=(ConsequenceOperation.CLINICAL_RECORD_WRITE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("healthcare:record-write", dispatch, operations=(ConsequenceOperation.CLINICAL_RECORD_WRITE,))
 class MedicalDeviceEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("healthcare:medical-device", dispatch, operations=(ConsequenceOperation.PHYSICAL_ACTUATE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("healthcare:medical-device", dispatch, operations=(ConsequenceOperation.PHYSICAL_ACTUATE,))
 class PublicSectorEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("public-sector", dispatch, operations=(ConsequenceOperation.REGULATORY_FILE, ConsequenceOperation.PAYMENT_RELEASE, ConsequenceOperation.USER_PRIVILEGE_GRANT, ConsequenceOperation.USER_PRIVILEGE_REVOKE))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("public-sector", dispatch, operations=(ConsequenceOperation.REGULATORY_FILE, ConsequenceOperation.PAYMENT_RELEASE, ConsequenceOperation.USER_PRIVILEGE_GRANT, ConsequenceOperation.USER_PRIVILEGE_REVOKE))
 class PhysicalWorldEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("physical-world", dispatch, operations=(ConsequenceOperation.PHYSICAL_ACTUATE,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("physical-world", dispatch, operations=(ConsequenceOperation.PHYSICAL_ACTUATE,))
 class CommunicationsEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("communications-representation", dispatch, operations=(ConsequenceOperation.COMMUNICATION_SEND,))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("communications-representation", dispatch, operations=(ConsequenceOperation.COMMUNICATION_SEND,))
 class CommercialCRMEffectTool(DomainEffectTool):
-    def __init__(self, dispatch: ProviderDispatch) -> None:
-        super().__init__("commercial-crm", dispatch, operations=(ConsequenceOperation.CRM_COMMIT, ConsequenceOperation.CONTRACT_SIGN))
+    def __init__(self, dispatch: ProviderDispatch) -> None: super().__init__("commercial-crm", dispatch, operations=(ConsequenceOperation.CRM_COMMIT, ConsequenceOperation.CONTRACT_SIGN))
