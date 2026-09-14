@@ -208,6 +208,8 @@ class LangGraphGatewayAdapter:
         action: ActionEnvelope,
         authorization: LangGraphAuthorization,
     ) -> None:
+        if action.authority_envelope_id != authorization.authority.envelope_id:
+            raise ValueError("authorizer authority does not match proposed effect binding")
         if authorization.clearance.action_digest != action.digest:
             raise ValueError("authorizer clearance is not bound to exact proposed effect")
         if authorization.clearance.authority_envelope_id != authorization.authority.envelope_id:
