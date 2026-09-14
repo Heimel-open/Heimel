@@ -1,0 +1,45 @@
+name: Integrate Heimel
+description: Propose or report an integration that routes a real effect through the governed consequence boundary.
+title: "[INTEGRATION] "
+body:
+  - type: input
+    id: system
+    attributes:
+      label: System or framework
+      placeholder: MCP server, LangGraph app, browser agent, tool runtime, enterprise API...
+    validations:
+      required: true
+  - type: textarea
+    id: effect
+    attributes:
+      label: Consequence-bearing effect
+      description: What external effect can this system cause?
+    validations:
+      required: true
+  - type: textarea
+    id: current_path
+    attributes:
+      label: Current effect path
+      description: Show where authority is checked today and where the real effect happens.
+    validations:
+      required: true
+  - type: textarea
+    id: heimel_path
+    attributes:
+      label: Proposed Heimel path
+      description: Map the effect through fresh authority, exact binding, governed execution and evidence.
+    validations:
+      required: true
+  - type: checkboxes
+    id: invariants
+    attributes:
+      label: Boundary requirements
+      options:
+        - label: No direct external-to-effect path remains.
+          required: true
+        - label: Authority is resolved fresh at consequence time.
+          required: true
+        - label: Unknown or unmapped external input fails closed.
+          required: true
+        - label: The resulting effect produces verifiable evidence.
+          required: true
