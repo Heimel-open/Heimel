@@ -34,6 +34,15 @@ from .deployment_conformance import (
     verify_no_direct_effect_path,
 )
 from .gateway import *
+from .harness_conformance import (
+    HarnessAdmissionEvidence,
+    HarnessAdmissionResult,
+    HarnessConformanceError,
+    HarnessDescriptor,
+    HarnessState,
+    require_harness_admission,
+    verify_harness_admission,
+)
 from .integrations import (
     ActionFactory,
     AnthropicGatewayAdapter,
