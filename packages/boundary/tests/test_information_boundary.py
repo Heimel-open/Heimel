@@ -163,7 +163,7 @@ def test_state_admission_is_separate_from_egress():
         )
 
 
-def test_session_closure_ends_future_use():
+def test_session_closure_ends_future_use_and_revokes_grant():
     boundary = InformationBoundary()
     information = source()
     issued = grant(boundary, information)
@@ -172,7 +172,7 @@ def test_session_closure_ends_future_use():
     close_receipt = boundary.close_session(session)
     assert close_receipt.event == "CLOSE"
 
-    with pytest.raises(InformationBoundaryError, match="session closed"):
+    with pytest.raises(InformationBoundaryError, match="grant revoked"):
         boundary.admit(
             session,
             issued,
@@ -182,6 +182,9 @@ def test_session_closure_ends_future_use():
             tool_id="model:external",
             now=NOW,
         )
+
+    with pytest.raises(InformationBoundaryError, match="grant revoked"):
+        open_session(boundary, issued)
 
 
 def test_revocation_and_expiry_fail_closed():
