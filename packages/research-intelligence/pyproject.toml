@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "heimel-research-intelligence"
+version = "0.1.0"
+description = "Deterministic evidence ingestion and relevance scoring for Heimel research intelligence"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+heimel-research-intelligence = "heimel_research_intelligence.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

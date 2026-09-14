@@ -1,0 +1,34 @@
+{
+  "schema_version": "heimel.research.sources.v1",
+  "principle": "Social posts are discovery sensors; canonical evidence must resolve to an allowed original source.",
+  "sources": [
+    {
+      "source_id": "eu-commission-research-innovation",
+      "feed_url": "https://research-and-innovation.ec.europa.eu/news/all-research-and-innovation-news_en?prefLang=en&etrans=all",
+      "allowed_domains": ["research-and-innovation.ec.europa.eu", "commission.europa.eu", "eur-lex.europa.eu"],
+      "trust": "authoritative",
+      "enabled": true
+    },
+    {
+      "source_id": "eur-lex",
+      "feed_url": "https://eur-lex.europa.eu/EN/display-feed.html",
+      "allowed_domains": ["eur-lex.europa.eu"],
+      "trust": "authoritative",
+      "enabled": false
+    },
+    {
+      "source_id": "arxiv-cs-ai",
+      "feed_url": "https://export.arxiv.org/rss/cs.AI",
+      "allowed_domains": ["export.arxiv.org", "arxiv.org"],
+      "trust": "research",
+      "enabled": true
+    },
+    {
+      "source_id": "nist-ai",
+      "feed_url": "https://www.nist.gov/news-events/cybersecurity/rss.xml",
+      "allowed_domains": ["nist.gov", "www.nist.gov"],
+      "trust": "authoritative",
+      "enabled": true
+    }
+  ]
+}
