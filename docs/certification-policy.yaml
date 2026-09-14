@@ -1,0 +1,78 @@
+schema_version: 1
+product: Heimel Certified
+status: canonical
+
+trust_model:
+  open_conformance_suite: "Public tests that establish only the named tested profile and version."
+  official_certification: "A separately issued Heimel attestation bound to an exact implementation and tested scope."
+  invariant: "Passing the open conformance suite does not by itself create an official Heimel certification."
+
+claims:
+  conformance_claim:
+    allowed_format: "Conforms to <suite-version>/<profile> on <implementation-identity>."
+    must_name:
+      - implementation_identity
+      - suite_version
+      - tested_profile
+      - test_result
+  certified_claim:
+    requires_active_official_attestation: true
+    must_name_or_resolve:
+      - attestation_id
+      - implementation_identity
+      - artifact_or_build_digest
+      - conformance_suite_version
+      - conformance_suite_digest
+      - tested_profile
+      - result
+      - issuer
+      - issued_at
+      - valid_until
+
+validity:
+  default_rule: "Certification is valid only for the exact attested implementation identity, artifact/build digest, profile and validity interval."
+  material_change_requires_retest: true
+  material_change_examples:
+    - normative_execution_semantics
+    - consequence_boundary
+    - authority_resolution
+    - permit_or_binding_semantics
+    - evidence_integrity
+    - tested_security_relevant_dependency_change
+
+revocation:
+  supported: true
+  reasons:
+    - material_misrepresentation
+    - compromised_attestation
+    - discovered_nonconformance
+    - invalidated_test_basis
+  requirement: "Revocation status must be externally resolvable by attestation_id when an official certification service exists."
+
+renewal:
+  rule: "Renewal requires a current supported suite/profile and a new bounded attestation; expiry is not automatically extended."
+
+compatibility:
+  separate_from_certification: true
+  rule: "A compatibility claim must name the exact protocol/profile/version and must not imply official certification."
+
+trademark_and_mark_use:
+  heimel_certified_mark_requires_active_attestation: true
+  passing_open_tests_is_insufficient: true
+  scope_rule: "The mark may be used only for the exact product/version/profile covered by the active attestation."
+  forbidden:
+    - implying_company_wide_certification_from_one_component
+    - implying_regulatory_approval
+    - implying_security_guarantees_beyond_the_tested_profile
+    - using_the_certification_mark_after_expiry_or_revocation
+
+attestation_verification:
+  minimum_checks:
+    - issuer_identity
+    - attestation_integrity
+    - implementation_identity_match
+    - artifact_digest_match
+    - suite_version_and_digest_match
+    - profile_match
+    - validity_interval
+    - revocation_status

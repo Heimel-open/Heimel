@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimel.org/schemas/governed-consequence-event.schema.json",
+  "title": "Heimel Governed Consequence Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "action_id",
+    "tenant_or_organization",
+    "effect_digest",
+    "effect_type",
+    "decision",
+    "enforcement_result",
+    "outcome_state",
+    "authority_revision",
+    "evidence_reference",
+    "occurred_at"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "event_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "action_id": {"type": "string", "minLength": 1},
+    "tenant_or_organization": {"type": ["string", "null"]},
+    "effect_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "effect_type": {"type": ["string", "null"]},
+    "decision": {"enum": ["ALLOW", "DENY", "ESCALATE"]},
+    "enforcement_result": {"enum": ["NOT_ATTEMPTED", "REJECTED", "EXECUTED"]},
+    "outcome_state": {"enum": ["NONE", "SUCCESS", "FAILURE", "EFFECT_OCCURRED_UNATTESTED"]},
+    "authority_revision": {"type": ["integer", "null"], "minimum": 0},
+    "evidence_reference": {"type": ["string", "null"]},
+    "occurred_at": {"type": "string", "format": "date-time"}
+  }
+}

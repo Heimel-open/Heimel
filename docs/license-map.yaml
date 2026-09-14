@@ -1,0 +1,55 @@
+schema_version: 1
+product: Heimel
+status: canonical
+repository_default: Apache-2.0
+
+principles:
+  - "Anything described as open source must carry an OSI-compatible license for that component."
+  - "Enterprise is separate software or service, not the same open local capability hidden behind a commercial license gate."
+  - "No future license change may silently alter the repository default or retroactively remove rights already granted."
+
+surfaces:
+  runtime:
+    path: runtime/
+    default_license: Apache-2.0
+    role: open_governed_execution
+  packages:
+    path: packages/
+    default_license: Apache-2.0
+    role: open_packages_sdks_contracts_and_conformance
+  schemas_and_contracts:
+    paths:
+      - docs/open-enterprise-contract.yaml
+      - schemas/
+    default_license: Apache-2.0
+  tools_and_demos:
+    paths:
+      - tools/
+    default_license: Apache-2.0
+  documentation:
+    paths:
+      - README.md
+      - docs/
+      - GOVERNANCE.yaml
+      - EVIDENCE.yaml
+    default_license: Apache-2.0
+
+enterprise:
+  location_rule: "Commercial Enterprise code or service definitions must be clearly separated from the Apache-2.0 Open Heimel mechanism."
+  forbidden_pattern: "Do not convert local authorization, enforcement, replay or evidence into a commercial entitlement check."
+  license: separately_declared_per_enterprise_component_or_service
+
+future_copyleft:
+  allowed: true
+  default: false
+  requirements:
+    - explicit_component_boundary
+    - explicit_license_file_or_spdx_identifier
+    - dependency_and_license_compatibility_review
+    - no_silent_change_to_repository_default
+    - no_retroactive_removal_of_existing_apache_2_0_grants
+  rule: "A component may adopt copyleft later only as an explicit component-level decision with compatibility consequences recorded."
+
+exceptions:
+  rule: "Any component that differs from the repository default must declare its license at the component root and be added to this map."
+  current: []

@@ -38,9 +38,11 @@ open_heimel:
     - adapters
     - documentation
   invariant: "A user must be able to execute and prove the governed consequence path locally without contacting Heimel or obtaining a commercial entitlement."
+  public_end_to_end_proof: tools/verify_open_e2e.py
 
 enterprise:
   purpose: "Provide authoritative organization-level governance of governed execution."
+  architecture_contract: docs/enterprise-control-plane.yaml
   capabilities:
     - identity_federation
     - sso
@@ -81,16 +83,23 @@ product_layers:
 certification:
   conformance_suite: open
   official_attestation: commercial
+  policy: docs/certification-policy.yaml
   attestation_must_bind:
     - implementation_identity
+    - artifact_or_build_digest
     - conformance_suite_version
+    - conformance_suite_digest
     - tested_profile
     - test_result
     - issuance_time
     - validity_or_expiry
-  rule: "Passing the open suite does not imply an official Heimel certification unless an attestation has been issued."
+  rule: "Passing the open suite does not imply an official Heimel certification unless an active attestation has been issued."
 
 metering:
+  primary_unit: governed_consequence_event
+  schema: schemas/governed-consequence-event.schema.json
+  local_projection: runtime/runtime-local/metering.py
+  definition: "A consequence-path event with an exact effect identity, decision, permit/enforcement state and recorded outcome/evidence state."
   internal_unit: governed_tick
   billing_unit: verified_governed_consequence
   rule: "Governed ticks are internal observability and cost-accounting events. They are not the default customer billing unit."
@@ -109,7 +118,23 @@ metering:
     - enforcement_result
     - outcome_state
     - evidence_reference
-    - timestamp
+    - occurred_at
+  identity_rule: "Replay of the same admitted consequence state must not create a new governed_consequence_event identity."
+  commercial_pricing_rule: "Commercial pricing may use committed governed-consequence volume. A DENY is not treated as a successfully executed consequence unless a contract explicitly meters decision events separately."
+  default_billable_outcome: "ALLOW + EXECUTED + SUCCESS + evidence_reference"
+  no_charge_states:
+    - DENY
+    - ESCALATE
+    - FAILED_EFFECT
+    - UNVERIFIED_OUTCOME
+    - DUPLICATE
+  pricing_rule: "Enterprise pricing is consequence-based. Internal governance work may be metered by tick but customer settlement occurs only for a verified governed consequence."
+  forbidden_default:
+    - seat_based_primary_pricing
+    - governed_tick_billing
+    - charge_on_deny
+    - charge_on_escalate
+    - retrospective_invoice_required
   no_charge_states:
     - DENY
     - ESCALATE
@@ -126,17 +151,14 @@ metering:
 
 settlement:
   model: prepaid_or_preauthorized_atomic_settlement
-  principle: "Settlement follows verified consequence evidence preserved in Veritas and does not require retrospective invoicing."
+  principle: "Settlement follows verified consequence evidence and does not require retrospective invoicing."
   sequence:
     - funding_or_allowance_bound
     - proposed_consequence
     - fresh_authority_check
     - permit_issue_and_binding
     - governed_effect
-    - veritas_gateway_execution_record
     - outcome_verification
-    - veritas_outcome_record
-    - veritas_worm_chain_verification
     - consequence_receipt
     - atomic_settlement
   funding_modes:
@@ -144,39 +166,14 @@ settlement:
     - escrow
     - bounded_payment_allowance
   invariants:
-    - "No settlement before a valid bound Veritas Gateway record and Veritas outcome record exist."
-    - "Caller-asserted booleans are never sufficient to make a consequence chargeable."
-    - "The Veritas WORM chain must verify before settlement eligibility is evaluated."
-    - "Gateway execution_id and action_digest must match the settlement contract exactly."
-    - "Outcome consequence_id, execution_id, action_digest, completion_criteria_hash and evidence_requirement_hash must match the settlement contract exactly."
+    - "No settlement before verified consequence evidence."
     - "DENY, ESCALATE, failed effects and unverified outcomes do not settle."
     - "A consequence_id may settle at most once."
     - "Settlement must bind to the exact consequence contract, price rule and evidence reference."
-    - "Terminal receipts must be persisted atomically by idempotency_key."
-    - "The payment rail must honor the same idempotency_key as an at-most-once economic capture key."
-    - "INSUFFICIENT_FUNDS and transient settlement failures are retryable and must not become terminal receipts."
-    - "Crash recovery retries the same pre-bound idempotency_key; it must never mint a new key for the same consequence."
     - "Replay must reproduce settlement eligibility without causing a second charge."
     - "Open Heimel operation remains possible without any commercial settlement mechanism."
-  veritas_evidence:
-    gateway_event_type: execution_result_observed
-    outcome_event_type: consequence_outcome_verified
-    authority_granted: false
-    rule: "Veritas preserves and attests verifier output; Veritas does not itself grant authority or decide whether completion criteria are satisfied."
-  idempotency:
-    terminal_receipt_states:
-      - SETTLED
-      - NOT_CHARGEABLE
-    retryable_states:
-      - INSUFFICIENT_FUNDS
-      - SETTLEMENT_FAILED
-    receipt_store_semantics: atomic_put_if_absent
-    local_reference_store: sqlite
-    distributed_requirement: transactional_unique_key_or_equivalent
-    provider_requirement: idempotent_capture_by_same_key
   price_contract:
     currency: USD
-    max_decimal_places: 6
     reference_rates:
       micro: "0.001"
       standard_floor: "0.01"
@@ -194,19 +191,19 @@ settlement:
       - completion_criteria_hash
       - evidence_requirement_hash
       - idempotency_key
-      - veritas_execution_id
-      - veritas_gateway_record_id
-      - veritas_outcome_record_id
-      - expected_action_digest
     terminal_states:
       - SETTLED
       - NOT_CHARGEABLE
-    retryable_states:
       - INSUFFICIENT_FUNDS
       - SETTLEMENT_FAILED
+  identity_rule: "Replay of the same admitted consequence state must not create a new governed_consequence_event identity."
+  pricing_rule: "Commercial pricing may use committed governed-consequence volume. A DENY is not treated as a successfully executed consequence unless a contract explicitly meters decision events separately."
+  default_billable_outcome: "ALLOW + EXECUTED + SUCCESS + evidence_reference"
+  forbidden_default: seat_based_primary_pricing
 
 licensing:
   repository_default: Apache-2.0
+  map: docs/license-map.yaml
   standard_surfaces: permissive_open_source
   enterprise: separate_software_or_service
   rule: "Do not describe source-available or commercial-use-restricted code as open source."

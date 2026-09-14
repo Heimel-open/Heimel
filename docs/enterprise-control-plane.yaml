@@ -1,0 +1,131 @@
+schema_version: 1
+product: Heimel Enterprise
+status: canonical
+purpose: "Organization-level administration and operation around the open governed-consequence mechanism."
+
+boundary:
+  open_mechanism: "Heimel Open owns local governed execution and must remain independently operable."
+  enterprise_control_plane: "Heimel Enterprise owns organization-scale administration, coordination and operations around that mechanism."
+  invariant: "No Enterprise service may become an alternative consequence path or a commercial prerequisite for local governed execution."
+
+control_plane_owners:
+  identity_federation:
+    owns:
+      - enterprise identity-provider federation
+      - SSO
+      - SCIM synchronization
+      - organization identity mapping
+    does_not_own:
+      - consequence-time authorization
+      - direct effect execution
+
+  authority_administration:
+    owns:
+      - authority grant administration
+      - delegation administration
+      - revocation administration
+      - organization authority views
+    publishes_to: kernel_operative_state
+    does_not_own:
+      - REHT consequence-time authorization
+      - Gateway enforcement
+
+  policy_lifecycle:
+    owns:
+      - policy authoring workflow
+      - versioning
+      - approval
+      - activation
+      - rollback
+      - policy provenance
+    publishes_to: kernel_operative_state
+    does_not_own:
+      - direct effect execution
+
+  separation_of_duties:
+    owns:
+      - incompatible-role rules
+      - approval separation rules
+      - administration conflict controls
+    enforcement_requirement: "Material SoD state must be available to the governed consequence-time decision."
+
+  delegated_administration:
+    owns:
+      - bounded administrative scopes
+      - delegation expiry
+      - delegated-admin provenance
+    rule: "Delegated administration cannot mint broader authority than the delegator is permitted to administer."
+
+  tenancy:
+    owns:
+      - organization boundaries
+      - tenant isolation
+      - tenant-scoped configuration
+      - tenant-scoped evidence operations
+    rule: "Cross-tenant authority, secrets, policy and evidence access fail closed."
+
+  deployment_governance:
+    owns:
+      - approved deployment profiles
+      - environment promotion controls
+      - configuration provenance
+      - controlled rollout and rollback
+    rule: "Cloud, Private Cloud, Sovereign and Air-gapped preserve the same consequence semantics."
+
+  retention:
+    owns:
+      - retention policies
+      - legal-hold administration
+      - evidence lifecycle operations
+    does_not_own:
+      - retroactive authorization
+      - mutation of integrity-protected historical receipts
+
+  high_availability_disaster_recovery:
+    owns:
+      - service redundancy
+      - recovery objectives
+      - backup and restore governance
+      - continuity tests
+    invariant: "Recovery must not create a bypass, duplicate one-shot permits or weaken replay protection."
+
+  secrets_management:
+    owns:
+      - enterprise secret references
+      - rotation
+      - access policy
+      - deployment-time secret delivery
+    rule: "Secrets do not confer consequence authority by themselves."
+
+  observability:
+    owns:
+      - control-plane health
+      - operational metrics
+      - audit telemetry
+      - alerting
+      - SLO and SLA evidence
+    rule: "Observability is evidence and operations data, not authorization."
+
+runtime_property_owners:
+  operative_state: Kernel
+  fresh_authorization: REHT
+  deterministic_binding: RACS
+  exclusive_effect_enforcement: Gateway
+  attributable_effect_and_outcome_evidence: Veritas
+
+state_flow:
+  rule: "Enterprise administration may propose or publish governed administrative state; only admitted operative state can affect consequence-time authorization."
+  path:
+    - enterprise_administration
+    - governed_state_change
+    - kernel_state_admission
+    - reht_fresh_authorization
+    - gateway_enforcement
+    - veritas_evidence
+
+forbidden_architectures:
+  - enterprise_bypass_to_effect
+  - enterprise_license_gate_on_local_execution
+  - policy_console_as_direct_execution_authority
+  - identity_provider_as_sufficient_effect_authority
+  - observability_or_receipt_as_retroactive_authorization
