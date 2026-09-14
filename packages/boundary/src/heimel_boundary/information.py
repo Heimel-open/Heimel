@@ -250,8 +250,9 @@ class InformationBoundary:
         if session.session_id in self._closed_sessions:
             raise InformationBoundaryError("session already closed")
         self._closed_sessions.add(session.session_id)
-        self.state_revision += 1
         grant = self._grants[session.grant_id]
+        self._revoked_grants.add(grant.grant_id)
+        self.state_revision += 1
         return self._receipt("CLOSE", grant, session, grant.object_digest)
 
     def _validate_grant(self, grant, actor_id, purpose, tool_id, now) -> None:
