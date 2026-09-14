@@ -1,5 +1,9 @@
 from .base import EffectorHandle, FunctionTool, ToolRegistry
 from .providers import (
+    AWSEffectTool,
+    AzureEffectTool,
+    DatabaseEffectTool,
+    GCPEffectTool,
     GitHubEffectTool,
     GmailEffectTool,
     GoogleWorkspaceEffectTool,
@@ -10,8 +14,12 @@ from .providers import (
 )
 
 __all__ = [
+    "AWSEffectTool",
+    "AzureEffectTool",
+    "DatabaseEffectTool",
     "EffectorHandle",
     "FunctionTool",
+    "GCPEffectTool",
     "GitHubEffectTool",
     "GmailEffectTool",
     "GoogleWorkspaceEffectTool",
