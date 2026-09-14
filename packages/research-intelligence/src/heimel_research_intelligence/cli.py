@@ -24,8 +24,13 @@ def load_policies(path: Path) -> list[SourcePolicy]:
 def run(config: Path, output: Path, threshold: int) -> int:
     records = []
     for policy in load_policies(config):
-        feed, _, _ = default_fetch(policy.feed_url)
-        for candidate in parse_feed(feed, policy.source_id):
+        try:
+            feed, _, _ = default_fetch(policy.feed_url)
+            candidates = parse_feed(feed, policy.source_id)
+        except Exception as exc:
+            records.append({"source_id": policy.source_id, "candidate_url": policy.feed_url, "disposition": "SOURCE_ERROR", "error": str(exc)})
+            continue
+        for candidate in candidates:
             try:
                 records.append(ingest(candidate, policy, threshold=threshold))
             except Exception as exc:
