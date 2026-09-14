@@ -32,6 +32,17 @@ surfaces:
         - evidence_failure_does_not_admit_success
     bounded_claim: "This establishes the local reference consequence path only. It is not a claim of enterprise HA, production hardening or certification."
 
+  public_end_to_end_proof:
+    claim: "A single offline command is defined to prove ALLOW through receipt/replay, stale-permit rejection after revocation, fresh DENY and stable governed-consequence metering."
+    status: claimed
+    evidence:
+      - tools/verify_open_e2e.py
+      - runtime/runtime-local/metering.py
+      - schemas/governed-consequence-event.schema.json
+      - runtime/runtime-local/tests/test_metering.py
+    command: python3 tools/verify_open_e2e.py
+    bounded_claim: "The proof becomes measured for a revision only when the command is executed successfully against that exact revision."
+
   boundary_reference:
     claim: "The reference boundary enforces fresh authority revision, exact effect binding, one-shot permit use and expiry."
     status: measured
@@ -62,18 +73,22 @@ surfaces:
     bounded_claim: "Passing these tests is not equivalent to Heimel Certified and is not a general security certification."
 
   release_verification:
-    claim: "The repository defines local release gates for package metadata, tests, build artifacts, clean installation, import smoke tests and artifact digests."
+    claim: "The repository defines local release gates for the public E2E proof, package metadata, tests, build artifacts, clean installation, import smoke tests and artifact digests."
     status: claimed
     evidence:
       - release.yaml
+      - tools/verify_open_e2e.py
       - tools/release_verify.py
-    bounded_claim: "The existence of release gates is established here. A particular release is measured only when its versioned release receipt records the completed run and artifact digests."
+    bounded_claim: "The existence of release gates is established here. A particular release is measured only when its versioned verification evidence records completed runs and artifact digests."
 
   open_enterprise_boundary:
     claim: "Open Heimel is defined to operate locally without mandatory phone-home, license server or Heimel cloud account; Enterprise is separate organizational governance infrastructure."
     status: measured
     evidence:
       - docs/open-enterprise-contract.yaml
+      - docs/enterprise-control-plane.yaml
+      - docs/license-map.yaml
+      - docs/certification-policy.yaml
       - docs/ARCHITECTURE.md
       - GOVERNANCE.yaml
     bounded_claim: "This is a product and architecture boundary, not evidence that every planned Enterprise capability is implemented."
@@ -84,7 +99,7 @@ not_established:
   - disaster_recovery_rto_rpo
   - formal_security_certification
   - regulated_domain_approval
-  - complete_enterprise_control_plane
+  - complete_enterprise_control_plane_implementation
   - official_heimel_certification_program_in_operation
 
 interpretation:

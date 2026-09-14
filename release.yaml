@@ -12,6 +12,7 @@ release:
   artifact_rule: record sha256 for every sdist and wheel before upload
   claim_rule: release evidence must be measured, claimed, synthetic, or unknown
   authority_rule: successful verification is evidence, not publishing authority
+  open_e2e_command: python3 tools/verify_open_e2e.py
 
 packages:
   - distribution: heimel-kernel
@@ -120,6 +121,7 @@ packages:
     publish_order: 15
 
 required_local_gates:
+  - public offline end-to-end governed consequence proof passes
   - manifest versions match package metadata
   - package tests pass
   - source distributions and wheels build locally
