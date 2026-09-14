@@ -1,0 +1,22 @@
+HEIMEL CONSEQUENCE LOOP
+
+Enterprise control over the learning loop is not enough.
+You also need control over the consequence loop.
+
+Human control cannot mean a human approves every action.
+It has to mean human authority remains operative when the action becomes consequential.
+
+Canonical path:
+model/agent -> GCU/work contract -> Heimel consequence-time authority -> governed effect -> evidence
+
+Heimel distinction:
+Model governance, learning-loop ownership, embedded evaluation, and policy controls are necessary but insufficient. The decisive control point is consequence time: who actually has authority when an action becomes capable of producing an external effect.
+
+Operational rule:
+Authority must be resolved fresh at consequence time. No model, agent, tool, workflow, or external system receives a direct effect path around that check.
+
+Core formulation:
+When a human can no longer keep a finger on every button, authority, boundaries, and responsibility must follow the button itself.
+
+External convergence:
+Recent enterprise AI-control arguments increasingly emphasize retained human control, ownership of the learning loop, and stronger control mechanisms around models, knowledge, and evaluation. Heimel extends this to the consequence boundary: control must remain operative at the moment an action becomes consequential.
