@@ -54,7 +54,7 @@ def test_domain_effectors_cannot_be_invoked_directly(tool_cls):
     tool = tool_cls(lambda operation, parameters: calls.append((operation, parameters)))
 
     with pytest.raises(PermissionError, match="NO_DIRECT_EFFECT_PATH"):
-        tool.invoke(operation="commit")
+        tool.invoke({"operation": "PAYMENT_RELEASE"})
 
     assert calls == []
 
