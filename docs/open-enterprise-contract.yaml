@@ -152,6 +152,10 @@ settlement:
     - "DENY, ESCALATE, failed effects and unverified outcomes do not settle."
     - "A consequence_id may settle at most once."
     - "Settlement must bind to the exact consequence contract, price rule and evidence reference."
+    - "Terminal receipts must be persisted atomically by idempotency_key."
+    - "The payment rail must honor the same idempotency_key as an at-most-once economic capture key."
+    - "INSUFFICIENT_FUNDS and transient settlement failures are retryable and must not become terminal receipts."
+    - "Crash recovery retries the same pre-bound idempotency_key; it must never mint a new key for the same consequence."
     - "Replay must reproduce settlement eligibility without causing a second charge."
     - "Open Heimel operation remains possible without any commercial settlement mechanism."
   veritas_evidence:
@@ -159,8 +163,20 @@ settlement:
     outcome_event_type: consequence_outcome_verified
     authority_granted: false
     rule: "Veritas preserves and attests verifier output; Veritas does not itself grant authority or decide whether completion criteria are satisfied."
+  idempotency:
+    terminal_receipt_states:
+      - SETTLED
+      - NOT_CHARGEABLE
+    retryable_states:
+      - INSUFFICIENT_FUNDS
+      - SETTLEMENT_FAILED
+    receipt_store_semantics: atomic_put_if_absent
+    local_reference_store: sqlite
+    distributed_requirement: transactional_unique_key_or_equivalent
+    provider_requirement: idempotent_capture_by_same_key
   price_contract:
     currency: USD
+    max_decimal_places: 6
     reference_rates:
       micro: "0.001"
       standard_floor: "0.01"
@@ -185,6 +201,7 @@ settlement:
     terminal_states:
       - SETTLED
       - NOT_CHARGEABLE
+    retryable_states:
       - INSUFFICIENT_FUNDS
       - SETTLEMENT_FAILED
 
