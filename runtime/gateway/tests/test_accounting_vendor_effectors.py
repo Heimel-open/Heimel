@@ -63,7 +63,7 @@ def test_accounting_vendor_effectors_block_direct_invocation(tool_cls):
     tool = tool_cls(lambda operation, parameters: {"operation": operation, **parameters})
 
     with pytest.raises(PermissionError, match="NO_DIRECT_EFFECT_PATH"):
-        tool.invoke(operation="post_journal", amount=100)
+        tool.invoke({"operation": "JOURNAL_POST", "amount": 100})
 
 
 def test_tripletex_vendor_identity_is_explicit():
@@ -72,3 +72,5 @@ def test_tripletex_vendor_identity_is_explicit():
     assert tool.vendor == "tripletex"
     assert tool.provider == "accounting:tripletex"
     assert tool.name == "accounting:tripletex-effect"
+    assert tool.manifest is not None
+    assert tool.manifest.provider == tool.provider
