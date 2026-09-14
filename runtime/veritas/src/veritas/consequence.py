@@ -23,6 +23,8 @@ _ALLOWED_FIELDS = frozenset(
         "required_evidence_verified",
         "verified_at",
         "verifier_id",
+        "verifier_version",
+        "verifier_config_digest",
         "authority_granted",
         "observation_digest",
     }
@@ -65,17 +67,15 @@ def _require_timestamp(name: str, value: Any) -> str:
 class ConsequenceOutcomeObservationV1:
     """Non-authoritative observation of consequence verification output.
 
-    Veritas preserves the verifier's result and exact settlement bindings. It
-    does not itself decide whether completion criteria were satisfied and it
-    never grants authority.
+    The exact verifier implementation is bound by identity, version and
+    configuration digest. Veritas preserves the verifier's result but neither
+    grants authority nor decides whether completion criteria are satisfied.
     """
 
     payload: Mapping[str, Any]
 
     @classmethod
-    def verify(
-        cls, payload: Mapping[str, Any]
-    ) -> "ConsequenceOutcomeObservationV1":
+    def verify(cls, payload: Mapping[str, Any]) -> "ConsequenceOutcomeObservationV1":
         data = dict(payload)
         if data.get("schema") != _SCHEMA:
             raise ConsequenceOutcomeObservationError(
@@ -84,8 +84,7 @@ class ConsequenceOutcomeObservationV1:
         unexpected = set(data).difference(_ALLOWED_FIELDS)
         if unexpected:
             raise ConsequenceOutcomeObservationError(
-                "unexpected consequence outcome fields: "
-                + ", ".join(sorted(unexpected))
+                "unexpected consequence outcome fields: " + ", ".join(sorted(unexpected))
             )
         if data.get("authority_granted") is not False:
             raise ConsequenceOutcomeObservationError(
@@ -97,8 +96,10 @@ class ConsequenceOutcomeObservationV1:
             "execution_id",
             "gateway_record_id",
             "verifier_id",
+            "verifier_version",
         ):
             _require_text(name, data.get(name))
+        _require_digest("verifier_config_digest", data.get("verifier_config_digest"))
         _require_digest("action_digest", data.get("action_digest"), prefixed=False)
         for name in ("completion_criteria_hash", "evidence_requirement_hash"):
             _require_digest(name, data.get(name))
@@ -136,11 +137,11 @@ class ConsequenceOutcomeObservationV1:
                 "completion_criteria_hash": data["completion_criteria_hash"],
                 "evidence_requirement_hash": data["evidence_requirement_hash"],
                 "governed_effect_completed": data["governed_effect_completed"],
-                "completion_criteria_satisfied": data[
-                    "completion_criteria_satisfied"
-                ],
+                "completion_criteria_satisfied": data["completion_criteria_satisfied"],
                 "required_evidence_verified": data["required_evidence_verified"],
                 "verifier_id": data["verifier_id"],
+                "verifier_version": data["verifier_version"],
+                "verifier_config_digest": data["verifier_config_digest"],
             },
         )
 
@@ -158,17 +159,16 @@ class ConsequenceOutcomeObservationV1:
                 if data["action_digest"].startswith("sha256:")
                 else "sha256:" + data["action_digest"]
             ),
-            handoff_ref=f"consequence-verifier:{data['verifier_id']}",
-            handoff_digest=data["observation_digest"],
-            observed_events=(event,),
-            created_at=datetime.fromisoformat(
-                data["verified_at"].replace("Z", "+00:00")
+            handoff_ref=(
+                f"consequence-verifier:{data['verifier_id']}@{data['verifier_version']}"
             ),
+            handoff_digest=data["verifier_config_digest"],
+            observed_events=(event,),
+            created_at=datetime.fromisoformat(data["verified_at"].replace("Z", "+00:00")),
         )
 
 
 def consequence_outcome_digest(payload_without_digest: Mapping[str, Any]) -> str:
-    """Return the canonical Veritas digest expected by verify()."""
     return canonical_digest(dict(payload_without_digest))
 
 
