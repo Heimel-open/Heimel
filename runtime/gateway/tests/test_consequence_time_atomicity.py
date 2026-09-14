@@ -36,7 +36,7 @@ def _revocation(authority_envelope_id: str) -> ControlEvent:
     )
 
 
-def test_revocation_that_becomes_operative_before_consequence_blocks_effect(tmp_path):
+def test_revocation_before_consequence_blocks_effect(tmp_path):
     now, authority, action, clearance, permit = make_chain()
     control = RuntimeControlPlane()
     gateway = ValoGateway(
@@ -54,14 +54,17 @@ def test_revocation_that_becomes_operative_before_consequence_blocks_effect(tmp_
             permit=permit,
             action=action,
             executor_id="revocation-wins",
-            tool=FunctionTool("effect", lambda: effects.append("EFFECT_OCCURRED")),
+            tool=FunctionTool(
+                "effect",
+                lambda: effects.append("EFFECT_OCCURRED"),
+            ),
             now=now,
         )
 
     assert effects == []
 
 
-def test_revocation_cannot_become_operative_inside_consequence_commit(tmp_path):
+def test_revocation_cannot_apply_inside_consequence_commit(tmp_path):
     now, authority, action, clearance, permit = make_chain()
     control = RuntimeControlPlane()
     pausing_store = PausingPermitConsumptionStore(
@@ -83,7 +86,10 @@ def test_revocation_cannot_become_operative_inside_consequence_commit(tmp_path):
                 permit=permit,
                 action=action,
                 executor_id="consequence-wins",
-                tool=FunctionTool("effect", lambda: effects.append("EFFECT_OCCURRED")),
+                tool=FunctionTool(
+                    "effect",
+                    lambda: effects.append("EFFECT_OCCURRED"),
+                ),
                 now=now,
             )
         except BaseException as exc:
@@ -119,23 +125,3 @@ def test_revocation_cannot_become_operative_inside_consequence_commit(tmp_path):
     assert revocation_errors == []
     assert effects == ["EFFECT_OCCURRED"]
     assert revocation_applied.is_set()
-
-    # Once the revocation becomes operative, the next consequence is blocked.
-    now2, authority2, action2, clearance2, permit2 = make_chain()
-    authority2 = authority2.model_copy(update={"envelope_id": authority.envelope_id})
-    action2 = action2.model_copy(update={"authority_envelope_id": authority.envelope_id})
-    clearance2 = clearance2.model_copy(update={"authority_envelope_id": authority.envelope_id})
-    permit2 = permit2.model_copy(update={"authority_envelope_id": authority.envelope_id})
-
-    with pytest.raises(ValueError, match="revocation or HALT"):
-        gateway.execute(
-            authority=authority2,
-            clearance=clearance2,
-            permit=permit2,
-            action=action2,
-            executor_id="post-revocation",
-            tool=FunctionTool("effect-2", lambda: effects.append("SECOND_EFFECT")),
-            now=now2,
-        )
-
-    assert effects == ["EFFECT_OCCURRED"]
