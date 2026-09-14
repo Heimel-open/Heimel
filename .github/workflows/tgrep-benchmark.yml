@@ -27,6 +27,7 @@ jobs:
 
       - name: Benchmark
         run: |
+          sed -i "s/run(\['git', 'switch', '-'\])/run(['git', 'switch', '-'], check=False)/" tools/bench_tgrep_vs_rg.py
           python3 tools/bench_tgrep_vs_rg.py | tee /tmp/tgrep-benchmark.txt
 
       - name: Publish benchmark summary
