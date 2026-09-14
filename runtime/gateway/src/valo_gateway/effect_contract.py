@@ -6,8 +6,8 @@ from typing import Any, Iterable, Mapping
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from .claims_instrumentation import Status, VerificationResult
 from .contracts.models import canonical_digest
-from .integrations.claims_instrumentation import Status, VerificationResult
 
 
 class ConsequenceOperation(str, Enum):
