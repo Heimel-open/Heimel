@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Run the executable authority demo
+    url: https://reht.valoresearch.org/demos/executable-authority/
+    about: See stale authority denied at the consequence boundary before opening an issue.
+  - name: Read the public evidence surface
+    url: https://github.com/Heimel-open/Heimel/blob/main/EVIDENCE.yaml
+    about: Check what Heimel does and does not currently claim.
