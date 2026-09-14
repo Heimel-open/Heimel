@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "heimel-settlement-stripe"
+version = "0.1.0"
+description = "Optional Stripe funding adapter for Heimel consequence settlement"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+  "stripe>=15.4,<16",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/heimel_stripe_funding"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
