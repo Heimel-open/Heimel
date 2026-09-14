@@ -1,0 +1,13 @@
+name: heimel-usf-os-adapter
+version: 0.1.0
+layer: external-adapter-boundary
+description: Strict mapping boundary from USF-OS packets into non-authoritative Heimel ingress contracts
+license: Apache-2.0
+
+boundary:
+  executes_external_effects: false
+  grants_authority: false
+  classifies_consequence: false
+  trusts_external_evidence: false
+  allows_unknown_fields: false
+  direct_external_to_effect_path: false
