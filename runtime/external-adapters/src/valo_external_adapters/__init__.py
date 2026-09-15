@@ -1,5 +1,12 @@
 """Canonical external adapter contracts."""
 
+from .authority_hub import (
+    AuthorityHub,
+    AuthorityResolutionRequest,
+    CanonicalIdentityBinding,
+    ExternalIdentityAssertion,
+    IdentityVerification,
+)
 from .ecosystems import (
     ECOSYSTEM_MANIFESTS,
     EcosystemAdapterManifest,
@@ -70,10 +77,15 @@ from .uhp import (
 
 __all__ = [
     "AdapterDecision",
+    "AuthorityHub",
+    "AuthorityResolutionRequest",
     "AuthoritySnapshot",
+    "CanonicalIdentityBinding",
     "ConsequenceBinding",
     "ECOSYSTEM_MANIFESTS",
+    "ExternalIdentityAssertion",
     "FORBIDDEN_PROVIDER_OVERRIDE_KEYS",
+    "IdentityVerification",
     "PROVIDER_MANIFESTS",
     "UHP_ADAPTER_MANIFEST",
     "UHP_PROTOCOL_VERSION",
