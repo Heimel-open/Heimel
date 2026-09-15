@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="HEIMEL is an open-source consequence boundary for agentic systems. Fresh authority at consequence time. Governed effects. Verifiable evidence.">
+  <title>HEIMEL — Intent. Realized.</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07090b;--panel:#0d1115;--line:#232b32;--text:#f4f6f8;--muted:#a5afb8;--accent:#d7ff5f;--max:1160px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
+    a{color:inherit;text-decoration:none}.wrap{width:min(calc(100% - 40px),var(--max));margin:auto}
+    header{position:sticky;top:0;background:rgba(7,9,11,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:10}
+    nav{height:68px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:.12em}.navlinks{display:flex;gap:24px;color:var(--muted);font-size:14px}.navlinks a:hover{color:var(--text)}
+    .hero{padding:112px 0 88px}.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.hero h1{font-size:clamp(56px,9vw,116px);line-height:.91;letter-spacing:-.055em;margin:22px 0 30px;max-width:980px}.hero p{font-size:clamp(20px,2.6vw,30px);color:var(--muted);max-width:800px;margin:0 0 36px}.actions{display:flex;gap:14px;flex-wrap:wrap}.button{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border:1px solid var(--line);border-radius:8px;font-weight:650}.button.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+    section{padding:76px 0;border-top:1px solid var(--line)}h2{font-size:clamp(34px,5vw,60px);letter-spacing:-.04em;line-height:1.02;margin:0 0 26px}.lead{font-size:20px;color:var(--muted);max-width:760px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px;min-height:190px}.card .n{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em}.card h3{font-size:21px;margin:18px 0 10px}.card p{color:var(--muted);margin:0}
+    .flow{margin-top:38px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.flow div{padding:20px 14px;border:1px solid var(--line);border-radius:8px;text-align:center;color:var(--muted)}.flow strong{display:block;color:var(--text);margin-bottom:6px}
+    .statement{font-size:clamp(30px,5vw,58px);line-height:1.08;letter-spacing:-.035em;max-width:1050px;margin:0}.statement span{color:var(--accent)}
+    footer{padding:42px 0 56px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    @media(max-width:800px){.navlinks a:not(:last-child){display:none}.hero{padding-top:82px}.grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.wrap{width:min(calc(100% - 28px),var(--max))}}
+  </style>
+</head>
+<body>
+<header><div class="wrap"><nav><a class="brand" href="#">HEIMEL</a><div class="navlinks"><a href="#boundary">Boundary</a><a href="#invariants">Invariants</a><a href="https://github.com/Heimel-open/Heimel">GitHub</a></div></nav></div></header>
+<main>
+  <section class="hero"><div class="wrap"><div class="eyebrow">Open-source consequence infrastructure</div><h1>Intent.<br>Realized.</h1><p>HEIMEL is the mechanically enforceable boundary between agent intent and real-world consequence.</p><div class="actions"><a class="button primary" href="https://github.com/Heimel-open/Heimel">View on GitHub</a><a class="button" href="https://github.com/Heimel-open/Heimel/blob/main/START_HERE.txt">Start here</a></div></div></section>
+
+  <section id="boundary"><div class="wrap"><h2>Agents can plan freely.<br>Consequences need authority.</h2><p class="lead">HEIMEL sits underneath agent frameworks, tools and orchestration layers. It resolves authority again when an action is about to become consequential, binds that authority to the exact effect, and records what actually happened.</p><div class="flow"><div><strong>Intent</strong>agent proposes</div><div><strong>Authority</strong>resolved fresh</div><div><strong>Permit</strong>exact effect bound</div><div><strong>Effect</strong>governed path</div><div><strong>Evidence</strong>verifiable receipt</div></div></div></section>
+
+  <section id="invariants"><div class="wrap"><h2>The boundary is the product.</h2><div class="grid"><article class="card"><div class="n">01</div><h3>Fresh authority</h3><p>Previous approval is not enough. Authority is checked again at consequence time.</p></article><article class="card"><div class="n">02</div><h3>Exact binding</h3><p>The permit is bound to the specific state, action and effect that was authorized.</p></article><article class="card"><div class="n">03</div><h3>One governed path</h3><p>No direct effect path. Consequential actions pass through the boundary or they do not happen.</p></article><article class="card"><div class="n">04</div><h3>One-shot permits</h3><p>Execution authority is not a reusable bearer token. Replay is rejected.</p></article><article class="card"><div class="n">05</div><h3>Verifiable evidence</h3><p>The system records what was authorized, what executed and which consequence occurred.</p></article><article class="card"><div class="n">06</div><h3>Unknown fails closed</h3><p>Missing authority, mappings or bindings do not silently degrade into permission.</p></article></div></div></section>
+
+  <section><div class="wrap"><p class="statement">When humans can no longer keep a finger on every button, <span>authority, limits and responsibility must follow the button itself.</span></p></div></section>
+
+  <section><div class="wrap"><h2>Open source. Built to be attacked.</h2><p class="lead">Bring your agent architecture. Integrate HEIMEL underneath it. Test stale authority, replay, bypasses and direct effect paths. If the boundary breaks, show us.</p><div class="actions" style="margin-top:30px"><a class="button primary" href="https://github.com/Heimel-open/Heimel">Get the code</a><a class="button" href="https://github.com/Heimel-open/Heimel/blob/main/BREAK_HEIMEL.txt">Break HEIMEL</a></div></div></section>
+</main>
+<footer><div class="wrap foot"><div>HEIMEL — Intent. Realized.</div><div>Open source consequence infrastructure</div></div></footer>
+</body>
+</html>
