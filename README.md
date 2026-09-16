@@ -5,7 +5,8 @@
 <p align="center"><strong>Intent. Realized.</strong></p>
 
 <p align="center">
-Open infrastructure for deciding whether intent has the authority to become consequence — at the moment it matters.
+<strong>Authority infrastructure for all consequential authority.</strong><br>
+HEIMEL decides whether intent has the authority to become consequence — at the moment it matters — regardless of whether the actor is human, AI, software, workflow, API, robot or organization.
 </p>
 
 <p align="center">
@@ -29,6 +30,8 @@ Intent → HEIMEL → Consequence → Evidence
 Not every intent should become reality.
 
 When humans can no longer keep a finger on every button, authority, boundaries and accountability must follow the button itself.
+
+HEIMEL governs consequential authority, not a particular actor class. The actor may be a person, model, agent, workflow, enterprise system, API, robot or organization. What matters is whether that actor can create consequence.
 
 HEIMEL sits immediately before effect and answers one question:
 
