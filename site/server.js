@@ -78,3 +78,5 @@ http.createServer((req, res) => {
 }).listen(port, '0.0.0.0', () => {
   console.log(`HEIMEL site listening on ${port}`);
 });
+
+// Trigger Railway source deployment from the canonical branch.
