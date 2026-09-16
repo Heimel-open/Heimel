@@ -4,9 +4,11 @@ HEIMEL takes its name from the Norwegian word heimel, derived from Old Norse hei
 
 A heimel is the legitimate basis for exercising a right or taking an action: authority, legal basis, title, or evidence supporting a claim.
 
-That is the role HEIMEL plays for autonomous systems.
+That is the role HEIMEL plays for consequential authority.
 
-HEIMEL does not decide what a system is technically capable of doing. It determines whether a specific consequential action is authorized under the current authority, constraints and state — at the moment the action would become real — and preserves evidence of that decision.
+HEIMEL is authority infrastructure. It is not limited to AI governance, governance teams, or human decision-makers. The actor may be a person, AI agent, software system, workflow, API, robot, or organization. The relevant question is the same whenever authority can become consequence.
+
+HEIMEL does not decide what an actor is technically capable of doing. It determines whether a specific consequential action is authorized under the current authority, constraints and state — at the moment the action would become real — and preserves evidence of that decision.
 
 The name captures the core chain in one word:
 
