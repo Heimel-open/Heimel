@@ -31,12 +31,12 @@ const visualsCss = `<style>
 </style>`;
 
 const visualsHtml = `<section class="visuals" aria-label="Heimel in consequential environments"><div class="visual-grid">
-<article class="visual-card"><img src="assets/executive.webp" alt="Executives reviewing a consequential decision"><div class="visual-copy"><span>Executive authority</span><strong>Decisions with real consequence.</strong></div></article>
-<article class="visual-card"><img src="assets/underwriting.svg" alt="Underwriting review and risk assessment"><div class="visual-copy"><span>Underwriting</span><strong>Authority before risk is bound.</strong></div></article>
-<article class="visual-card"><img src="assets/factory.webp" alt="Industrial production line with robotic equipment"><div class="visual-copy"><span>Industrial systems</span><strong>Autonomy without a direct effect path.</strong></div></article>
-<article class="visual-card"><img src="assets/claims.webp" alt="Claims review and evidence assessment"><div class="visual-copy"><span>Claims and evidence</span><strong>Every action attributable and replayable.</strong></div></article>
+<article class="visual-card"><img src="assets/executive.webp" alt="Executives reviewing a consequential decision"><div class="visual-copy"><span>Executive oversight</span><strong>Scale responsibility without losing visibility.</strong></div></article>
+<article class="visual-card"><img src="assets/underwriting.svg" alt="Underwriting review and risk assessment"><div class="visual-copy"><span>Underwriting</span><strong>Prove reliability before expanding scope.</strong></div></article>
+<article class="visual-card"><img src="assets/factory.webp" alt="Industrial production line with robotic equipment"><div class="visual-copy"><span>Industrial systems</span><strong>Increase autonomy inside proven boundaries.</strong></div></article>
+<article class="visual-card"><img src="assets/claims.webp" alt="Claims review and evidence assessment"><div class="visual-copy"><span>Claims and evidence</span><strong>Know what happened before trusting more.</strong></div></article>
 <article class="visual-card visual-card-tall"><img src="assets/shadow-mode.webp" alt="Heimel shadow mode"><div class="visual-copy"><span>Shadow mode</span><strong>Change when you know, not when you guess.</strong></div></article>
-<article class="visual-card visual-card-tall"><img src="assets/intent-realized-office.webp" alt="Heimel office"><div class="visual-copy"><span>Heimel</span><strong>Our intent realized.</strong></div></article>
+<article class="visual-card visual-card-tall"><img src="assets/intent-realized-office.webp" alt="Heimel office"><div class="visual-copy"><span>Heimel</span><strong>Trust your AI enough to scale it.</strong></div></article>
 </div></section>`;
 
 http.createServer((req, res) => {
@@ -64,7 +64,15 @@ http.createServer((req, res) => {
         }
         let html = source.replace('</head>', `${visualsCss}</head>`);
         html = html.replace('<section class="block" id="how">', `${visualsHtml}<section class="block" id="how">`);
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
+        res.writeHead(200, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store, max-age=0, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'CDN-Cache-Control': 'no-store',
+          'Cloudflare-CDN-Cache-Control': 'no-store',
+          'X-Heimel-Version': 'ai-scale-v1'
+        });
         return res.end(html);
       });
     }
