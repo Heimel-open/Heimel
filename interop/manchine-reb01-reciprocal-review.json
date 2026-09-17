@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "manifest_id": "heimel-manchine-reb01-reciprocal-review",
+  "status": "frozen_for_protocol_review",
+  "review_type": "reciprocal_bounded_protocol_review",
+  "review_effort_cap_minutes": 120,
+  "owner": "Njål",
+  "heimel": {
+    "repository": "Heimel-open/Heimel",
+    "base_revision": "88e6359dcd8da0c5d721870a5b1200723f5f833e",
+    "claim": {
+      "id": "HEIMEL-CONSEQUENCE-BOUNDARY-01",
+      "scope": "local_reference_consequence_boundary",
+      "statement": "A previously authorized effect must not execute after the governing authority state changes. At execution, the permit must still match the current authority revision and exact effect; stale, expired, replayed, or retargeted permits fail closed before the local effect is invoked. A successful local effect produces a receipt bound to the permit, effect digest, authority revision, and outcome.",
+      "evidence_status": "measured",
+      "boundedness": "This claim is limited to the in-memory local reference boundary and local governed consequence path. It does not claim production hardening, enterprise high availability, external-system enforcement, certification, or universal deployment security."
+    },
+    "normative_properties": [
+      "FRESH_AUTHORITY_AT_CONSEQUENCE_TIME",
+      "EXACT_DECISION_EFFECT_BINDING",
+      "FAIL_CLOSED_ON_MISSING_STALE_OR_MISMATCHED_STATE",
+      "ONE_SHOT_ENFORCEMENT_WHERE_PERMITS_ARE_USED",
+      "ATTRIBUTABLE_CONSEQUENCE_EVIDENCE"
+    ],
+    "immutable_evidence": [
+      {
+        "path": "GOVERNANCE.yaml",
+        "blob_sha": "269960b318fae1c263ab07e30b66b242cef0414f",
+        "role": "normative_property_registry"
+      },
+      {
+        "path": "EVIDENCE.yaml",
+        "blob_sha": "f53a4682195b2ae17a5a708ce78931d46cd9a3d9",
+        "role": "public_evidence_surface"
+      },
+      {
+        "path": "packages/boundary/src/heimel_boundary/__init__.py",
+        "blob_sha": "cfc277964f97bfa75dbe3478934e8a3884ab7637",
+        "role": "reference_boundary_implementation"
+      },
+      {
+        "path": "packages/boundary/tests/test_boundary.py",
+        "blob_sha": "1def98097f6216330cf2dfa69dd8a64ae485800f",
+        "role": "boundary_behavior_tests"
+      }
+    ],
+    "expected_behavior": [
+      {
+        "case": "authority_changes_after_authorization",
+        "sequence": [
+          "authorize exact effect under authority revision N",
+          "change or revoke authority so current revision becomes N+1",
+          "attempt execution using the permit issued at revision N"
+        ],
+        "required_result": "fail_closed_before_effect",
+        "reference_test": "test_changed_authority_denies_stale_permit_before_effect"
+      },
+      {
+        "case": "exact_effect_mismatch",
+        "required_result": "fail_closed_before_effect",
+        "reference_test": "test_permit_cannot_be_replayed_or_retargeted"
+      },
+      {
+        "case": "permit_replay",
+        "required_result": "second_effect_rejected",
+        "reference_test": "test_permit_cannot_be_replayed_or_retargeted"
+      },
+      {
+        "case": "permit_expiry",
+        "required_result": "fail_closed_before_effect",
+        "reference_test": "test_expired_permit_fails_closed"
+      },
+      {
+        "case": "successful_exact_effect",
+        "required_result": "receipt_binds_effect_and_outcome",
+        "reference_test": "test_fresh_authority_exact_binding_and_receipt"
+      }
+    ]
+  },
+  "external_target": {
+    "organization": "ManChine AI Technology",
+    "artifact": "REB-01",
+    "title": "Runtime Execution Boundary",
+    "version": "1.0",
+    "publication_status": "Published; Architecture Frozen; Proof Closed 34/34",
+    "public_index": "https://manchine.ai/research.html",
+    "review_scope": "The boundary that governs whether consequential execution may begin and enforces the Admissibility Determination at activation."
+  },
+  "reciprocal_challenge": {
+    "primary_question": "What happens when authority or another governing condition changes after an earlier admissibility or authorization decision but before the consequential effect occurs?",
+    "shared_timeline": [
+      {
+        "time": "T0",
+        "event": "The proposed consequence is admissible or authorized under the then-current governing state."
+      },
+      {
+        "time": "T1",
+        "event": "Authority or another governing condition materially changes or is revoked."
+      },
+      {
+        "time": "T2",
+        "event": "The consequential effect is attempted using the earlier decision or authorization."
+      }
+    ],
+    "heimel_required_result": "The stale authorization cannot produce the effect. Current governing state must be satisfied at consequence time, otherwise execution fails closed before effect.",
+    "question_for_reb01": "Does REB-01 v1.0 independently detect or require re-evaluation of the T1 change before T2 effect activation, or can a previously valid Admissibility Determination remain operative across that change?",
+    "comparison_rule": "Compare responsibility allocation and observable behavior, not terminology or architectural branding."
+  },
+  "kill_conditions": [
+    "The reviewed artifact or version is not immutable or cannot be uniquely identified.",
+    "The review requires changing either architecture before its current behavior can be evaluated.",
+    "The proposed test cannot distinguish a stale-authority effect from a fresh-authority effect.",
+    "Required execution or evidence artifacts cannot be independently inspected or replayed within the agreed boundary.",
+    "A party must disclose excluded private material for the bounded claim to be evaluated."
+  ],
+  "required_review_evidence": [
+    "exact artifact and immutable identity",
+    "one bounded claim",
+    "controlling protocol or normative rule",
+    "expected behavior for T0-T1-T2",
+    "negative case showing stale authority cannot cause effect",
+    "evidence showing whether the effect occurred",
+    "decision/effect binding evidence",
+    "replay or equivalent independent verification artifact",
+    "explicit exclusions and non-claims"
+  ],
+  "severity": {
+    "critical": "A stale or revoked authority state can still produce the consequential effect through the reviewed boundary.",
+    "high": "The boundary rejects the effect but cannot produce sufficient evidence to bind the rejection or effect attempt to the governing state and proposed consequence.",
+    "medium": "The required behavior exists but the version, protocol, or evidence binding is ambiguous enough to prevent independent replay.",
+    "low": "Non-semantic ambiguity or documentation defect that does not alter the bounded outcome."
+  },
+  "remediation_rule": "Findings are reported against the frozen reviewed artifact. Remediation, if any, occurs separately and does not rewrite the original review result.",
+  "exclusions": [
+    "RiCo-01 is not reopened or modified by this review.",
+    "The review does not claim equivalence between ManChine and Heimel architectures.",
+    "The review does not evaluate model quality, reasoning quality, policy quality, or general AI safety.",
+    "The review does not expand the Heimel claim beyond the cited local reference implementation and evidence surface.",
+    "Protocol review and execution are separate gates; completion of this manifest does not authorize execution."
+  ]
+}
