@@ -184,6 +184,8 @@ def bind_paseo_effect_for_reht(
         raise ValueError("authority is not active at consequence time")
 
     if authority.principal != context.agent_id:
+        if context.parent_agent_id is None:
+            raise ValueError("authority principal does not match Paseo agent")
         if context.parent_agent_id != authority.principal or delegation is None:
             raise ValueError(
                 "child agent requires explicit active delegation from authority principal"
