@@ -39,6 +39,38 @@ HEIMEL sits immediately before effect and answers one question:
 
 The first-level model does not depend on a model vendor, agent framework, workflow engine or enterprise system.
 
+## Integration model
+
+HEIMEL is designed to sit between existing enterprise control systems and the consequence-bearing executor rather than replace them.
+
+```text
+Identity / IAM / IdP
+        ↓
+Delegation + provenance
+        ↓
+Current authoritative state + policy inputs
+        ↓
+HEIMEL consequence-time authorization
+        ↓
+Bound permit
+        ↓
+Gated executor holding consequence capability
+        ↓
+Actual effect
+        ↓
+Verifiable effect evidence
+```
+
+Operational rules:
+
+- **Identity is upstream input, not execution authority.** Existing IAM, IdP, SSO, workload identity and agent identity systems may establish who or what is acting. HEIMEL resolves whether that actor has current authority for the exact consequence.
+- **Delegation attenuates.** Delegated authority cannot silently exceed the authority from which it was derived. Origin, scope, expiry, purpose and constraints remain attributable through the chain.
+- **Policy engines are replaceable inputs.** Cedar, OPA, Cerbos-style PDPs or internal policy systems may contribute rules and context. They do not replace fresh authority resolution at consequence time.
+- **Consequence capability belongs after the boundary.** Downstream credentials, signing capability, write access and other effect-bearing capability must be held by the governed executor or equivalently isolated so the upstream actor has no direct effect path around Gateway.
+- **No recorded authorization, no authorization.** An ALLOW must be bound to attributable evidence before execution authority is released.
+- **Decision evidence and effect evidence are distinct.** HEIMEL must preserve what was authorized and what actually happened, so an authorization receipt cannot be mistaken for proof of external effect.
+- **Replay precedes rollout.** Candidate authority or policy changes should be evaluated against recorded execution frames before activation when historical evidence is available.
+
 ## The clean-room model
 
 HEIMEL can be understood as a governed clean room around consequence-bearing execution.
@@ -175,9 +207,11 @@ A self-hosted Open Heimel deployment does not require Heimel or VALO Research as
 
 ## Heimel Enterprise
 
-Enterprise is separate governance infrastructure around the open governed-execution mechanism. It is not a license lock around local execution.
+Enterprise is separate governance infrastructure around the open governed-execution mechanism. It is not a license lock around local execution and it is not a larger SaaS plan.
 
-Enterprise exists for organization-level control: identity federation, SSO/SCIM, IAM integration, authority administration, separation of duties, approval flows, policy lifecycle, versioning and rollback, organization boundaries, delegated administration, multi-tenant isolation, secrets, deployment governance, HA/DR, retention, immutable evidence operations, observability, SLA and support.
+Enterprise engagements combine organizational software, deployment, certified integrations, assurance and support. Verified-consequence settlement is priced separately based on usage and risk profile.
+
+Enterprise capabilities include identity federation, SSO/SCIM, IAM integration, authority administration, separation of duties, approval flows, delegated administration, policy lifecycle, candidate-policy replay, shadow evaluation, versioning and rollback, organization boundaries, multi-tenant isolation, consequence-credential placement, secrets, deployment governance, HA/DR, retention, immutable evidence operations, observability, enterprise integrations, assurance controls, SLA and support.
 
 ```text
 Heimel Open       → defines and implements governed execution
@@ -187,7 +221,7 @@ Veritas           → preserves attributable evidence
 Heimel Certified  → provides official conformance / compatibility attestation
 ```
 
-Managed deployment forms may include Heimel Cloud, Private Cloud, Sovereign and Air-gapped. These are deployment forms of the same governance semantics, not divergent products.
+Managed deployment forms may include Heimel Cloud, Private Cloud, VPC, On-premises, Sovereign, Isolated and Air-gapped. These are deployment forms of the same governance semantics, not divergent products.
 
 The canonical product boundary is machine-readable in `docs/open-enterprise-contract.yaml`.
 
@@ -215,7 +249,7 @@ By default:
 
 A contract may define the price for a consequence class, but the protocol does not hard-code a universal dollar price.
 
-Open Heimel remains free to run locally. Enterprise pricing applies to the separate organizational/commercial governance layer and its contracted settlement semantics.
+Open Heimel remains free to run locally. Enterprise engagements combine organizational software, deployment, certified integrations, assurance and support. Verified-consequence settlement is priced separately based on usage and risk profile.
 
 > We do not charge to make governed execution possible. We charge to make governed execution governable at organizational scale.
 
@@ -231,6 +265,8 @@ Passing the open conformance suite does not by itself imply official Heimel cert
 
 HEIMEL does not depend on who forms intent. Models, agents, humans, workflows, enterprise systems, robots, IoT and payment systems can all sit upstream.
 
+Identity, policy and orchestration remain replaceable inputs. Consequence-bearing capability must remain downstream of the governed boundary or be equivalently isolated so there is no direct effect path around Gateway.
+
 HEIMEL governs the transition:
 
 ```text
@@ -239,7 +275,7 @@ intention → authorized consequence
 
 ## Design principles
 
-**No direct effect path · No implicit capability transfer · No ungoverned cross-workspace path · Fresh authority · Exact action binding · Fail closed · Evidence by construction · Model independence · No mandatory phone-home**
+**No direct effect path · No implicit capability transfer · No ungoverned cross-workspace path · Fresh authority · Delegation attenuation · Exact action binding · Consequence capability after the boundary · Fail closed · Evidence before allow · Decision/effect evidence separation · Replay before rollout · Model independence · No mandatory phone-home**
 
 ## Verify packages locally
 
@@ -259,7 +295,7 @@ Use `release.yaml` as the source of truth for package versions, tags and release
 
 HEIMEL is not a model, agent framework, IAM replacement or generic policy engine.
 
-Identity can establish who an actor is. A model can propose what to do. A workflow can route the work.
+Identity can establish who an actor is. A policy engine can express rules. A model can propose what to do. A workflow can route the work.
 
 **HEIMEL keeps the transition from intent to consequence bound to current authority, exact effect, exclusive enforcement and verifiable outcome.**
 

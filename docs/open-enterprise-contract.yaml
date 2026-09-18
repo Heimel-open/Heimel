@@ -43,6 +43,7 @@ open_heimel:
 enterprise:
   purpose: "Provide authoritative organization-level governance of governed execution."
   architecture_contract: docs/enterprise-control-plane.yaml
+  commercial_model: "Enterprise engagements combine organizational software, deployment, certified integrations, assurance and support. Verified-consequence settlement is priced separately based on usage and risk profile."
   capabilities:
     - identity_federation
     - sso
@@ -53,10 +54,13 @@ enterprise:
     - approval_flows
     - policy_lifecycle
     - policy_versioning
+    - candidate_policy_replay
+    - shadow_evaluation
     - rollback
     - organization_boundaries
     - delegated_administration
     - multi_tenant_isolation
+    - consequence_credential_placement
     - secrets_management
     - deployment_governance
     - high_availability
@@ -64,9 +68,47 @@ enterprise:
     - retention
     - immutable_evidence_operations
     - observability
+    - enterprise_integrations
+    - assurance_controls
     - enterprise_support
     - sla
+  assurance:
+    includes:
+      - authority_change_control
+      - policy_change_control
+      - revocation_provenance
+      - audit_evidence_retention
+      - upgrade_governance
+      - failure_governance
+      - dispute_evidence
+      - responsibility_boundaries
+  integrations:
+    categories:
+      - iam
+      - siem
+      - erp
+      - workflow
+      - agent_platforms
+      - enterprise_software
   rule: "Enterprise must remain separable from the open governed-execution mechanism; it must not be a license lock around the same local capability."
+
+partner_ecosystem:
+  integrator_program:
+    name: HEIMEL Integrator Program
+    purpose: "Build and certify systems that can act with bounded authority."
+    partner_access:
+      - conformance_tooling
+      - reference_integrations
+      - sandbox_testing
+      - certification_pathway
+      - technical_enablement
+      - joint_customer_delivery
+      - verified_integrator_listing
+  categories:
+    - integrators
+    - technology_and_platform_partners
+    - assurance_and_certification_partners
+  certification_rule: "Partner status and certification must bind to explicit tested profiles and versions; partnership alone does not imply conformance."
 
 product_layers:
   heimel_open: "Defines and implements governed execution."
@@ -74,9 +116,12 @@ product_layers:
   heimel_gateway: "Enforces the exclusive consequence path."
   veritas: "Preserves attributable effect and outcome evidence."
   heimel_certified: "Provides official conformance and compatibility attestation."
+  verified_consequence_settlement: "Settles contracted value only after the governed consequence satisfies its authorization, completion and evidence requirements."
   managed:
     - Heimel Cloud
     - Heimel Private Cloud
+    - Heimel VPC
+    - Heimel On-premises
     - Heimel Sovereign
     - Heimel Air-gapped
 
@@ -84,6 +129,13 @@ certification:
   conformance_suite: open
   official_attestation: commercial
   policy: docs/certification-policy.yaml
+  program_elements:
+    - versioned_standard
+    - test_suite
+    - control_points
+    - certification_profile
+    - recertification
+    - verifiable_status
   attestation_must_bind:
     - implementation_identity
     - artifact_or_build_digest
@@ -135,23 +187,11 @@ metering:
     - charge_on_deny
     - charge_on_escalate
     - retrospective_invoice_required
-  no_charge_states:
-    - DENY
-    - ESCALATE
-    - FAILED_EFFECT
-    - UNVERIFIED_OUTCOME
-    - DUPLICATE
-  pricing_rule: "Enterprise pricing is consequence-based. Internal governance work may be metered by tick but customer settlement occurs only for a verified governed consequence."
-  forbidden_default:
-    - seat_based_primary_pricing
-    - governed_tick_billing
-    - charge_on_deny
-    - charge_on_escalate
-    - retrospective_invoice_required
 
 settlement:
   model: prepaid_or_preauthorized_atomic_settlement
   principle: "Settlement follows verified consequence evidence and does not require retrospective invoicing."
+  commercial_rule: "Verified-consequence settlement is a separate commercial layer priced by contracted usage and risk profile."
   sequence:
     - funding_or_allowance_bound
     - proposed_consequence
@@ -209,7 +249,23 @@ licensing:
   rule: "Do not describe source-available or commercial-use-restricted code as open source."
 
 deployment:
-  semantic_equivalence_rule: "Cloud, Private Cloud, Sovereign and Air-gapped are deployment forms of the same governance system, not divergent product semantics."
+  forms:
+    - cloud
+    - private_cloud
+    - vpc
+    - on_premises
+    - sovereign
+    - isolated
+    - air_gapped
+  enterprise_controls:
+    - region_and_data_residency
+    - enterprise_key_management
+    - customer_controlled_secrets
+    - siem_integration
+    - iam_integration
+    - erp_integration
+    - workflow_integration
+  semantic_equivalence_rule: "Cloud, Private Cloud, VPC, On-premises, Sovereign, Isolated and Air-gapped are deployment forms of the same governance system, not divergent product semantics."
 
 provider_independence:
   rule: "Heimel does not depend on who forms intent; it governs the transition from intention to authorized consequence."
@@ -225,5 +281,5 @@ provider_independence:
 
 commercial_thesis:
   rule: "Revenue should scale with verified governed consequences rather than human seat count or internal governance-event volume."
-  statement: "Open execution is free. Enterprise pays when a governed consequence is completed and verified."
-  settlement_statement: "Meter by tick internally; price and settle by consequence."
+  statement: "Open execution is free. Enterprise engagements combine organizational software, deployment, certified integrations, assurance and support."
+  settlement_statement: "Verified-consequence settlement is priced separately based on usage and risk profile."
