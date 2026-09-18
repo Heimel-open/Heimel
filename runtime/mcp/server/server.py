@@ -27,6 +27,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.create_plan",
             "description": "Create a Parable-style plan: intent + evidence ids. Returns plan_id.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -40,6 +46,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.approve_plan",
             "description": "Approve a plan so execution can begin.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": True,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {"plan_id": {"type": "string"}},
@@ -49,6 +61,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.list_plans",
             "description": "List recent plans.",
+            "annotations": {
+                "readOnlyHint": True,
+                "destructiveHint": False,
+                "idempotentHint": True,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {"limit": {"type": "integer", "default": 20}},
@@ -57,6 +75,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.add_gate",
             "description": "Add a 5-gate check to a plan: evidence | command_output | review | ensemble.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -71,6 +95,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.pass_gate",
             "description": "Mark a gate as passed with optional evidence/output refs.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": True,
+                "idempotentHint": True,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -84,6 +114,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.list_gates",
             "description": "List gates for a plan.",
+            "annotations": {
+                "readOnlyHint": True,
+                "destructiveHint": False,
+                "idempotentHint": True,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {"plan_id": {"type": "string"}},
@@ -93,6 +129,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.create_delegation",
             "description": "Delegate work to a worker agent/model for a specific gate.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -108,6 +150,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.complete_delegation",
             "description": "Complete a delegation with optional result ref.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": True,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -120,6 +168,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.add_review",
             "description": "Add a review verdict to a delegation: approve | revise | reject.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -134,6 +188,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.create_ensemble",
             "description": "Run an N-way ensemble on a gate to surface contradictions.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -148,6 +208,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.complete_ensemble",
             "description": "Complete an ensemble run.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": True,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -160,6 +226,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.add_contradiction",
             "description": "Record a contradiction found between two agents in an ensemble.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -174,6 +246,12 @@ def create_mcp_server(broker: ValoBroker):
         {
             "name": "valo.resolve_contradiction",
             "description": "Resolve a contradiction: accepted | ignored | pending.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": True,
+                "idempotentHint": True,
+                "openWorldHint": False,
+            },
             "inputSchema": {
                 "type": "object",
                 "properties": {
