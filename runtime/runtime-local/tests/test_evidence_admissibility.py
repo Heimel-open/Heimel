@@ -20,12 +20,12 @@ def _required_action():
     }
 
 
-def _evidence(*, sufficiency="SUFFICIENT"):
+def _evidence(*, sufficiency="SUFFICIENT", content_hash=None, derivation_hash=None):
     return EvidenceRecord(
         source_ref="cas://source-1",
-        content_hash="sha256:" + "a" * 64,
+        content_hash=content_hash or "sha256:" + "a" * 64,
         read_ref="bytes:0-128",
-        derivation_hash="sha256:" + "b" * 64,
+        derivation_hash=derivation_hash or "sha256:" + "b" * 64,
         evaluator_id="heimel-evidence",
         evaluator_version="1",
         sufficiency=sufficiency,
@@ -68,6 +68,35 @@ def test_insufficient_evidence_cannot_be_promoted_by_authority_grant():
 
     result = runtime.evaluate_evidence(aid, _evidence(sufficiency="INSUFFICIENT"))
     assert result.decision is EvidenceAdmissibilityDecision.INSUFFICIENT
+
+    with pytest.raises(ConsequenceDenied, match="evidence .*admissible"):
+        runtime.authorize(aid, now=datetime(2026, 9, 18, tzinfo=UTC))
+
+
+@pytest.mark.parametrize(
+    ("content_hash", "derivation_hash"),
+    [
+        ("sha256:", "sha256:" + "b" * 64),
+        ("sha256:not-a-digest", "sha256:" + "b" * 64),
+        ("sha256:" + "a" * 63, "sha256:" + "b" * 64),
+        ("sha256:" + "a" * 65, "sha256:" + "b" * 64),
+        ("sha256:" + "g" * 64, "sha256:" + "b" * 64),
+        ("sha256:" + "a" * 64, "sha256:"),
+        ("sha256:" + "a" * 64, "sha256:not-a-digest"),
+        ("sha256:" + "a" * 64, "sha256:" + "g" * 64),
+    ],
+)
+def test_malformed_required_evidence_digest_is_refused(content_hash, derivation_hash):
+    runtime = LocalRuntime()
+    aid = runtime.submit(_required_action())
+    runtime.grant(aid)
+
+    result = runtime.evaluate_evidence(
+        aid,
+        _evidence(content_hash=content_hash, derivation_hash=derivation_hash),
+    )
+    assert result.decision is EvidenceAdmissibilityDecision.REFUSE
+    assert result.reason == "unsupported_evidence_digest"
 
     with pytest.raises(ConsequenceDenied, match="evidence .*admissible"):
         runtime.authorize(aid, now=datetime(2026, 9, 18, tzinfo=UTC))
