@@ -9,7 +9,11 @@ from dataclasses import dataclass
 from enum import Enum
 import hashlib
 import json
+import re
 from typing import Optional
+
+
+_SHA256_RE = re.compile(r"^sha256:[0-9a-fA-F]{64}$")
 
 
 class EvidenceRequirement(str, Enum):
@@ -55,6 +59,10 @@ class EvidenceAdmissibilityResult:
     reason: str
 
 
+def _is_sha256_digest(value: str) -> bool:
+    return _SHA256_RE.fullmatch(value) is not None
+
+
 def evaluate_evidence(
     requirement: EvidenceRequirement,
     evidence: Optional[EvidenceRecord],
@@ -88,7 +96,7 @@ def evaluate_evidence(
             reason="material_evidence_binding_missing",
         )
 
-    if not evidence.content_hash.startswith("sha256:") or not evidence.derivation_hash.startswith("sha256:"):
+    if not _is_sha256_digest(evidence.content_hash) or not _is_sha256_digest(evidence.derivation_hash):
         return EvidenceAdmissibilityResult(
             decision=EvidenceAdmissibilityDecision.REFUSE,
             derivation_receipt=None,
