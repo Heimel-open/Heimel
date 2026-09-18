@@ -25,6 +25,7 @@ control_plane_owners:
       - delegation administration
       - revocation administration
       - organization authority views
+      - authority change provenance
     publishes_to: kernel_operative_state
     does_not_own:
       - REHT consequence-time authorization
@@ -35,10 +36,15 @@ control_plane_owners:
       - policy authoring workflow
       - versioning
       - approval
+      - candidate-policy replay
+      - shadow evaluation
       - activation
       - rollback
       - policy provenance
     publishes_to: kernel_operative_state
+    rules:
+      - "Candidate policies may be evaluated against historical execution frames before activation."
+      - "Shadow evaluation must not create execution authority or real-world effect."
     does_not_own:
       - direct effect execution
 
@@ -70,7 +76,30 @@ control_plane_owners:
       - environment promotion controls
       - configuration provenance
       - controlled rollout and rollback
-    rule: "Cloud, Private Cloud, Sovereign and Air-gapped preserve the same consequence semantics."
+      - region and data-residency controls
+      - enterprise key-management integration
+    rule: "Cloud, Private Cloud, VPC, On-premises, Sovereign, Isolated and Air-gapped preserve the same consequence semantics."
+
+  consequence_credential_placement:
+    owns:
+      - consequence-bearing credential placement policy
+      - executor credential isolation requirements
+      - signing-capability isolation requirements
+      - direct-effect-path validation
+    invariant: "Credentials, signing capability, write access or equivalent effect-bearing capability must not give an upstream actor a direct path around Gateway."
+    does_not_own:
+      - consequence-time authorization
+      - effect decision semantics
+
+  enterprise_assurance:
+    owns:
+      - authority and policy change-control evidence
+      - revocation provenance
+      - upgrade governance
+      - failure-mode governance
+      - dispute evidence procedures
+      - customer_integrator_heimel responsibility boundaries
+    rule: "Assurance describes and verifies control operation; it does not create execution authority."
 
   retention:
     owns:
@@ -96,6 +125,15 @@ control_plane_owners:
       - access policy
       - deployment-time secret delivery
     rule: "Secrets do not confer consequence authority by themselves."
+
+  enterprise_integrations:
+    owns:
+      - IAM integration
+      - SIEM integration
+      - ERP integration
+      - workflow integration
+      - agent-platform integration
+    rule: "Integrated systems remain upstream or downstream according to their role; integration does not collapse identity, policy or execution into authority."
 
   observability:
     owns:
@@ -129,3 +167,4 @@ forbidden_architectures:
   - policy_console_as_direct_execution_authority
   - identity_provider_as_sufficient_effect_authority
   - observability_or_receipt_as_retroactive_authorization
+  - upstream_consequence_credentials_bypassing_gateway
