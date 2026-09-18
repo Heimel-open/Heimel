@@ -22,6 +22,7 @@ normative_properties:
   - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
   - NO_UNGOVERNED_HARNESS_TRANSITION
   - NO_INFERRED_AUTHORITY
+  - NO_INFLUENCE_DERIVED_AUTHORITY
   - FRESH_AUTHORITY_AT_CONSEQUENCE_TIME
   - EXACT_DECISION_EFFECT_BINDING
   - FAIL_CLOSED_ON_MISSING_STALE_OR_MISMATCHED_STATE
@@ -48,6 +49,28 @@ inferred_authority_boundary:
     - cognitive_or_relational_representation
   consequence_rule: "Authority for a real effect must resolve from an explicit admissible authority source and be freshly validated at consequence time."
   cognitive_compromise_assumption: "Any model, agent, human, collective, memory, context, message, inference or upstream decision process may be cognitively compromised. Cognitive confidence MUST NOT confer effect authority."
+
+influence_boundary:
+  property: NO_INFLUENCE_DERIVED_AUTHORITY
+  principle: "HEIMEL does not prohibit an agent from disagreeing with, challenging, persuading or changing the mind of a principal. Influence is part of legitimate human-agent and human-human relationships."
+  permitted_agent_behavior:
+    - disagreement
+    - challenge
+    - persuasion
+    - recommendation
+    - preference_change
+    - decision_support
+  prohibited_conflations:
+    - influence_as_authority
+    - recommendation_as_consent
+    - persuasion_as_delegation
+    - preference_change_as_capability_grant
+    - model_objective_as_principal_objective
+  objective_transparency_rule: "An agent MUST NOT conceal a materially conflicting optimization objective when that concealment is relevant to the principal's decision or a downstream consequential action."
+  separation_rule: "The system MUST distinguish the principal's expressed intent, the agent's recommendation or argument, the principal's subsequent decision, and the authority actually granted for consequence."
+  authority_rule: "A principal decision reached after influence may be valid, but the influence itself MUST NOT create, extend, transfer or substitute effect authority."
+  consequence_rule: "When a consequential action follows agent influence, authority MUST still resolve from an explicit admissible authority source and be freshly validated at consequence time."
+  safety_boundary: "The prohibited condition is not influence itself, but concealed conflicting interest or objective combined with influence that is allowed to become effect authority without an independent authority check."
 
 evidence_admissibility_boundary:
   property: NO_UNGROUNDED_CLAIM_PATH
