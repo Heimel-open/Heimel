@@ -17,6 +17,7 @@ trusted_party_boundary:
 
 normative_properties:
   - NO_DIRECT_EFFECT_PATH
+  - NO_UNGROUNDED_CLAIM_PATH
   - NO_IMPLICIT_CAPABILITY_TRANSFER
   - NO_UNGOVERNED_CROSS_WORKSPACE_PATH
   - NO_UNGOVERNED_HARNESS_TRANSITION
@@ -47,6 +48,26 @@ inferred_authority_boundary:
     - cognitive_or_relational_representation
   consequence_rule: "Authority for a real effect must resolve from an explicit admissible authority source and be freshly validated at consequence time."
   cognitive_compromise_assumption: "Any model, agent, human, collective, memory, context, message, inference or upstream decision process may be cognitively compromised. Cognitive confidence MUST NOT confer effect authority."
+
+evidence_admissibility_boundary:
+  property: NO_UNGROUNDED_CLAIM_PATH
+  status: conditional-capability
+  decisions:
+    - ADMIT
+    - REFUSE
+    - INSUFFICIENT
+  minimum_binding:
+    - source_ref
+    - content_hash
+    - read_ref
+    - derivation_hash
+    - evaluator_id
+    - evaluator_version
+    - sufficiency
+  rule: "When a governing contract requires evidential support, a claim or decision basis MUST NOT become consequence-authorizable unless the required evidence is mechanically admissible."
+  separation_rule: "Evidence admissibility may refuse or mark a basis insufficient; it MUST NOT create, extend, transfer or substitute execution authority."
+  fail_closed_rule: "Missing, malformed, unsupported or insufficient required evidence MUST block consequence authorization before any effect permit is issued."
+  replay_rule: "An admitted evidential basis SHOULD carry a deterministic derivation receipt sufficient to bind the evaluated source material and derivation into replay."
 
 clean_room_model:
   canonical_description: docs/architecture/clean-room-model.md

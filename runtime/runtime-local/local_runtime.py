@@ -2,7 +2,8 @@
 
 Submission never executes. A successful consequence requires fresh authority,
 exact effect binding, a positively issued one-shot permit, execution, and
-attributable evidence.
+attributable evidence. When a governing input requires evidence, the decision
+basis must also pass the evidence-admissibility boundary before authorization.
 """
 from __future__ import annotations
 
@@ -16,6 +17,13 @@ import uuid
 from typing import Any, Dict, Optional
 
 from core.interfaces import RuntimeInterface, Event, Checkpoint, Result, Decision
+from evidence_admissibility import (
+    EvidenceAdmissibilityDecision,
+    EvidenceAdmissibilityResult,
+    EvidenceRecord,
+    EvidenceRequirement,
+    evaluate_evidence,
+)
 
 
 def _digest(value: object) -> str:
@@ -80,15 +88,27 @@ class LocalRuntime(RuntimeInterface):
         aid = "act-" + uuid.uuid4().hex[:12]
         normalized = dict(action)
         effect_digest = _digest(normalized)
+        requirement_raw = normalized.get("evidence_requirement", EvidenceRequirement.NOT_REQUIRED.value)
+        try:
+            requirement = EvidenceRequirement(requirement_raw)
+        except ValueError as exc:
+            raise ValueError(f"unsupported evidence requirement: {requirement_raw}") from exc
         self._actions[aid] = {
             "action": normalized,
             "effect_digest": effect_digest,
             "state": "PENDING",
             "result": None,
             "receipt_ref": None,
+            "evidence_requirement": requirement,
+            "evidence": None,
+            "evidence_result": None,
         }
         self._events[aid] = []
-        self._emit(aid, "ACTION_REQUESTED", {"type": action.get("type"), "effect_digest": effect_digest})
+        self._emit(aid, "ACTION_REQUESTED", {
+            "type": action.get("type"),
+            "effect_digest": effect_digest,
+            "evidence_requirement": requirement.value,
+        })
         return aid
 
     def _emit(self, aid, kind, payload=None):
@@ -141,18 +161,55 @@ class LocalRuntime(RuntimeInterface):
         self._authority_revision += 1
         self._emit(action_id, "AUTHORITY_CHANGED", {"revision": self._authority_revision, "status": "REVOKED"})
 
+    def evaluate_evidence(self, action_id: str, evidence: Optional[EvidenceRecord]) -> EvidenceAdmissibilityResult:
+        record = self._require_action(action_id)
+        requirement = record["evidence_requirement"]
+        result = evaluate_evidence(requirement, evidence)
+        record["evidence"] = evidence
+        record["evidence_result"] = result
+        self._emit(action_id, "EVIDENCE_ADMISSIBILITY", {
+            "decision": result.decision.value,
+            "reason": result.reason,
+            "derivation_receipt": result.derivation_receipt,
+        })
+        return result
+
     def authorize(self, action_id: str, *, now: Optional[datetime] = None, ttl_seconds: int = 30) -> LocalPermit:
         record = self._require_action(action_id)
         now = now or _utc_now()
         if now.tzinfo is None:
             raise ValueError("authorization time must be timezone-aware")
         effect_digest = record["effect_digest"]
+
+        evidence_result = evaluate_evidence(record["evidence_requirement"], record.get("evidence"))
+        record["evidence_result"] = evidence_result
+        if record["evidence_requirement"] is EvidenceRequirement.REQUIRED:
+            self._emit(action_id, "EVIDENCE_ADMISSIBILITY", {
+                "decision": evidence_result.decision.value,
+                "reason": evidence_result.reason,
+                "derivation_receipt": evidence_result.derivation_receipt,
+            })
+
         reht_ref = _digest({
             "action_id": action_id,
             "effect_digest": effect_digest,
             "authority_revision": self._authority_revision,
             "evaluated_at": now.isoformat(),
+            "evidence_requirement": record["evidence_requirement"].value,
+            "evidence_decision": evidence_result.decision.value,
+            "derivation_receipt": evidence_result.derivation_receipt,
         })
+
+        if evidence_result.decision is not EvidenceAdmissibilityDecision.ADMIT:
+            record["state"] = "DENIED"
+            self._emit(action_id, "DECISION", {
+                "decision": Decision.DENY.value,
+                "reht_ref": reht_ref,
+                "reason": "EVIDENCE_NOT_ADMISSIBLE",
+                "evidence_decision": evidence_result.decision.value,
+            })
+            raise ConsequenceDenied("required evidence is not admissible")
+
         if effect_digest not in self._authorized_effects:
             record["state"] = "DENIED"
             self._emit(action_id, "DECISION", {"decision": Decision.DENY.value, "reht_ref": reht_ref})
@@ -183,6 +240,7 @@ class LocalRuntime(RuntimeInterface):
             "racs_ref": racs_ref,
             "permit_id": permit_id,
             "authority_revision": self._authority_revision,
+            "derivation_receipt": evidence_result.derivation_receipt,
         })
         return permit
 
@@ -288,12 +346,14 @@ class LocalRuntime(RuntimeInterface):
 
     def replay(self, action_id: str) -> Dict[str, Any]:
         record = self._require_action(action_id)
+        evidence_result = record.get("evidence_result")
         return {
             "action_id": action_id,
             "effect_digest": record.get("effect_digest"),
             "state": record.get("state"),
             "events": self.stream(action_id),
             "receipt": self._receipts.get(action_id),
+            "evidence_admissibility": evidence_result,
         }
 
     def _require_action(self, action_id: str) -> Dict[str, Any]:

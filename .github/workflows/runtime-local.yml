@@ -1,0 +1,31 @@
+name: Runtime local
+
+on:
+  pull_request:
+    paths:
+      - "runtime/runtime-local/**"
+      - "GOVERNANCE.yaml"
+      - ".github/workflows/runtime-local.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "runtime/runtime-local/**"
+      - "GOVERNANCE.yaml"
+      - ".github/workflows/runtime-local.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Run local runtime tests
+        run: python -m pytest runtime/runtime-local/tests -q
