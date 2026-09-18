@@ -10,8 +10,7 @@ import logging
 import sys
 from typing import Any
 
-from broker.broker import ValoBroker, Evidence, ActionEnvelope
-from broker.parable import ParableBrokerMixin
+from broker.broker import ActionEnvelope, ValoBroker
 
 log = logging.getLogger("valo.mcp.server")
 
@@ -19,11 +18,92 @@ log = logging.getLogger("valo.mcp.server")
 def create_mcp_server(broker: ValoBroker):
     """Return an MCP server object with .run() that speaks JSON-RPC over stdio."""
     tools: list[dict[str, Any]] = [
-        # ... existing tools ...
-    ]
-
-    # --- Parable workflow tools ---
-    tools.extend([
+        {
+            "name": "valo.add_evidence",
+            "description": "Store evidence and return its claim id and content hash.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "source": {"type": "string"},
+                    "content": {"type": "string"},
+                },
+                "required": ["source", "content"],
+            },
+        },
+        {
+            "name": "valo.list_evidence",
+            "description": "List recent evidence records.",
+            "annotations": {
+                "readOnlyHint": True,
+                "destructiveHint": False,
+                "idempotentHint": True,
+                "openWorldHint": False,
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {"limit": {"type": "integer", "default": 20}},
+            },
+        },
+        {
+            "name": "valo.seal_envelope",
+            "description": "Seal an action envelope against actor, intent, evidence and tool parameters.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "actor": {"type": "string"},
+                    "intent": {"type": "string"},
+                    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+                    "tool": {"type": "string"},
+                    "params": {"type": "object"},
+                },
+                "required": ["actor", "intent", "evidence_ids", "tool"],
+            },
+        },
+        {
+            "name": "valo.record_receipt",
+            "description": "Record an execution receipt for a sealed envelope.",
+            "annotations": {
+                "readOnlyHint": False,
+                "destructiveHint": False,
+                "idempotentHint": False,
+                "openWorldHint": False,
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "envelope_id": {"type": "string"},
+                    "status": {"type": "string"},
+                    "result_hash": {"type": "string"},
+                },
+                "required": ["envelope_id", "status"],
+            },
+        },
+        {
+            "name": "valo.audit_trail",
+            "description": "List recent execution receipts joined to their action envelopes.",
+            "annotations": {
+                "readOnlyHint": True,
+                "destructiveHint": False,
+                "idempotentHint": True,
+                "openWorldHint": False,
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {"limit": {"type": "integer", "default": 20}},
+            },
+        },
         {
             "name": "valo.create_plan",
             "description": "Create a Parable-style plan: intent + evidence ids. Returns plan_id.",
@@ -261,7 +341,7 @@ def create_mcp_server(broker: ValoBroker):
                 "required": ["contradiction_id", "resolution"],
             },
         },
-    ])
+    ]
 
     tool_map: dict[str, Any] = {
         "valo.add_evidence": lambda args: broker.add_evidence(args["source"], args["content"]).to_dict(),
@@ -279,7 +359,6 @@ def create_mcp_server(broker: ValoBroker):
             args["envelope_id"], args["status"], args.get("result_hash")
         ),
         "valo.audit_trail": lambda args: broker.audit_trail(int(args.get("limit", 20))),
-        # Parable workflow
         "valo.create_plan": lambda args: broker.create_plan(args["actor"], args["intent"], [str(x) for x in args["evidence_ids"]]).to_dict(),
         "valo.approve_plan": lambda args: {"ok": broker.approve_plan is not None and (broker.approve_plan(args["plan_id"]), True)[1]},
         "valo.list_plans": lambda args: broker.list_plans(int(args.get("limit", 20))),
@@ -394,7 +473,6 @@ def create_mcp_server(broker: ValoBroker):
                         },
                     }
 
-            # notifications / unknown
             return None
 
     return _Server()
