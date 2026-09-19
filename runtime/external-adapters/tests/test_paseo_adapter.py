@@ -140,3 +140,70 @@ def test_tool_visibility_never_grants_effect_authority() -> None:
             delegation=None,
             consequence_at=NOW,
         )
+
+
+def test_empty_authority_scope_preserves_canonical_wildcard_semantics() -> None:
+    authority = Authority(
+        authority_id="authority-wildcard",
+        principal="agent-child",
+        capability="WRITE_REPOSITORY",
+        scope=[],
+        constraints={"branch": "feat/paseo-authority-adapter"},
+        basis="approval-wildcard",
+        validity=TimeWindow(
+            valid_from=NOW - timedelta(minutes=5),
+            valid_until=NOW + timedelta(minutes=5),
+        ),
+    )
+    context = PaseoAgentContext(
+        agent_id="agent-child",
+        workspace_id="workspace-1",
+        provider_id="codex",
+    )
+
+    binding = bind_paseo_effect_for_reht(
+        context=context,
+        candidate=_candidate(),
+        authority=authority,
+        delegation=None,
+        consequence_at=NOW,
+    )
+
+    assert binding.authority_ref == "authority-wildcard"
+
+
+def test_binding_rejects_candidate_mutated_after_digest_was_sealed() -> None:
+    candidate = _candidate()
+    sealed = PaseoEffectCandidate.model_validate(
+        {
+            **candidate.model_dump(mode="python"),
+            "candidate_digest": candidate.computed_digest,
+        }
+    )
+    sealed.parameters["branch"] = "mutated-after-seal"
+    authority = Authority(
+        authority_id="authority-direct",
+        principal="agent-child",
+        capability="WRITE_REPOSITORY",
+        scope=["repo:Heimel-open/Heimel"],
+        constraints={},
+        basis="approval-direct",
+        validity=TimeWindow(
+            valid_from=NOW - timedelta(minutes=5),
+            valid_until=NOW + timedelta(minutes=5),
+        ),
+    )
+    context = PaseoAgentContext(
+        agent_id="agent-child",
+        workspace_id="workspace-1",
+        provider_id="codex",
+    )
+
+    with pytest.raises(ValueError, match="digest mismatch"):
+        bind_paseo_effect_for_reht(
+            context=context,
+            candidate=sealed,
+            authority=authority,
+            delegation=None,
+            consequence_at=NOW,
+        )
