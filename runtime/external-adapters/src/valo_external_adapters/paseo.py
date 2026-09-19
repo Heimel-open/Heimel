@@ -99,6 +99,8 @@ class PaseoREHTBinding(BaseModel):
 
 def _seal_candidate(candidate: PaseoEffectCandidate) -> PaseoEffectCandidate:
     if candidate.candidate_digest:
+        if candidate.candidate_digest != candidate.computed_digest:
+            raise ValueError("Paseo effect candidate digest mismatch")
         return candidate
     return PaseoEffectCandidate.model_validate(
         {
@@ -126,7 +128,7 @@ def _validate_authority_scope(
 ) -> None:
     if candidate.action != authority.capability:
         raise ValueError("candidate action exceeds authority capability")
-    if candidate.resource not in authority.scope:
+    if authority.scope and candidate.resource not in authority.scope:
         raise ValueError("candidate resource exceeds authority scope")
     for key, expected in authority.constraints.items():
         actual = candidate.parameters.get(key)
@@ -155,11 +157,11 @@ def _validate_delegation(
 
     parent_scope = set(authority.scope)
     delegated_scope = set(delegation.scope_reduction)
-    if not delegated_scope:
+    if not delegated_scope and parent_scope:
         delegated_scope = parent_scope
-    if not delegated_scope.issubset(parent_scope):
+    if parent_scope and not delegated_scope.issubset(parent_scope):
         raise ValueError("delegation may narrow but never expand parent authority")
-    if candidate.resource not in delegated_scope:
+    if delegated_scope and candidate.resource not in delegated_scope:
         raise ValueError("candidate resource exceeds delegated scope")
 
 
