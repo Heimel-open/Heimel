@@ -172,6 +172,49 @@ def test_empty_authority_scope_preserves_canonical_wildcard_semantics() -> None:
     assert binding.authority_ref == "authority-wildcard"
 
 
+def test_unrestricted_parent_authority_can_be_narrowed_by_delegation() -> None:
+    authority = Authority(
+        authority_id="authority-unrestricted",
+        principal="agent-parent",
+        capability="WRITE_REPOSITORY",
+        scope=[],
+        constraints={},
+        basis="approval-unrestricted",
+        validity=TimeWindow(
+            valid_from=NOW - timedelta(minutes=5),
+            valid_until=NOW + timedelta(minutes=5),
+        ),
+        delegable=True,
+    )
+    context = PaseoAgentContext(
+        agent_id="agent-child",
+        parent_agent_id="agent-parent",
+        workspace_id="workspace-1",
+        provider_id="codex",
+    )
+    delegation = Delegation(
+        delegation_id="delegation-narrow",
+        delegator="agent-parent",
+        delegate="agent-child",
+        authority_ref="authority-unrestricted",
+        scope_reduction=["repo:Heimel-open/Heimel"],
+        validity=TimeWindow(
+            valid_from=NOW - timedelta(minutes=1),
+            valid_until=NOW + timedelta(minutes=1),
+        ),
+    )
+
+    binding = bind_paseo_effect_for_reht(
+        context=context,
+        candidate=_candidate(),
+        authority=authority,
+        delegation=delegation,
+        consequence_at=NOW,
+    )
+
+    assert binding.delegation_ref == "delegation-narrow"
+
+
 def test_binding_rejects_candidate_mutated_after_digest_was_sealed() -> None:
     candidate = _candidate()
     sealed = PaseoEffectCandidate.model_validate(
